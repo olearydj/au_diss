@@ -2,8 +2,8 @@ project:
   type: book
 
 book:
-  title: "au_diss_template"
-  author: "John Smith"
+  title: "My Dissertation"
+  author: "My Name"
   date: today
   chapters:
     - index.qmd
@@ -15,7 +15,9 @@ bibliography: references.bib
 
 format:
   pdf:
-    documentclass: scrreprt
+    documentclass: scrbook
+    classoption: ["onepage", "openany"]
+
 
 
 
