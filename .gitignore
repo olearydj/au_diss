@@ -1,8 +1,11 @@
+# R project temp files
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+/.quarto/
 
+# Temp files (includes ALL markdown by default)
 *.md
 *.aux
 *.log
@@ -11,5 +14,8 @@
 *.toc
 *.pdf
 
-/.quarto/
+# Output directory
 _book/
+
+# Don't ignore these...
+!issues.md
