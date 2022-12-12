@@ -1,3 +1,5 @@
+# Quarto project - AU dissertation template
+# initially based on new Quarto Book project
 project:
   type: book
 
@@ -6,10 +8,16 @@ book:
   author: "My Name"
   date: today
   chapters:
-    - index.qmd
-    - intro.qmd
-    - summary.qmd
-    - references.qmd
+    - index.qmd  # unused, but error when removed:
+                 # ERROR: Book contents must include a home page (e.g. index.md)
+    - 1-intro.qmd
+    - 2-lit_review.qmd
+    - 3-prob_statement.qmd
+    - 4-methods.qmd
+    - 5-results.qmd
+    - 6-conclusions.qmd
+    - 7-references.qmd
+    - 8-appendices.qmd
 
 bibliography: references.bib
 
@@ -17,7 +25,3 @@ format:
   pdf:
     documentclass: scrbook
     classoption: ["onepage", "openany"]
-
-
-
-
