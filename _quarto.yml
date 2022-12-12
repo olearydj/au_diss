@@ -1,5 +1,6 @@
 # Quarto project - AU dissertation template
 # initially based on new Quarto Book project
+# uses titlepages v1 academic-static templates
 project:
   type: book
 
@@ -31,5 +32,11 @@ format:
     include-in-header: 
       - "templates/in-header.tex"
     toc: true
+    toc-depth: 3
     lof: true
     lot: true
+    margin-top: 1in
+    margin-left: 1in
+    margin-right: 1in
+    margin-bottom: 1in
+    fontsize: 12pt
