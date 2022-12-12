@@ -18,18 +18,19 @@ book:
     - 5-results.qmd
     - 6-conclusions.qmd
     - 7-references.qmd
-    - 8-appendices.qmd
+  appendices:
+    - a-firstapp.qmd
 
 bibliography: references.bib
 
 format:
   pdf:
     documentclass: scrbook
-    classoption: ["onepage", "openany"]
+    classoption: ["twoside=false", "open=any"]
     number-sections: true
     template-partials:
       - "templates/before-body.tex"
-      - "templates/_titlepage.tex" 
+      - "templates/_titlepage.tex"
     include-in-header: 
       - "templates/in-header.tex"
     toc: true
@@ -37,7 +38,7 @@ format:
     lof: true
     lot: true
     margin-top: 1in
-    margin-left: 1in
+    margin-left: 1.5in  # allow for binding; use 1in otherwise
     margin-right: 1in
     margin-bottom: 1in
     fontsize: 12pt

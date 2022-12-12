@@ -3,5 +3,13 @@
 .RData
 .Ruserdata
 
+*.md
+*.aux
+*.log
+*.lof
+*.lot
+*.toc
+*.pdf
+
 /.quarto/
 _book/
