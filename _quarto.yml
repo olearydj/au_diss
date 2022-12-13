@@ -12,15 +12,15 @@ book:
     ## index.qmd unused / empty, but error when removed...
     ## ERROR: Book contents must include a home page (e.g. index.md)
     - index.qmd
-    - 1-intro.qmd
-    - 2-lit_review.qmd
-    - 3-prob_statement.qmd
-    - 4-methods.qmd
-    - 5-results.qmd
-    - 6-conclusions.qmd
-    - 7-references.qmd
+    - 21-intro.qmd
+    - 22-lit_review.qmd
+    - 23-prob_statement.qmd
+    - 24-methods.qmd
+    - 25-results.qmd
+    - 26-conclusions.qmd
+    - 27-references.qmd
   appendices:
-    - a-firstapp.qmd
+    - 31-firstapp.qmd
 
 bibliography: references.bib
 
@@ -69,6 +69,8 @@ format:
   # Rendering
     template-partials:
       - "templates/before-body.tex"
-      - "templates/_titlepage.tex"
+      - "11-titlepage.tex"
+      - "12-abstract.tex"
+      - "13-acknowledgements.tex"
   # Latexmx
   # Text Ouput
