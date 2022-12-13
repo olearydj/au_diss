@@ -1,11 +1,18 @@
 # Quarto project - AU dissertation template
 # initially based on new Quarto Book project
 # uses titlepages v1 academic-static templates
+
 project:
+### Project reference: https://quarto.org/docs/reference/projects/options.html
+# Main
+  ### not used for filename
+  title: "My Dissertation"
   type: book
+  output-dir: manuscript
+# Preview
+# Serve
 
 book:
-  title: "My Dissertation"
   author: "My Name"
   date: today
   chapters:
@@ -26,7 +33,7 @@ bibliography: references.bib
 
 format:
   pdf:
-  ### PDF options: https://quarto.org/docs/reference/formats/pdf.html
+  ### PDF reference: https://quarto.org/docs/reference/formats/pdf.html
   # Title & Author - see book options
   # Format Options
     ## results in build error, missing packages:
