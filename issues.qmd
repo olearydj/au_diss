@@ -11,7 +11,9 @@
 ## Quarto / RStudio Issues and Requests
 
 -   Q: Why is index.qmd required for book?
+-   Q: How do I turn off ligatures?
 -   FR: allow project `execute-dir` option to specify a path like `output-dir`
+    -   When using the PDF option `pdf-engine-opt: -output-directory=work` for the `xelatex` renderer, the build fails during "updating existing packages" with the error `compilation failed- missing packages (automatic installation failed)`. The files appear to be correctly written to my work directory, but it doesn't know to find them there.
 -   When editing a list in amarkdown file (either `.md` or `.qmd`), if I switch from source to visual mode and back, all indents become 4 spaces and all text is separated from the hyphens by 3 spaces.
     -   This switch also blew away a markdown formatted link.
 
@@ -38,4 +40,4 @@
 -   REPORTED to plugin author: Contrary to the advice given in the titlepage v1 documentation, the class option `onepage` did not prevent alternating margins on even/odd pages. Using `twoside=false` does correct this, per <https://tex.stackexchange.com/a/18791/286622>.
 -   REPORTED to plugin author: Missing characters in equations on page 4, section 2.1
     -   ellipsis ($\ldots$), mu ($\mu$), sigma ($\sigma$), infinity ($\infty$), summation ($\Sigma$), square root ($\sqrt{}$), minus ($-$), and script N ($\mathcal{N}$)
-    - FIXED: comment out `include-in-header: in-header.tex`
+    -   FIXED: comment out `include-in-header: in-header.tex`

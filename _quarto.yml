@@ -9,8 +9,9 @@ book:
   author: "My Name"
   date: today
   chapters:
-    - index.qmd # unused, but error when removed:
-                # ERROR: Book contents must include a home page (e.g. index.md)
+    ## index.qmd unused / empty, but error when removed...
+    ## ERROR: Book contents must include a home page (e.g. index.md)
+    - index.qmd
     - 1-intro.qmd
     - 2-lit_review.qmd
     - 3-prob_statement.qmd
@@ -25,20 +26,49 @@ bibliography: references.bib
 
 format:
   pdf:
+  ### PDF options: https://quarto.org/docs/reference/formats/pdf.html
+  # Title & Author - see book options
+  # Format Options
+    ## results in build error, missing packages:
+    # pdf-engine-opt: -output-directory=work
+  # Table of Contents
+    toc: true
+    toc-depth: 3
+    toc-title: Table of Contents
+    lof: true
+    lot: true
+  # Numbering
+    number-sections: true
+  # Fonts
+    mainfont: Times New Roman
+    monofont: Source Code Pro
+    fontsize: 12pt
+    ## stretches all lines, not just body paragraphs:
+    # linestretch: 1.5
+  # Colors
+  # Layout
     documentclass: scrbook
     classoption: ["twoside=false", "open=any"]
-    number-sections: true
+    geometry:
+      - margin=1in
+      - bindingoffset=0.5in
+      - heightrounded
+  # Code
+  # Execution
+  # Figures
+  # Tables
+  # References
+  # Footnotes
+  # Citation
+  # Language
+  # Includes
+    ## results in missing math symbols:
+    # include-in-header:
+    #   - "templates/in-header.tex"
+  # Metadata
+  # Rendering
     template-partials:
       - "templates/before-body.tex"
       - "templates/_titlepage.tex"
-#    include-in-header: 
-#      - "templates/in-header.tex"
-    toc: true
-    toc-depth: 3
-    lof: true
-    lot: true
-    margin-top: 1in
-    margin-left: 1.5in  # allow for binding; use 1in otherwise
-    margin-right: 1in
-    margin-bottom: 1in
-    fontsize: 12pt
+  # Latexmx
+  # Text Ouput
