@@ -48,7 +48,7 @@ format:
   # Colors
   # Layout
     documentclass: scrbook
-    classoption: ["twoside=false", "open=any"]
+    classoption: ["oneside", "open=any"]
     geometry:
       - margin=1in
       - bindingoffset=0.5in
@@ -63,8 +63,8 @@ format:
   # Language
   # Includes
     ## results in missing math symbols:
-    # include-in-header:
-    #   - "templates/in-header.tex"
+    include-in-header:
+      - "templates/in-header.tex"
   # Metadata
   # Rendering
     template-partials:
