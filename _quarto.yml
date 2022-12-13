@@ -31,8 +31,8 @@ format:
     template-partials:
       - "templates/before-body.tex"
       - "templates/_titlepage.tex"
-    include-in-header: 
-      - "templates/in-header.tex"
+#    include-in-header: 
+#      - "templates/in-header.tex"
     toc: true
     toc-depth: 3
     lof: true

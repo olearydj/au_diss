@@ -6,15 +6,14 @@
 -   Change fonts:
     -   body
     -   headers
--   Missing characters in equations on page 4, section 2.1
-    -   ellipsis ($\ldots$), mu ($\mu$), sigma ($\sigma$), infinity ($\infty$), summation ($\Sigma$), square root ($\sqrt{}$), minus ($-$), and script N ($\mathcal{N}$)
 -   Can't figure out how to include an abstract
 
-## Quarto / RStudio Issues
+## Quarto / RStudio Issues and Requests
 
+-   Q: Why is index.qmd required for book?
+-   FR: allow project `execute-dir` option to specify a path like `output-dir`
 -   When editing a list in amarkdown file (either `.md` or `.qmd`), if I switch from source to visual mode and back, all indents become 4 spaces and all text is separated from the hyphens by 3 spaces.
     -   This switch also blew away a markdown formatted link.
--   Contrary to the advice given in the titlepage v1 documentation, the class option `onepage` did not prevent alternating margins on even/odd pages. Using `twoside=false` does correct this, per <https://tex.stackexchange.com/a/18791/286622>.
 
 **Before:**
 
@@ -33,3 +32,10 @@
     -   body
     -   headers
 ```
+
+## Archive
+
+-   REPORTED to plugin author: Contrary to the advice given in the titlepage v1 documentation, the class option `onepage` did not prevent alternating margins on even/odd pages. Using `twoside=false` does correct this, per <https://tex.stackexchange.com/a/18791/286622>.
+-   REPORTED to plugin author: Missing characters in equations on page 4, section 2.1
+    -   ellipsis ($\ldots$), mu ($\mu$), sigma ($\sigma$), infinity ($\infty$), summation ($\Sigma$), square root ($\sqrt{}$), minus ($-$), and script N ($\mathcal{N}$)
+    - FIXED: comment out `include-in-header: in-header.tex`
