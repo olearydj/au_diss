@@ -12,7 +12,9 @@
 
 ## Quarto / RStudio Issues
 
--   When editing a list in a plain markdown file (`.md`), if I switch from source to visual mode and back, all indents become 4 spaces and all text is separated from the hyphens by 3 spaces.
+-   When editing a list in amarkdown file (either `.md` or `.qmd`), if I switch from source to visual mode and back, all indents become 4 spaces and all text is separated from the hyphens by 3 spaces.
+    -   This switch also blew away a markdown formatted link.
+-   Contrary to the advice given in the titlepage v1 documentation, the class option `onepage` did not prevent alternating margins on even/odd pages. Using `twoside=false` does correct this, per <https://tex.stackexchange.com/a/18791/286622>.
 
 **Before:**
 
