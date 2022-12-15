@@ -1,14 +1,18 @@
 # Issues List
 
 ## Template Issues
-
--   Fix headers and footers
--   Change fonts:
-    -   body
-    -   headers
--   Can't figure out how to include an abstract
--   Fix page numbering `\mainmatter` reset
-  - move all front matter into `index.qmd` and "zero out" prior templates
+- Fix table of contents
+  - Heading centered, 1" from top of page, followed by 2 blank lines
+  - lists all parts of the document (except the title page)
+  - titles of all parts are worded exactly as they appear in the document
+  - aligned (not indented) with the left margin
+  - headings and the page numbers are separated by a row of dot leaders
+  - Page numbers are aligned flush with the right margin.
+  - Entries are generally double-spaced
+  - titles and headings of >1 line are indented at the second line & single-spaced
+  - list of contents begins at the left margin on the fourth line below the heading
+- Headers for Abstract and Acknowledgements in sans serif font
+- Indent first line of Abstract and Acknowledgements
 
 ## Quarto / RStudio Issues and Requests
 

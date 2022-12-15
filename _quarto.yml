@@ -52,7 +52,9 @@ format:
   # Numbering
     number-sections: true
   # Fonts
+    # main: body, sans: headings, mono: codeblocks
     mainfont: Georgia
+    sansfont: Verdana
     monofont: Source Code Pro
     fontsize: 12pt
     ## stretches all lines, not just body paragraphs:
@@ -65,6 +67,10 @@ format:
       - margin=1in
       - bindingoffset=0.5in
       - heightrounded
+      - footskip=0.475in
+      - showframe
+    # footer only, with centered page number
+    pagestyle: plain
   # Includes
     include-before-body:
       - 11-titlepage.tex
@@ -75,5 +81,6 @@ format:
   # Rendering
     template: tex/template.tex
     # template-partials: 
+    keep-tex: true
 # Other: Code, Execution, Figures, Tables, References, Footnotes, Citation,
 # Language, Latexmx, Text Ouput
