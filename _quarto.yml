@@ -5,14 +5,17 @@
 project:
 ### Project reference: https://quarto.org/docs/reference/projects/options.html
 # Main
-  ### not used for filename
-  title: "My Dissertation"
+  ## not used for filename:
+  title: "Project Title"
   type: book
   output-dir: manuscript
-# Preview
-# Serve
+# Other: Preview, Serve
 
 book:
+### Book reference: https://quarto.org/docs/reference/projects/books.html
+# Book-specific project options
+  title: "Book Title"
+  subtitle: "Book Subtitle"
   author: "My Name"
   date: today
   chapters:
@@ -28,6 +31,8 @@ book:
     - 27-references.qmd
   appendices:
     - 31-firstapp.qmd
+# Other: Navbar, Nav Items, Sidebar, Sidebar Tools, Footer, Search, Algolia, Social,
+# Twitter Card, Open Graph, Hypothesis, Utterances, Giscus, Listings, Feed, About
 
 bibliography: references.bib
 
@@ -47,7 +52,7 @@ format:
   # Numbering
     number-sections: true
   # Fonts
-    mainfont: Times New Roman
+    mainfont: Georgia
     monofont: Source Code Pro
     fontsize: 12pt
     ## stretches all lines, not just body paragraphs:
@@ -60,16 +65,7 @@ format:
       - margin=1in
       - bindingoffset=0.5in
       - heightrounded
-  # Code
-  # Execution
-  # Figures
-  # Tables
-  # References
-  # Footnotes
-  # Citation
-  # Language
   # Includes
-    ## results in missing math symbols:
     include-in-header:
       - "templates/in-header.tex"
   # Metadata
@@ -79,5 +75,5 @@ format:
       - "11-titlepage.tex"
       - "12-abstract.tex"
       - "13-acknowledgements.tex"
-  # Latexmx
-  # Text Ouput
+# Other: Code, Execution, Figures, Tables, References, Footnotes, Citation,
+# Language, Latexmx, Text Ouput

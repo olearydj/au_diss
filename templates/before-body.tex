@@ -1,13 +1,8 @@
 %%% From titlepages_v1: https://github.com/nmfs-opensci/quarto_titlepages_v1
 
-$if(has-frontmatter)$
-  \begin{frontmatter}
-    $11-titlepage.tex()$
-    $12-abstract.tex()$
-    $13-acknowledgements.tex()$
-  \end{frontmatter}
-$else$
-  \begin{titlepage}
-    $11-titlepage.tex()$
-  \end{titlepage}
-$endif$
+% moved mainmatter here to follow AU page numbering style
+\mainmatter
+
+$11-titlepage.tex()$
+$12-abstract.tex()$
+$13-acknowledgements.tex()$
