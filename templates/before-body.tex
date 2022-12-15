@@ -1,8 +1,19 @@
-%%% From titlepages_v1: https://github.com/nmfs-opensci/quarto_titlepages_v1
+%%% Custom template for AU dissertation
+%%% based on Quarto's standard template.tex
 
-% moved mainmatter here to follow AU page numbering style
-\mainmatter
+$if(has-frontmatter)$
+  \frontmatter
+$endif$
 
-$11-titlepage.tex()$
-$12-abstract.tex()$
-$13-acknowledgements.tex()$
+$if(title)$
+  $if(beamer)$
+    \frame{\titlepage}
+  $else$
+    \maketitle
+  $endif$
+  $if(abstract)$
+    \begin{abstract}
+      $abstract$
+    \end{abstract}
+  $endif$
+$endif$
