@@ -14,6 +14,7 @@
 *.lot
 *.toc
 *.pdf
+Book-Title.tex
 
 # Output directory
 _book/
