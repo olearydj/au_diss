@@ -7,6 +7,8 @@
     -   body
     -   headers
 -   Can't figure out how to include an abstract
+-   Fix page numbering `\mainmatter` reset
+  - move all front matter into `index.qmd` and "zero out" prior templates
 
 ## Quarto / RStudio Issues and Requests
 
@@ -36,4 +38,3 @@
 ```
 
 ## Archive
-
