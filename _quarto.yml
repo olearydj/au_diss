@@ -70,6 +70,12 @@ format:
 #      - "templates/in-header.tex"
   # Metadata
   # Rendering
-    template: templates/template.tex
+    template: tex/template.tex
+    template-partials: 
+      - tex/before-body.tex
+      - tex/doc-class.tex
+      - tex/toc.tex
+      - tex/title.tex
+      - tex/pandoc.tex
 # Other: Code, Execution, Figures, Tables, References, Footnotes, Citation,
 # Language, Latexmx, Text Ouput

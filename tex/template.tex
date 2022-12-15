@@ -148,7 +148,7 @@ $if(CJKmainfont)$
     \setmainjfont[$for(CJKoptions)$$CJKoptions$$sep$,$endfor$]{$CJKmainfont$}
   \fi
 $endif$
-\fi % TODO extra?
+% \fi % TODO extra? removed
 
 $if(zero-width-non-joiner)$
   %% Support for zero-width non-joiner characters.
@@ -377,8 +377,8 @@ $title.tex()$
 %%% ---------------------------------------------------------------------------
 
 \begin{document}
-  
-  %%% set frontmatter, makes title, incorporates abstract:
+  \mainmatter
+  %%% make title, incorporate abstract:
   $before-body.tex()$
   
   %%% additional before-body includes, as specified in YAML
@@ -393,9 +393,9 @@ $title.tex()$
     \setstretch{$linestretch$}
   $endif$
   
-  $if(has-frontmatter)$
-    \mainmatter
-  $endif$
+%  $if(has-frontmatter)$
+%    \mainmatter
+%  $endif$
   
   %%% Include chapters and appendices, starting with index.qmd
   $body$
@@ -403,9 +403,9 @@ $title.tex()$
   %%% Before bibliography (empty by default)
   $before-bib.tex()$
   
-  $if(has-frontmatter)$
+%  $if(has-frontmatter)$
     \backmatter
-  $endif$
+%  $endif$
   
   %%% Build bibliography
   $biblio.tex()$

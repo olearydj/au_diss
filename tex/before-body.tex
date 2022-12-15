@@ -1,9 +1,11 @@
 %%% Custom template for AU dissertation
 %%% based on Quarto's standard template.tex
 
-$if(has-frontmatter)$
-  \frontmatter
-$endif$
+%% to comply with AU standard format re: page numbering, preliminary pages
+%% and body should all be treated as main matter
+%$if(has-frontmatter)$
+%  \frontmatter
+%$endif$
 
 $if(title)$
   $if(beamer)$
