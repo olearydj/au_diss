@@ -378,8 +378,9 @@ $title.tex()$
 
 \begin{document}
   \mainmatter
-  %%% make title, incorporate abstract:
-  $before-body.tex()$
+
+  %%% maketitle replaced with included tex file
+  %%% no longer uses before-body partial
   
   %%% additional before-body includes, as specified in YAML
   $for(include-before)$
@@ -393,20 +394,14 @@ $title.tex()$
     \setstretch{$linestretch$}
   $endif$
   
-%  $if(has-frontmatter)$
-%    \mainmatter
-%  $endif$
-  
   %%% Include chapters and appendices, starting with index.qmd
   $body$
   
   %%% Before bibliography (empty by default)
   $before-bib.tex()$
   
-%  $if(has-frontmatter)$
-    \backmatter
-%  $endif$
-  
+  \backmatter
+
   %%% Build bibliography
   $biblio.tex()$
   

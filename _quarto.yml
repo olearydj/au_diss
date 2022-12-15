@@ -66,16 +66,14 @@ format:
       - bindingoffset=0.5in
       - heightrounded
   # Includes
-#    include-in-header:
-#      - "templates/in-header.tex"
+    include-before-body:
+      - 11-titlepage.tex
+      - 12-abstract.tex
+      - 13-acknowledgements.tex
+    # include-in-header:
   # Metadata
   # Rendering
     template: tex/template.tex
-    template-partials: 
-      - tex/before-body.tex
-      - tex/doc-class.tex
-      - tex/toc.tex
-      - tex/title.tex
-      - tex/pandoc.tex
+    # template-partials: 
 # Other: Code, Execution, Figures, Tables, References, Footnotes, Citation,
 # Language, Latexmx, Text Ouput
