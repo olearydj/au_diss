@@ -1,5 +1,5 @@
 <!-- Redefine KOMA Chapter styling in prelim material -->
-\RedeclareSectionCommand[beforeskip=0pt]{chapter}
+\RedeclareSectionCommand[beforeskip=0pt, afterskip=24pt]{chapter}
 \setkomafont{chapter}{\large\sffamily}
 \renewcommand\raggedchapter{\centering}
 
@@ -9,11 +9,10 @@
 
 <!-- Moved here from toc.tex -->
 \tableofcontents
-\listoftables
-\listoffigures
-
 \addcontentsline{toc}{chapter}{Table of Contents}
-\addcontentsline{toc}{chapter}{List of Tables}
-\addcontentsline{toc}{chapter}{List of Figures}
 
-This text is from `index.qmd`.
+\listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
+
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}

@@ -15,6 +15,9 @@ $endif$
 % sets document class options
 $doc-class.tex()$
 \usepackage{scrhack}
+\KOMAoptions{%
+  toc=flat,
+  chapterentrydots=true}
 
 $if(beamer)$
   $if(background-image)$
@@ -199,7 +202,7 @@ $endif$
   \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 $if(indent)$
-  $else$
+$else$
   \makeatletter
   \@ifundefined{KOMAClassName}{% if non-KOMA class
     \IfFileExists{parskip.sty}{%
