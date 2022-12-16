@@ -64,7 +64,7 @@ format:
   # Colors
   # Layout
     documentclass: scrbook
-    classoption: ["oneside", "open=any", "draft=true"]
+    classoption: ["oneside", "open=any"]
     geometry:
       - margin=1in
       - bindingoffset=0.5in
