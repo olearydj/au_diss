@@ -14,6 +14,7 @@ $endif$
 
 % sets document class options
 $doc-class.tex()$
+\usepackage{scrhack}
 
 $if(beamer)$
   $if(background-image)$
@@ -382,13 +383,36 @@ $title.tex()$
   %%% maketitle replaced with included tex file
   %%% no longer uses before-body partial
   
+  %%% Eliminated include-before, now adding prelim in index.qmd
   %%% additional before-body includes, as specified in YAML
-  $for(include-before)$
-    $include-before$
-  $endfor$
+  % for(include-before)
+  %   include-before
+  % endfor
   
   %%% make ToC, LoF, LoT
-  $toc.tex()$
+  % toc.tex()
+  %%% Setup from toc.tex now inlined, make ToC, LoF, LoT in index.qmd
+  $if(toc)$
+    $if(toc-title)$
+      \renewcommand*\contentsname{$toc-title$}
+    $endif$
+    $if(beamer)$
+      \begin{frame}[allowframebreaks]
+      $if(toc-title)$
+        \frametitle{$toc-title$}
+      $endif$
+      \tableofcontents[hideallsubsections]
+      \end{frame}
+    $else$
+      {
+      $if(colorlinks)$
+        \hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$$endif$}
+      $endif$
+      \setcounter{tocdepth}{$toc-depth$}
+      % \tableofcontents now made in index.qmd
+      }
+    $endif$
+  $endif$
   
   $if(linestretch)$
     \setstretch{$linestretch$}

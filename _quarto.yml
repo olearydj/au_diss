@@ -57,12 +57,14 @@ format:
     sansfont: Verdana
     monofont: Source Code Pro
     fontsize: 12pt
+    # so that draft overfill indicators match final results:
+    microtypeoptions: ["final"]
     ## stretches all lines, not just body paragraphs:
     # linestretch: 1.5
   # Colors
   # Layout
     documentclass: scrbook
-    classoption: ["oneside", "open=any"]
+    classoption: ["oneside", "open=any", "draft=true"]
     geometry:
       - margin=1in
       - bindingoffset=0.5in
@@ -72,10 +74,7 @@ format:
     # footer only, with centered page number
     pagestyle: plain
   # Includes
-    include-before-body:
-      - 11-titlepage.tex
-      - 12-abstract.tex
-      - 13-acknowledgements.tex
+    # include-before-body: removed from template, unused
     # include-in-header:
   # Metadata
   # Rendering

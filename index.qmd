@@ -1,9 +1,19 @@
-# Preface {.unnumbered}
+<!-- Redefine KOMA Chapter styling in prelim material -->
+\RedeclareSectionCommand[beforeskip=0pt]{chapter}
+\setkomafont{chapter}{\large\sffamily}
+\renewcommand\raggedchapter{\centering}
 
-This is a Quarto book.
+{{< include 11-titlepage.qmd >}}
+{{< include 12-abstract.qmd >}}
+{{< include 13-acknowledgements.qmd >}}
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+<!-- Moved here from toc.tex -->
+\tableofcontents
+\listoftables
+\listoffigures
 
-```{r}
-1 + 1
-```
+\addcontentsline{toc}{chapter}{Table of Contents}
+\addcontentsline{toc}{chapter}{List of Tables}
+\addcontentsline{toc}{chapter}{List of Figures}
+
+This text is from `index.qmd`.

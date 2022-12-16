@@ -1,18 +1,7 @@
-% Title Page per AU style guide
-% my first LaTeX document!
-% setup based on: https://github.com/nmfs-opensci/quarto_titlepages_v1
-% this document designed with the help of ChatGPT
-
 \begin{titlepage}
-
-% Center all the content on the title page
 \center
-
-% start 1 inch (72 points) from the top margin
-% 72 points is a little too much when printed, hack until I understand why
 \vspace*{48pt}
 
-% Title and subtitle in boldface, followed by 1 line (12pts)
 \textbf{Innovation in Workforce Development for Manufacturing:} \\
 \textbf{A Framework for Assessing the Benefits of Mixed Reality Methods}
 \vspace{12pt}
@@ -48,9 +37,4 @@ Dr. John Evans, Co-chair, Professor, Industrial \& Systems Engineering \\
 Dr. Richard Sesek, Assoc. Professor, Industrial \& Systems Engineering \\
 Dr. Konstantinos Mykoniatis, Assistant Professor, Industrial \& Systems Engineering
 
-% turn off centering
-%\end{center}
-
-\end{titlepage} % End the title page environment
-
-% \end{document}
+\end{titlepage}
