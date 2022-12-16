@@ -62,6 +62,7 @@ format:
     ## stretches all lines, not just body paragraphs:
     # linestretch: 1.5
   # Colors
+    colorlinks: true
   # Layout
     documentclass: scrbook
     classoption: 

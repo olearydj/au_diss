@@ -2,19 +2,16 @@
 
 ## Template Issues
 - Eliminate initial Preface page - Introduction should be chapter 1
-- Indent first line of Abstract and Acknowledgements
+- tocdepth
 - Fix table of contents
-  - aligned (not indented) with the left margin
-  - headings and the page numbers are separated by a row of dot leaders
-  - Page numbers are aligned flush with the right margin.
   - Entries are generally double-spaced
   - titles and headings of >1 line are indented at the second line & single-spaced
-  - list of contents begins at the left margin on the fourth line below the heading
-- Use `\appendix` for section before back matter?
 - List of Abbreviations / Symbols (aka "Nomenclature")
 - Font options
 - Make title page dynamic (variables)
 - Convert vspace amounts to use line heights?
+- Change heading style for main chapters
+- Indent first line of Abstract and Acknowledgements?
 
 ## Quarto / RStudio Issues and Requests
 
