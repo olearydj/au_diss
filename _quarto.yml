@@ -19,8 +19,6 @@ book:
   author: "My Name"
   date: today
   chapters:
-    ## index.qmd unused / empty, but error when removed...
-    ## ERROR: Book contents must include a home page (e.g. index.md)
     - index.qmd
     - 21-intro.qmd
     - 22-lit_review.qmd
@@ -31,8 +29,6 @@ book:
     - 27-references.qmd
   appendices:
     - 31-firstapp.qmd
-# Other: Navbar, Nav Items, Sidebar, Sidebar Tools, Footer, Search, Algolia, Social,
-# Twitter Card, Open Graph, Hypothesis, Utterances, Giscus, Listings, Feed, About
 
 bibliography: references.bib
 
@@ -84,5 +80,3 @@ format:
     template: tex/template.tex
     # template-partials: 
     keep-tex: true
-# Other: Code, Execution, Figures, Tables, References, Footnotes, Citation,
-# Language, Latexmx, Text Ouput

@@ -16,12 +16,15 @@ $endif$
 $doc-class.tex()$
 \usepackage{scrhack}
 
-\deffootnote[1.5em]{3em}{1em}{%
-  \textsuperscript{\thefootnotemark\,}%
+% format KOMA footnotes
+\deffootnote[1em]{1em}{1em}{%
+  \textsuperscript{\thefootnotemark\:}%
 }
 \addtokomafont{footnotelabel}{\normalsize}
 \addtokomafont{footnotemark}{\normalsize}
+\let\raggedfootnote\raggedright
 
+% set KOMA ToC options
 \KOMAoptions{%
   toc=flat,
   chapterentrydots=true,

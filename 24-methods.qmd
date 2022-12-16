@@ -29,7 +29,7 @@ The plot below shows the relationship between flipper and bill lengths of these 
 ```{r}
 #| label: plot-penguins
 #| warning: false
-#| echo: false
+#| echo: true
 
 ggplot(penguins, 
        aes(x = flipper_length_mm, y = bill_length_mm)) +
@@ -43,3 +43,19 @@ ggplot(penguins,
   ) +
   theme_minimal()
 ```
+
+## Cars Stuff
+
+```{r}
+#| label: fig-charts
+#| fig-cap: Charts
+#| fig-subcap: 
+#|   - "Cars"
+#|   - "Pressure"
+#| layout-ncol: 2
+#| echo: false
+
+plot(cars)
+plot(pressure)
+```
+
