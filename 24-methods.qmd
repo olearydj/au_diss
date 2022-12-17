@@ -20,7 +20,7 @@ Quarto enables you to weave together content and executable code into a finished
 
 ## Meet the penguins
 
-![](images/lter_penguins.png){style="float:right;" fig-alt="Illustration of three species of Palmer Archipelago penguins: Chinstrap, Gentoo, and Adelie. Artwork by @allison_horst." width="401"}
+![](images/lter_penguins.png){style="float:right;" fig-alt="Illustration of three species of Palmer Archipelago penguins: Chinstrap, Gentoo, and Adelie. Artwork by @allison_horst." width="300"}
 
 The `penguins` data from the [**palmerpenguins**](https://allisonhorst.github.io/palmerpenguins "palmerpenguins R package") package contains size measurements for `r nrow(penguins)` penguins from three species observed on three islands in the Palmer Archipelago, Antarctica.
 
@@ -28,6 +28,7 @@ The plot below shows the relationship between flipper and bill lengths of these 
 
 ```{r}
 #| label: plot-penguins
+#| fig-cap: Penguins
 #| warning: false
 #| echo: true
 
@@ -57,5 +58,56 @@ ggplot(penguins,
 
 plot(cars)
 plot(pressure)
+```
+
+## Islands
+
+```{r}
+#| label: fig-islands
+#| tbl-cap: Largest Landmasses
+#| echo: false
+
+# Take the `islands` dataset and use some
+# dplyr functionality to obtain the ten
+# biggest islands in the world
+# source: https://gt.rstudio.com/articles/intro-creating-gt-tables.html
+islands_tbl <- 
+  tibble(
+    name = names(islands),
+    size = islands
+  ) %>%
+  arrange(desc(size)) %>%
+  slice(1:5)
+
+library(gt)
+gt_tbl <- gt(islands_tbl)
+
+gt_tbl <- 
+  gt_tbl %>%
+  tab_header(
+    title = md("**Large Landmasses of the World**"),
+    subtitle = md("The top ten largest are presented")
+  ) %>%
+  tab_source_note(
+    source_note = md("Source: The World Almanac and Book of Facts, 1975, page 406.")
+  ) %>%
+  tab_source_note(
+    source_note = md("Reference: McNeil, D. R. (1977) *Interactive Data Analysis*. Wiley.")
+  ) %>%
+  # tab_footnote(
+  #   footnote = md("The **largest** by area."),
+  #   locations = cells_body(
+  #     columns = size, rows = max(size)
+  #   )
+  # ) %>%
+  tab_footnote(
+    footnote = "The lowest by population.",
+    locations = cells_body(
+      columns = size, rows = contains("arc")
+    )
+  )
+
+# Show the gt table
+gt_tbl
 ```
 

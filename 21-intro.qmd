@@ -2,6 +2,12 @@
 
 This is a book created from markdown and executable code.
 
+What happens when I "use quotation marks"\ldots{} are they rendered correctly, as typeset quote markers? What about 'single quotes' and `back-ticks`? The latter are rendered as code font due to markdown.
+
+Here *we test italics* and **bold formatting** from markdown notation (in ***bold italics***).
+
+He we test non-breaking~spaces non-breaking~spaces non-breaking~spaces non-breaking~spaces non-breaking~spaces non-breaking~spaces non-breaking~spaces non-breaking~spaces non-breaking~spaces
+
 ```{r}
 1 + 1
 ```
@@ -18,16 +24,18 @@ for i in range(10):
   hello()
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus neque ex, vehicula dictum risus fermentum, feugiat faucibus neque. Etiam purus quam, lacinia vel porta in, malesuada ac nisl.^[This is a footnote. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus neque ex, vehicula dictum risus fermentum, feugiat faucibus neque. Etiam purus quam, lacinia vel porta in, malesuada ac nisl.]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus neque ex, vehicula dictum risus fermentum, feugiat faucibus neque. Etiam purus quam, lacinia vel porta in, malesuada ac nisl.[^21-intro-1]
+
+[^21-intro-1]: This is a footnote. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus neque ex, vehicula dictum risus fermentum, feugiat faucibus neque. Etiam purus quam, lacinia vel porta in, malesuada ac nisl.
 
 Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
 
 $$
 S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
       = \frac{1}{n}\sum_{i}^{n} X_i
-$$ {#eq-clt}
+$$ {#eq-clt1}
 
-denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$. Thus concludes the explanation about @eq-clt.
+denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$. Thus concludes the explanation about @eq-clt1.
 
 > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\
 
