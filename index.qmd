@@ -1,3 +1,6 @@
+<!-- Work-around for hard-coded preface in Quarto -->
+# Delete Me {.unnumbered .unlisted}
+
 <!-- Redefine KOMA Chapter styling in prelim material -->
 \RedeclareSectionCommand[beforeskip=0pt, afterskip=24pt]{chapter}
 \setkomafont{chapter}{\large\sffamily}

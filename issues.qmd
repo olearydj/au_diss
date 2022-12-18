@@ -1,7 +1,6 @@
 # Issues List
 
 ## Template Issues
-- Eliminate initial Preface page - Introduction should be chapter 1
 - tocdepth
 - Fix table of contents
   - Entries are generally double-spaced
@@ -16,7 +15,7 @@
 ## Quarto / RStudio Issues and Requests
 
 -   Q: Why is index.qmd required for book?
--   Q: How do I turn off ligatures?
+-   Q: How do I turn off ligatures in R Studio?
 -   FR: allow project `execute-dir` option to specify a path like `output-dir`
     -   When using the PDF option `pdf-engine-opt: -output-directory=work` for the `xelatex` renderer, the build fails during "updating existing packages" with the error `compilation failed- missing packages (automatic installation failed)`. The files appear to be correctly written to my work directory, but it doesn't know to find them there.
 -   When editing a list in a markdown file (either `.md` or `.qmd`), if I switch from source to visual mode and back, all indents become 4 spaces and all text is separated from the hyphens by 3 spaces.

@@ -1,4 +1,5 @@
 \begin{titlepage}
+\setcounter{page}{1}
 \center
 \vspace*{48pt}
 
