@@ -1,0 +1,60 @@
+# Line Spacing Tests
+
+Using 12pt Georgia as the main font, with doc class `scrbook`, a value of `1.35` for `baselinestretch` in the `setspace` package approximately matches Word's 1.5 line spacing with the same font. In Word, a font size of 11.5pt was used to better match the text size with $\LaTeX$ output.
+
+$\LaTex$ output will vary based on font family and size, at least.
+
+Note: these snippets need to be rendered as part of the main project to get the correct results.
+
+## Using `spacing` to Fine Tune
+
+```{=tex}
+\newpage
+\begin{spacing}{1.325}
+\textbf{1.325 Space}, \verb|\baselinestretch = | \texttt{\baselinestretch}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu tempor velit. Fusce accumsan ultrices fringilla. Praesent sed odio mi. Mauris non ligula turpis. Duis posuere lacus nec diam interdum dictum suscipit magna molestie. Vestibulum nibh dolor, interdum eget rhoncus ut, sodales eget justo. Morbi blandit lorem sit amet nulla egestas aliquam. Nunc pharetra est at nibh ullamcorper in commodo erat dignissim. Cras et suscipit enim.
+\end{spacing}
+```
+```{=tex}
+\begin{spacing}{1.35}
+\textbf{1.35 Space}, \verb|\baselinestretch = | \texttt{\baselinestretch}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu tempor velit. Fusce accumsan ultrices fringilla. Praesent sed odio mi. Mauris non ligula turpis. Duis posuere lacus nec diam interdum dictum suscipit magna molestie. Vestibulum nibh dolor, interdum eget rhoncus ut, sodales eget justo. Morbi blandit lorem sit amet nulla egestas aliquam. Nunc pharetra est at nibh ullamcorper in commodo erat dignissim. Cras et suscipit enim.
+\end{spacing}
+```
+```{=tex}
+\begin{spacing}{1.375}
+\textbf{1.375 Space}, \verb|\baselinestretch = | \texttt{\baselinestretch}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu tempor velit. Fusce accumsan ultrices fringilla. Praesent sed odio mi. Mauris non ligula turpis. Duis posuere lacus nec diam interdum dictum suscipit magna molestie. Vestibulum nibh dolor, interdum eget rhoncus ut, sodales eget justo. Morbi blandit lorem sit amet nulla egestas aliquam. Nunc pharetra est at nibh ullamcorper in commodo erat dignissim. Cras et suscipit enim.
+\end{spacing}
+```
+
+## Using `setspace` Defaults
+
+```{=tex}
+\newpage
+\begin{singlespace}
+\textbf{Single Space}, \verb|\baselinestretch = | \texttt{\baselinestretch}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu tempor velit. Fusce accumsan ultrices fringilla. Praesent sed odio mi. Mauris non ligula turpis. Duis posuere lacus nec diam interdum dictum suscipit magna molestie. Vestibulum nibh dolor, interdum eget rhoncus ut, sodales eget justo. Morbi blandit lorem sit amet nulla egestas aliquam. Nunc pharetra est at nibh ullamcorper in commodo erat dignissim. Cras et suscipit enim.
+\end{singlespace}
+```
+
+```{=tex}
+\begin{onehalfspace}
+\textbf{OneHalfSpace}, \verb|\baselinestretch = | \texttt{\baselinestretch}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu tempor velit. Fusce accumsan ultrices fringilla. Praesent sed odio mi. Mauris non ligula turpis. Duis posuere lacus nec diam interdum dictum suscipit magna molestie. Vestibulum nibh dolor, interdum eget rhoncus ut, sodales eget justo. Morbi blandit lorem sit amet nulla egestas aliquam. Nunc pharetra est at nibh ullamcorper in commodo erat dignissim. Cras et suscipit enim.
+\end{onehalfspace}
+```
+
+```{=tex}
+\begin{doublespace}
+\textbf{Double Space}, \verb|\baselinestretch = | \texttt{\baselinestretch}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu tempor velit. Fusce accumsan ultrices fringilla. Praesent sed odio mi. Mauris non ligula turpis. Duis posuere lacus nec diam interdum dictum suscipit magna molestie. Vestibulum nibh dolor, interdum eget rhoncus ut, sodales eget justo. Morbi blandit lorem sit amet nulla egestas aliquam. Nunc pharetra est at nibh ullamcorper in commodo erat dignissim. Cras et suscipit enim.
+\end{doublespace}
+\newpage
+```

@@ -8,7 +8,7 @@
 - List of Abbreviations / Symbols (aka "Nomenclature")
 - Font options
 - Make title page dynamic (variables)
-- Convert vspace amounts to use line heights?
+- Convert vspace amounts to use line heights? use `ex` or other proportional unit
 - Change heading style for main chapters
 - Indent first line of Abstract and Acknowledgements?
 

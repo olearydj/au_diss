@@ -1,5 +1,6 @@
 <!-- Work-around for hard-coded preface in Quarto -->
 # Delete Me {.unnumbered .unlisted}
+This could be used for a cover page.
 
 <!-- Redefine KOMA Chapter styling in prelim material -->
 \RedeclareSectionCommand[beforeskip=0pt, afterskip=24pt]{chapter}

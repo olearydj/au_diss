@@ -5,6 +5,10 @@
 .Ruserdata
 /.quarto/
 
+# Other document types
+*.doc
+*.docx
+
 # Temp files (includes ALL markdown by default)
 # replace with work folder when configured to use
 *.md
