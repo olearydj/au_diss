@@ -1,5 +1,6 @@
 \begin{titlepage}
 \setcounter{page}{1}
+\begin{singlespace}
 \center
 \vspace*{48pt}
 
@@ -38,4 +39,5 @@ Dr. John Evans, Co-chair, Professor, Industrial \& Systems Engineering \\
 Dr. Richard Sesek, Assoc. Professor, Industrial \& Systems Engineering \\
 Dr. Konstantinos Mykoniatis, Assistant Professor, Industrial \& Systems Engineering
 
+\end{singlespace}
 \end{titlepage}
