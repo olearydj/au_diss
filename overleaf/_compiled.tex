@@ -1,0 +1,162 @@
+%%% --- KOMA-Script report style
+\documentclass[
+    fontsize=11,
+    paper=letter,
+    twoside=true,  % auto flushbottom, semi? TODO
+    open=right,
+    chapterprefix=true,  % default false, single line
+    appendixprefix=true,  % default false, single line
+    numbers=noendperiod,  % hide trailing period on section nos
+    toc=flat,  % don't indent ToC, left aligned
+    usegeometry=true  % improve compat with geo pkg
+  ]{scrreprt}
+
+%%% --- Other KOMA-Script options
+%% add comma between consecutive footnotes
+\KOMAoptions{footnotes=multiple}
+
+%%% --- geometry package for margins, showframe
+\usepackage[
+    showframe=true,
+    margin=1in,
+    bindingoffset=0.5in,
+    heightrounded=true,
+    footskip=0.475in
+  ]{geometry}
+
+%%% --- one-liner packages
+\usepackage[english]{babel}
+\usepackage{blindtext}
+\usepackage{lipsum}
+\usepackage{setspace}
+% microtext TODO
+% \usepackage{layouts}
+
+%%% --- header and footer configuration
+%% clear header, simple footer with centered page number
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{%
+\fancyhf{}% clear all header and footer fields
+\fancyfoot[C]{\thepage} % except the center
+\renewcommand{\headrulewidth}{0pt}%
+\renewcommand{\footrulewidth}{0pt}}
+
+%% use plain page style (footer only) for interleaf pages
+\KOMAoptions{cleardoublepage=plain}
+% patch \part verso for plain style
+% https://tex.stackexchange.com/a/136111/286622
+\usepackage{etoolbox}
+\patchcmd{\partheademptypage}{empty}{plain}{}{}
+
+%% if some pages have L/R aligned page numbers with fancyhdr, also use this
+% \pagestyle{plain}  % page number in footer only
+
+%%% --- font settings
+\usepackage{fontspec}
+\setmainfont{Georgia}
+\setsansfont{Verdana}
+\setmonofont{Source Code Pro}
+
+%%% --- custom lengths
+\newlength{\blankline}
+\setlength{\blankline}{0.25in}
+
+%%% --- style ToC / LoF / LoT
+\setcounter{tocdepth}{\sectiontocdepth}
+% set double space for ToC entries
+\BeforeTOCHead{%
+  %\KOMAoptions{parskip=false}% no parskip in ToC
+  \RedeclareSectionCommand[afterskip=3\blankline]{chapter}% no skip after ToC title
+}
+
+%%% --- style headings
+%% adjust chapter spacing, font, centering
+\RedeclareSectionCommand[% chapter
+  beforeskip=0pt,
+  innerskip=0pt,
+  afterskip=2\blankline]
+  {chapter}
+\setkomafont{chapter}{\Large\sffamily}
+\renewcommand\raggedchapter{\centering}
+
+%% adjust section spacing, font
+\RedeclareSectionCommand[%
+  beforeskip=\blankline, afterskip=0.5\blankline]{section}
+\setkomafont{section}{\large\sffamily}
+
+%%% --- custom environments
+%% body text environment
+\newenvironment{bodytext}{%
+  \setstretch{1.325}
+  \KOMAoptions{parskip=half+}
+  \hspace{0.25in}  % indent only first paragraph of each section
+}{%
+  \par
+  \singlespacing
+  \KOMAoptions{parskip=false}
+}
+
+%%% --- Start Document --------------------------------------------
+%% simple document structure for testing
+%% "real" content, including all prelim pages, found in diss.tex
+\begin{document}
+
+\title{The Title}
+\maketitle
+\tableofcontents
+
+\chapter{First Chapter}
+\begin{bodytext}
+{\centering
+first line \\
+second line \\
+third line \\
+\par}
+
+\Blindtext[2]
+\end{bodytext}
+
+\section{Short Section Title}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+\subsection{This is a Subsection}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+\section{This is a really long section title to test line spacing inside wrapped section names in the Table of Contents}
+
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+\chapter{Second Chapter}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+\section{Mousetrap}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+%\begin{bodytext}
+%\blinddocument
+%\end{bodytext}
+
+\addcontentsline{toc}{part}{Appendices}
+\appendix
+\chapter[Short Name]{Really long name for the first appendix that really must be shortened for the table of contents}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+%\backmatter
+\chapter{Epilogue}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+\end{document}
