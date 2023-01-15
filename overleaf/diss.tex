@@ -1,0 +1,307 @@
+\documentclass[
+    fontsize=11,
+    paper=letter,
+    twoside=true,  % auto flushbottom, semi? TODO
+    open=right,
+    chapterprefix=true,  % default false, single line
+    appendixprefix=true,  % default false, single line
+    numbers=noendperiod,  % hide trailing period on section nos
+    toc=flat,  % don't indent ToC, left aligned
+    usegeometry=true  % improve compat with geo pkg
+  ]{scrreprt}
+
+% instead of using the fancyhdr package,
+% use scrlayer-scrpage to style header / footer
+% empty header, footer only with centered page number
+% https://tex.stackexchange.com/a/263168/286622
+% adding this creates inconsistent vert placement of footer
+% and results in a warning from the package re: insufficient
+% footheight at first Part TODO... use fancyhdr instead?
+% \usepackage{scrlayer-scrpage}
+% \clearpairofpagestyles
+% \cfoot*{\pagemark}
+
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{%
+\fancyhf{}% clear all header and footer fields
+\fancyfoot[C]{\thepage} % except the center
+\renewcommand{\headrulewidth}{0pt}%
+\renewcommand{\footrulewidth}{0pt}%
+}
+
+% use plain page style (footer only) for interleaf pages
+% doesn't affect versos, e.g back of parts unnumbered TODO
+\KOMAoptions{cleardoublepage=plain}
+
+\usepackage[
+    showframe=true,
+    margin=1in,
+    bindingoffset=0.5in,
+    heightrounded=true,
+    footskip=0.475in
+  ]{geometry}
+
+%%% --- misc other KOMAoptions
+% \KOMAoption{listof}{chapterentry, leveldown}
+
+% add comma between consecutive footnotes
+\KOMAoptions{footnotes=multiple}
+
+%%% --- font settings
+\usepackage{fontspec}
+\setmainfont{Georgia}
+\setsansfont{Verdana}
+\setmonofont{Source Code Pro}
+
+%%% --- main packages
+\usepackage[english]{babel}
+% microtext TODO
+
+%%% --- misc other packages
+\usepackage{blindtext}
+%\usepackage{indentfirst}
+%\setlength{\parindent}{2in}
+
+%%% --- text styling
+% per KS rec, using setspace to manage linespacing
+% rather than modifying baselinestretch directly
+% value of 1.325 arrived at via experimentation
+% to best match Word's 1.5x line spacing for
+% similar font family and size (Georgia, 12pt)
+\usepackage{setspace}
+% \setstretch{1.325} moved to start of mainmatter
+
+% set headers and footers to single spacing
+% recommended on p39, but isn't recognized TODO?
+% \KOMAoptions{singlespacing=true}
+
+% update typearea for font, line space changes
+% \recalctypearea  % breaks page formatting!! TODO?
+
+% style KOMA elements
+
+% capture measurement to use as blank line
+% for the given paragraph spacing
+\KOMAoptions{parskip=half+}  % no indent, half-line between paras
+\setstretch{1.325}  % roughly equivalent to Word's 1.5x spacing for 12pt font 
+\newlength{\blankline}
+\setlength{\blankline}{\the\baselineskip}  % set \blankline equal to resulting baselineskip
+\singlespacing  % reset paragraph formatting
+\KOMAoptions{parskip=false}
+
+% change this to a length TODO
+\renewcommand{\indent}{\hspace{0.5in}}
+
+% patch part verso for plain style
+% https://tex.stackexchange.com/a/136111/286622
+\usepackage{etoolbox}
+\patchcmd{\partheademptypage}{empty}{plain}{}{}
+
+% single space all section titles
+\addtokomafont{disposition}{\setstretch{1}}
+
+% adjust chapter spacing, font, centering
+\RedeclareSectionCommand[beforeskip=0pt, innerskip=0pt, afterskip=2\blankline]{chapter}
+\setkomafont{chapter}{\Large\sffamily}
+\renewcommand\raggedchapter{\centering}
+
+% adjust section spacing, font
+\RedeclareSectionCommand[%
+  beforeskip=\blankline, afterskip=0.5\blankline]{section}
+\setkomafont{section}{\large\sffamily}
+
+% eliminate autodot from chapter prefix format
+%\renewcommand*{\chapterformat}{%
+%  \mbox{\chapappifchapterprefix{\nobreakspace}\thechapter
+%    \IfUsePrefixLine{}{\enskip}}}
+
+%%% --- Start Document --------------------------------------------
+\begin{document}
+The value of \verb|\blankline| is \texttt{\the\blankline}.
+
+% not necessary for arabic page count starting with title
+%\frontmatter 
+%\pagenumbering{arabic}
+
+%\singlespacing  % single spacing in preamble
+\pagestyle{plain}  % page number in footer only
+
+%%% title page
+% can't use \maketitle because of required spacing
+% so all frontmatter must be custom, including extra title and verso,
+% title verso, and dedication TODO
+\begin{titlepage}
+\begin{singlespace}
+\centering
+% \vspace*{1in} affected by topskip and baselineskip
+\rule{0pt}{1in} % see usingruleforvspace.tex
+
+\textbf{%
+Innovation in Workforce Development for Manufacturing:\\
+A Framework for Assessing the Benefits of Mixed Reality Methods
+} % title
+\vspace{\baselineskip}
+
+by\\ [\baselineskip]
+Danny J. O'Leary
+\vspace{4\baselineskip}
+
+A dissertation submitted to the Graduate Faculty of\\
+Auburn University\\
+in partial fulfillment of the\\
+requirements for the Degree of\\
+Doctor of Philosophy\\ [\baselineskip]
+Auburn, Alabama\\
+\today % TODO
+
+\vspace{4\baselineskip}
+Keywords: [insert up to six key words or phrases\\
+on no more than two lines]\\ [2\baselineskip]
+Copyright 2022 by Danny J. O'Leary\\ [2\baselineskip]
+Approved by\\ [\baselineskip]
+Dr. Gregory Harris, Co-Chair, Assoc. Professor \& Chair, Industrial \& Systems Engineering\\
+Dr. John Evans, Co-Chair, Professor, Industrial \& Systems Engineering\\
+Dr. Richard Sesek, Assoc. Professor, Industrial \& Systems Engineering\\
+Dr. Konstantinos Mykoniatis, Assist. Professor, Industrial \& Systems Engineering
+\end{singlespace}
+\end{titlepage}
+
+%%% title back
+\thispagestyle{plain}
+\rule{0pt}{7in}
+\begin{center}
+    \textit{This document was built with the Quarto Dissertation Template}\\
+    \texttt{https://www.some.web/address}
+\end{center}  % TODO finalize and cite (template, Quarto)
+\cleardoublepage
+
+%%% abstract
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\begin{spacing}{1.325} % TODO check this for 11pt?
+\KOMAoptions{parskip=half+}
+\indent
+This is my abstract. It is supposed to be about 350 words. I will write it after everything else is mostly done.\footnote{first footnote}\footnote{second footnote}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus neque ex, vehicula dictum risus fermentum, feugiat faucibus neque. Etiam purus quam, lacinia vel porta in, malesuada ac nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed bibendum placerat tellus, ac finibus lectus euismod eget. Nulla mattis diam vitae bibendum consequat. Etiam vitae eros tristique, porta sapien a, aliquet mauris. Praesent ultricies mi nulla, et dignissim nulla mattis at. Fusce rhoncus leo quis odio euismod, hendrerit facilisis risus tincidunt. Aenean at lectus justo. Cras fringilla lacus nisl, ac convallis odio tincidunt vel. Integer vel egestas nisi. Curabitur vitae imperdiet justo.
+\end{spacing}  % TODO replace with macro, confirm amount
+\cleardoublepage
+
+%%% acknowledgements
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+\begin{spacing}{1.325}
+\KOMAoptions{parskip=half+}
+\indent
+I would like to thank\ldots
+
+\ldots{}and my mom.
+\end{spacing}
+\cleardoublepage
+
+\setcounter{tocdepth}{\sectiontocdepth}
+% set double space for ToC entries
+\BeforeTOCHead{%
+  %\KOMAoptions{parskip=false}% no parskip in ToC
+  \RedeclareSectionCommand[afterskip=3\blankline]{chapter}% no skip after ToC title
+}
+\AfterTOCHead{\singlespacing\KOMAoptions{parskip=half}}
+\tableofcontents
+
+%\addchap{Figures and Tables}
+\listoffigures
+\listoftables
+
+%\mainmatter
+%\setstretch{1.325}
+%\part{In the Beginning}
+
+\setchapterpreamble[uc][.75\textwidth]{%
+\begin{center}\scshape
+This is the preamble\ldots \\
+There comes a time when one must take a position that is neither safe, nor politic, nor popular, but he must take it because conscience tells him it is right.
+\end{center}
+} % end preamble
+
+
+\chapter{Introduction}
+
+This is the beginning of the document. Let's start with a table.
+\addtokomafont{caption}{\itshape}
+\addtokomafont{captionlabel}{\sffamily\bfseries}
+\setcapwidth{0.9\linewidth}
+\setcaptionalignment{l}
+\begin{table}
+    \centering
+    \captionabove{This is just an example table with a really long caption that will wrap lines, assuming I actually make it long enough}
+    \begin{tabular}{llll}
+        This & is & an & example.\\ \hline
+        This & is & an & example.\\
+        This & is & an & example.
+    \end{tabular}
+\end{table}
+
+\section{Mousetrap}
+The first project is suitable for beginners and only requires a few components that should be found in every household.
+
+\dictum[Unknown]{Everyone needs a better mousetrap.}
+
+\minisec{Material Required}
+\begin{flushleft}
+1 board ($100\times 50 \times 12$)\\
+1 swing-top cap of a beer-bottle\\
+1 ballpoint pen\\
+1 push pin\\
+2 screws\\
+1 hammer\\
+1 knife
+\end{flushleft}
+
+%\renewcommand{\theenumi}{\roman{enumi}}
+%\renewcommand{\labelenumi}{(\theenumi)}
+\begin{enumerate}
+    \item First level
+    \item Another item
+    \begin{enumerate}
+        \item Second level
+        \item Another item
+    \end{enumerate}
+\end{enumerate}
+
+\section{This is a really long section title to test line spacing inside wrapped section names in the Table of Contents}
+
+\blinddocument
+%\part{Later On\ldots}
+
+\chapter{For Second Table}
+\begin{spacing}{1.325} % TODO check this for 11pt?
+\KOMAoptions{parskip=half+}
+This is the second table, so I can see how LoT spacing works.
+\end{spacing}
+
+\begin{table}
+    \centering
+    \captionabove{Shorter Caption this Time}
+    \begin{tabular}{llll}
+        This & is & an & example.\\ \hline
+        This & is & an & example.\\
+        This & is & an & example.
+    \end{tabular}
+\end{table}
+
+\section{Mousetrap}
+The first project is suitable for beginners and only requires a few components that should be found in every household.
+
+\blinddocument
+
+\part*{Appendices}
+\addcontentsline{toc}{part}{Appendices}
+\appendix
+\chapter[Short Name]{Really long name for the first appendix that really must be shortened for the table of contents}
+\blindtext[1]
+
+%\backmatter
+\chapter{Epilogue}
+\blindtext[1]
+
+\end{document}

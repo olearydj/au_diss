@@ -1,0 +1,45 @@
+\documentclass{report}
+
+\usepackage{lipsum}
+\usepackage{layouts}
+\printinunitsof{pt}
+
+\usepackage{setspace}
+%\onehalfspacing
+
+%\setlength{\parskip}{10pt}
+
+% ----------------------------------------
+\begin{document}
+
+\lipsum[1-2]
+
+\begin{center}
+\paragraphvalues
+\end{center}
+
+\begin{figure}
+\currentparagraph
+\paragraphdiagram
+\caption{Paragraph Design}
+\end{figure}
+
+\currentheading
+\setlayoutscale{1}
+
+\begin{figure}
+\headingdesign{\large\itshape}
+\caption{Heading Design}
+\end{figure}
+
+\begin{figure}
+\headingdiagram
+\caption{Heading Diagram}
+\end{figure}
+
+
+\end{document}
+
+\trybeforeskip{48pt}
+\tryafterskip{0pt}
+\tryindent{6pt}

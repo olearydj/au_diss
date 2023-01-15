@@ -1,0 +1,136 @@
+\documentclass[
+    fontsize=11,
+    paper=letter,
+%    twoside=true,  % auto flushbottom, semi? TODO
+%    open=right,
+    chapterprefix=true,  % default false, single line
+    appendixprefix=true,  % default false, single line
+    numbers=noendperiod,  % hide trailing period on section nos
+    toc=flat,  % don't indent ToC, left aligned
+    usegeometry=true  % improve compat with geo pkg
+  ]{scrreprt}
+
+\usepackage[
+    showframe=true,
+    margin=1in,
+    bindingoffset=0.5in,
+    heightrounded=true,
+    footskip=0.475in
+  ]{geometry}
+
+%%% --- font settings
+\usepackage{fontspec}
+\setmainfont{Georgia}
+\setsansfont{Verdana}
+\setmonofont{Source Code Pro}
+
+%%% --- packages
+\usepackage[english]{babel}
+\usepackage{blindtext}
+\usepackage{setspace}
+
+\newlength{\blankline}
+\setlength{\blankline}{0.25in}
+
+% single space all section titles
+%\addtokomafont{disposition}{\setstretch{1}}
+
+% adjust chapter spacing, font, centering
+\RedeclareSectionCommand[% chapter
+  beforeskip=0pt,
+  innerskip=0pt,
+  afterskip=0pt] % 2\blankline
+  {chapter}
+\setkomafont{chapter}{\Large\sffamily}
+\renewcommand\raggedchapter{\centering}
+
+% adjust section spacing, font
+\RedeclareSectionCommand[%
+  beforeskip=\blankline, afterskip=0.5\blankline]{section}
+\setkomafont{section}{\large\sffamily}
+
+\newenvironment{bodytext}{%
+\setstretch{1.325}
+\KOMAoptions{parskip=half+}
+\hspace{0.25in}  % indent only first paragraph of each section
+}{%
+\par
+\singlespacing
+\KOMAoptions{parskip=false}}
+
+% normal definition of chapter format
+%\renewcommand*{\chapterformat}{%
+%  \mbox{\chapappifchapterprefix{\nobreakspace}\thechapter
+%  \autodot\IfUsePrefixLine{}{\enskip}}}
+
+\pagestyle{plain}  % page number in footer only
+
+\setcounter{tocdepth}{\sectiontocdepth}
+% set double space for ToC entries
+\BeforeTOCHead{%
+  %\KOMAoptions{parskip=false}% no parskip in ToC
+  \RedeclareSectionCommand[afterskip=3\blankline]{chapter}% no skip after ToC title
+}
+
+%%% --- Start Document --------------------------------------------
+\begin{document}
+
+\title{The Title}
+\maketitle
+\tableofcontents
+
+\chapter{First Chapter}
+\begin{bodytext}
+{\centering
+first line \\
+second line \\
+third line \\
+\par}
+
+\Blindtext[2]
+\end{bodytext}
+
+\section{Short Section Title}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+\subsection{This is a Subsection}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+\section{This is a really long section title to test line spacing inside wrapped section names in the Table of Contents}
+
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+\chapter{Second Chapter}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+\section{Mousetrap}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+%\begin{bodytext}
+%\blinddocument
+%\end{bodytext}
+
+\addcontentsline{toc}{part}{Appendices}
+\appendix
+\chapter[Short Name]{Really long name for the first appendix that really must be shortened for the table of contents}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+%\backmatter
+\chapter{Epilogue}
+\begin{bodytext}
+\Blindtext[2]
+\end{bodytext}
+
+\end{document}

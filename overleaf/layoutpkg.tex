@@ -1,0 +1,32 @@
+% https://tex.stackexchange.com/a/50259/286622
+% use the layout package to generate a page layout diagram
+
+\documentclass[
+    fontsize=11,
+    paper=letter,
+    twoside=true,  % auto flushbottom, semi? TODO
+    open=right,
+    usegeometry=true  % improve compat with geo pkg
+  ]{scrbook}
+
+\usepackage[
+    margin=1in,
+    bindingoffset=0.5in,
+    heightrounded=true,
+    footskip=0.475in,
+    showframe=true
+  ]{geometry}
+
+%%% --- font settings
+\usepackage{fontspec}
+\setmainfont{Georgia}
+\setsansfont{Verdana}
+\setmonofont{Source Code Pro}
+
+\usepackage{blindtext}
+\usepackage{setspace}
+\usepackage{layout}
+
+\begin{document}
+\layout
+\end{document}

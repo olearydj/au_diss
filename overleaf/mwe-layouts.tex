@@ -1,0 +1,71 @@
+\documentclass[
+    fontsize=11,
+    paper=letter,
+%    twoside=true,  % auto flushbottom, semi? TODO
+%    open=right,
+    chapterprefix=true,  % default false, single line
+    appendixprefix=true,  % default false, single line
+    numbers=noendperiod,  % hide trailing period on section nos
+    toc=flat,  % don't indent ToC, left aligned
+    usegeometry=true  % improve compat with geo pkg
+  ]{scrreprt}
+
+\usepackage[
+%    showframe=true,
+    margin=1in,
+    bindingoffset=0.5in,
+    heightrounded=true,
+    footskip=0.475in
+  ]{geometry}
+  
+\usepackage{layouts}
+\usepackage{setspace}
+
+%\setstretch{1.325}
+%\KOMAoptions{parskip=half+}
+\begin{document}
+
+\begin{center}
+\pagevalues
+\end{center}
+
+\setlayoutscale{0.4}
+
+\begin{figure}
+\currentpage
+\pagediagram
+\caption{Page Diagram}
+\end{figure}
+
+\newpage
+\begin{center}
+\paragraphvalues
+\end{center}
+
+\currentparagraph
+\begin{figure}
+\paragraphdiagram
+\caption{Paragraphs in this document}
+\end{figure}
+
+\newpage
+\currentheading
+\trybeforeskip{-\baselineskip}
+\tryafterskip{0.5\baselineskip}
+\tryindent{0mm}
+\begin{figure}
+\setlayoutscale{1}
+\headingdesign{\large\itshape}
+\caption{Subsubsection layout parameters for this document}
+\label{fig:hdudf}
+\end{figure}
+
+\end{document}
+
+\begin{figure}
+\setlayoutscale{1}
+\currentheading
+\printparameterstrue
+\headingdiagram{}
+\caption{Display heading parameters}\label{fig:hdp}
+\end{figure}

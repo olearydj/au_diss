@@ -1,0 +1,82 @@
+\documentclass[
+    fontsize=11,
+    paper=letter,
+    twoside=true,  % auto flushbottom, semi? TODO
+    open=right,
+    usegeometry=true  % improve compat with geo pkg
+  ]{scrbook}
+
+\usepackage[
+    margin=1in,
+    bindingoffset=0.5in,
+    heightrounded=true,
+    footskip=0.475in,
+    showframe=true
+  ]{geometry}
+
+%%% --- misc other KOMAoptions
+% \KOMAoption{listof}{chapterentry, leveldown}
+
+%%% --- font settings
+\usepackage{fontspec}
+\setmainfont{Georgia}
+\setsansfont{Verdana}
+\setmonofont{Source Code Pro}
+
+%%% --- main packages
+% babel? TODO
+% microtext TODO
+
+%%% --- misc other packages
+\usepackage{blindtext}
+
+%%% --- text styling
+% per KS rec, using setspace to manage linespacing
+% rather than modifying baselinestretch directly
+% value of 1.325 arrived at via experimentation
+% to best match Word's 1.5x line spacing for
+% similar font family and size (Georgia)
+\usepackage{setspace}
+% \setstretch{1.325} moved to start of mainmatter
+
+% set headers and footers to single spacing
+% recommended on p39, but isn't recognized TODO?
+% \KOMAoptions{singlespacing=true}
+
+% update typearea for font, line space changes
+% \recalctypearea  % breaks page formatting!! TODO?
+
+% style KOMA elements
+\setkomafont{subject}{\normalfont\normalcolor\bfseries}
+\setkomafont{author}{\normalfont}
+\setkomafont{date}{\normalfont}
+\setkomafont{publishers}{\normalfont}
+
+% set single space after ToC title
+%\AfterTOCHead{\singlespacing}
+
+%%% --- Start Document --------------------------------------------
+\begin{document}
+
+%\frontmatter
+\singlespacing
+%\pagenumbering{arabic}
+% set arabic font TODO
+
+\subject{%
+\rule{0pt}{1in} % see usingruleforvspace.tex
+Innovation in Workforce Development for Manufacturing:\\
+A Framework for Assessing the Benefits of Mixed Reality Methods
+\vspace{\baselineskip}
+}
+
+\author{%
+by \\ [\dimexpr\baselineskip]
+Danny J. O'Leary
+\vspace{4\baselineskip}
+}
+
+
+\maketitle
+
+\end{document}

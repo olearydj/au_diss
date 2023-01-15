@@ -1,0 +1,11 @@
+% from: https://tex.stackexchange.com/questions/670414/vspace1in-geometry-with-1in-margin-2-5-32-margin/670415#670415
+% "It is easier if you use a rule instead of a \vspace as you don't have to calculate how topskip and the baselineskip matters. The tikz picture is only there to show the distances."
+
+\documentclass[fontsize=10,paper=letter,usegeometry=true]{scrbook}
+\usepackage[margin=1in,showframe=true]{geometry}
+\usepackage{tikz}
+\begin{document}
+\rule{0pt}{\dimexpr 1in}\fbox{%
+  \tikz[overlay,remember picture]\draw[red,<->](current page.north)--++(0,-2in)--++(-2cm,0);%
+  \textbf{The top of this box should be at 2" from top of page.}}
+\end{document}

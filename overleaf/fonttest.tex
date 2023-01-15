@@ -1,0 +1,22 @@
+% from https://tex.stackexchange.com/a/272376/286622
+% fontspec plays nice with KS...
+
+\documentclass[a5paper,fontsize=12]{scrreprt}
+\KOMAoptions{twoside=true}
+\usepackage{fontspec}
+\setmainfont{Cormorant Garamond}[
+  Numbers={OldStyle,Proportional}]
+
+\newfontface\chancery{TeX Gyre Chorus}
+\setkomafont{disposition}{\chancery}
+
+%\setkomafont{disposition}{\normalfont}
+% or
+% \addtokomafont{disposition}{\normalfont}
+% or, for bold headings,
+% \addtokomafont{disposition}{\rmfamily}
+
+\begin{document}
+\chapter{Test}
+Here will be your text. 0123456789
+\end{document}

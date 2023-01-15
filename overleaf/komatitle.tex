@@ -1,0 +1,47 @@
+\documentclass[titlepage=firstiscover]{scrbook}
+
+% mark normal size, not superscript
+% mark width (not specified) = indent, no parindent
+\deffootnote{1em}{0em}{\thefootnotemark\ }
+% use sans serif font family
+\setkomafont{footnote}{\sffamily}
+\setkomafont{footnotelabel}{\sffamily}
+\setkomafont{footnotereference}{\sffamily}
+
+%\deffootnote{1.5em}{1em}{%
+%  \makebox[1.5em][l]{\thefootnotemark}}
+
+\renewcommand{\coverpagetopmargin}{2in}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\begin{document}
+\extratitle{\textbf{\Huge Extra Title}}
+\frontispiece{this is the back of the front}
+\titlehead{{\Large Unseen University
+\hfill SS~2002\\}
+Higher Analytical Institute\\
+Mythological Rd\\
+34567 Etherworld}
+\subject{Dissertation}
+\title{Digital space simulation with the DSP\,56004}
+\subtitle{Short but sweet?}
+\author{Fuzzy George}
+\date{30. February 2002}
+\publishers{Adviser Prof. John Eccentric Doe\\
+Chair Gregory Harris, Industrial and Systems Engineering\thanks{Thank you for your support!}}
+\uppertitleback{\centering{Thanks for reading!}}
+\lowertitleback{\centering{This document was created using the Quarto Dissertation Theme\\
+\copyright{2022}, Dan O'Leary.}}
+\dedication{To Cheryl. All my love. Always.}
+\maketitle
+\tableofcontents
+\chapter{First}
+
+The value of \verb|\coverpagetopmargin| is \texttt{\coverpagetopmargin}\footnote{This is a test for footnote formatting.\par Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna.}
+
+\lipsum[2]
+
+\lipsum[3]
+
+\lipsum[1]
+\end{document}

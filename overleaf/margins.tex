@@ -1,0 +1,35 @@
+\documentclass[
+%    11pt,
+%    twoside,  % auto flushbottom, semi? TODO
+%    openright,
+%    letterpaper
+    fontsize=12,
+    paper=letter,
+    twoside=true,  % auto flushbottom, semi? TODO
+    open=right,
+    usegeometry=true  % margins wrong TODO
+  ]{scrbook}
+
+\usepackage[
+    margin=1in,
+    bindingoffset=0.5in,
+    heightrounded=true,
+    footskip=0.475in,
+    showframe=true
+%    pass
+  ]{geometry}
+
+\usepackage{blindtext}
+\usepackage{bookman}
+
+\usepackage{setspace}
+\setstretch{1.325}
+
+\begin{document}
+\chapter{First Chapter}
+Let's try a footnote.\footnote{This is a footnote.}
+
+\blindtext
+
+\blinddocument
+\end{document}

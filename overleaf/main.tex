@@ -1,0 +1,24 @@
+\documentclass[10pt,twoside,BCOR=12mm,DIV=-calc]{scrreprt}
+\usepackage{setspace}
+\onehalfspacing
+\AfterTOCHead{\singlespacing}
+\KOMAoptions{DIV=last}
+\usepackage{lipsum}
+\begin{document}
+\title{Title}
+\author{Author}
+\begin{spacing}{1}
+  \maketitle
+\end{spacing}
+\tableofcontents
+\chapter{First}
+\lipsum{1}
+\chapter{Second}
+\lipsum[1]
+\chapter{Third}
+\lipsum[1]
+\chapter{Fourth}
+\lipsum[1]
+
+
+\end{document}

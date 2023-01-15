@@ -1,0 +1,35 @@
+% https://tex.stackexchange.com/a/50259/286622
+% "Using the \pagevalues command [of the layoutS package] you will obtain a table of the values of the current document’s page layout parameters; this, together with the showframe option for the geometry package, can be useful when designing a new page layout" in the specified units.
+
+% layouts has many other capabilites - see documentation
+
+\documentclass[
+    fontsize=11,
+    paper=letter,
+    twoside=true,  % auto flushbottom, semi? TODO
+    open=right,
+    usegeometry=true  % improve compat with geo pkg
+  ]{scrbook}
+
+\usepackage[
+    margin=1in,
+    bindingoffset=0.5in,
+    heightrounded=true,
+    footskip=0.475in,
+    showframe=true
+  ]{geometry}
+
+%%% --- font settings
+\usepackage{fontspec}
+\setmainfont{Georgia}
+\setsansfont{Verdana}
+\setmonofont{Source Code Pro}
+
+\usepackage{blindtext}
+\usepackage{setspace}
+\usepackage{layouts}
+\printinunitsof{in}
+
+\begin{document}
+\pagevalues
+\end{document}

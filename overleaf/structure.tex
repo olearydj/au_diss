@@ -1,0 +1,109 @@
+%headings=twolinechapter,
+%headings=onelineappendix,
+
+\documentclass[
+    chapterprefix=false,
+    appendixprefix=true,
+    headings=big,
+    headings=optiontotoc,
+%    numbers=noendperiod,
+    listof=chaptergapnone,
+    open=right
+  ]{scrbook}
+\usepackage{blindtext}
+%\renewcommand*{\captionformat}{~--~}
+\KOMAoption{listof}{chapterentry, leveldown}
+
+\begin{document}
+\frontmatter
+\setcounter{tocdepth}{\sectiontocdepth}
+\tableofcontents
+\addchap{Figures and Tables}
+\listoffigures
+\listoftables
+
+\mainmatter
+\part{In the Beginning}
+
+\setchapterpreamble[uc][.75\textwidth]{%
+\begin{center}\scshape
+This is the preamble\ldots \\
+There comes a time when one must take a position that is neither safe, nor politic, nor popular, but he must take it because conscience tells him it is right.
+\end{center}
+} % end preamble
+
+\chapter{Introduction}
+
+This is the beginning of the document. Let's start with a table.
+\addtokomafont{caption}{\itshape}
+\addtokomafont{captionlabel}{\sffamily\bfseries}
+\setcapwidth{0.9\linewidth}
+\setcaptionalignment{l}
+\begin{table}
+    \centering
+    \captionabove{This is just an example table with a really long caption that will wrap lines, assuming I actually make it long enough}
+    \begin{tabular}{llll}
+        This & is & an & example.\\ \hline
+        This & is & an & example.\\
+        This & is & an & example.
+    \end{tabular}
+\end{table}
+
+\section{Mousetrap}
+The first project is suitable for beginners and only requires a few components that should be found in every household.
+
+\dictum[Unknown]{Everyone needs a better mousetrap.}
+
+\minisec{Material Required}
+\begin{flushleft}
+1 board ($100\times 50 \times 12$)\\
+1 swing-top cap of a beer-bottle\\
+1 ballpoint pen\\
+1 push pin\\
+2 screws\\
+1 hammer\\
+1 knife
+\end{flushleft}
+
+%\renewcommand{\theenumi}{\roman{enumi}}
+%\renewcommand{\labelenumi}{(\theenumi)}
+\begin{enumerate}
+    \item First level
+    \item Another item
+    \begin{enumerate}
+        \item Second level
+        \item Another item
+    \end{enumerate}
+\end{enumerate}
+
+\blinddocument
+\part{Later On\ldots}
+
+\chapter{For Second Table}
+This is the second table, so I can see how LoT spacing works.
+
+\begin{table}
+    \centering
+    \captionabove{Shorter Caption this Time}
+    \begin{tabular}{llll}
+        This & is & an & example.\\ \hline
+        This & is & an & example.\\
+        This & is & an & example.
+    \end{tabular}
+\end{table}
+
+\section{Mousetrap}
+The first project is suitable for beginners and only requires a few components that should be found in every household.
+
+\blinddocument
+
+\part{Appendices}
+\appendix
+\chapter[Short Name]{Really long name for the first appendix that really must be shortened for the table of contents}
+\blindtext[1]
+
+\backmatter
+\chapter{Epilogue}
+\blindtext[1]
+
+\end{document}
