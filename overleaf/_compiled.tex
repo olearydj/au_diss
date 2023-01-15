@@ -48,8 +48,9 @@
 \usepackage{etoolbox}
 \patchcmd{\partheademptypage}{empty}{plain}{}{}
 
-%% if some pages have L/R aligned page numbers with fancyhdr, also use this
-% \pagestyle{plain}  % page number in footer only
+%% for some reason there are still pages with L/R aligned page
+%% numbers in the footer after using fancyhdr, this fixes it TODO
+\pagestyle{plain}  % page number in footer only
 
 %%% --- font settings
 \usepackage{fontspec}
@@ -74,7 +75,7 @@
 \RedeclareSectionCommand[% chapter
   beforeskip=0pt,
   innerskip=0pt,
-  afterskip=2\blankline]
+  afterskip=0pt] % 2\blankline
   {chapter}
 \setkomafont{chapter}{\Large\sffamily}
 \renewcommand\raggedchapter{\centering}
@@ -153,7 +154,6 @@ third line \\
 \Blindtext[2]
 \end{bodytext}
 
-%\backmatter
 \chapter{Epilogue}
 \begin{bodytext}
 \Blindtext[2]
