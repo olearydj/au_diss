@@ -1,0 +1,25 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Load the XLSX file
+
+```{r}
+library(readxl)
+raw_demog_xls <- read_xlsx(
+  "./data/AURecruit.xlsx",
+  na = c("", "N/A"),
+  sheet = "Demog") 
+```
+
+```{r}
+demog_xls <- raw_demog_xls |>
+  janitor::clean_names() |>
+  # move numeric cols to the front
+  select(all_of(c("participant", "age", "height")), everything()) |>
+  # convert most cols to factors
+  mutate(across(-("participant":"height" | "notes"), as_factor)) |>
+  glimpse()
+```
+
