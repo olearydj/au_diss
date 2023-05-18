@@ -2,3 +2,31 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# R project temp files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+/.quarto/
+
+# Other document types
+*.doc
+*.docx
+
+# Temp files (includes ALL markdown by default)
+# replace with work folder when configured to use
+*.md
+*.aux
+*.log
+*.lof
+*.lot
+*.toc
+*.pdf
+Book-Title.tex
+
+# Output directory
+_book/
+
+# Don't ignore these...
+!issues.md
