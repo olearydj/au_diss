@@ -28,15 +28,11 @@ def generate_markdown_report(xml_file_path):
 
     # Extract general metadata
     metadata = {
-        "format_version": root.find("descriptive-metadata").get("format-version"),
-        "version": root.find("descriptive-metadata/version").text,
         "url": root.find("descriptive-metadata/context-info/url").text,
         "size": root.find("descriptive-metadata/context-info/size").text,
         "last_modified": root.find(
             "descriptive-metadata/context-info/last-modified"
         ).text,
-        "title": root.find("descriptive-metadata/title").text,
-        "description": root.find("descriptive-metadata/description").text,
         "in_point": (
             int(root.find("descriptive-metadata/in-point").text),
             root.find("descriptive-metadata/in-point").get("time-base"),
@@ -46,7 +42,12 @@ def generate_markdown_report(xml_file_path):
             root.find("descriptive-metadata/out-point").get("time-base"),
         ),
         "rating": root.find("descriptive-metadata/rating").text,
+        "title": root.find("descriptive-metadata/title").text or "N/A",
     }
+
+    # description element does not exist if not specified
+    note_elem = root.find("descriptive-metadata/description")
+    metadata["note"] = note_elem.text if note_elem is not None else "N/A"
 
     # Extract marker data
     markers = []
@@ -97,7 +98,8 @@ def generate_markdown_report(xml_file_path):
 
 **Open Video**: [{video_file}](file://{box_root + video_path})
 
-**Description**: {metadata['description']}
+**Notes**:
+> {metadata['note']}
 
 ### Subclip Markers
 """
