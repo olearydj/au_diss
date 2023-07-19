@@ -1,23 +1,50 @@
 import os
 import xml.etree.ElementTree as ET
+from parse_xml import generate_markdown_report
 
-# [Include the convert_to_seconds() and generate_markdown_report() functions here]
 
-def traverse_and_generate_reports(root_directory):
+def traverse_and_generate_reports(root_directory, test=False):
+    """
+    Traverse a directory tree and generate markdown reports for each XML file found.
+
+    The function searches for XML files within the specified root directory and its subdirectories.
+    For each XML file found, it generates a markdown report using the `generate_markdown_report` function
+    and writes the report to a file named `report.md` in the same directory as the XML file.
+
+    Parameters:
+    - root_directory (str): The path to the root directory to begin the traversal.
+
+    Returns:
+    None
+
+    Example:
+    >>> traverse_and_generate_reports("/path/to/root/directory")
+    Report generated for /path/to/root/directory/file1.xml at /path/to/root/directory/report.md
+    Report generated for /path/to/root/directory/subdir/file2.xml at /path/to/root/directory/subdir/report.md
+    ... and so on for each XML file found.
+    """
+
     # Walk through each directory
     for dirpath, dirnames, filenames in os.walk(root_directory):
         for filename in filenames:
             # Check if file is an XML
-            if filename.endswith('.xml'):
+            if filename.endswith(".xml"):
                 xml_file_path = os.path.join(dirpath, filename)
-                try:
-                    markdown_report = generate_markdown_report(xml_file_path)
-                    report_file_path = os.path.join(dirpath, 'report.md')
-                    with open(report_file_path, 'w') as report_file:
-                        report_file.write(markdown_report)
-                    print(f"Report generated for {xml_file_path} at {report_file_path}")
-                except Exception as e:
-                    print(f"Error processing {xml_file_path}: {e}")
+                md_filename = filename.split(".")[0] + ".md"
+                if not test:
+                    try:
+                        markdown_report = generate_markdown_report(xml_file_path)
+                        report_file_path = os.path.join(dirpath, md_filename)
+                        with open(report_file_path, "w") as report_file:
+                            report_file.write(markdown_report)
+                        print(f"✅ {filename} → {dirpath}")
+                    except Exception as e:
+                        print(f"Error processing {xml_file_path}: {e}")
+                else:
+                    print(f"🧪 {filename} → {dirpath}")
 
-# Example Usage:
-# traverse_and_generate_reports("/path/to/root/directory")
+
+if __name__ == "__main__":
+    dev_root = "/Users/djo/dev/au/au_diss/parse_xml"
+    prod_root = "/Volumes/ThunderBay mini/Research Master/"
+    traverse_and_generate_reports(prod_root, test=False)

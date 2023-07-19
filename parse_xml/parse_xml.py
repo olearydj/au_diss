@@ -123,6 +123,8 @@ def generate_markdown_report(xml_file_path):
 
 
 if __name__ == "__main__":
+    # testing...
+
     filenames = [
         "1027-Learn.xml",
         "1027-Recall.xml",
