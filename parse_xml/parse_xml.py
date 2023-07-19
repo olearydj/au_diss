@@ -33,14 +33,6 @@ def generate_markdown_report(xml_file_path):
         "last_modified": root.find(
             "descriptive-metadata/context-info/last-modified"
         ).text,
-        "in_point": (
-            int(root.find("descriptive-metadata/in-point").text),
-            root.find("descriptive-metadata/in-point").get("time-base"),
-        ),
-        "out_point": (
-            int(root.find("descriptive-metadata/out-point").text),
-            root.find("descriptive-metadata/out-point").get("time-base"),
-        ),
         "rating": root.find("descriptive-metadata/rating").text,
         "title": root.find("descriptive-metadata/title").text or "N/A",
     }
@@ -92,8 +84,6 @@ def generate_markdown_report(xml_file_path):
 > - **File Size**: {metadata['size']} bytes
 > - **Last Modified**: {metadata['last_modified']}
 > - **Title**: {metadata['title']}
-> - **In-point**: {metadata['in_point'][0]} seconds
-> - **Out-point**: {metadata['out_point'][0]} seconds
 > - **Rating**: {metadata['rating']}
 
 **Open Video**: [{video_file}](file://{box_root + video_path})
