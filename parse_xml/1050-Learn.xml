@@ -1,0 +1,145 @@
+<descriptive-metadata-export>
+  <descriptive-metadata format-version="0.4.0">
+    <version>78</version>
+    <context-info>
+      <url>file:/Volumes/ThunderBay%20mini/Research%20Master/data/1050-HMDAR-2023-04-18-1145/videos/1050-Learn.mp4</url>
+      <size>168437265</size>
+      <last-modified iso="2023-06-24T13:45:39Z">2023-06-24 08:45:39.0</last-modified>
+    </context-info>
+    <title>1050-Learn</title>
+    <description>videos out of sync at start by 10-15 frames</description>
+    <in-point time-base="1/90000">23209175</in-point>
+    <out-point time-base="1/90000">23734175</out-point>
+    <rating>0</rating>
+    <marker>
+      <id>6fd3df09-ae3a-44d0-aee3-091e372496f9</id>
+      <timestamp time-base="1/30">157</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">12477000</duration>
+      <title>Car 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>b57ccff0-8fd3-40c7-ad4b-9af01baaf620</id>
+      <timestamp time-base="1/30">1354</timestamp>
+      <type>default</type>
+      <title>Drop</title>
+      <description />
+    </marker>
+    <marker>
+      <id>616efa0c-580d-4b0c-8091-e0e18d545878</id>
+      <timestamp time-base="1/30">1354</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">1464000</duration>
+      <title>Drop 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>f34065ba-140a-42a0-9728-b5a7fee79b0d</id>
+      <timestamp time-base="1/30">1725</timestamp>
+      <type>default</type>
+      <title>Instruction</title>
+      <description>asks about drop</description>
+    </marker>
+    <marker>
+      <id>6609f9bc-12f2-482f-a248-26cb4161b664</id>
+      <timestamp time-base="1/30">1818</timestamp>
+      <type>default</type>
+      <title>Intervention</title>
+      <description>observer guides participant through re-acquisition of area tracking</description>
+    </marker>
+    <marker>
+      <id>8fdbe64c-799d-4a23-9890-5476ff077ca7</id>
+      <timestamp time-base="1/30">4556</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">9207000</duration>
+      <title>Car 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>0230f601-acdd-4b5a-a205-5d062165f7e8</id>
+      <timestamp time-base="1/30">7736</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">528000</duration>
+      <title>Drop 1.5</title>
+      <description />
+    </marker>
+    <marker>
+      <id>facfbf69-e20f-4f0c-9519-b6ef96ef2b78</id>
+      <timestamp time-base="1/30">7801</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">8325000</duration>
+      <title>Car 3</title>
+      <description />
+    </marker>
+    <marker>
+      <id>ae317019-7d04-4111-b9c3-2b2f5f8f68e2</id>
+      <timestamp time-base="1/30">10751</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">8391000</duration>
+      <title>Car 4</title>
+      <description />
+    </marker>
+    <marker>
+      <id>1cd07f19-4b89-4674-9e62-009e244f552c</id>
+      <timestamp time-base="1/30">13163</timestamp>
+      <type>default</type>
+      <title>Drop</title>
+      <description />
+    </marker>
+    <marker>
+      <id>7e1aa3c5-090d-47ea-9d4a-d5a8175327d2</id>
+      <timestamp time-base="1/30">13163</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">927000</duration>
+      <title>Drop 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>d69aab1f-a0f5-463c-8ba6-ea3cb47497df</id>
+      <timestamp time-base="1/30">13752</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">8178000</duration>
+      <title>Car 5</title>
+      <description />
+    </marker>
+    <marker>
+      <id>30857ef0-624b-4376-bb1d-8fd91bbdc38d</id>
+      <timestamp time-base="1/30">15025</timestamp>
+      <type>default</type>
+      <title>Drop</title>
+      <description />
+    </marker>
+    <marker>
+      <id>8d80b6a6-13f8-4689-a485-8c7c50072bc3</id>
+      <timestamp time-base="1/30">15025</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">426000</duration>
+      <title>Drop 3</title>
+      <description />
+    </marker>
+    <marker>
+      <id>498b1e9a-9af4-47a0-8595-48bd80ffa45e</id>
+      <timestamp time-base="1/30">16706</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">3939000</duration>
+      <title>Incomplete 6</title>
+      <description>time expired while attaching 2x2 roof piece</description>
+    </marker>
+    <marker>
+      <id>ed4a2752-b077-463b-b80c-c12ca629a27d</id>
+      <timestamp time-base="1/30">17058</timestamp>
+      <type>default</type>
+      <title>Drop</title>
+      <description />
+    </marker>
+    <marker>
+      <id>57414d53-70e2-4ba1-a81e-4ce5b211d789</id>
+      <timestamp time-base="1/30">17058</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">888000</duration>
+      <title>Drop 4</title>
+      <description />
+    </marker>
+  </descriptive-metadata>
+</descriptive-metadata-export>
