@@ -1,0 +1,113 @@
+<descriptive-metadata-export>
+  <descriptive-metadata format-version="0.4.0">
+    <version>59</version>
+    <context-info>
+      <url>file:/Volumes/ThunderBay%20mini/Research%20Master/data/1041-PAR-2023-04-12-1630/videos/1041-Learn.mp4</url>
+      <size>207719849</size>
+      <last-modified iso="2023-06-22T22:13:31Z">2023-06-22 17:13:31.0</last-modified>
+    </context-info>
+    <title>1041-Learn</title>
+    <in-point time-base="1/90000">27574175</in-point>
+    <out-point time-base="1/90000">27640175</out-point>
+    <rating>0</rating>
+    <marker>
+      <id>e3bb9c01-ddf0-4a8a-83dd-b24c63cc1760</id>
+      <timestamp time-base="1/30">211</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">10023000</duration>
+      <title>Car 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>b8646e14-5ce5-4254-9505-0d5b073efdc6</id>
+      <timestamp time-base="1/30">2606</timestamp>
+      <type>default</type>
+      <title>Correction</title>
+      <description>rotates hinge pieces 180 deg</description>
+    </marker>
+    <marker>
+      <id>8797a84e-ca3b-44e4-973d-d98a19d45705</id>
+      <timestamp time-base="1/30">3801</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">7680000</duration>
+      <title>Car 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>c62f95e9-e00e-468e-907a-d60f6ed9b4ce</id>
+      <timestamp time-base="1/30">6514</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/30">2700</duration>
+      <title>Car 3</title>
+      <description>lost time to breakage, pause and reset; set finsh time of car based on when she removed it from the fixture, plus a bit</description>
+    </marker>
+    <marker>
+      <id>296a0971-9977-4a58-a77d-1f8c7bc034f3</id>
+      <timestamp time-base="1/30">8339</timestamp>
+      <type>default</type>
+      <title>Breakage</title>
+      <description>front cross member popped - quickly put back in place</description>
+    </marker>
+    <marker>
+      <id>d1cc5886-ccd4-43a4-a984-035dcfab9c50</id>
+      <timestamp time-base="1/30">9191</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">2961000</duration>
+      <title>Breakage</title>
+      <description>lost time between cars to fixture / axle issue</description>
+    </marker>
+    <marker>
+      <id>6f4d121f-a56e-4e31-9198-b45974a06823</id>
+      <timestamp time-base="1/30">9246</timestamp>
+      <type>default</type>
+      <title>Breakage</title>
+      <description>front axle stuck in fixture</description>
+    </marker>
+    <marker>
+      <id>b058b48d-fbed-4578-9960-ddd9fb765d94</id>
+      <timestamp time-base="1/30">9536</timestamp>
+      <type>default</type>
+      <title>Stop</title>
+      <description>pause timer to remove part from fixture</description>
+    </marker>
+    <marker>
+      <id>b79ce0a1-3c36-4c86-a932-39ccf7edb7b5</id>
+      <timestamp time-base="1/30">10007</timestamp>
+      <type>default</type>
+      <title>Resume</title>
+      <description>after correcting axle issue</description>
+    </marker>
+    <marker>
+      <id>44e9408e-d639-4e4d-ac85-60cd2b3b209b</id>
+      <timestamp time-base="1/30">10427</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">7473000</duration>
+      <title>Car 4</title>
+      <description />
+    </marker>
+    <marker>
+      <id>cfe4f696-9a38-478d-8494-d3db5a309c3e</id>
+      <timestamp time-base="1/30">13104</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">6168000</duration>
+      <title>Car 5</title>
+      <description />
+    </marker>
+    <marker>
+      <id>2d60f611-5186-46ab-8bc2-8b2497e2258e</id>
+      <timestamp time-base="1/30">15387</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">7074000</duration>
+      <title>Car 6</title>
+      <description />
+    </marker>
+    <marker>
+      <id>075f636e-2163-4525-a1b2-bffbbdb778fb</id>
+      <timestamp time-base="1/30">17934</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">1818000</duration>
+      <title>Incomplete 7</title>
+      <description>time expired</description>
+    </marker>
+  </descriptive-metadata>
+</descriptive-metadata-export>

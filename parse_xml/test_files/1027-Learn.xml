@@ -1,0 +1,61 @@
+<descriptive-metadata-export>
+  <descriptive-metadata format-version="0.4.0">
+    <version>36</version>
+    <context-info>
+      <url>file:/Volumes/ThunderBay%20mini/Research%20Master/data/1027-PWI-2023-03-29-1630/videos/1027-Learn.mp4</url>
+      <size>159148746</size>
+      <last-modified iso="2023-06-19T18:30:38Z">2023-06-19 13:30:38.0</last-modified>
+    </context-info>
+    <title>1027-Learn</title>
+    <description>can't read the PWI</description>
+    <in-point time-base="1/90000">41809175</in-point>
+    <out-point time-base="1/90000">53947175</out-point>
+    <rating>0</rating>
+    <marker>
+      <id>3dd24a5a-7fb4-408c-8777-859710ad469e</id>
+      <timestamp time-base="1/30">123</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">18597000</duration>
+      <title>Car 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>6979ae6b-ef7c-4620-9a5e-e8b51ab7ffe0</id>
+      <timestamp time-base="1/30">525</timestamp>
+      <type>default</type>
+      <title>Lean</title>
+      <description>can't make out PWI</description>
+    </marker>
+    <marker>
+      <id>d28a551d-e6e0-49f0-9c9a-36174c12ddb9</id>
+      <timestamp time-base="1/30">2044</timestamp>
+      <type>default</type>
+      <title>Breakage</title>
+      <description>front cross-member</description>
+    </marker>
+    <marker>
+      <id>72cc4941-0cba-41ea-84b3-e2494e246d40</id>
+      <timestamp time-base="1/30">6482</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">11700000</duration>
+      <title>Car 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>70e962ae-56d8-4ef2-9104-22434e68b4c3</id>
+      <timestamp time-base="1/30">10521</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">9873000</duration>
+      <title>Car 3</title>
+      <description />
+    </marker>
+    <marker>
+      <id>3adc032d-93c2-4bbb-9878-0729caa7c4d1</id>
+      <timestamp time-base="1/30">13936</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">12141000</duration>
+      <title>Incomplete 4</title>
+      <description>time expired</description>
+    </marker>
+  </descriptive-metadata>
+</descriptive-metadata-export>

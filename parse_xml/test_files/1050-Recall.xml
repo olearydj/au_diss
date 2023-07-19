@@ -1,0 +1,151 @@
+<descriptive-metadata-export>
+  <descriptive-metadata format-version="0.4.0">
+    <version>76</version>
+    <context-info>
+      <url>file:/Volumes/ThunderBay%20mini/Research%20Master/data/1050-HMDAR-2023-04-18-1145/videos/1050-Recall.mp4</url>
+      <size>81066768</size>
+      <last-modified iso="2023-06-24T13:55:55Z">2023-06-24 08:55:55.0</last-modified>
+    </context-info>
+    <title>1050-Recall</title>
+    <in-point time-base="1/90000">16060175</in-point>
+    <out-point time-base="1/90000">16135175</out-point>
+    <rating>0</rating>
+    <marker>
+      <id>7b3e5624-fac9-408f-811b-dc6f0e9c5e96</id>
+      <timestamp time-base="1/30">151</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">6279000</duration>
+      <title>Car 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>434ffcc8-e295-44f3-90c6-da7601734038</id>
+      <timestamp time-base="1/30">416</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">48000</duration>
+      <title>PWI 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>fed6a672-32c3-41f3-a432-7f1d1bd50e41</id>
+      <timestamp time-base="1/30">429</timestamp>
+      <type>default</type>
+      <title>PWI</title>
+      <description />
+    </marker>
+    <marker>
+      <id>f456eb11-f0e5-4d10-b3d1-ce4b5251d5fb</id>
+      <timestamp time-base="1/30">835</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">72000</duration>
+      <title>PWI 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>4c470f36-04d1-4786-b4c4-fd6888c45dbe</id>
+      <timestamp time-base="1/30">847</timestamp>
+      <type>default</type>
+      <title>PWI</title>
+      <description />
+    </marker>
+    <marker>
+      <id>6f18416e-2861-4b67-86d9-192557b055f5</id>
+      <timestamp time-base="1/30">1075</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">57000</duration>
+      <title>PWI 3</title>
+      <description />
+    </marker>
+    <marker>
+      <id>04076752-cc24-4b0a-9f7f-eab740a81abc</id>
+      <timestamp time-base="1/30">1087</timestamp>
+      <type>default</type>
+      <title>PWI</title>
+      <description />
+    </marker>
+    <marker>
+      <id>0193a72f-ddfb-4c06-99d6-7bad5a09235d</id>
+      <timestamp time-base="1/30">1440</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">156000</duration>
+      <title>PWI 4</title>
+      <description />
+    </marker>
+    <marker>
+      <id>f618886b-ca77-4e11-ba46-60c9f8b2f8d7</id>
+      <timestamp time-base="1/30">1467</timestamp>
+      <type>default</type>
+      <title>PWI</title>
+      <description />
+    </marker>
+    <marker>
+      <id>595505e9-3357-45f7-9fe3-b92d8dc798f1</id>
+      <timestamp time-base="1/30">1563</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">267000</duration>
+      <title>PWI 5</title>
+      <description />
+    </marker>
+    <marker>
+      <id>8106c891-5484-45df-9bda-64522fdcf478</id>
+      <timestamp time-base="1/30">1595</timestamp>
+      <type>default</type>
+      <title>PWI</title>
+      <description />
+    </marker>
+    <marker>
+      <id>09205226-3ab8-4a67-b63e-9a1075e50b47</id>
+      <timestamp time-base="1/30">2347</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">6237000</duration>
+      <title>Car 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>c975ffb8-632a-4bf1-84d2-e7e353624174</id>
+      <timestamp time-base="1/30">3101</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">63000</duration>
+      <title>PWI 6</title>
+      <description />
+    </marker>
+    <marker>
+      <id>4de484f6-5aec-463e-ab02-ba7601abe207</id>
+      <timestamp time-base="1/30">3113</timestamp>
+      <type>default</type>
+      <title>PWI</title>
+      <description />
+    </marker>
+    <marker>
+      <id>be413963-f255-4f8e-bb6b-a0fe17fd28bb</id>
+      <timestamp time-base="1/30">4543</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">5589000</duration>
+      <title>Car 3</title>
+      <description />
+    </marker>
+    <marker>
+      <id>11011e27-2112-4063-a43f-cb93c4a24565</id>
+      <timestamp time-base="1/30">5353</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">78000</duration>
+      <title>PWI 7</title>
+      <description />
+    </marker>
+    <marker>
+      <id>7a80bde1-51cf-4ce7-b887-a278336b31b6</id>
+      <timestamp time-base="1/30">5363</timestamp>
+      <type>default</type>
+      <title>PWI</title>
+      <description />
+    </marker>
+    <marker>
+      <id>ef7b2afb-8953-4306-83ab-7a163f158333</id>
+      <timestamp time-base="1/30">6519</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">5580000</duration>
+      <title>Car 4</title>
+      <description />
+    </marker>
+  </descriptive-metadata>
+</descriptive-metadata-export>

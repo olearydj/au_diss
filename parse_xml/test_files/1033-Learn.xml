@@ -1,0 +1,144 @@
+<descriptive-metadata-export>
+  <descriptive-metadata format-version="0.4.0">
+    <version>79</version>
+    <context-info>
+      <url>file:/Volumes/ThunderBay%20mini/Research%20Master/data/1033-HMDMR-2023-03-31-1500/videos/1033-Learn.mp4</url>
+      <size>172144596</size>
+      <last-modified iso="2023-06-20T19:36:56Z">2023-06-20 14:36:56.0</last-modified>
+    </context-info>
+    <title>1033-Learn</title>
+    <description>lots of rapid head movement makes HL viewport hard to watch at 2x+ playback speed; video sync slips</description>
+    <in-point time-base="1/90000">49375175</in-point>
+    <out-point time-base="1/90000">49633175</out-point>
+    <rating>0</rating>
+    <marker>
+      <id>97f15091-1b08-400c-a5f1-6402c7f83352</id>
+      <timestamp time-base="1/30">478</timestamp>
+      <type>default</type>
+      <title>Instruction</title>
+      <description>participant asks about proper initial orientation of the car</description>
+    </marker>
+    <marker>
+      <id>a079fed8-b82f-47ac-9720-f37ff8676ec9</id>
+      <timestamp time-base="1/30">522</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">11880000</duration>
+      <title>Car 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>aa553ef9-3c0a-4712-a4a1-eb8296430846</id>
+      <timestamp time-base="1/30">2675</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">111000</duration>
+      <title>Drop</title>
+      <description />
+    </marker>
+    <marker>
+      <id>36af9cab-5503-4fbb-bd90-b2f155cb3d11</id>
+      <timestamp time-base="1/30">2676</timestamp>
+      <type>default</type>
+      <title>Drop</title>
+      <description>very brief</description>
+    </marker>
+    <marker>
+      <id>7f897a9b-5b93-493c-83e7-5fb71d116c30</id>
+      <timestamp time-base="1/30">4721</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">10239000</duration>
+      <title>Car 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>57e1d35b-fd7e-451d-9e56-ed488b0e5c4a</id>
+      <timestamp time-base="1/30">8352</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">9666000</duration>
+      <title>Car 3</title>
+      <description />
+    </marker>
+    <marker>
+      <id>659c787e-d1ab-43c0-a599-2ebc0f07405f</id>
+      <timestamp time-base="1/30">10282</timestamp>
+      <type>default</type>
+      <title>Drop</title>
+      <description />
+    </marker>
+    <marker>
+      <id>1f1df3fb-e12b-45f4-9d2c-651072ffc887</id>
+      <timestamp time-base="1/30">10282</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">327000</duration>
+      <title>Drop</title>
+      <description />
+    </marker>
+    <marker>
+      <id>7dcb9015-8674-477d-b6ad-f08708d64570</id>
+      <timestamp time-base="1/30">11260</timestamp>
+      <type>default</type>
+      <title>Slip</title>
+      <description />
+    </marker>
+    <marker>
+      <id>4f432a8d-f274-49e8-9184-d143cf0b2fdd</id>
+      <timestamp time-base="1/30">11744</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">9324000</duration>
+      <title>Car 4</title>
+      <description />
+    </marker>
+    <marker>
+      <id>5b8e078d-e6f0-4586-81fe-02fb7c30e214</id>
+      <timestamp time-base="1/30">14995</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">9159000</duration>
+      <title>Car 5</title>
+      <description>last piece at the buzzer</description>
+    </marker>
+    <marker>
+      <id>deb83b88-3638-4dfd-9adf-46b1515dc33c</id>
+      <timestamp time-base="1/30">15446</timestamp>
+      <type>default</type>
+      <title>Drop</title>
+      <description />
+    </marker>
+    <marker>
+      <id>bcf04618-234a-42f5-883c-0effdf5cd492</id>
+      <timestamp time-base="1/30">15446</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">249000</duration>
+      <title>Drop</title>
+      <description />
+    </marker>
+    <marker>
+      <id>e29ab602-23b8-4315-a060-f3b306d57acf</id>
+      <timestamp time-base="1/30">16458</timestamp>
+      <type>default</type>
+      <title>Drop</title>
+      <description />
+    </marker>
+    <marker>
+      <id>27d0b6b7-07ea-4802-b710-55c26b7e17c7</id>
+      <timestamp time-base="1/30">16458</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">261000</duration>
+      <title>Drop</title>
+      <description />
+    </marker>
+    <marker>
+      <id>cd8ad3b6-85df-4bc2-b7ee-7934ef956ae4</id>
+      <timestamp time-base="1/30">18040</timestamp>
+      <type>default</type>
+      <title>Drop</title>
+      <description>at the buzzer</description>
+    </marker>
+    <marker>
+      <id>bcf279ac-2cc6-465d-9807-b2bd8e7d9c2f</id>
+      <timestamp time-base="1/30">18040</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">21000</duration>
+      <title>Drop</title>
+      <description />
+    </marker>
+  </descriptive-metadata>
+</descriptive-metadata-export>

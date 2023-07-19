@@ -1,0 +1,47 @@
+<descriptive-metadata-export>
+  <descriptive-metadata format-version="0.4.0">
+    <version>31</version>
+    <context-info>
+      <url>file:/Volumes/ThunderBay%20mini/Research%20Master/data/1027-PWI-2023-03-29-1630/videos/1027-Recall.mp4</url>
+      <size>100588799</size>
+      <last-modified iso="2023-06-19T18:42:10Z">2023-06-19 13:42:10.0</last-modified>
+    </context-info>
+    <title>1027-Recall</title>
+    <description>no PWI refs</description>
+    <in-point time-base="1/90000">26980175</in-point>
+    <out-point time-base="1/90000">34108175</out-point>
+    <rating>0</rating>
+    <marker>
+      <id>01ebe929-f419-4aa9-92c1-f323f152e0f2</id>
+      <timestamp time-base="1/30">154</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">9279000</duration>
+      <title>Car 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>a770929d-216c-491a-a21b-39f1339f44d7</id>
+      <timestamp time-base="1/30">3370</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">8829000</duration>
+      <title>Car 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>0cb3d08d-bcdd-4862-abc3-244eb24875e7</id>
+      <timestamp time-base="1/30">6437</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">7320000</duration>
+      <title>Car 3</title>
+      <description />
+    </marker>
+    <marker>
+      <id>ac63eae4-9281-431b-b9bd-04b7b19f8c90</id>
+      <timestamp time-base="1/30">8993</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">7131000</duration>
+      <title>Car 4</title>
+      <description />
+    </marker>
+  </descriptive-metadata>
+</descriptive-metadata-export>

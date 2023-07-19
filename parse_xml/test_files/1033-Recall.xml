@@ -1,0 +1,55 @@
+<descriptive-metadata-export>
+  <descriptive-metadata format-version="0.4.0">
+    <version>26</version>
+    <context-info>
+      <url>file:/Volumes/ThunderBay%20mini/Research%20Master/data/1033-HMDMR-2023-03-31-1500/videos/1033-Recall.mp4</url>
+      <size>74565507</size>
+      <last-modified iso="2023-06-20T20:18:44Z">2023-06-20 15:18:44.0</last-modified>
+    </context-info>
+    <title>1033-Recall</title>
+    <description>one PWI ref</description>
+    <in-point time-base="1/90000">5515175</in-point>
+    <out-point time-base="1/90000">5554175</out-point>
+    <rating>0</rating>
+    <marker>
+      <id>b2db8b03-b87a-4174-b799-c6e730086063</id>
+      <timestamp time-base="1/30">141</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">5268000</duration>
+      <title>Car 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>92b20234-bc6c-4ca3-ad68-149c5f0d6940</id>
+      <timestamp time-base="1/30">141</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">11526000</duration>
+      <title>Car 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>aab9c1f5-ea4e-40f1-8bb4-01933221ebff</id>
+      <timestamp time-base="1/30">1838</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">42000</duration>
+      <title>PWI 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>66be1899-a3c5-4edf-a601-3d98bc9ec30c</id>
+      <timestamp time-base="1/30">4072</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">5763000</duration>
+      <title>Car 3</title>
+      <description />
+    </marker>
+    <marker>
+      <id>658c8edb-f70a-41de-aa68-7bb14f9a9f9e</id>
+      <timestamp time-base="1/30">6089</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">5361000</duration>
+      <title>Car 4</title>
+      <description />
+    </marker>
+  </descriptive-metadata>
+</descriptive-metadata-export>

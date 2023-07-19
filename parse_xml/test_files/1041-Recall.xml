@@ -1,0 +1,62 @@
+<descriptive-metadata-export>
+  <descriptive-metadata format-version="0.4.0">
+    <version>32</version>
+    <context-info>
+      <url>file:/Volumes/ThunderBay%20mini/Research%20Master/data/1041-PAR-2023-04-12-1630/videos/1041-Recall.mp4</url>
+      <size>84071304</size>
+      <last-modified iso="2023-06-22T22:43:18Z">2023-06-22 17:43:18.0</last-modified>
+    </context-info>
+    <title>1041-Recall</title>
+    <in-point time-base="1/90000">12139175</in-point>
+    <out-point time-base="1/90000">12229175</out-point>
+    <rating>0</rating>
+    <marker>
+      <id>70842b14-4496-44ff-9b4f-146ccba72f9a</id>
+      <timestamp time-base="1/30">300</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">5952000</duration>
+      <title>Car 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>b5f4fe14-9eca-410d-b62c-ff40aedaf099</id>
+      <timestamp time-base="1/30">2215</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">81000</duration>
+      <title>PWI 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>e33e0e32-75bc-4ddd-8137-77a7b2521818</id>
+      <timestamp time-base="1/30">2393</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">4749000</duration>
+      <title>Car 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>74e0e555-c1c4-47b9-a4a1-2fce9c6d77c5</id>
+      <timestamp time-base="1/30">4046</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">93000</duration>
+      <title>PWI 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>9b96417f-6b3e-41a4-8966-bfdc4ea1c5bd</id>
+      <timestamp time-base="1/30">4133</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">4803000</duration>
+      <title>Car 3</title>
+      <description />
+    </marker>
+    <marker>
+      <id>0eee7ca7-053f-42cf-b6fc-84cf9b68e355</id>
+      <timestamp time-base="1/30">5827</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">5535000</duration>
+      <title>Car 4</title>
+      <description />
+    </marker>
+  </descriptive-metadata>
+</descriptive-metadata-export>
