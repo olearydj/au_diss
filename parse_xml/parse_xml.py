@@ -78,21 +78,26 @@ def generate_markdown_report(xml_file_path):
     subclip_markers = [marker for marker in markers if marker["type"] == "subclip"]
     other_markers = [marker for marker in markers if marker["type"] != "subclip"]
 
+    video_file = metadata["url"].split("/")[-1]
+    video_path = "/".join(metadata["url"].split("/")[-3:])
+    box_root = "/Users/djo/Box%20Sync/Tiger%20Motors%20Research%20Team%20Collaboration%20Files/Investigation%201%20Data%20Files/trial-data/"
+
     # Generate markdown report
     report = f"""
-## Descriptive Metadata Report for {metadata['title']}
+# Trial {metadata['title']}
+## Descriptive Metadata Report
 
-**File Information**
-- **Format Version**: {metadata['format_version']}
-- **Version**: {metadata['version']}
-- **File URL**: [{metadata['url']}]({metadata['url']})
-- **File Size**: {metadata['size']} bytes
-- **Last Modified**: {metadata['last_modified']}
-- **Title**: {metadata['title']}
-- **Description**: {metadata['description']}
-- **In-point**: {metadata['in_point'][0]} seconds
-- **Out-point**: {metadata['out_point'][0]} seconds
-- **Rating**: {metadata['rating']}
+> [!example]- **File Metadata**
+> - **File Size**: {metadata['size']} bytes
+> - **Last Modified**: {metadata['last_modified']}
+> - **Title**: {metadata['title']}
+> - **In-point**: {metadata['in_point'][0]} seconds
+> - **Out-point**: {metadata['out_point'][0]} seconds
+> - **Rating**: {metadata['rating']}
+
+**Open Video**: [{video_file}](file://{box_root + video_path})
+
+**Description**: {metadata['description']}
 
 ### Subclip Markers
 """
@@ -104,10 +109,13 @@ def generate_markdown_report(xml_file_path):
     report += """
 ### Other Markers
 """
-    report += "| Name | Type | Event Time (sec) | Description |\n"
-    report += "|---|---|---|---|\n"
-    for marker in other_markers:
-        report += f"| {marker['title']} | {marker['type']} | {marker['timestamp']:.2f} | {marker['description']} |\n"
+    if other_markers:
+        report += "| Name | Type | Event Time (sec) | Description |\n"
+        report += "|---|---|---|---|\n"
+        for marker in other_markers:
+            report += f"| {marker['title']} | {marker['type']} | {marker['timestamp']:.2f} | {marker['description']} |\n"
+    else:
+        report += "No other markers found."
 
     return report
 
@@ -124,9 +132,14 @@ if __name__ == "__main__":
         "1050-Recall.xml",
     ]
 
-    for filename in filenames:
-        rootname = filename.split(".")[0]
+    in_subdir = "test_input/"
+    out_subdir = "test_output/"
 
-        with open(rootname + "-report.md", "w") as md:
-            report = generate_markdown_report(filename)
+    for filename in filenames:
+        print(filename)
+        fileroot = filename.split(".")[0]
+        filepath = in_subdir + filename
+
+        with open(out_subdir + fileroot + "-report.md", "w") as md:
+            report = generate_markdown_report(filepath)
             md.write(report)
