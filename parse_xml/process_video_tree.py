@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from parse_xml import generate_markdown_report
 
 
-def traverse_and_generate_reports(root_directory, test=False):
+def traverse_and_generate_reports(root_directory, test=True):
     """
     Traverse a directory tree and generate markdown reports for each XML file found.
 
@@ -13,6 +13,7 @@ def traverse_and_generate_reports(root_directory, test=False):
 
     Parameters:
     - root_directory (str): The path to the root directory to begin the traversal.
+    - test (bool): run in test mode (default) or not
 
     Returns:
     None
@@ -48,3 +49,4 @@ if __name__ == "__main__":
     dev_root = "/Users/djo/dev/au/au_diss/parse_xml"
     prod_root = "/Volumes/ThunderBay mini/Research Master/"
     traverse_and_generate_reports(prod_root, test=False)
+
