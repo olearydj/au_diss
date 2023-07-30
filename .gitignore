@@ -30,4 +30,5 @@ _book/
 
 # Don't ignore these...
 !issues.md
-!reports/*.md
+!/reports/*.md
+

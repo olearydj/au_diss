@@ -50,4 +50,4 @@ if __name__ == "__main__":
     dev_root = "/Users/djo/dev/au/au_diss/parse_xml"
     prod_root = "/Volumes/ThunderBay mini/Research Master/"
     out_dir = "/Users/djo/dev/au/au_diss/reports/"
-    traverse_and_generate_reports(prod_root, out_dir, test=True)
+    traverse_and_generate_reports(prod_root, out_dir, test=False)
