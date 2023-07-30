@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from parse_xml import generate_markdown_report
 
 
-def traverse_and_generate_reports(root_directory, test=True):
+def traverse_and_generate_reports(root_dir, output_dir, test=True):
     """
     Traverse a directory tree and generate markdown reports for each XML file found.
 
@@ -13,6 +13,7 @@ def traverse_and_generate_reports(root_directory, test=True):
 
     Parameters:
     - root_directory (str): The path to the root directory to begin the traversal.
+    - output_directory (str): subdirectory in root to put output files
     - test (bool): run in test mode (default) or not
 
     Returns:
@@ -26,27 +27,27 @@ def traverse_and_generate_reports(root_directory, test=True):
     """
 
     # Walk through each directory
-    for dirpath, dirnames, filenames in os.walk(root_directory):
+    for dirpath, dirnames, filenames in os.walk(root_dir):
         for filename in filenames:
             # Check if file is an XML
             if filename.endswith(".xml"):
                 xml_file_path = os.path.join(dirpath, filename)
                 md_filename = filename.split(".")[0] + ".md"
+                report_file_path = os.path.join(output_dir, md_filename)
                 if not test:
                     try:
                         markdown_report = generate_markdown_report(xml_file_path)
-                        report_file_path = os.path.join(dirpath, md_filename)
                         with open(report_file_path, "w") as report_file:
                             report_file.write(markdown_report)
-                        print(f"✅ {filename} → {dirpath}")
+                        print(f"✅ {filename} → {report_file_path}")
                     except Exception as e:
-                        print(f"Error processing {xml_file_path}: {e}")
+                        print(f"❌ Error processing {xml_file_path}: {e}")
                 else:
-                    print(f"🧪 {filename} → {dirpath}")
+                    print(f"🧪 {filename} → {report_file_path}")
 
 
 if __name__ == "__main__":
     dev_root = "/Users/djo/dev/au/au_diss/parse_xml"
     prod_root = "/Volumes/ThunderBay mini/Research Master/"
-    traverse_and_generate_reports(prod_root, test=False)
-
+    out_dir = "/Users/djo/dev/au/au_diss/reports/"
+    traverse_and_generate_reports(prod_root, out_dir, test=True)
