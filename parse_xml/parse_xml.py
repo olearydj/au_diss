@@ -77,8 +77,9 @@ def generate_markdown_report(xml_file_path):
 
     # Generate markdown report
     report = f"""
-# Trial {metadata['title']}
-## Descriptive Metadata Report
+## Trial {metadata['title']}
+
+### Descriptive Metadata Report
 
 > [!example]- **File Metadata**
 > - **File Size**: {metadata['size']} bytes
@@ -89,10 +90,16 @@ def generate_markdown_report(xml_file_path):
 **Open Video**: [{video_file}](file://{box_root + video_path})
 
 **Notes**:
-> {metadata['note']}
-
-### Subclip Markers
 """
+
+    for line in metadata["note"].split("\n"):
+        report += f"- {line}\n"
+
+    report += """
+### Subclip Markers
+
+"""
+
     report += "| Name | Start Time (sec) | Duration (sec) | Description |\n"
     report += "|---|---|---|---|\n"
     for marker in subclip_markers:
@@ -100,6 +107,7 @@ def generate_markdown_report(xml_file_path):
 
     report += """
 ### Other Markers
+
 """
     if other_markers:
         report += "| Name | Type | Event Time (sec) | Description |\n"
@@ -116,6 +124,7 @@ if __name__ == "__main__":
     # testing...
 
     filenames = [
+        "1001-Learn.xml",
         "1027-Learn.xml",
         "1027-Recall.xml",
         "1033-Learn.xml",
