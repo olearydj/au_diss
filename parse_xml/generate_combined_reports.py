@@ -10,7 +10,8 @@ def main(root, first, last):
         md_file_path = os.path.join(root, md_file)
         if os.path.isfile(md_file_path):
             print(f'\n*** running: {md_file} in {root.split("/")[-2]}')
-            extract_comments(md_file_path)
+            comments = extract_comments(md_file_path)
+            print(comments)
         else:
             print(f"\n*** {md_file} does not exist")
 
@@ -18,13 +19,14 @@ def main(root, first, last):
 def extract_comments(md_file_path):
     """
     Extracts the h2 elements and underlying comments from hand-transcribed
-    markdown notes (i.e., 1???.md). Ensures all notes are prefixed with "- ".
+    markdown notes (i.e., 1???.md). Ensures all notes are prefixed with "- ",
+    and all h2 elements are preceded by one blank line.
 
     Args:
         md_file_path (str): Path to the markdown file to extract comments from.
 
     Returns:
-        list[str]: Items represent a line from the h2 sections of the MD file.
+        md_out (list[str]): Processed lines.
     """
     with open(md_file_path, "r") as md_input:
         md_in = md_input.readlines()
@@ -41,8 +43,12 @@ def extract_comments(md_file_path):
             if not line.startswith(("- ", "##")):
                 # fix notes that aren't bulleted
                 line = "- " + line
+            if line.startswith("##"):
+                line = "\n" + line
             md_out.append(line)
-            print(line, end="")
+            # print(line, end="")
+
+    return md_out
 
 
 if __name__ == "__main__":

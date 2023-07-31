@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+import textwrap
 
 
 def convert_to_seconds(value, time_base):
@@ -92,7 +93,9 @@ def generate_markdown_report(xml_file_path):
 **Notes**:
 """
 
-    for line in metadata["note"].split("\n"):
+    # split notes from Kyno general properties into multiple lines
+    wrapped_note = textwrap.wrap(metadata["note"], width=70)
+    for line in wrapped_note:
         report += f"- {line}\n"
 
     report += """
@@ -125,14 +128,14 @@ if __name__ == "__main__":
 
     filenames = [
         "1001-Learn.xml",
-        "1027-Learn.xml",
-        "1027-Recall.xml",
-        "1033-Learn.xml",
-        "1033-Recall.xml",
-        "1041-Learn.xml",
-        "1041-Recall.xml",
-        "1050-Learn.xml",
-        "1050-Recall.xml",
+        # "1027-Learn.xml",
+        # "1027-Recall.xml",
+        # "1033-Learn.xml",
+        # "1033-Recall.xml",
+        # "1041-Learn.xml",
+        # "1041-Recall.xml",
+        # "1050-Learn.xml",
+        # "1050-Recall.xml",
     ]
 
     in_subdir = "test_input/"
