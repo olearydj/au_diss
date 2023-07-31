@@ -28,6 +28,10 @@ Book-Title.tex
 # Output directory
 _book/
 
+# Test directories
+test_input/
+test_output/
+
 # Don't ignore these...
 !issues.md
 !/reports/*.md
