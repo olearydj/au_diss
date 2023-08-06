@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import textwrap
+import re
 
 
 def convert_to_seconds(value, time_base):
@@ -40,8 +41,13 @@ def generate_markdown_report(xml_file_path):
     }
 
     # description element does not exist if not specified
-    note_elem = root.find("descriptive-metadata/description")
-    metadata["note"] = note_elem.text if note_elem is not None else "N/A"
+    try:
+        note_elem = root.find("descriptive-metadata/description").text
+    except:
+        note_elem = None
+
+    metadata["note"] = note_elem if note_elem is not None else "N/A"
+    # print(f"*** video description: {metadata['note']}")
 
     # Extract marker data
     markers = []
@@ -91,13 +97,14 @@ def generate_markdown_report(xml_file_path):
 
     # split notes from Kyno general properties into multiple lines
     # first use semicolon "convention" - used inconsistently
-    notes = metadata["note"].split(";")
+    # also split on newlines in the note data used, e.g. in 1001
+    notes = re.split(r";|\n", metadata["note"])
 
     report["notes"] = ""
     for note in notes:
         note = note.strip()
         # for long individual notes, wrap the text
-        if len(note) > 70:
+        if False:  # len(note) > 70:  disable for now, formatting not right
             wrapped_note = textwrap.wrap(note, width=70)
             report["notes"] += f"- {wrapped_note[0]}\n"
             # hanging indent for additional lines
@@ -106,30 +113,29 @@ def generate_markdown_report(xml_file_path):
         else:
             report["notes"] += f"- {note}\n"
 
-    # print("*** returning from generate_markdown_report\n")
-    return report
+    report["subclip_markers"] = (
+        "\n### Subclip Markers\n\n"
+        "| Name | Start Time (sec) | Duration (sec) | Description |\n"
+        "|---|---|---|---|\n"
+    )
 
-    report += """
-### Subclip Markers
-
-"""
-
-    report += "| Name | Start Time (sec) | Duration (sec) | Description |\n"
-    report += "|---|---|---|---|\n"
     for marker in subclip_markers:
-        report += f"| {marker['title']} | {marker['timestamp']:.2f} | {marker['duration']:.2f} | {marker['description']} |\n"
+        report[
+            "subclip_markers"
+        ] += f"| {marker['title']} | {marker['timestamp']:.2f} | {marker['duration']:.2f} | {marker['description']} |\n"
 
-    report += """
-### Other Markers
+    report["other_markers"] = "\n### Other Markers\n\n"
 
-"""
     if other_markers:
-        report += "| Name | Type | Event Time (sec) | Description |\n"
-        report += "|---|---|---|---|\n"
+        report["other_markers"] += (
+            "| Name | Type | Event Time (sec) | Description |\n" "|---|---|---|---|\n"
+        )
         for marker in other_markers:
-            report += f"| {marker['title']} | {marker['type']} | {marker['timestamp']:.2f} | {marker['description']} |\n"
+            report[
+                "other_markers"
+            ] += f"| {marker['title']} | {marker['type']} | {marker['timestamp']:.2f} | {marker['description']} |\n"
     else:
-        report += "No other markers found."
+        report["other_markers"] += "No other markers found."
 
     return report
 

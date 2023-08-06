@@ -12,7 +12,7 @@ install()  # install rich traceback handler
 console = Console(highlight=False)
 
 
-def main(reports, verbose=True):
+def main(reports, verbose=False):
     """build combined reports for the specified files and root dir"""
     # print("*** in main\n")
     for report in reports:
@@ -60,6 +60,8 @@ def main(reports, verbose=True):
                     # print(f"*** combining report: {sec_name}")
                     combined_report += sec_data
 
+                combined_report += "\n"
+
             # print result to console
             if verbose:
                 if verbose == "md":
@@ -68,6 +70,12 @@ def main(reports, verbose=True):
                 else:
                     for line in combined_report:
                         print(line, end="")
+
+            # write combined report as md file
+            output_path = os.path.join(REPORT_DIR, f"{report_num}-combined.md")
+            with open(output_path, "w") as file:
+                file.write(combined_report)
+            # print("---", output_path, sep="\n")
 
         except Exception as e:
             console.print(
@@ -118,5 +126,5 @@ def extract_comments(md_file_path):
 if __name__ == "__main__":
     REPORT_DIR = "/Users/djo/dev/au/au_diss/reports/"
     DATA_ROOT_DIR = "/Volumes/ThunderBay mini/Research Master/data/"
-    report_files = sorted(glob.glob(os.path.join(REPORT_DIR, "????.md")))[:1]
+    report_files = sorted(glob.glob(os.path.join(REPORT_DIR, "????.md")))
     main(report_files)
