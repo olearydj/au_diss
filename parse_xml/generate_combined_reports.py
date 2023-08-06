@@ -1,18 +1,19 @@
 # parse all 1???.md files and generate combined report
 
+import csv
 import glob
 import os
 from rich.console import Console
-from rich.traceback import install
 from rich.markdown import Markdown
-from parse_xml import convert_to_seconds
+from rich.pretty import pprint
+from rich.traceback import install
 from parse_xml import generate_markdown_report
 
 install()  # install rich traceback handler
 console = Console(highlight=False)
 
 
-def main(reports, verbose=False):
+def main(reports, verbose=False, write_md=False, write_csv=False):
     """build combined reports for the specified files and root dir"""
     # print("*** in main\n")
     for report in reports:
@@ -55,12 +56,21 @@ def main(reports, verbose=False):
                 console.print(f"[green]process [/]{xml_file} in {xml_path}\n")
 
                 # print(f"*** generating markdown report\n")
-                xml_report = generate_markdown_report(xml_path)
+                xml_report, subclips = generate_markdown_report(xml_path)
                 for sec_name, sec_data in xml_report.items():
                     # print(f"*** combining report: {sec_name}")
                     combined_report += sec_data
 
                 combined_report += "\n"
+
+                # add timing data to table
+                for subclip in subclips:
+                    s_name = subclip["title"]
+                    s_start = round(subclip["timestamp"], 3)
+                    s_dur = round(subclip["duration"], 3)
+                    s_desc = subclip["description"]
+                    row = [report_num, phase_num, s_name, s_start, s_dur, s_desc]
+                    csv_data.append(row)
 
             # print result to console
             if verbose:
@@ -72,16 +82,23 @@ def main(reports, verbose=False):
                         print(line, end="")
 
             # write combined report as md file
-            output_path = os.path.join(REPORT_DIR, f"{report_num}-combined.md")
-            with open(output_path, "w") as file:
-                file.write(combined_report)
-            # print("---", output_path, sep="\n")
+            if write_md:
+                output_path = os.path.join(REPORT_DIR, f"{report_num}-combined.md")
+                with open(output_path, "w") as file:
+                    file.write(combined_report)
+                # print("---", output_path, sep="\n")
 
         except Exception as e:
             console.print(
                 f"\n:police_car_light: error on [bold red]{md_file}[/] :police_car_light:"
             )
             console.print_exception()
+
+    if write_csv:
+        with open(CSV_PATH, "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(csv_data)
+        print("*** csv file written")
 
 
 def extract_comments(md_file_path):
@@ -125,6 +142,9 @@ def extract_comments(md_file_path):
 
 if __name__ == "__main__":
     REPORT_DIR = "/Users/djo/dev/au/au_diss/reports/"
+    CSV_PATH = "/Users/djo/dev/au/au_diss/data/i1_times.csv"
     DATA_ROOT_DIR = "/Volumes/ThunderBay mini/Research Master/data/"
+    csv_data = []
+
     report_files = sorted(glob.glob(os.path.join(REPORT_DIR, "????.md")))
-    main(report_files)
+    main(report_files, verbose=False, write_md=False, write_csv=True)

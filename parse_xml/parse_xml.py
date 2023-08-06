@@ -137,7 +137,7 @@ def generate_markdown_report(xml_file_path):
     else:
         report["other_markers"] += "No other markers found."
 
-    return report
+    return report, subclip_markers
 
 
 if __name__ == "__main__":
