@@ -1,19 +1,37 @@
 # parse all 1???.md files and generate combined report
 
 import os
+from rich.console import Console
+from rich.traceback import install
+from rich.markdown import Markdown
+
+install()  # install rich traceback handler
+console = Console(highlight=False)
 
 
-def main(root, first, last):
+def main(root, first, last, verbose=False):
     """build combined reports for the specified files and root dir"""
     for p_num in range(first, last + 1):
         md_file = f"{p_num}.md"
         md_file_path = os.path.join(root, md_file)
         if os.path.isfile(md_file_path):
-            print(f'\n*** running: {md_file} in {root.split("/")[-2]}')
+            console.print(
+                f'\n:gear: [bold green]running:[/] :pencil:[royal_blue1]{md_file}[/] in :open_file_folder:[blue_violet]{root.split("/")[-2]}[/]'
+            )
             comments = extract_comments(md_file_path)
-            print(comments)
+            if verbose:
+                if verbose == "md":
+                    md = Markdown("\n".join(comments))
+                    console.print(md)
+                else:
+                    for line in comments:
+                        print(line, end="")
+            console.print(f"\n[green]process [/]{p_num}-learn.md")
+            console.print(f"[green]process [/]{p_num}-recall.md")
         else:
-            print(f"\n*** {md_file} does not exist")
+            console.print(
+                f"\n:police_car_light: [bold red]{md_file} does not exist[/] :police_car_light:"
+            )
 
 
 def extract_comments(md_file_path):
