@@ -6,20 +6,87 @@ output: html_notebook
 Load the XLSX file
 
 ```{r}
+### load libraries
+library(tidyverse)
 library(readxl)
-raw_demog_xls <- read_xlsx(
-  "./data/AURecruit.xlsx",
-  na = c("", "N/A"),
-  sheet = "Demog") 
 ```
 
 ```{r}
+### read and clean the demographic data
+
+raw_demog_xls <- read_xlsx(
+  "./data/i1_raw_data.xlsx",
+  na = c("", "N/A"),
+  sheet = "DEMO")
+
 demog_xls <- raw_demog_xls |>
   janitor::clean_names() |>
+  # only use time information from trial_time column 
+  mutate(trial_time = hms::as_hms(trial_time)) |>
+  # combine date and time columns as single datetime and drop original cols
+  mutate(trial_datetime = trial_date + trial_time) |>
+  select(-c("trial_date", "trial_time")) |>
   # move numeric cols to the front
   select(all_of(c("participant", "age", "height")), everything()) |>
   # convert most cols to factors
-  mutate(across(-("participant":"height" | "notes"), as_factor)) |>
+  mutate(across(-("participant":"height" | "notes"), as.factor)) |>
   glimpse()
+```
+```{r}
+### read and clean the car error data
+
+raw_exp_xls <- read_xlsx(
+  "./data/i1_raw_data.xlsx",
+  sheet = "EXP")
+
+exp_xls <- raw_exp_xls |>
+  janitor::clean_names() |>
+  glimpse()
+```
+
+```{r}
+### read and clean the car time data
+
+col_names = c(
+  "participant",
+  "phase",
+  "event",
+  "start_time",
+  "duration",
+  "note"
+)
+
+raw_times_csv <- read_csv("./data/i1_times.csv", col_names=col_names)
+
+times_csv <- raw_times_csv |>
+  janitor::clean_names() |>
+  separate(event, into = c("event", "number"), sep = " ") |>
+  mutate(
+    event = as.factor(tolower(event)),
+    number = as.numeric(number)
+  ) |>
+  glimpse()
+```
+
+```{r}
+car_data <- exp_xls |>
+  filter(is.na(flag), participant == 1001, phase == 1) |>
+  inner_join(
+    times_csv |>
+      filter(event == "car"),
+    by = c("participant", "phase", "car" = "number")
+    ) |>
+  glimpse()
+```
+
+
+```{r}
+### play with plots (EDA)
+
+library(gtExtras)
+
+exp_xls |>
+  filter(phase == 1) |>
+  gt_plt_summary()
 ```
 
