@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+*.
 
 # R project temp files
 .Rproj.user
@@ -9,6 +10,7 @@
 .RData
 .Ruserdata
 /.quarto/
+/*.nb.html
 
 # python stuff
 /.venv/
