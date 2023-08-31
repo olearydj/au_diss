@@ -41,7 +41,53 @@ raw_exp_xls <- read_xlsx(
 
 exp_xls <- raw_exp_xls |>
   janitor::clean_names() |>
+    mutate(
+    result = case_when(
+      tolower(flag) == "c" ~ "comment",
+      tolower(flag) == "i" ~ "incomplete",
+      is.na(flag) ~ "complete",
+      tolower(flag) == "r" ~ "retired"
+    ),
+    result = as.factor(result),
+    flag = as.factor(flag)
+  ) |>
+  rename(e_car = car) |>
+  replace_na(list(ce = 0, uce = 0, sel = 0, pos = 0, rot = 0, count = 0)) |>
+  group_by(participant, phase, result) |>
+  mutate(
+    number = ifelse(result == "comment", 0, cumsum(result == result))
+  ) |>
+  ungroup() |>
+  group_by(participant, phase) |>
+  mutate(
+    sequence = row_number() - 1  # have comments at sequence 0
+  ) |>
+  ungroup()
+
+exp_xls <- exp_xls |>
+  select(
+    participant,
+    phase,
+    sequence,
+    flag,
+    result,
+    number,
+    e_car,
+    ce,
+    uce,
+    sel,
+    pos,
+    rot,
+    count,
+    notes
+  ) |>
   glimpse()
+
+write.csv(exp_xls, "exp_xls.csv", row.names = FALSE)
+```
+Check that errors add up:
+```{r}
+all(exp_xls$uce == exp_xls$sel + exp_xls$pos + exp_xls$rot)
 ```
 
 ```{r}
@@ -60,10 +106,33 @@ raw_times_csv <- read_csv("./data/i1_times.csv", col_names=col_names)
 
 times_csv <- raw_times_csv |>
   janitor::clean_names() |>
-  separate(event, into = c("event", "number"), sep = " ") |>
   mutate(
-    event = as.factor(tolower(event)),
-    number = as.numeric(number)
+    description = event,
+    event = str_extract(event, "[a-zA-Z]+"), # Extract the event type
+    event = as.factor(tolower(event))
+  ) |>
+  group_by(participant, phase, event) |>
+  mutate(
+    number = row_number() # sequence number for each event type
+  ) |>
+  ungroup() |>
+  group_by(participant, phase) |>
+  mutate(
+    sequence = row_number()
+  ) |>
+  ungroup()
+
+times_csv <- times_csv |>
+  select(
+    participant,
+    phase,
+    sequence,
+    description,
+    event,
+    number,
+    start_time,
+    duration,
+    note
   ) |>
   glimpse()
 ```
@@ -72,20 +141,14 @@ times_csv <- raw_times_csv |>
 # library(gt)
  
 car_data <- exp_xls |>
-  # filter(
-  #   is.na(flag),
-  #   participant == 1001,
-  #   phase == 1
-  #   ) |>
   right_join(
-    times_csv, # |>
-      # filter(event == "car"),
+    times_csv,
     by = c("participant", "phase", "car" = "number")
     ) |>
   rename(
     e_notes = notes,
     t_notes = note,
-    t_flag = event,
+#    t_flag = event,
     e_flag = flag
     ) |>
   mutate(e_flag = as.factor(e_flag))
@@ -102,11 +165,13 @@ car_data <- car_data %>%
     participant,
     treatment,
     phase,
-    car,
-    t_flag,
-    e_flag,
+    sequence,
+    description,
+    event,
+    number,
     start_time,
     duration,
+    e_flag,
     ce,
     uce,
     sel,
@@ -117,7 +182,7 @@ car_data <- car_data %>%
     t_notes
   )
 
-write.csv(car_data, "car_data.csv", row.names = FALSE)
+# write.csv(car_data, "car_data.csv", row.names = FALSE)
 
 # output table
 # gt(car_data)
