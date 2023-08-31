@@ -69,14 +69,58 @@ times_csv <- raw_times_csv |>
 ```
 
 ```{r}
+# library(gt)
+ 
 car_data <- exp_xls |>
-  filter(is.na(flag), participant == 1001, phase == 1) |>
-  inner_join(
-    times_csv |>
-      filter(event == "car"),
+  # filter(
+  #   is.na(flag),
+  #   participant == 1001,
+  #   phase == 1
+  #   ) |>
+  right_join(
+    times_csv, # |>
+      # filter(event == "car"),
     by = c("participant", "phase", "car" = "number")
     ) |>
-  glimpse()
+  rename(
+    e_notes = notes,
+    t_notes = note,
+    t_flag = event,
+    e_flag = flag
+    ) |>
+  mutate(e_flag = as.factor(e_flag))
+
+car_data <- car_data |>
+  left_join(
+    demog_xls |> select(participant, treatment),
+    by = "participant"
+  )
+
+# reorder columns
+car_data <- car_data %>%
+  select(
+    participant,
+    treatment,
+    phase,
+    car,
+    t_flag,
+    e_flag,
+    start_time,
+    duration,
+    ce,
+    uce,
+    sel,
+    pos,
+    rot,
+    count,
+    e_notes,
+    t_notes
+  )
+
+write.csv(car_data, "car_data.csv", row.names = FALSE)
+
+# output table
+# gt(car_data)
 ```
 
 
