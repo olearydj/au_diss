@@ -3,6 +3,12 @@ title: "R Notebook"
 output: html_notebook
 ---
 
+Naming:
+demog_xls = participant demographics (clean)
+outcomes = one observation per car, e.g. completed, retired, etc. (clean)
+times = one observation per timed event, e.g. car, breakage, etc. (clean)
+results = joined data, one observation per outcome; data from relevant rows of times are combined into a list
+
 Load the XLSX file
 
 ```{r}
@@ -37,9 +43,9 @@ demog_xls <- raw_demog_xls |>
 
 raw_exp_xls <- read_xlsx(
   "./data/i1_raw_data.xlsx",
-  sheet = "EXP")
+  sheet = "RES")
 
-exp_xls <- raw_exp_xls |>
+outcomes <- raw_exp_xls |>
   janitor::clean_names() |>
     mutate(
     result = case_when(
@@ -64,7 +70,7 @@ exp_xls <- raw_exp_xls |>
   ) |>
   ungroup()
 
-exp_xls <- exp_xls |>
+outcomes <- outcomes |>
   select(
     participant,
     phase,
@@ -83,11 +89,13 @@ exp_xls <- exp_xls |>
   ) |>
   glimpse()
 
-write.csv(exp_xls, "exp_xls.csv", row.names = FALSE)
+# write.csv(results, "results.csv", row.names = FALSE)
 ```
+
 Check that errors add up:
+
 ```{r}
-all(exp_xls$uce == exp_xls$sel + exp_xls$pos + exp_xls$rot)
+all(outcomes$uce == outcomes$sel + outcomes$pos + outcomes$rot)
 ```
 
 ```{r}
@@ -104,7 +112,7 @@ col_names = c(
 
 raw_times_csv <- read_csv("./data/i1_times.csv", col_names=col_names)
 
-times_csv <- raw_times_csv |>
+times <- raw_times_csv |>
   janitor::clean_names() |>
   mutate(
     description = event,
@@ -122,7 +130,7 @@ times_csv <- raw_times_csv |>
   ) |>
   ungroup()
 
-times_csv <- times_csv |>
+times <- times |>
   select(
     participant,
     phase,
@@ -137,13 +145,24 @@ times_csv <- times_csv |>
   glimpse()
 ```
 
+This needs to be reworked after adding data to times.
+
 ```{r}
 # library(gt)
- 
-car_data <- exp_xls |>
-  right_join(
-    times_csv,
-    by = c("participant", "phase", "car" = "number")
+
+# add temporary match_condition for the join
+# need to match rows where results$result = "complete" and times$event = "car"
+outcomes <- outcomes |>
+  mutate(match_condition = result == "complete")
+
+times <- times |>
+  mutate(match_condition = event == "car")
+
+# full join to preserve all rows from both tables
+results <- outcomes |>
+  full_join(
+    times,
+    by = c("participant", "phase", "number", "match_condition")
     ) |>
   rename(
     e_notes = notes,
@@ -153,36 +172,40 @@ car_data <- exp_xls |>
     ) |>
   mutate(e_flag = as.factor(e_flag))
 
-car_data <- car_data |>
+# write.csv(combined, "combined.csv", row.names = FALSE)
+
+results <- results |>
   left_join(
     demog_xls |> select(participant, treatment),
     by = "participant"
   )
 
-# reorder columns
-car_data <- car_data %>%
-  select(
-    participant,
-    treatment,
-    phase,
-    sequence,
-    description,
-    event,
-    number,
-    start_time,
-    duration,
-    e_flag,
-    ce,
-    uce,
-    sel,
-    pos,
-    rot,
-    count,
-    e_notes,
-    t_notes
-  )
+# needs updating...
 
-# write.csv(car_data, "car_data.csv", row.names = FALSE)
+# reorder columns
+# results <- results %>%
+#   select(
+#     participant,
+#     treatment,
+#     phase,
+#     sequence,
+#     description,
+#     event,
+#     number,
+#     start_time,
+#     duration,
+#     e_flag,
+#     ce,
+#     uce,
+#     sel,
+#     pos,
+#     rot,
+#     count,
+#     e_notes,
+#     t_notes
+#   )
+
+# write.csv(combined, "combined.csv", row.names = FALSE)
 
 # output table
 # gt(car_data)
