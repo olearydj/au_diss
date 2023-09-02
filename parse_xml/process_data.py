@@ -272,21 +272,17 @@ def main(REPORT_DIR: str = REPORT_DIR):
     # extract video annotation data from all XML files in the tree
     xml_path = Path(XML_ROOT)
     xml_data = {}
-    xml_files = list(xml_path.rglob("*.xml"))
-    total_files = len(xml_files)
+    xml_files = xml_path.rglob("*.xml")
 
     logger.info(f"  > Extracting XML data...")
-    with progress:
-        for xml_file in progress.track(
-            xml_files, description="Processing XML files..."
-        ):
-            metadata, subclip_markers, other_markers = extract_data_from_xml(xml_file)
-            participant, phase = xml_file.stem.split("-")
-            xml_data[(participant, phase)] = {
-                "meta": metadata,
-                "subclips": subclip_markers,
-                "others": other_markers,
-            }
+    for xml_file in xml_files:
+        metadata, subclip_markers, other_markers = extract_data_from_xml(xml_file)
+        participant, phase = xml_file.stem.split("-")
+        xml_data[(participant, phase)] = {
+            "meta": metadata,
+            "subclips": subclip_markers,
+            "others": other_markers,
+        }
 
     # save csv (xls?)
     # generate md reports, incorporating data from csv
