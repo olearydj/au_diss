@@ -273,18 +273,31 @@ def main(REPORT_DIR: str = REPORT_DIR):
     xml_path = Path(XML_ROOT)
     xml_data = {}
     xml_files = xml_path.rglob("*.xml")
+    event_data = []
 
     logger.info(f"  > Extracting XML data...")
     for xml_file in xml_files:
-        metadata, subclip_markers, other_markers = extract_data_from_xml(xml_file)
+        metadata, event_subclips, other_subclips = extract_data_from_xml(xml_file)
         participant, phase = xml_file.stem.split("-")
         xml_data[(participant, phase)] = {
             "meta": metadata,
-            "subclips": subclip_markers,
-            "others": other_markers,
+            "events": event_subclips,
+            "others": other_subclips,
         }
 
-    # save csv (xls?)
+        # build csv data from event and other subclips
+        for event in event_subclips:
+            e_name = event["title"]
+            e_start = round(event["timestamp"], 3)
+            e_dur = round(event["duration"], 3)
+            e_desc = event["description"]
+            phase_num = 1 if phase == "Learn" else 2
+            row = [int(participant), phase_num, e_name, e_start, e_dur, e_desc]
+            event_data.append(row)
+
+    # assign each event in event_data to an outcome (complete, incomplete, retired, comment)
+    # do this in R - take best guess algorithmically then build a patch file by hand and incorporate those changes
+
     # generate md reports, incorporating data from csv
 
 
