@@ -137,19 +137,18 @@ def extract_data_from_xml(xml_files):
     return xml_data
 
 
-def generate_markdown_report(xml_data: dict, participant: str, notes: list[str]):
-    report_header = (
-        f"# Trial {participant}\n\n"
-        "## Participant Information\n\n"
-        "*Add information from xls demographics page, including treatment, date, etc.*\n\n"
-        "## General Notes\n"
-        f"{''.join(notes)}"
-    )
+def generate_markdown_report(p_data: dict, participant: str):
+    report_header = f"# Trial {participant}\n\n" "## Participant Information\n\n"
+
+    for key, value in p_data["demos"].items():
+        report_header += f"- {key}: {value}\n"
+
+    report_header += "\n## General Notes\n" f"{''.join(p_data['notes'])}"
 
     for phase_num in PHASES.keys():
         phase_name = PHASES[phase_num]
 
-        report_data = xml_data[(participant, phase_name)]
+        report_data = p_data[phase_name]
         metadata = report_data["meta"]
         subclip_markers = report_data["events"]
         other_markers = report_data["others"]
@@ -272,12 +271,12 @@ def compile_handwritten_feedback(reports: list[Path]):
     return trial_notes
 
 
-def compile_csv_data(xml_data, participant):
+def compile_csv_data(p_data, participant):
     # build event_data from event subclips for each participant
     rows = []
     for phase_num in PHASES.keys():
         phase_name = PHASES[phase_num]
-        events = xml_data[participant, phase_name]["events"]
+        events = p_data[phase_name]["events"]
 
         for event in events:
             e_name = event["title"]
@@ -332,21 +331,21 @@ def main(
             .squeeze()
             .to_dict()
         )
-        comb_data[participant]["learn"] = xml_data[(participant, "Learn")]
-        comb_data[participant]["recall"] = xml_data[(participant, "Recall")]
+        comb_data[participant]["Learn"] = xml_data[(participant, "Learn")]
+        comb_data[participant]["Recall"] = xml_data[(participant, "Recall")]
 
     ### compile data from event subclips for CSV export - loop through all participant, phase
     csv_data = []
     logging.info("   > Compiling CSV data...")
-    for participant in participant_numbers:
-        csv_data.extend(compile_csv_data(xml_data, participant))
+    for participant, data in sorted(comb_data.items()):
+        csv_data.extend(compile_csv_data(data, participant))
 
     # generate md reports, incorporating data from various sources
     md_reports = {}
-    for participant in participant_numbers:
-        md_reports[participant] = generate_markdown_report(
-            xml_data, participant, trial_notes[participant]
-        )
+    for participant, data in sorted(comb_data.items()):
+        md_reports[participant] = generate_markdown_report(data, participant)
+
+    print(md_reports["1001"])
 
     # # print result to console
     # if verbose:
