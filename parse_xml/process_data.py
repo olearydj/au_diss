@@ -1,9 +1,7 @@
 """process data, generate timing csv and combined participant reports"""
 
 import csv
-import glob
 import logging
-import os
 import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -13,6 +11,7 @@ from rich import inspect
 from rich import print as rprint
 from rich.console import Console
 from rich.logging import RichHandler
+from rich.markdown import Markdown
 from rich.progress import Progress
 from rich.traceback import install
 
@@ -24,6 +23,11 @@ progress = Progress(console=console)  # rich progress bar
 REPORT_DIR = "/Users/djo/dev/au/au_diss/reports/"
 XML_ROOT = "/Volumes/ThunderBay mini/Research Master/data/"
 BOX_ROOT = "/Users/djo/Box%20Sync/Tiger%20Motors%20Research%20Team%20Collaboration%20Files/Investigation%201%20Data%20Files/trial-data/"
+CSV_PATH = "/Users/djo/dev/au/au_diss/data/i1_times.csv"
+
+VERBOSE = False
+WRITE_MD = False
+WRITE_CSV = False
 
 PHASES = {1: "Learn", 2: "Recall"}
 
@@ -50,7 +54,7 @@ def init_logging():
     )
 
     # override logging for packages
-    logging.getLogger("gensim").setLevel(logging.WARNING)
+    # e.g.: logging.getLogger("gensim").setLevel(logging.WARNING)
 
     # return the logger object for global use
     return logging.getLogger("rich")
@@ -71,63 +75,66 @@ def get_element_text(root, path):
         return "N/A"
 
 
-def extract_data_from_xml(xml_file_path: Path):
-    """
-    Extract data from the given XML file.
+def extract_data_from_xml(xml_files):
+    xml_data = {}
+    logger.info(f"  > Extracting XML data for {len(xml_files)} videos...")
 
-    Parameters:
-    - xml_file_path (Path): Path to the XML file.
+    for xml_file_path in xml_files:
+        # Parse the XML content
+        tree = ET.parse(str(xml_file_path))
+        root = tree.getroot()
 
-    Returns:
-    - tuple of extracted data
-    """
-    # Parse the XML content
-    tree = ET.parse(str(xml_file_path))
-    root = tree.getroot()
-
-    # Extract general metadata
-    metadata = {
-        "url": get_element_text(root, "descriptive-metadata/context-info/url"),
-        "size": get_element_text(root, "descriptive-metadata/context-info/size"),
-        "last_modified": get_element_text(
-            root, "descriptive-metadata/context-info/last-modified"
-        ),
-        "rating": get_element_text(root, "descriptive-metadata/rating"),
-        "title": get_element_text(root, "descriptive-metadata/title"),
-        "note": get_element_text(root, "descriptive-metadata/description"),
-    }
-
-    # Extract marker data
-    markers = []
-    for marker_elem in root.findall("descriptive-metadata/marker"):
-        marker = {
-            "id": marker_elem.find("id").text,
-            "timestamp": (
-                int(marker_elem.find("timestamp").text),
-                marker_elem.find("timestamp").get("time-base"),
+        # Extract general metadata
+        metadata = {
+            "url": get_element_text(root, "descriptive-metadata/context-info/url"),
+            "size": get_element_text(root, "descriptive-metadata/context-info/size"),
+            "last_modified": get_element_text(
+                root, "descriptive-metadata/context-info/last-modified"
             ),
-            "type": marker_elem.find("type").text,
-            "title": marker_elem.find("title").text,
-            "description": marker_elem.find("description").text or "N/A",
+            "rating": get_element_text(root, "descriptive-metadata/rating"),
+            "title": get_element_text(root, "descriptive-metadata/title"),
+            "note": get_element_text(root, "descriptive-metadata/description"),
         }
-        if marker_elem.find("duration") is not None:
-            marker["duration"] = (
-                int(marker_elem.find("duration").text),
-                marker_elem.find("duration").get("time-base"),
-            )
-        markers.append(marker)
 
-    # Convert the marker timestamps and durations to seconds
-    for marker in markers:
-        marker["timestamp"] = convert_to_seconds(*marker["timestamp"])
-        if "duration" in marker:
-            marker["duration"] = convert_to_seconds(*marker["duration"])
+        # Extract marker data
+        markers = []
+        for marker_elem in root.findall("descriptive-metadata/marker"):
+            marker = {
+                "id": marker_elem.find("id").text,
+                "timestamp": (
+                    int(marker_elem.find("timestamp").text),
+                    marker_elem.find("timestamp").get("time-base"),
+                ),
+                "type": marker_elem.find("type").text,
+                "title": marker_elem.find("title").text,
+                "description": marker_elem.find("description").text or "N/A",
+            }
+            if marker_elem.find("duration") is not None:
+                marker["duration"] = (
+                    int(marker_elem.find("duration").text),
+                    marker_elem.find("duration").get("time-base"),
+                )
+            markers.append(marker)
 
-    # Split the markers into two lists: subclip markers and other markers
-    subclip_markers = [marker for marker in markers if marker["type"] == "subclip"]
-    other_markers = [marker for marker in markers if marker["type"] != "subclip"]
+        # Convert the marker timestamps and durations to seconds
+        for marker in markers:
+            marker["timestamp"] = convert_to_seconds(*marker["timestamp"])
+            if "duration" in marker:
+                marker["duration"] = convert_to_seconds(*marker["duration"])
 
-    return metadata, subclip_markers, other_markers
+        # Split the markers into two lists: subclip markers and other markers
+        subclip_markers = [marker for marker in markers if marker["type"] == "subclip"]
+        other_markers = [marker for marker in markers if marker["type"] != "subclip"]
+
+        participant, phase = xml_file_path.stem.split("-")
+        xml_data[(participant, phase)] = {
+            "meta": metadata,
+            "events": subclip_markers,
+            "others": other_markers,
+        }
+
+    logger.info(f"  > xml_data contains {len(xml_data)} entries")
+    return xml_data
 
 
 def generate_markdown_report(xml_data: dict):
@@ -217,7 +224,7 @@ def extract_comments(md_file_path):
     Returns:
         md_out (list[str]): Processed lines.
     """
-    logger.debug(f"*** Extracting comments from: {md_file_path}")
+    logger.debug(f"  > Extracting comments from: {md_file_path}")
 
     with open(md_file_path, "r") as md_input:
         md_in = md_input.readlines()
@@ -243,50 +250,64 @@ def extract_comments(md_file_path):
     return md_out
 
 
-def main(REPORT_DIR: str = REPORT_DIR):
-    logger.info("-- Entering main...")
-
+def compile_handwritten_feedback(reports):
     # for each trial report, extract script comments and feedback from hand-transcribed notes
-    report_path = Path(REPORT_DIR)
-    reports = sorted(report_path.glob("????.md"))
-    logger.info(f"> Processing {len(reports)} reports...")
+    logger.info(f"  > Compiling handwritten feedback...")
 
-    logger.info(f"  > Extracting trial notes...")
     trial_notes = {}
     for report in reports:
         # e.g. if report = /Users/djo/dev/au/au_diss/reports/1001.md
         report_num = report.stem  # 1001
-        report_dir = report.parent.name  # reports
-        md_file = report.name  # 1001.md
-        # md_file_path = str(report)  # /Users/djo/dev/au/au_diss/reports/1001.md
 
         trial_notes[report_num] = extract_comments(report)
+    return trial_notes
 
-    # extract video annotation data from all XML files in the tree
+
+def main(
+    REPORT_DIR: str = REPORT_DIR,
+    verbose: bool = VERBOSE,
+    write_md: bool = WRITE_MD,
+    write_csv: bool = WRITE_CSV,
+):
+    """
+    Get data:
+      - demographics data from XLS TODO
+    Generate reports from data
+    Write output:
+      - CSV
+      - markdown reports
+    """
+    logger.info("-- Entering main...")
+
+    ### compile feedback from hand-transcribed notes
+    report_path = Path(REPORT_DIR)
+    reports = sorted(report_path.glob("????.md"))
+    trial_notes = compile_handwritten_feedback(reports)
+
+    ### extract video annotation data from all XML files in the tree
     xml_path = Path(XML_ROOT)
-    xml_data = {}
-    xml_files = xml_path.rglob("*.xml")
-    event_data = []
+    xml_files = list(xml_path.rglob("*.xml"))
+    xml_data = extract_data_from_xml(xml_files)
 
-    logger.info(f"  > Extracting XML data...")
-    for xml_file in xml_files:
-        metadata, event_subclips, other_subclips = extract_data_from_xml(xml_file)
-        participant, phase = xml_file.stem.split("-")
-        xml_data[(participant, phase)] = {
-            "meta": metadata,
-            "events": event_subclips,
-            "others": other_subclips,
-        }
+    # event_data = []
 
-        # build csv data from event and other subclips
-        for event in event_subclips:
-            e_name = event["title"]
-            e_start = round(event["timestamp"], 3)
-            e_dur = round(event["duration"], 3)
-            e_desc = event["description"]
-            phase_num = 1 if phase == "Learn" else 2
-            row = [int(participant), phase_num, e_name, e_start, e_dur, e_desc]
-            event_data.append(row)
+    #     # build event_data from event and other subclips
+    #     for event in event_subclips:
+    #         e_name = event["title"]
+    #         e_start = round(event["timestamp"], 3)
+    #         e_dur = round(event["duration"], 3)
+    #         e_desc = event["description"]
+    #         phase_num = 1 if phase == "Learn" else 2
+    #         row = [int(participant), phase_num, e_name, e_start, e_dur, e_desc]
+    #         event_data.append(row)
+
+    # if write_csv:
+    #     with open(CSV_PATH, "w", newline="") as file:
+    #         writer = csv.writer(file)
+    #         writer.writerows(event_data)
+    #     logger.info("CSV written")
+    # else:
+    #     logger.info("No CSV written")
 
     # assign each event in event_data to an outcome (complete, incomplete, retired, comment)
     # do this in R - take best guess algorithmically then build a patch file by hand and incorporate those changes
@@ -320,8 +341,20 @@ def main(REPORT_DIR: str = REPORT_DIR):
 
                 combined_report += "\n"
 
-            # for line in combined_report:
-            #     print(line, end="")
+            # print result to console
+            if verbose:
+                if verbose == "md":
+                    md = Markdown(combined_report)
+                    console.print(md)
+                else:
+                    for line in combined_report:
+                        print(line, end="")
+
+            # write combined report as md file
+            if write_md:
+                output_path = report_path / f"{participant}-combined.md"
+                with output_path.open("w") as file:
+                    file.write(combined_report)
 
 
 if __name__ == "__main__":
