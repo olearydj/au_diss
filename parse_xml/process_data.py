@@ -79,8 +79,6 @@ def get_element_text(root, path):
 
 def extract_data_from_xml(xml_files):
     xml_data = {}
-    logger.info(f"  > Extracting XML data for {len(xml_files)} videos...")
-
     for xml_file_path in xml_files:
         # Parse the XML content
         tree = ET.parse(str(xml_file_path))
@@ -135,7 +133,7 @@ def extract_data_from_xml(xml_files):
             "others": other_markers,
         }
 
-    logger.info(f"  > xml_data contains {len(xml_data)} entries")
+    logger.debug(f"    > xml_data contains {len(xml_data)} entries")
     return xml_data
 
 
@@ -226,7 +224,7 @@ def extract_comments(md_file_path):
     Returns:
         md_out (list[str]): Processed lines.
     """
-    logger.debug(f"  > Extracting comments from: {md_file_path}")
+    logger.debug(f"    > Extracting comments from: {md_file_path}")
 
     with open(md_file_path, "r") as md_input:
         md_in = md_input.readlines()
@@ -254,8 +252,6 @@ def extract_comments(md_file_path):
 
 def compile_handwritten_feedback(reports):
     # for each trial report, extract script comments and feedback from hand-transcribed notes
-    logger.info(f"  > Compiling handwritten feedback...")
-
     trial_notes = {}
     for report in reports:
         # e.g. if report = /Users/djo/dev/au/au_diss/reports/1001.md
@@ -301,20 +297,24 @@ def main(
     ### compile feedback from hand-transcribed notes - loop through all ????.md files
     report_path = Path(REPORT_DIR)
     reports = sorted(report_path.glob("????.md"))
+    logger.info(f"   > Compiling handwritten feedback...")
     trial_notes = compile_handwritten_feedback(reports)
 
     ### extract video annotation data from all XML files in the tree - loop through all XML files
     xml_path = Path(XML_ROOT)
     xml_files = list(xml_path.rglob("*.xml"))
+    logger.info(f"   > Extracting XML data for {len(xml_files)} videos...")
     xml_data = extract_data_from_xml(xml_files)
 
     ### extract data from i1_raw_data.xls
     xls_data_path = Path(XLS_DATA_PATH)
+    logger.info(f"   > Extracting data from XLS...")
     xls_data = pd.read_excel(xls_data_path, sheet_name=None)
 
     ### compile data from event subclips for CSV export - loop through all participant, phase
     participant_numbers = [report.stem for report in reports]
     csv_data = []
+    logging.info("   > Compiling CSV data...")
     for participant in participant_numbers:
         csv_data.extend(compile_csv_data(xml_data, participant))
 
@@ -323,7 +323,9 @@ def main(
     for participant in participant_numbers:
         for phase_num in PHASES.keys():
             phase_name = PHASES[phase_num]
-            logger.debug(f"Participant {participant}, Phase {phase_num}: {phase_name}")
+            logger.debug(
+                f"    > Participant {participant}, Phase {phase_num}: {phase_name}"
+            )
             report_sections = generate_markdown_report(
                 xml_data[(participant, phase_name)]
             )
