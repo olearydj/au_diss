@@ -6,6 +6,7 @@ import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+import pandas as pd
 import typer
 from rich import inspect
 from rich import print as rprint
@@ -23,7 +24,8 @@ progress = Progress(console=console)  # rich progress bar
 REPORT_DIR = "/Users/djo/dev/au/au_diss/reports/"
 XML_ROOT = "/Volumes/ThunderBay mini/Research Master/data/"
 BOX_ROOT = "/Users/djo/Box%20Sync/Tiger%20Motors%20Research%20Team%20Collaboration%20Files/Investigation%201%20Data%20Files/trial-data/"
-CSV_PATH = "/Users/djo/dev/au/au_diss/data/i1_times.csv"
+XLS_DATA_PATH = "/Users/djo/dev/au/au_diss/data/i1_raw_data.xlsx"
+CSV_OUTPUT_PATH = "/Users/djo/dev/au/au_diss/data/i1_times.csv"
 
 VERBOSE = False
 WRITE_MD = False
@@ -263,6 +265,24 @@ def compile_handwritten_feedback(reports):
     return trial_notes
 
 
+def compile_csv_data(xml_data, participant):
+    # build event_data from event subclips for each participant
+    rows = []
+    for phase_num in PHASES.keys():
+        phase_name = PHASES[phase_num]
+        events = xml_data[participant, phase_name]["events"]
+
+        for event in events:
+            e_name = event["title"]
+            e_start = round(event["timestamp"], 3)
+            e_dur = round(event["duration"], 3)
+            e_desc = event["description"]
+            row = [int(participant), phase_num, e_name, e_start, e_dur, e_desc]
+            rows.append(row)
+
+    return rows
+
+
 def main(
     REPORT_DIR: str = REPORT_DIR,
     verbose: bool = VERBOSE,
@@ -270,50 +290,35 @@ def main(
     write_csv: bool = WRITE_CSV,
 ):
     """
-    Get data:
-      - demographics data from XLS TODO
     Generate reports from data
+      - markdown
     Write output:
       - CSV
       - markdown reports
     """
     logger.info("-- Entering main...")
 
-    ### compile feedback from hand-transcribed notes
+    ### compile feedback from hand-transcribed notes - loop through all ????.md files
     report_path = Path(REPORT_DIR)
     reports = sorted(report_path.glob("????.md"))
     trial_notes = compile_handwritten_feedback(reports)
 
-    ### extract video annotation data from all XML files in the tree
+    ### extract video annotation data from all XML files in the tree - loop through all XML files
     xml_path = Path(XML_ROOT)
     xml_files = list(xml_path.rglob("*.xml"))
     xml_data = extract_data_from_xml(xml_files)
 
-    # event_data = []
+    ### extract data from i1_raw_data.xls
+    xls_data_path = Path(XLS_DATA_PATH)
+    xls_data = pd.read_excel(xls_data_path, sheet_name=None)
 
-    #     # build event_data from event and other subclips
-    #     for event in event_subclips:
-    #         e_name = event["title"]
-    #         e_start = round(event["timestamp"], 3)
-    #         e_dur = round(event["duration"], 3)
-    #         e_desc = event["description"]
-    #         phase_num = 1 if phase == "Learn" else 2
-    #         row = [int(participant), phase_num, e_name, e_start, e_dur, e_desc]
-    #         event_data.append(row)
-
-    # if write_csv:
-    #     with open(CSV_PATH, "w", newline="") as file:
-    #         writer = csv.writer(file)
-    #         writer.writerows(event_data)
-    #     logger.info("CSV written")
-    # else:
-    #     logger.info("No CSV written")
-
-    # assign each event in event_data to an outcome (complete, incomplete, retired, comment)
-    # do this in R - take best guess algorithmically then build a patch file by hand and incorporate those changes
-
-    # generate md reports, incorporating data from csv
+    ### compile data from event subclips for CSV export - loop through all participant, phase
     participant_numbers = [report.stem for report in reports]
+    csv_data = []
+    for participant in participant_numbers:
+        csv_data.extend(compile_csv_data(xml_data, participant))
+
+    # generate md reports, incorporating data from various sources
 
     for participant in participant_numbers:
         for phase_num in PHASES.keys():
@@ -355,6 +360,17 @@ def main(
                 output_path = report_path / f"{participant}-combined.md"
                 with output_path.open("w") as file:
                     file.write(combined_report)
+
+    # if write_csv:
+    #     with open(CSV_PATH, "w", newline="") as file:
+    #         writer = csv.writer(file)
+    #         writer.writerows(event_data)
+    #     logger.info("CSV written")
+    # else:
+    #     logger.info("No CSV written")
+
+    # assign each event in event_data to an outcome (complete, incomplete, retired, comment)
+    # do this in R - take best guess algorithmically then build a patch file by hand and incorporate those changes
 
 
 if __name__ == "__main__":
