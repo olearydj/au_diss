@@ -4,6 +4,7 @@ import csv
 import glob
 import logging
 import os
+import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -12,17 +13,19 @@ from rich import inspect
 from rich import print as rprint
 from rich.console import Console
 from rich.logging import RichHandler
+from rich.progress import Progress
 from rich.traceback import install
 
-from rich.progress import Progress
-
-install(show_locals=True)  # rich tracebacks
+install()  # rich tracebacks; show_locals=False doesn't seem to work
 console = Console()  # rich console
 progress = Progress(console=console)  # rich progress bar
 
 
 REPORT_DIR = "/Users/djo/dev/au/au_diss/reports/"
 XML_ROOT = "/Volumes/ThunderBay mini/Research Master/data/"
+BOX_ROOT = "/Users/djo/Box%20Sync/Tiger%20Motors%20Research%20Team%20Collaboration%20Files/Investigation%201%20Data%20Files/trial-data/"
+
+PHASES = {1: "Learn", 2: "Recall"}
 
 
 def init_logging():
@@ -60,6 +63,14 @@ def convert_to_seconds(value, time_base):
     return value / denominator * numerator
 
 
+def get_element_text(root, path):
+    element = root.find(path)
+    if element is not None and element.text is not None:
+        return element.text
+    else:
+        return "N/A"
+
+
 def extract_data_from_xml(xml_file_path: Path):
     """
     Extract data from the given XML file.
@@ -76,32 +87,15 @@ def extract_data_from_xml(xml_file_path: Path):
 
     # Extract general metadata
     metadata = {
-        "url": root.find("descriptive-metadata/context-info/url").text
-        if root.find("descriptive-metadata/context-info/url") is not None
-        else "N/A",
-        "size": root.find("descriptive-metadata/context-info/size").text
-        if root.find("descriptive-metadata/context-info/size") is not None
-        else "N/A",
-        "last_modified": root.find(
-            "descriptive-metadata/context-info/last-modified"
-        ).text
-        if root.find("descriptive-metadata/context-info/last-modified") is not None
-        else "N/A",
-        "rating": root.find("descriptive-metadata/rating").text
-        if root.find("descriptive-metadata/rating") is not None
-        else "N/A",
-        "title": root.find("descriptive-metadata/title").text
-        if root.find("descriptive-metadata/title") is not None
-        else "N/A",
+        "url": get_element_text(root, "descriptive-metadata/context-info/url"),
+        "size": get_element_text(root, "descriptive-metadata/context-info/size"),
+        "last_modified": get_element_text(
+            root, "descriptive-metadata/context-info/last-modified"
+        ),
+        "rating": get_element_text(root, "descriptive-metadata/rating"),
+        "title": get_element_text(root, "descriptive-metadata/title"),
+        "note": get_element_text(root, "descriptive-metadata/description"),
     }
-
-    # description element does not exist if not specified
-    note_elem = (
-        root.find("descriptive-metadata/description").text
-        if root.find("descriptive-metadata/description") is not None
-        else "N/A"
-    )
-    metadata["note"] = note_elem
 
     # Extract marker data
     markers = []
@@ -136,25 +130,23 @@ def extract_data_from_xml(xml_file_path: Path):
     return metadata, subclip_markers, other_markers
 
 
-def generate_markdown_report(xml_file_path: Path):
+def generate_markdown_report(xml_data: dict):
     """
     Generate a markdown report based on the content of the given XML file.
 
     Parameters:
-    - xml_file_path (Path): Path to the XML file.
+    - xml_data (dict): Dictionary of metadata, subclips, and other event data.
 
     Returns:
     - str: Markdown formatted report.
 
-    Example:
-    >>> generate_markdown_report(Path("path_to_file.xml"))
-    "## Descriptive Metadata Report for ... (and so on)"
     """
-    metadata, subclip_markers, other_markers = extract_data_from_xml(xml_file_path)
+    metadata = xml_data["meta"]
+    subclip_markers = xml_data["events"]
+    other_markers = xml_data["others"]
 
     video_file = metadata["url"].split("/")[-1]
     video_path = "/".join(metadata["url"].split("/")[-3:])
-    box_root = "/Users/djo/Box%20Sync/Tiger%20Motors%20Research%20Team%20Collaboration%20Files/Investigation%201%20Data%20Files/trial-data/"
 
     # Generate markdown report
     report = {}
@@ -164,7 +156,7 @@ def generate_markdown_report(xml_file_path: Path):
         f"> - **Last Modified**: {metadata['last_modified']}\n"
         f"> - **Title**: {metadata['title']}\n"
         f"> - **Rating**: {metadata['rating']}\n\n"
-        f"**Open Video**: [{video_file}](file://{box_root + video_path})\n\n"
+        f"**Open Video**: [{video_file}](file://{BOX_ROOT + video_path})\n\n"
         f"### {metadata['title']} Observations\n"
     )
 
@@ -210,7 +202,7 @@ def generate_markdown_report(xml_file_path: Path):
     else:
         report["other_markers"] += "No other markers found."
 
-    return report, subclip_markers
+    return report
 
 
 def extract_comments(md_file_path):
@@ -260,6 +252,7 @@ def main(REPORT_DIR: str = REPORT_DIR):
     logger.info(f"> Processing {len(reports)} reports...")
 
     logger.info(f"  > Extracting trial notes...")
+    trial_notes = {}
     for report in reports:
         # e.g. if report = /Users/djo/dev/au/au_diss/reports/1001.md
         report_num = report.stem  # 1001
@@ -267,7 +260,7 @@ def main(REPORT_DIR: str = REPORT_DIR):
         md_file = report.name  # 1001.md
         # md_file_path = str(report)  # /Users/djo/dev/au/au_diss/reports/1001.md
 
-        trial_notes = extract_comments(report)
+        trial_notes[report_num] = extract_comments(report)
 
     # extract video annotation data from all XML files in the tree
     xml_path = Path(XML_ROOT)
@@ -299,6 +292,36 @@ def main(REPORT_DIR: str = REPORT_DIR):
     # do this in R - take best guess algorithmically then build a patch file by hand and incorporate those changes
 
     # generate md reports, incorporating data from csv
+    participant_numbers = [report.stem for report in reports]
+
+    for participant in participant_numbers:
+        for phase_num in PHASES.keys():
+            phase_name = PHASES[phase_num]
+            logger.debug(f"Participant {participant}, Phase {phase_num}: {phase_name}")
+            report_sections = generate_markdown_report(
+                xml_data[(participant, phase_name)]
+            )
+            report_header = (
+                f"# Trial {participant}\n\n"
+                "## Participant Information\n\n"
+                "*Add information from xls demographics page, including treatment, date, etc.*\n\n"
+                "## General Notes\n"
+                f"{''.join(trial_notes[participant])}"
+            )
+
+            if phase_num == 1:
+                combined_report = report_header
+
+            combined_report += f"\n## Phase {phase_num}: {phase_name}\n\n"
+
+            for sec_name, sec_data in report_sections.items():
+                # print(f"*** combining report: {sec_name}")
+                combined_report += sec_data
+
+                combined_report += "\n"
+
+            # for line in combined_report:
+            #     print(line, end="")
 
 
 if __name__ == "__main__":
