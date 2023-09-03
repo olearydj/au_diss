@@ -137,79 +137,90 @@ def extract_data_from_xml(xml_files):
     return xml_data
 
 
-def generate_markdown_report(xml_data: dict):
-    """
-    Generate a markdown report based on the content of the given XML file.
-
-    Parameters:
-    - xml_data (dict): Dictionary of metadata, subclips, and other event data.
-
-    Returns:
-    - str: Markdown formatted report.
-
-    """
-    metadata = xml_data["meta"]
-    subclip_markers = xml_data["events"]
-    other_markers = xml_data["others"]
-
-    video_file = metadata["url"].split("/")[-1]
-    video_path = "/".join(metadata["url"].split("/")[-3:])
-
-    # Generate markdown report
-    report = {}
-    report["metadata"] = (
-        "> [!example]- **File Metadata**\n"
-        f"> - **File Size**: {metadata['size']} bytes\n"
-        f"> - **Last Modified**: {metadata['last_modified']}\n"
-        f"> - **Title**: {metadata['title']}\n"
-        f"> - **Rating**: {metadata['rating']}\n\n"
-        f"**Open Video**: [{video_file}](file://{BOX_ROOT + video_path})\n\n"
-        f"### {metadata['title']} Observations\n"
+def generate_markdown_report(xml_data: dict, participant: str, notes: list[str]):
+    report_header = (
+        f"# Trial {participant}\n\n"
+        "## Participant Information\n\n"
+        "*Add information from xls demographics page, including treatment, date, etc.*\n\n"
+        "## General Notes\n"
+        f"{''.join(notes)}"
     )
 
-    # split notes from Kyno general properties into multiple lines
-    # first use semicolon "convention" - used inconsistently
-    # also split on newlines in the note data used, e.g. in 1001
-    notes = re.split(r";|\n", metadata["note"])
+    for phase_num in PHASES.keys():
+        phase_name = PHASES[phase_num]
 
-    report["notes"] = ""
-    for note in notes:
-        note = note.strip()
-        # for long individual notes, wrap the text
-        if False:  # len(note) > 70:  disable for now, formatting not right
-            wrapped_note = textwrap.wrap(note, width=70)
-            report["notes"] += f"- {wrapped_note[0]}\n"
-            # hanging indent for additional lines
-            for line in wrapped_note[1:]:
-                report["notes"] += f"  {line}\n"
-        else:
-            report["notes"] += f"- {note}\n"
+        report_data = xml_data[(participant, phase_name)]
+        metadata = report_data["meta"]
+        subclip_markers = report_data["events"]
+        other_markers = report_data["others"]
 
-    report["subclip_markers"] = (
-        "\n### Subclip Markers\n\n"
-        "| Name | Start Time (sec) | Duration (sec) | Description |\n"
-        "|---|---|---|---|\n"
-    )
+        video_file = metadata["url"].split("/")[-1]
+        video_path = "/".join(metadata["url"].split("/")[-3:])
 
-    for marker in subclip_markers:
-        report[
-            "subclip_markers"
-        ] += f"| {marker['title']} | {marker['timestamp']:.2f} | {marker['duration']:.2f} | {marker['description']} |\n"
+        if phase_num == 1:
+            combined_report = report_header
 
-    report["other_markers"] = "\n### Other Markers\n\n"
+        combined_report += f"\n## Phase {phase_num}: {phase_name}\n\n"
 
-    if other_markers:
-        report["other_markers"] += (
-            "| Name | Type | Event Time (sec) | Description |\n" "|---|---|---|---|\n"
+        # add metadata section
+        report_metadata = (
+            "> [!example]- **File Metadata**\n"
+            f"> - **File Size**: {metadata['size']} bytes\n"
+            f"> - **Last Modified**: {metadata['last_modified']}\n"
+            f"> - **Title**: {metadata['title']}\n"
+            f"> - **Rating**: {metadata['rating']}\n\n"
+            f"**Open Video**: [{video_file}](file://{BOX_ROOT + video_path})\n\n"
+            f"### {metadata['title']} Observations\n"
         )
-        for marker in other_markers:
-            report[
-                "other_markers"
-            ] += f"| {marker['title']} | {marker['type']} | {marker['timestamp']:.2f} | {marker['description']} |\n"
-    else:
-        report["other_markers"] += "No other markers found."
 
-    return report
+        combined_report += report_metadata
+
+        # split notes from Kyno general properties into multiple lines
+        # first use semicolon "convention" - used inconsistently
+        # also split on newlines in the note data used, e.g. in 1001
+        notes = re.split(r";|\n", metadata["note"])
+
+        report_notes = ""
+        for note in notes:
+            note = note.strip()
+            # for long individual notes, wrap the text
+            if False:  # len(note) > 70:  disable for now, formatting not right
+                wrapped_note = textwrap.wrap(note, width=70)
+                report["notes"] += f"- {wrapped_note[0]}\n"
+                # hanging indent for additional lines
+                for line in wrapped_note[1:]:
+                    report["notes"] += f"  {line}\n"
+            else:
+                report_notes += f"- {note}\n"
+
+        combined_report += report_notes
+
+        report_subclips = (
+            "\n### Subclip Markers\n\n"
+            "| Name | Start Time (sec) | Duration (sec) | Description |\n"
+            "|---|---|---|---|\n"
+        )
+
+        for marker in subclip_markers:
+            report_subclips += f"| {marker['title']} | {marker['timestamp']:.2f} | {marker['duration']:.2f} | {marker['description']} |\n"
+
+        combined_report += report_subclips
+
+        report_others = "\n### Other Markers\n\n"
+
+        if other_markers:
+            report_others += (
+                "| Name | Type | Event Time (sec) | Description |\n"
+                "|---|---|---|---|\n"
+            )
+            for marker in other_markers:
+                report_others += f"| {marker['title']} | {marker['type']} | {marker['timestamp']:.2f} | {marker['description']} |\n"
+        else:
+            report_others += "No other markers found."
+
+        combined_report += report_others + "\n"
+
+    return combined_report
 
 
 def extract_comments(md_file_path):
@@ -250,12 +261,12 @@ def extract_comments(md_file_path):
     return md_out
 
 
-def compile_handwritten_feedback(reports):
+def compile_handwritten_feedback(reports: list[Path]):
     # for each trial report, extract script comments and feedback from hand-transcribed notes
     trial_notes = {}
     for report in reports:
         # e.g. if report = /Users/djo/dev/au/au_diss/reports/1001.md
-        report_num = report.stem  # 1001
+        report_num = report.stem  # '1001'
 
         trial_notes[report_num] = extract_comments(report)
     return trial_notes
@@ -319,49 +330,26 @@ def main(
         csv_data.extend(compile_csv_data(xml_data, participant))
 
     # generate md reports, incorporating data from various sources
-
+    md_reports = {}
     for participant in participant_numbers:
-        for phase_num in PHASES.keys():
-            phase_name = PHASES[phase_num]
-            logger.debug(
-                f"    > Participant {participant}, Phase {phase_num}: {phase_name}"
-            )
-            report_sections = generate_markdown_report(
-                xml_data[(participant, phase_name)]
-            )
-            report_header = (
-                f"# Trial {participant}\n\n"
-                "## Participant Information\n\n"
-                "*Add information from xls demographics page, including treatment, date, etc.*\n\n"
-                "## General Notes\n"
-                f"{''.join(trial_notes[participant])}"
-            )
+        md_reports[participant] = generate_markdown_report(
+            xml_data, participant, trial_notes[participant]
+        )
 
-            if phase_num == 1:
-                combined_report = report_header
+    # # print result to console
+    # if verbose:
+    #     if verbose == "md":
+    #         md = Markdown(combined_report)
+    #         console.print(md)
+    #     else:
+    #         for line in combined_report:
+    #             print(line, end="")
 
-            combined_report += f"\n## Phase {phase_num}: {phase_name}\n\n"
-
-            for sec_name, sec_data in report_sections.items():
-                # print(f"*** combining report: {sec_name}")
-                combined_report += sec_data
-
-                combined_report += "\n"
-
-            # print result to console
-            if verbose:
-                if verbose == "md":
-                    md = Markdown(combined_report)
-                    console.print(md)
-                else:
-                    for line in combined_report:
-                        print(line, end="")
-
-            # write combined report as md file
-            if write_md:
-                output_path = report_path / f"{participant}-combined.md"
-                with output_path.open("w") as file:
-                    file.write(combined_report)
+    # # write combined report as md file
+    # if write_md:
+    #     output_path = report_path / f"{participant}-combined.md"
+    #     with output_path.open("w") as file:
+    #         file.write(combined_report)
 
     # if write_csv:
     #     with open(CSV_PATH, "w", newline="") as file:
