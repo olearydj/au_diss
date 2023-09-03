@@ -297,8 +297,6 @@ def main(
     write_csv: bool = WRITE_CSV,
 ):
     """
-    Generate reports from data
-      - markdown
     Write output:
       - CSV
       - markdown reports
@@ -322,8 +320,22 @@ def main(
     logger.info(f"   > Extracting data from XLS...")
     xls_data = pd.read_excel(xls_data_path, sheet_name=None)
 
-    ### compile data from event subclips for CSV export - loop through all participant, phase
+    ### restructure data
+    comb_data = {}
     participant_numbers = [report.stem for report in reports]
+    for participant in participant_numbers:
+        comb_data[participant] = {}
+        comb_data[participant]["notes"] = trial_notes[participant]
+        comb_data[participant]["demos"] = (
+            xls_data["DEMO"]
+            .loc[xls_data["DEMO"]["Participant"] == int(participant)]
+            .squeeze()
+            .to_dict()
+        )
+        comb_data[participant]["learn"] = xml_data[(participant, "Learn")]
+        comb_data[participant]["recall"] = xml_data[(participant, "Recall")]
+
+    ### compile data from event subclips for CSV export - loop through all participant, phase
     csv_data = []
     logging.info("   > Compiling CSV data...")
     for participant in participant_numbers:
