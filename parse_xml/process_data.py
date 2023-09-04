@@ -11,6 +11,21 @@ third generation of the following programs:
 - process_video_tree: early attempt at report generation wrapper, gen 1
     - first attempt at a report generation wrapper
     - searches dir tree, finds xmls files, calls generate_markdown_report, and writes that report
+
+TODO:
+- High Priority:
+    - separate data gathering and csv / MD output into two different programs so that output comes
+      after changes in R, including errors?
+    - import and clean other tabs in i1_raw_data.xlsx: BCS, TLX, SUS
+- Medium Priority:
+    - refactor / simplify main()
+- Low Priority:
+    - add type hints
+    - add docstrings
+    - convert to Participant Class?
+    - add unit tests
+    - publish public version
+    - improve logging
 """
 
 import csv
