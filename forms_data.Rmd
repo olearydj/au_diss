@@ -21,7 +21,7 @@ library(readxl)
 ### read and clean the demographic data
 
 raw_demog_xls <- read_xlsx(
-  "./data/i1_raw_data.xlsx",
+  "./data/source/i1_raw_data.xlsx",
   na = c("", "N/A"),
   sheet = "DEMO")
 
@@ -38,11 +38,12 @@ demog_xls <- raw_demog_xls |>
   mutate(across(-("participant":"height" | "notes"), as.factor)) |>
   glimpse()
 ```
+
 ```{r}
 ### read and clean the car error data
 
 raw_exp_xls <- read_xlsx(
-  "./data/i1_raw_data.xlsx",
+  "./data/source/i1_raw_data.xlsx",
   sheet = "OUTCOMES")
 
 outcomes <- raw_exp_xls |>
@@ -110,7 +111,7 @@ col_names = c(
   "note"
 )
 
-raw_times_csv <- read_csv("./data/i1_times.csv", col_names=col_names)
+raw_times_csv <- read_csv("./data/csv/i1_times_v2.csv", col_names=col_names)
 
 times <- raw_times_csv |>
   janitor::clean_names() |>
@@ -145,6 +146,7 @@ times <- times |>
   glimpse()
 ```
 
+# Stop Here
 This needs to be reworked after adding data to times.
 
 ```{r}
