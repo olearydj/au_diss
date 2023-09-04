@@ -36,6 +36,7 @@ _book/
 # Test directories
 test_input/
 test_output/
+/test/
 
 # Don't ignore these...
 !issues.md
