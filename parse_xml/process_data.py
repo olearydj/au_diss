@@ -1,4 +1,17 @@
-"""process data, generate timing csv and combined participant reports"""
+"""
+process data, generate timing csv and combined participant reports
+
+third generation of the following programs:
+- generate_combined_reports: main entry point, gen 2
+    - main: combines md comments and extracted XML to generate report and csv
+    - extract_comments: extracts hand-written comments from markdown files
+- parse_xml: called by generate_combined_reports
+    - convert_to_seconds: converts kyno timestamps into seconds
+    - generate_markdown_report: extracts data from XML files, generates markdown report data
+- process_video_tree: early attempt at report generation wrapper, gen 1
+    - first attempt at a report generation wrapper
+    - searches dir tree, finds xmls files, calls generate_markdown_report, and writes that report
+"""
 
 import csv
 import logging
@@ -21,17 +34,18 @@ console = Console()  # rich console
 progress = Progress(console=console)  # rich progress bar
 
 
-REPORT_DIR = "/Users/djo/dev/au/au_diss/reports/"
+DATA_ROOT = "/Users/djo/dev/au/au_diss/data/"
 XML_ROOT = "/Volumes/ThunderBay mini/Research Master/data/"
 BOX_ROOT = "/Users/djo/Box%20Sync/Tiger%20Motors%20Research%20Team%20Collaboration%20Files/Investigation%201%20Data%20Files/trial-data/"
-XLS_DATA_PATH = "/Users/djo/dev/au/au_diss/data/i1_raw_data.xlsx"
-CSV_OUTPUT_PATH = "/Users/djo/dev/au/au_diss/data/i1_times.csv"
 
-VERBOSE = False
-WRITE_MD = False
-WRITE_CSV = False
+CONSOLE_OUT = False
+MARKDOWN = False
+WRITE_MD = True
+WRITE_CSV = True
+TEST = False
 
 PHASES = {1: "Learn", 2: "Recall"}
+TEST_SET = ["1001", "1003"]
 
 
 def init_logging():
@@ -260,14 +274,14 @@ def extract_comments(md_file_path):
     return md_out
 
 
-def compile_handwritten_feedback(reports: list[Path]):
+def compile_handwritten_feedback(notes: list[Path]):
     # for each trial report, extract script comments and feedback from hand-transcribed notes
     trial_notes = {}
-    for report in reports:
+    for note in notes:
         # e.g. if report = /Users/djo/dev/au/au_diss/reports/1001.md
-        report_num = report.stem  # '1001'
+        report_num = note.stem  # '1001'
 
-        trial_notes[report_num] = extract_comments(report)
+        trial_notes[report_num] = extract_comments(note)
     return trial_notes
 
 
@@ -290,34 +304,39 @@ def compile_csv_data(p_data, participant):
 
 
 def main(
-    REPORT_DIR: str = REPORT_DIR,
-    verbose: bool = VERBOSE,
-    write_md: bool = WRITE_MD,
-    write_csv: bool = WRITE_CSV,
+    data_root: str = typer.Option(DATA_ROOT, help="Data root directory"),
+    console_out: bool = typer.Option(CONSOLE_OUT, help="Print reports to the console"),
+    markdown: bool = typer.Option(MARKDOWN, help="Console output rendered in markdown"),
+    write_md: bool = typer.Option(WRITE_MD, help="Enable writing MD reports"),
+    write_csv: bool = typer.Option(WRITE_CSV, help="Enable writing CSV files"),
+    test: bool = typer.Option(TEST, help="Run on a subset of participants"),
 ):
-    """
-    Write output:
-      - CSV
-      - markdown reports
-    """
     logger.info("-- Entering main...")
 
+    # define paths
+    data_root = Path(data_root)  # root directory for most data IO
+    source_path = data_root / "source"  # ingest data from here, e.g. XLS file
+    notes_path = source_path / "notes"  # ingest trial notes here, e.g. 1001.md
+    csv_out_path = data_root / "csv"  # output CSV data here
+    md_out_path = data_root / "reports"  # output all MD reports here
+    xml_path = Path(XML_ROOT)  # root directory for video annotation XML files
+
+    xls_in_file = source_path / "i1_raw_data.xlsx"
+    csv_out_file = csv_out_path / "i1_times_v2.csv"
+
     ### compile feedback from hand-transcribed notes - loop through all ????.md files
-    report_path = Path(REPORT_DIR)
-    reports = sorted(report_path.glob("????.md"))
+    reports = sorted(notes_path.glob("????.md"))
     logger.info(f"   > Compiling handwritten feedback...")
     trial_notes = compile_handwritten_feedback(reports)
 
     ### extract video annotation data from all XML files in the tree - loop through all XML files
-    xml_path = Path(XML_ROOT)
     xml_files = list(xml_path.rglob("*.xml"))
     logger.info(f"   > Extracting XML data for {len(xml_files)} videos...")
     xml_data = extract_data_from_xml(xml_files)
 
     ### extract data from i1_raw_data.xls
-    xls_data_path = Path(XLS_DATA_PATH)
     logger.info(f"   > Extracting data from XLS...")
-    xls_data = pd.read_excel(xls_data_path, sheet_name=None)
+    xls_data = pd.read_excel(xls_in_file, sheet_name=None)
 
     ### restructure data
     comb_data = {}
@@ -345,30 +364,30 @@ def main(
     for participant, data in sorted(comb_data.items()):
         md_reports[participant] = generate_markdown_report(data, participant)
 
-    print(md_reports["1001"])
+    # output reports to console and/or files
+    for participant, report in sorted(md_reports.items()):
+        if test and participant not in TEST_SET:
+            continue
 
-    # # print result to console
-    # if verbose:
-    #     if verbose == "md":
-    #         md = Markdown(combined_report)
-    #         console.print(md)
-    #     else:
-    #         for line in combined_report:
-    #             print(line, end="")
+        if console_out:
+            if markdown:
+                md = Markdown(report)
+                console.print(md)
+            else:
+                for line in report:
+                    print(line, end="")
+        if write_md:
+            report_file = md_out_path / f"{participant}-combined.md"
+            with report_file.open("w") as file:
+                file.write(report)
 
-    # # write combined report as md file
-    # if write_md:
-    #     output_path = report_path / f"{participant}-combined.md"
-    #     with output_path.open("w") as file:
-    #         file.write(combined_report)
-
-    # if write_csv:
-    #     with open(CSV_PATH, "w", newline="") as file:
-    #         writer = csv.writer(file)
-    #         writer.writerows(event_data)
-    #     logger.info("CSV written")
-    # else:
-    #     logger.info("No CSV written")
+    if write_csv:
+        with open(csv_out_file, "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(csv_data)
+        logger.info(f"{csv_out_file} written to {csv_out_path}")
+    else:
+        logger.info(f"No CSV written to {csv_out_path}")
 
     # assign each event in event_data to an outcome (complete, incomplete, retired, comment)
     # do this in R - take best guess algorithmically then build a patch file by hand and incorporate those changes
@@ -380,15 +399,3 @@ if __name__ == "__main__":
     logger.info("-- Logging setup complete.")
 
     typer.run(main)
-
-"""
-- generate_combined_reports: main entry point
-    - main: combines md comments and extracted XML to generate report and csv
-    - extract_comments: extracts hand-written comments from markdown files
-- parse_xml: called by generate_combined_reports
-    - convert_to_seconds: converts kyno timestamps into seconds
-    - generate_markdown_report: extracts data from XML files, generates markdown report data
-- process_video_tree: early attempt at report generation wrapper
-    - first attempt at a report generation wrapper
-    - searches dir tree, finds xmls files, calls generate_markdown_report, and writes that report
-"""
