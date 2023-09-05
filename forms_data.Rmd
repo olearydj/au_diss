@@ -90,7 +90,7 @@ outcomes <- outcomes |>
   ) |>
   glimpse()
 
-# write.csv(results, "results.csv", row.names = FALSE)
+write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
 ```
 
 Check that errors add up:
@@ -144,7 +144,101 @@ times <- times |>
     note
   ) |>
   glimpse()
+
 ```
+
+
+```{r}
+library(gt)
+times <- times |>
+  arrange(participant, phase, sequence) |>
+  group_by(participant, phase) |>
+  mutate(
+    end_time = start_time + duration,
+    row_within_group = row_number(),
+    type = case_when(
+      event == "car" ~ "parent",  # all car events are parents
+      event == "drop" ~ "child",  # all drop events are children
+      phase == 2 &
+        event == "pwi" ~ "child",  # all pwi event is a child
+      row_within_group == 1 ~ "parent",  # 1st event in group is a parent
+      TRUE ~ map_chr(row_within_group,  # otherwise assign based on times
+                     ~ ifelse(
+                       !any(start_time[1:(.x - 1)] <= start_time[.x] &
+                              end_time[1:(.x - 1)] >= start_time[.x]),
+                       "parent",
+                       "child"
+                     ))
+    )
+  ) |>
+  ungroup()
+
+```
+
+Modify data after careful review. Done here instead of in the source data so the changes and rationale can be spelled out.
+
+```{r}
+
+ignore_list <- list(
+  c(1018, 1, 2),  # trying to acquire tracking between cars
+  c(1021, 1, 5),  # dismissing HL UI b/w C4 and 5
+  c(1021, 1, 6),  # delayed restart of timer to account for lost clock time
+  c(1026, 1, 3),  # UI dropout b/w C1 and 2
+  c(1026, 1, 4),  # system crash between cars
+  c(1035, 1, 6),  # HL menu popped on, ignored by subject
+  c(1035, 1, 7),  # stopped timer to dismiss HL menu
+  c(1060, 1, 5),  # stopped timer to reset HL system after breakage
+  c(1061, 1, 4)   # stopped timer to correct axle stuck in fixture
+)
+
+# Utility function
+should_ignore <- function(participant, phase, sequence) {
+  any(map_lgl(ignore_list, ~ identical(c(participant, phase, sequence), .x)))
+}
+
+# Update the data
+times <- times |>
+  rowwise() |>
+  mutate(type = if_else(should_ignore(participant, phase, sequence), "ignore", type)) |>
+  ungroup()
+
+```
+
+1. Change the start time of sequence 6 so that it equals the start time of sequence 7 for participant 1018, phase 1.
+2. Make sequence 6 a type "child".
+3. Reverse the order of the sequences.
+
+```{r}
+seq_7_start_time <- times |>
+  filter(participant == 1018, phase == 1, sequence == 7) %>%
+  pull(start_time)
+
+# Now, make the changes as described
+times <- times |>
+  mutate(
+    # Change the start time for sequence 6
+    start_time = if_else(
+      participant == 1018 &
+        phase == 1 & sequence == 6,
+      seq_7_start_time,
+      start_time
+    ),
+    # Change type for sequence 6
+    type = if_else(participant == 1018 &
+                     phase == 1 & sequence == 6, "child", type)
+  ) |>
+  # Change the sequence order
+  rowwise() |>
+  mutate(sequence = if_else(
+    participant == 1018 & phase == 1 & sequence == 6, 7L,
+    if_else(participant == 1018 &
+              phase == 1 & sequence == 7, 6L, sequence)
+  )) |>
+  ungroup()
+
+write.csv(times, "test/times.csv", row.names = FALSE)
+```
+
 
 # Stop Here
 This needs to be reworked after adding data to times.
@@ -174,7 +268,7 @@ results <- outcomes |>
     ) |>
   mutate(e_flag = as.factor(e_flag))
 
-# write.csv(combined, "combined.csv", row.names = FALSE)
+# write.csv(combined, "data/combined.csv", row.names = FALSE)
 
 results <- results |>
   left_join(
