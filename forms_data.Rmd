@@ -149,7 +149,6 @@ times <- times |>
 Flag parent and child events in `times`.
 
 ```{r}
-library(gt)
 times <- times |>
   arrange(participant, phase, sequence) |>
   group_by(participant, phase) |>
@@ -265,8 +264,11 @@ times <- times |>
 
 # Patch times data for (1033, 1, 7) incomplete - was one block short
 times <- times |>
+  mutate(event = as.character(event)) |>  # Convert to character
   mutate(event = ifelse(participant == 1033 &
-                         phase == 1 & sequence == 7, "incomplete", event))
+                         phase == 1 & sequence == 7, "incomplete", event)) |>
+  mutate(event = as.factor(event))  # Convert back to factor if necessary
+
 
 # Patch times data for 1044, 1, 4 - used start time from prior event
 condition <- times$participant == 1044 & times$phase == 1 & times$sequence == 4
@@ -300,10 +302,32 @@ outcomes <- outcomes |>
     !(participant == 1021 & phase == 1 & sequence == 7)
   )
 
-write.csv(times, "test/times.csv", row.names = FALSE)
-write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
+# write.csv(times, "test/times.csv", row.names = FALSE)
+# write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
 
 ```
+
+Clean up tables.
+
+```{r}
+times <- times |>
+  mutate(note = if_else(note == "N/A", 
+                      paste0("(", description, ")"), 
+                      paste0("(", description, ") ", note))) |>
+  select(
+    participant,
+    phase,
+    sequence,
+    event,
+    type,
+    start_time,
+    duration,
+    end_time,
+    note
+  ) |>
+  glimpse()
+```
+
 
 
 Prepare for and execute join, test results.
@@ -352,8 +376,6 @@ missing_matches_times <- times_updated |>
 print(missing_matches_times)
 # result = 2 lines
 
-write.csv(missing_matches_times, "test/times_missing_matches.csv", row.names = FALSE)
-
 # Identify Excess Matches in `outcomes`
 # looking for outcomes that didn't join with any event in `times`
 missing_matches_outcomes <- outcomes_adj |>
@@ -362,10 +384,9 @@ missing_matches_outcomes <- outcomes_adj |>
 print(missing_matches_outcomes)
 # result = 4 lines
 
-write.csv(missing_matches_outcomes, "test/outcomes_missing_matches.csv", row.names = FALSE)
-
 ```
 
+No mismatches!!
 
 
 # Stop Here
