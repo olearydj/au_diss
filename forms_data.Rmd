@@ -90,7 +90,6 @@ outcomes <- outcomes |>
   ) |>
   glimpse()
 
-write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
 ```
 
 Check that errors add up:
@@ -147,6 +146,7 @@ times <- times |>
 
 ```
 
+Flag parent and child events in `times`.
 
 ```{r}
 library(gt)
@@ -210,10 +210,10 @@ times <- times |>
 
 ```{r}
 seq_7_start_time <- times |>
-  filter(participant == 1018, phase == 1, sequence == 7) %>%
+  filter(participant == 1018, phase == 1, sequence == 7) |>
   pull(start_time)
 
-# Now, make the changes as described
+# Now, make the changes as described above to correct (1018, 1, 6)
 times <- times |>
   mutate(
     # Change the start time for sequence 6
@@ -236,8 +236,136 @@ times <- times |>
   )) |>
   ungroup()
 
-write.csv(times, "test/times.csv", row.names = FALSE)
 ```
+
+Correct issues in the data identified during the join process.
+
+```{r}
+# several cars were recorded in the times table as incomplete, but not progress
+# was made, therefore they weren't recorded in the outcome table
+# mark these for ignore
+ignore_list <- list(
+  c(1005, 1, 4),  # last car not started
+  c(1008, 1, 8),  # last car not started
+  c(1014, 2, 1),  # first car defect, not started
+  c(1036, 1, 6),  # last car not started
+  c(1047, 1, 5)   # duplicate subclip in video annotation
+)
+
+# Utility function, duplicated from above
+should_ignore <- function(participant, phase, sequence) {
+  any(map_lgl(ignore_list, ~ identical(c(participant, phase, sequence), .x)))
+}
+
+# Patch times data to set the type to `ignore` for listed cars
+times <- times |>
+  rowwise() |>
+  mutate(type = if_else(should_ignore(participant, phase, sequence), "ignore", type)) |>
+  ungroup()
+
+# Patch times data for (1033, 1, 7) incomplete - was one block short
+times <- times |>
+  mutate(event = ifelse(participant == 1033 &
+                         phase == 1 & sequence == 7, "incomplete", event))
+
+# Patch times data for 1044, 1, 4 - used start time from prior event
+condition <- times$participant == 1044 & times$phase == 1 & times$sequence == 4
+
+times <- times |>
+  mutate(
+    start_time = ifelse(condition, 584, start_time),
+    duration = ifelse(condition, 18.033, duration),
+    type = ifelse(condition, "parent", type)
+  )
+
+# Patch outcomes data for (1033, 1) to insert a car between 3 and 5
+# Move 4 to 5
+outcomes <- outcomes |>
+  mutate(sequence = if_else(participant == 1033 & phase == 1 & sequence == 4, 5, sequence))
+
+# Create a copy of row 3 as 4
+new_record <- outcomes |>
+  filter(participant == 1033, phase == 1, sequence == 3) |>
+  mutate(sequence = 4)
+
+# Append the new record to the outcomes table and resort the result
+outcomes <- bind_rows(outcomes, new_record) |>
+  arrange(participant, phase, sequence)
+
+# Drop rows in outcomes corresponding to (1019, 1, 8 and 9) and (1021, 1, 7),
+# due to: duplicate (c&p error?), no progress, no progress
+outcomes <- outcomes |>
+  filter(
+    !(participant == 1019 & phase == 1 & sequence %in% c(8, 9)) & 
+    !(participant == 1021 & phase == 1 & sequence == 7)
+  )
+
+write.csv(times, "test/times.csv", row.names = FALSE)
+write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
+
+```
+
+
+Prepare for and execute join, test results.
+
+```{r}
+outcomes_adj <- outcomes |>
+  # Remove 'comment' results
+  filter(result != "comment") |>
+  # Adjust sequence numbers
+  group_by(participant, phase) |>
+  mutate(sequence_adj = row_number()) |>
+  ungroup()
+
+times_updated <- times |>
+  filter(type == "parent") |>
+  group_by(participant, phase) |>
+  mutate(sequence_adj = row_number()) |>
+  ungroup()
+
+times_updated <-
+  left_join(times_updated,
+            outcomes_adj,
+            by = c("participant", "phase", "sequence_adj"))
+
+```
+
+Check results...
+
+```{r}
+# Check for Duplicate Matches
+# does more than one parent event exists in times for each outcome?
+redundant_matches <- times_updated |>
+  group_by(participant, phase, sequence_adj) |>
+  tally() |>
+  filter(n > 1)
+
+print(redundant_matches)
+# result = none
+
+
+# Identify Missing Matches in `times`
+# looking for parent events in `times` that don't have a matching outcome
+missing_matches_times <- times_updated |>
+  filter(is.na(result))
+
+print(missing_matches_times)
+# result = 2 lines
+
+write.csv(missing_matches_times, "test/times_missing_matches.csv", row.names = FALSE)
+
+# Identify Excess Matches in `outcomes`
+# looking for outcomes that didn't join with any event in `times`
+missing_matches_outcomes <- outcomes_adj |>
+  anti_join(times_updated, by = c("participant", "phase", "sequence_adj"))
+
+print(missing_matches_outcomes)
+# result = 4 lines
+
+write.csv(missing_matches_outcomes, "test/outcomes_missing_matches.csv", row.names = FALSE)
+
+```
+
 
 
 # Stop Here
@@ -279,7 +407,7 @@ results <- results |>
 # needs updating...
 
 # reorder columns
-# results <- results %>%
+# results <- results |>
 #   select(
 #     participant,
 #     treatment,
