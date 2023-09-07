@@ -390,62 +390,6 @@ write.csv(joined, "test/joined.csv", row.names = FALSE)
 ```
 
 
-```{r}
-outcomes_adj <- outcomes |>
-  # Remove 'comment' results
-  filter(result != "comment") |>
-  # Adjust sequence numbers
-  group_by(participant, phase) |>
-  mutate(sequence_adj = row_number()) |>
-  ungroup()
-
-times_updated <- times |>
-  filter(type == "parent") |>
-  group_by(participant, phase) |>
-  mutate(sequence_adj = row_number()) |>
-  ungroup()
-
-times_updated <-
-  left_join(times_updated,
-            outcomes_adj,
-            by = c("participant", "phase", "sequence_adj"))
-
-```
-
-Check results...
-
-```{r}
-# Check for Duplicate Matches
-# does more than one parent event exists in times for each outcome?
-redundant_matches <- times_updated |>
-  group_by(participant, phase, sequence_adj) |>
-  tally() |>
-  filter(n > 1)
-
-print(redundant_matches)
-# result = none
-
-
-# Identify Missing Matches in `times`
-# looking for parent events in `times` that don't have a matching outcome
-missing_matches_times <- times_updated |>
-  filter(is.na(result))
-
-print(missing_matches_times)
-# result = 2 lines
-
-# Identify Excess Matches in `outcomes`
-# looking for outcomes that didn't join with any event in `times`
-missing_matches_outcomes <- outcomes_adj |>
-  anti_join(times_updated, by = c("participant", "phase", "sequence_adj"))
-
-print(missing_matches_outcomes)
-# result = 4 lines
-
-```
-
-No mismatches!!
-
 # Stop Here
 This needs to be reworked after adding data to times.
 
