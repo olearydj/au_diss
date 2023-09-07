@@ -302,22 +302,41 @@ outcomes <- outcomes |>
     !(participant == 1021 & phase == 1 & sequence == 7)
   )
 
-# write.csv(times, "test/times.csv", row.names = FALSE)
-# write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
-
 ```
+
 
 Clean up tables.
 
+Assign all observations in both tables a serial number?
+events:   {participant}{phase}{outcome sequence number}{event sequence number}
+e.g.:
+1001-P1-C1-E1A - first phase, first outcome, first event, first subevent
+Assign parent for children?
+
 ```{r}
+# combine the description (original event name) and note fields
 times <- times |>
   mutate(note = if_else(note == "N/A", 
                       paste0("(", description, ")"), 
-                      paste0("(", description, ") ", note))) |>
+                      paste0("(", description, ") ", note)))
+
+# assign a UID for each time event, e.g. 1001-P1-C1-T0
+times <- times |>
+  filter(type != "ignore") |>
+  group_by(participant, phase) |>
+  mutate(parent_seq = cumsum(type == "parent")) |>
+  group_by(participant, phase, parent_seq) |>
+  mutate(child_seq = if_else(type == "child", cumsum(type == "child"), 0)) |>
+  ungroup() |>
+  mutate(UIDT = paste0(participant, "-P", phase, "-C", parent_seq, "-T", child_seq))
+
+# drop some fields and reorder others
+times <- times |>
   select(
     participant,
     phase,
     sequence,
+    UIDT,
     event,
     type,
     start_time,
@@ -326,9 +345,34 @@ times <- times |>
     note
   ) |>
   glimpse()
+
+# assign a UID for each outcome, e.g. 1001-P1-C1, and choose / order fields
+outcomes <- outcomes |>
+  group_by(participant, phase) |>
+  mutate(UID_O = paste(participant, 
+                     paste0("P", phase), 
+                     paste0("C", sequence), 
+                     sep = "-")) |>
+  ungroup() |>
+  select(
+    participant,
+    phase,
+    sequence,
+    UID_O,
+    result,
+    ce,
+    uce,
+    sel,
+    pos,
+    rot,
+    count,
+    notes
+  ) |>
+  glimpse()
+
+# write.csv(times, "test/times.csv", row.names = FALSE)
+# write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
 ```
-
-
 
 Prepare for and execute join, test results.
 
@@ -387,7 +431,6 @@ print(missing_matches_outcomes)
 ```
 
 No mismatches!!
-
 
 # Stop Here
 This needs to be reworked after adding data to times.
