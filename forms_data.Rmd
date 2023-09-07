@@ -328,7 +328,12 @@ times <- times |>
   group_by(participant, phase, parent_seq) |>
   mutate(child_seq = if_else(type == "child", cumsum(type == "child"), 0)) |>
   ungroup() |>
-  mutate(UIDT = paste0(participant, "-P", phase, "-C", parent_seq, "-T", child_seq))
+  mutate(UIDT = paste0(
+    participant,
+    "-P", phase,
+    "-C", parent_seq,
+    "-T", sprintf("%02d", child_seq)
+  ))
 
 # drop some fields and reorder others
 times <- times |>
@@ -349,7 +354,7 @@ times <- times |>
 # assign a UID for each outcome, e.g. 1001-P1-C1, and choose / order fields
 outcomes <- outcomes |>
   group_by(participant, phase) |>
-  mutate(UID_O = paste(participant, 
+  mutate(UIDO = paste(participant, 
                      paste0("P", phase), 
                      paste0("C", sequence), 
                      sep = "-")) |>
@@ -358,7 +363,7 @@ outcomes <- outcomes |>
     participant,
     phase,
     sequence,
-    UID_O,
+    UIDO,
     result,
     ce,
     uce,
@@ -375,6 +380,15 @@ outcomes <- outcomes |>
 ```
 
 Prepare for and execute join, test results.
+
+```{r}
+joined <- times %>%
+  mutate(UIDT_sub = str_replace(UIDT, "-T\\d{1,2}$", "")) |>
+  full_join(outcomes, by = c("UIDT_sub" = "UIDO"))
+
+write.csv(joined, "test/joined.csv", row.names = FALSE)
+```
+
 
 ```{r}
 outcomes_adj <- outcomes |>
