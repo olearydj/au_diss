@@ -222,6 +222,9 @@ times <- times |>
       seq_7_start_time,
       start_time
     ),
+    # Correct duration of that event
+    duration = if_else(participant == 1018 &
+                         phase == 1 & sequence == 6, 13.07, duration),
     # Change type for sequence 6
     type = if_else(participant == 1018 &
                      phase == 1 & sequence == 6, "child", type)
@@ -237,7 +240,7 @@ times <- times |>
 
 ```
 
-Correct issues in the data identified during the join process.
+Correct issues in the data identified during the first join process and subsequent review of data.
 
 ```{r}
 # several cars were recorded in the times table as incomplete, but not progress
@@ -304,14 +307,7 @@ outcomes <- outcomes |>
 
 ```
 
-
 Clean up tables.
-
-Assign all observations in both tables a serial number?
-events:   {participant}{phase}{outcome sequence number}{event sequence number}
-e.g.:
-1001-P1-C1-E1A - first phase, first outcome, first event, first subevent
-Assign parent for children?
 
 ```{r}
 # combine the description (original event name) and note fields
@@ -388,6 +384,103 @@ joined <- times %>%
 
 write.csv(joined, "test/joined.csv", row.names = FALSE)
 ```
+
+## Observations when thinking about how to organize the data from here... how will it be used?
+
+Child events will be handled differently based on analysis goals.
+1. Events that affect individual (build times) or system (down time) performance. These will be used to apply corrections and/or calculate OEE. Ultimately these will adjust the outcome data used for the primary analysis.
+2. PWI references will be aggregated per car (total number and duration of PWI events). This will aid in the assessment of recall.
+3. Other analysis. The event data can be used to support other analysis, e.g. the relationship between number of drops or total system down time and SUS / TLX results.
+
+
+Second cleaning pass, after improved join and review of child events. Three classes of event:
+1. Drop events
+2. PWI events
+3. All other types (e.g. reset, system, tracking, video, etc.)
+
+First, I reviewed the third type, "other." In doing so, I identified three more general classes:
+- Ignore: events that occured between cars and therefore had no impact on analysis
+- System: delays introduced into the parent car build due to system-related issues, e.g. HL menu appears / dismissing, crashes and resets, model tracking acquisition
+- Repair: delays introduced into the parent car build due to the participant's decision to make repairs rather than retire the car
+
+In total there were 20 such events, all of which are corrected in the following code block.
+
+```{r}
+## re-classify misc event types as ignore, system, or repair
+
+# IGNORE: patch times to ignore events that will have no impact on analysis
+ignore_list <- list(
+  c(1006, 1, 3),  # video recording drop, no performance impact
+  c(1007, 1, 3),  # video recording drop, no performance impact
+  c(1007, 1, 6),  # video recording drop, no performance impact
+  c(1030, 1, 2),  # time lost to clock after car 1 marked incomplete due to crash
+  c(1041, 1, 4)   # car 3 finished prior to breakage, so this occurred b/w cars
+)
+
+# Utility function, duplicated from above
+should_ignore <- function(participant, phase, sequence) {
+  any(map_lgl(ignore_list, ~ identical(c(participant, phase, sequence), .x)))
+}
+
+# Patch times data to set the event to `ignore` for listed cars
+times <- times |>
+  rowwise() |>
+  mutate(event = if_else(should_ignore(participant, phase, sequence), "ignore", event)) |>
+  ungroup()
+
+
+# REPAIR: patch times to classify some events as time spent repairing a car
+ignore_list <- list(
+  c(1011, 1, 2),
+  c(1011, 1, 5),
+  c(1014, 1, 2),
+  c(1063, 1, 5)
+)
+
+# Utility function, duplicated from above
+should_ignore <- function(participant, phase, sequence) {
+  any(map_lgl(ignore_list, ~ identical(c(participant, phase, sequence), .x)))
+}
+
+# Patch times data to set the event to `reapair` for listed cars
+times <- times |>
+  rowwise() |>
+  mutate(event = if_else(should_ignore(participant, phase, sequence), "repair", event)) |>
+  ungroup()
+
+  
+# SYSTEM: patch times to classify some events as time lost to system issues
+ignore_list <- list(
+  c(1018, 1, 4), # trying to acquire tracking during HMDMR
+  c(1018, 1, 7), # trying to acquire tracking during HMDMR
+  c(1026, 1, 6), # interrupted by HL menu and time to deactivate it
+  c(1039, 1, 2), # system drop and crash on the clock during car 1
+  c(1039, 1, 3), # resetting system during car 1
+  c(1055, 1, 8), # during car 3 clip
+  c(1057, 1, 4), # dismiss HL menu during car 3 clip
+  c(1057, 2, 2), # dismiss HL menu during car 1 clip
+  c(1057, 2, 5), # dismiss HL menu during car 3 clip
+  c(1063, 1, 13), # system drop and crash on the clock during car 2
+  c(1063, 1, 14) # system reset during car 2 clip
+)
+
+# Utility function, duplicated from above
+should_ignore <- function(participant, phase, sequence) {
+  any(map_lgl(ignore_list, ~ identical(c(participant, phase, sequence), .x)))
+}
+
+# Patch times data to set the event to `reapair` for listed cars
+times <- times |>
+  rowwise() |>
+  mutate(event = if_else(should_ignore(participant, phase, sequence), "system", event)) |>
+  ungroup()
+
+write.csv(times, "test/times.csv", row.names = FALSE)
+```
+
+
+
+
 
 
 # Stop Here
