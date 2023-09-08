@@ -430,7 +430,7 @@ times <- times |>
 
 
 # REPAIR: patch times to classify some events as time spent repairing a car
-ignore_list <- list(
+patch_list <- list(
   c(1011, 1, 2),
   c(1011, 1, 5),
   c(1014, 1, 2),
@@ -438,19 +438,19 @@ ignore_list <- list(
 )
 
 # Utility function, duplicated from above
-should_ignore <- function(participant, phase, sequence) {
-  any(map_lgl(ignore_list, ~ identical(c(participant, phase, sequence), .x)))
+should_patch <- function(participant, phase, sequence) {
+  any(map_lgl(patch_list, ~ identical(c(participant, phase, sequence), .x)))
 }
 
 # Patch times data to set the event to `reapair` for listed cars
 times <- times |>
   rowwise() |>
-  mutate(event = if_else(should_ignore(participant, phase, sequence), "repair", event)) |>
+  mutate(event = if_else(should_patch(participant, phase, sequence), "repair", event)) |>
   ungroup()
 
   
 # SYSTEM: patch times to classify some events as time lost to system issues
-ignore_list <- list(
+patch_list <- list(
   c(1018, 1, 4), # trying to acquire tracking during HMDMR
   c(1018, 1, 7), # trying to acquire tracking during HMDMR
   c(1026, 1, 6), # interrupted by HL menu and time to deactivate it
@@ -465,23 +465,28 @@ ignore_list <- list(
 )
 
 # Utility function, duplicated from above
-should_ignore <- function(participant, phase, sequence) {
-  any(map_lgl(ignore_list, ~ identical(c(participant, phase, sequence), .x)))
+should_patch <- function(participant, phase, sequence) {
+  any(map_lgl(patch_list, ~ identical(c(participant, phase, sequence), .x)))
 }
 
 # Patch times data to set the event to `reapair` for listed cars
 times <- times |>
   rowwise() |>
-  mutate(event = if_else(should_ignore(participant, phase, sequence), "system", event)) |>
+  mutate(event = if_else(should_patch(participant, phase, sequence), "system", event)) |>
   ungroup()
 
 write.csv(times, "test/times.csv", row.names = FALSE)
 ```
 
 
+- go through all drop events
+  - assess the percentage of its duration that impacted performance
+  - this should be considered similar to / the same as system time, track separately for now
 
+add adj_duration field to times
+for all parent observations, the adj_duration = duration - sum(durations of (system, repair, drop))
 
-
+drop ignore lines from times
 
 # Stop Here
 This needs to be reworked after adding data to times.
