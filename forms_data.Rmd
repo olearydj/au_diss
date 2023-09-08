@@ -378,7 +378,7 @@ outcomes <- outcomes |>
 Prepare for and execute join, test results.
 
 ```{r}
-joined <- times %>%
+joined <- times |>
   mutate(UIDT_sub = str_replace(UIDT, "-T\\d{1,2}$", "")) |>
   full_join(outcomes, by = c("UIDT_sub" = "UIDO"))
 
@@ -469,7 +469,7 @@ should_patch <- function(participant, phase, sequence) {
   any(map_lgl(patch_list, ~ identical(c(participant, phase, sequence), .x)))
 }
 
-# Patch times data to set the event to `reapair` for listed cars
+# Patch times data to set the event to `repair` for listed cars
 times <- times |>
   rowwise() |>
   mutate(event = if_else(should_patch(participant, phase, sequence), "system", event)) |>
@@ -478,15 +478,38 @@ times <- times |>
 write.csv(times, "test/times.csv", row.names = FALSE)
 ```
 
+Went through all drop events to assess the percentage of its duration that impacted performance.  Created a table of the results, where percentatges range from 0.0 (no impact) to 1.0 (full).
 
-- go through all drop events
-  - assess the percentage of its duration that impacted performance
-  - this should be considered similar to / the same as system time, track separately for now
+Now add adj_drop time to times table.
+
+```{r}
+raw_adj_drops <- read_xlsx("./data/source/adjusted_drop_events.xlsx") |>
+  janitor::clean_names()
+
+test <- times |>
+  left_join(raw_adj_drops, by = c("participant" = "part", "phase", "sequence" = "t_seq")) |>
+  mutate(
+    adj_drop = ifelse(
+      event == "drop", 
+      duration * coalesce(how_much, 1),  # If 'how_much' is missing, we assume a default value of 1
+      NA_real_
+    )
+  ) |>
+  glimpse()
+
+```
+
 
 add adj_duration field to times
 for all parent observations, the adj_duration = duration - sum(durations of (system, repair, drop))
 
 drop ignore lines from times
+
+Notes from reviewing drop events:
+- consider adding a step to sort all time events by start and diff results with current times.csv
+- some issues where event times start between cars, get associated with prior car, should be with next (e.g. 1050,1,4)
+- or overlap two cars
+- what about when a drop happens during breakage? double-charging for the time
 
 # Stop Here
 This needs to be reworked after adding data to times.
