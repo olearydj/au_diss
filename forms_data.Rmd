@@ -582,137 +582,50 @@ joined_augmented <- joined |>
 ```
 
 Automated tests.
+Check that the aggregated data for each parent matches the sum of its child rows for all event types.
 
-```{r}
+```{r, echo=FALSE, results='hide', message=TRUE}
+# Create a function to perform tests for each event type
+perform_tests <- function(event_type) {
+  
+  # Corresponding column names for aggregated counts and durations
+  event_ct_col <- paste0(event_type, "_event_ct")
+  event_time_col <- paste0(event_type, "_event_time")
+  
+  # Duration column in the original dataset
+  duration_col <- ifelse(event_type == "drop", "adj_drop", "duration")
+  
+  # Test 1: Compare total number of child events for original and aggregated data
+  total_original <- sum(joined$event == event_type, na.rm = TRUE)
+  total_aggregated <- joined_augmented %>%
+    filter(type == "parent") %>%
+    summarize(total = sum(!!sym(event_ct_col), na.rm = TRUE)) %>%
+    pull(total)
+  
+  stopifnot(total_original == total_aggregated)
+  
+  # Test 2: Compare total duration for original and aggregated data
+  total_duration_original <- joined %>%
+    filter(event == event_type) %>%
+    summarise(total_duration = sum(!!sym(duration_col), na.rm = TRUE)) %>%
+    pull(total_duration)
+  
+  total_duration_aggregated <- joined_augmented %>%
+    filter(type == "parent") %>%
+    summarise(total_duration = sum(!!sym(event_time_col), na.rm = TRUE)) %>%
+    pull(total_duration)
+  
+  stopifnot(total_duration_original == total_duration_aggregated)
+  
+  message(paste0("All tests passed for event type: ", event_type))
+}
 
-# # check aggregated results for double-counted rows
-# # get number of drop events in joined table
-# original_drops_count <- joined %>% 
-#   filter(event == "drop") %>% 
-#   nrow()
-# 
-# # get number of drop events in aggregated data
-# aggregated_drops_count <- joined_augmented %>% 
-#   filter(!is.na(drop_event_ct)) %>% 
-#   summarise(total = sum(drop_event_ct, na.rm = TRUE)) %>%
-#   pull(total)
-# 
-# # compare the two results
-# stopifnot(original_drops_count == aggregated_drops_count)
-# 
-# # find duplicated serial numbers in augmented data
-# joined_augmented %>% 
-#   filter(!is.na(drop_event_ct)) %>%
-#   group_by(UIDT_sub) %>% 
-#   tally(sort = TRUE) %>% 
-#   filter(n > 1)
-# 
-# 
-# # do the total number of child events for each event type match summed counts?
-# total_drops_original <- sum(joined$event == "drop", na.rm = TRUE)
-# total_drops_aggregated <- sum(filtered_joined_augmented$drop_event_ct, na.rm = TRUE)
-# 
-# print(total_drops_original)    # 77
-# print(total_drops_aggregated)  # 89
-# 
-# stopifnot(total_drops_original == total_drops_aggregated)
-# 
-# # does the total duration for each event match the summed durations
-# total_duration_drop_original <- sum(joined$adj_drop[joined$event == "drop"], na.rm = TRUE)
-# total_duration_drop_aggregated <- sum(filtered_joined_augmented$drop_event_time, na.rm = TRUE)
-# 
-# stopifnot(total_duration_drop_original == total_duration_drop_aggregated)
-# 
-# # check for NAs in aggregated counts and durations
-# stopifnot(all(!is.na(filtered_joined_augmented$drop_event_ct)))
-# 
-# # for all parents, if the count for an event type is > 0, its time should also be
-# # PASSES
-# inconsistent_rows <- with(filtered_joined_augmented, 
-#                           which((drop_event_ct > 0 & drop_event_time == 0) | 
-#                                 (drop_event_ct == 0 & drop_event_time > 0)))
-# 
-# stopifnot(length(inconsistent_rows) == 0)
+# List of event types
+event_types <- c("drop", "pwi", "repair", "system")
+
+# Apply the function to each event type
+invisible(lapply(event_types, perform_tests))
 
 ```
 
-
-
-# Stop Here
-This needs to be reworked after adding data to times.
-
-```{r}
-# library(gt)
-
-# add temporary match_condition for the join
-# need to match rows where results$result = "complete" and times$event = "car"
-outcomes <- outcomes |>
-  mutate(match_condition = result == "complete")
-
-times <- times |>
-  mutate(match_condition = event == "car")
-
-# full join to preserve all rows from both tables
-results <- outcomes |>
-  full_join(
-    times,
-    by = c("participant", "phase", "number", "match_condition")
-    ) |>
-  rename(
-    e_notes = notes,
-    t_notes = note,
-#    t_flag = event,
-    e_flag = flag
-    ) |>
-  mutate(e_flag = as.factor(e_flag))
-
-# write.csv(combined, "data/combined.csv", row.names = FALSE)
-
-results <- results |>
-  left_join(
-    demog_xls |> select(participant, treatment),
-    by = "participant"
-  )
-
-# needs updating...
-
-# reorder columns
-# results <- results |>
-#   select(
-#     participant,
-#     treatment,
-#     phase,
-#     sequence,
-#     description,
-#     event,
-#     number,
-#     start_time,
-#     duration,
-#     e_flag,
-#     ce,
-#     uce,
-#     sel,
-#     pos,
-#     rot,
-#     count,
-#     e_notes,
-#     t_notes
-#   )
-
-# write.csv(combined, "combined.csv", row.names = FALSE)
-
-# output table
-# gt(car_data)
-```
-
-
-```{r}
-### play with plots (EDA)
-
-library(gtExtras)
-
-exp_xls |>
-  filter(phase == 1) |>
-  gt_plt_summary()
-```
 
