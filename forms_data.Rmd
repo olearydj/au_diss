@@ -371,17 +371,7 @@ outcomes <- outcomes |>
   ) |>
   glimpse()
 
-# write.csv(times, "test/times.csv", row.names = FALSE)
-# write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
 ```
-
-## Observations when thinking about how to organize the data from here... how will it be used?
-
-Child events will be handled differently based on analysis goals.
-1. Events that affect individual (build times) or system (down time) performance. These will be used to apply corrections and/or calculate OEE. Ultimately these will adjust the outcome data used for the primary analysis.
-2. PWI references will be aggregated per car (total number and duration of PWI events). This will aid in the assessment of recall.
-3. Other analysis. The event data can be used to support other analysis, e.g. the relationship between number of drops or total system down time and SUS / TLX results.
-
 
 Second cleaning pass, after improved join and review of child events. Three classes of event:
 1. Drop events
@@ -490,24 +480,9 @@ times <- times |>
   glimpse()
 
 write.csv(times, "test/times.csv", row.names = FALSE)
-```
-
-```{r}
-# test for duplicate rows in the times table
-times |> 
-  filter(event == "drop") |> 
-  group_by(UIDT) |> 
-  tally(sort = TRUE) |> 
-  filter(n > 1)
+write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
 
 ```
-
-Notes from reviewing drop events:
-- consider adding a step to sort all time events by start and diff results with current times.csv
-- some issues where event times start between cars, get associated with prior car, should be with next (e.g. 1050,1,4)
-- or overlap two cars
-- what about when a drop happens during breakage? double-charging for the time
-
 
 Prepare for and execute join, test results.
 
@@ -602,4 +577,46 @@ invisible(lapply(event_types, perform_tests))
 
 ```
 
+```{r}
+# clean up joined_augmented table
 
+combined <- joined_augmented |>
+  filter(type == "parent") |>
+  select(
+    uid = UIDT_sub,
+    participant = participant.y,
+    phase = phase.y,
+    sequence = sequence.y,
+    car_outcome = result,
+    car_start_time = start_time,
+    car_end_time = end_time,
+    car_elapsed_time = duration,
+    ce:count,
+    drop_event_count = drop_event_ct,
+    drop_event_tot_time = drop_event_time,
+    repair_event_count = repair_event_ct,
+    repair_event_tot_time = repair_event_time,
+    system_event_count = system_event_ct,
+    system_event_tot_time = system_event_time
+  )
+
+write.csv(combined, "test/combined.csv", row.names = FALSE)
+```
+
+
+TODO:
+- "finalize" tables (times, combined) as tabs in XLSX?
+- use combined data to update report generator
+- collect all text data (observation notes in T and O; comment lines in O)
+
+Notes:
+- Observations when thinking about how to organize the data from here... how will it be used?
+  - Child events will be handled differently based on analysis goals.
+    1. Events that affect individual (build times) or system (down time) performance. These will be used to apply corrections and/or calculate OEE. Ultimately these will adjust the outcome data used for the primary analysis.
+    2. PWI references will be aggregated per car (total number and duration of PWI events). This will aid in the assessment of recall.
+    3. Other analysis. The event data can be used to support other analysis, e.g. the relationship between number of drops or total system down time and SUS / TLX results.
+- Observations while reviewing drop events
+  - consider adding a step to sort all time events by start and diff results with current times.csv
+  - some issues where events start b/w cars, get associated with prior car, not next (e.g. 1050,1,4)
+  - or events that overlap two cars
+  - what about when a drop happens during breakage? double-charging for the time
