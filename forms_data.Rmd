@@ -35,8 +35,7 @@ demog_xls <- raw_demog_xls |>
   # move numeric cols to the front
   select(all_of(c("participant", "age", "height")), everything()) |>
   # convert most cols to factors
-  mutate(across(-("participant":"height" | "notes"), as.factor)) |>
-  glimpse()
+  mutate(across(-("participant":"height" | "notes"), as.factor))
 ```
 
 ```{r}
@@ -87,15 +86,8 @@ outcomes <- outcomes |>
     rot,
     count,
     notes
-  ) |>
-  glimpse()
+  )
 
-```
-
-Check that errors add up:
-
-```{r}
-all(outcomes$uce == outcomes$sel + outcomes$pos + outcomes$rot)
 ```
 
 ```{r}
@@ -141,8 +133,7 @@ times <- times |>
     start_time,
     duration,
     note
-  ) |>
-  glimpse()
+  )
 
 ```
 
@@ -372,15 +363,15 @@ outcomes <- outcomes |>
 
 ```
 
-Clean up notes in outcomes. Break out error codes into their own column.
+Clean up notes in outcomes. Break out error codes into their own column. Add the treatment column from demog_xls.
 
 ```{r}
 # Initial separation based on " :: " separator
-outcomes <- outcomes %>%
+outcomes <- outcomes |>
   separate(notes, into = c("potential_error_codes", "comments"), sep = " :: ", fill = "right")
 
-outcomes <- outcomes %>%
-  rowwise() %>%
+outcomes <- outcomes |>
+  rowwise() |>
   mutate(
     error_codes = ifelse(
       str_detect(
@@ -391,10 +382,20 @@ outcomes <- outcomes %>%
       NA
     ),
     comments = ifelse(is.na(error_codes), potential_error_codes, comments)
-  ) %>%
-  ungroup() %>%
+  ) |>
+  ungroup() |>
   select(-potential_error_codes)
 
+# add treatment field from demog_xls and reorder columns
+outcomes <- outcomes |>
+  left_join(select(demog_xls, participant, treatment), by = "participant") |>
+  select(
+    participant,
+    treatment,
+    phase:count,
+    error_codes,
+    outcome_comment = comments
+  )
 
 write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
 ```
@@ -505,8 +506,17 @@ times <- times |>
   filter(event != "ignore") |>
   glimpse()
 
-write.csv(times, "test/times.csv", row.names = FALSE)
+# add treatment field from demog_xls and reorder columns
+times <- times |>
+  left_join(select(demog_xls, participant, treatment), by = "participant") |>
+  select(
+    participant,
+    treatment,
+    phase:adj_drop,
+    event_comment = note
+  )
 
+write.csv(times, "test/times.csv", row.names = FALSE)
 
 ```
 
@@ -534,11 +544,11 @@ generate_event_summary <- function(data, event_type) {
   summary_colname <- paste0(event_type, "_event_ct")
   time_colname <- paste0(event_type, "_event_time")
   
-  data %>%
-    filter(event == event_type) %>%
-    group_by(UIDT_sub) %>%
+  data |>
+    filter(event == event_type) |>
+    group_by(UIDT_sub) |>
     summarise(!!summary_colname := n(),
-              !!time_colname := sum(get(time_col), na.rm = TRUE)) %>%
+              !!time_colname := sum(get(time_col), na.rm = TRUE)) |>
     ungroup()
 }
 
@@ -572,22 +582,22 @@ perform_tests <- function(event_type) {
   
   # Test 1: Compare total number of child events for original and aggregated data
   total_original <- sum(joined$event == event_type, na.rm = TRUE)
-  total_aggregated <- joined_augmented %>%
-    filter(type == "parent") %>%
-    summarize(total = sum(!!sym(event_ct_col), na.rm = TRUE)) %>%
+  total_aggregated <- joined_augmented |>
+    filter(type == "parent") |>
+    summarize(total = sum(!!sym(event_ct_col), na.rm = TRUE)) |>
     pull(total)
   
   stopifnot(total_original == total_aggregated)
   
   # Test 2: Compare total duration for original and aggregated data
-  total_duration_original <- joined %>%
-    filter(event == event_type) %>%
-    summarise(total_duration = sum(!!sym(duration_col), na.rm = TRUE)) %>%
+  total_duration_original <- joined |>
+    filter(event == event_type) |>
+    summarise(total_duration = sum(!!sym(duration_col), na.rm = TRUE)) |>
     pull(total_duration)
   
-  total_duration_aggregated <- joined_augmented %>%
-    filter(type == "parent") %>%
-    summarise(total_duration = sum(!!sym(event_time_col), na.rm = TRUE)) %>%
+  total_duration_aggregated <- joined_augmented |>
+    filter(type == "parent") |>
+    summarise(total_duration = sum(!!sym(event_time_col), na.rm = TRUE)) |>
     pull(total_duration)
   
   stopifnot(total_duration_original == total_duration_aggregated)
@@ -612,6 +622,7 @@ combined <- joined_augmented |>
   select(
     uid = UIDT_sub,
     participant = participant.y,
+    treatment = treatment.x,
     phase = phase.y,
     sequence = sequence.y,
     car_outcome = result,
@@ -624,7 +635,8 @@ combined <- joined_augmented |>
     repair_event_count = repair_event_ct,
     repair_event_tot_time = repair_event_time,
     system_event_count = system_event_ct,
-    system_event_tot_time = system_event_time
+    system_event_tot_time = system_event_time,
+    error_codes
   )
 
 write.csv(combined, "test/combined.csv", row.names = FALSE)
@@ -647,3 +659,4 @@ Notes:
   - some issues where events start b/w cars, get associated with prior car, not next (e.g. 1050,1,4)
   - or events that overlap two cars
   - what about when a drop happens during breakage? double-charging for the time
+- Ignore error codes for incomplete cars (no counts recorded), 1003.1.6 and 1053.1.4
