@@ -368,9 +368,35 @@ outcomes <- outcomes |>
     rot,
     count,
     notes
-  ) |>
-  glimpse()
+  )
 
+```
+
+Clean up notes in outcomes. Break out error codes into their own column.
+
+```{r}
+# Initial separation based on " :: " separator
+outcomes <- outcomes %>%
+  separate(notes, into = c("potential_error_codes", "comments"), sep = " :: ", fill = "right")
+
+outcomes <- outcomes %>%
+  rowwise() %>%
+  mutate(
+    error_codes = ifelse(
+      str_detect(
+        potential_error_codes,
+        "^[A-Z0-9]+( \\([0-9]+(\\+[0-9]+)?\\))?(, [A-Z0-9]+( \\([0-9]+(\\+[0-9]+)?\\))?|; [A-Z0-9]+( \\([0-9]+(\\+[0-9]+)?\\))?)*$"
+      ),
+      potential_error_codes,
+      NA
+    ),
+    comments = ifelse(is.na(error_codes), potential_error_codes, comments)
+  ) %>%
+  ungroup() %>%
+  select(-potential_error_codes)
+
+
+write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
 ```
 
 Second cleaning pass, after improved join and review of child events. Three classes of event:
@@ -480,7 +506,7 @@ times <- times |>
   glimpse()
 
 write.csv(times, "test/times.csv", row.names = FALSE)
-write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
+
 
 ```
 
@@ -576,6 +602,7 @@ event_types <- c("drop", "pwi", "repair", "system")
 invisible(lapply(event_types, perform_tests))
 
 ```
+
 
 ```{r}
 # clean up joined_augmented table
