@@ -525,60 +525,34 @@ Generate two new columns for each type of child event (repair, system, pwi, drop
   - For drop, this will sum the values in adj_drop instead of duration.
 
 ```{r}
-# testing for 1063 and all 4 event types
+# 
+# Define the function to generate event summaries
+generate_event_summary <- function(data, event_type) {
+  time_col <- ifelse(event_type == "drop", "adj_drop", "duration")
+  
+  summary_colname <- paste0(event_type, "_event_ct")
+  time_colname <- paste0(event_type, "_event_time")
+  
+  data %>%
+    filter(event == event_type) %>%
+    group_by(UIDT_sub) %>%
+    summarise(!!summary_colname := n(),
+              !!time_colname := sum(get(time_col), na.rm = TRUE)) %>%
+    ungroup()
+}
 
-# TEST: filter for single participant
-# joined <- joined |>
-#   filter(str_detect(UIDT_sub, "^1063"))
+# Use the function for each event type
+event_types <- c("drop", "repair", "system", "pwi")
+summaries <- lapply(event_types, generate_event_summary, data = joined)
 
-# Calculate the drop_event_ct and drop_event_time
-drop_summary <- joined |>
-  filter(event == "drop") |>
-  group_by(UIDT_sub) |>
-  summarise(
-    drop_event_ct = n(),
-    drop_event_time = sum(adj_drop, na.rm = TRUE)
-  ) |>
-  ungroup()
+# Merge the summaries back with the original dataset
+joined_augmented <- joined
+for (summary in summaries) {
+  joined_augmented <- left_join(joined_augmented, summary, by = "UIDT_sub")
+}
 
-# Calculate the repair_event_ct and repair_event_time
-repair_summary <- joined |>
-  filter(event == "repair") |>
-  group_by(UIDT_sub) |>
-  summarise(
-    repair_event_ct = n(),
-    repair_event_time = sum(duration, na.rm = TRUE)
-  ) |>
-  ungroup()
+write.csv(joined_augmented, "test/joined_aug.csv", row.names = FALSE)
 
-# Calculate the system_event_ct and system_event_time
-system_summary <- joined |>
-  filter(event == "system") |>
-  group_by(UIDT_sub) |>
-  summarise(
-    system_event_ct = n(),
-    system_event_time = sum(duration, na.rm = TRUE)
-  ) |>
-  ungroup()
-
-# Calculate the pwi_event_ct and pwi_event_time
-pwi_summary <- joined |>
-  filter(event == "pwi") |>
-  group_by(UIDT_sub) |>
-  summarise(
-    pwi_event_ct = n(),
-    pwi_event_time = sum(duration, na.rm = TRUE)
-  ) |>
-  ungroup()
-
-# Combine the summaries back with the filtered dataset
-joined_augmented <- joined |>
-  left_join(drop_summary, by = "UIDT_sub") |>
-  left_join(repair_summary, by = "UIDT_sub") |>
-  left_join(system_summary, by = "UIDT_sub") |>
-  left_join(pwi_summary, by = "UIDT_sub")
-
-# write.csv(joined_augmented, "test/joined_aug.csv", row.names = FALSE)
 ```
 
 Automated tests.
