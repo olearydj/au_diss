@@ -642,11 +642,148 @@ combined <- joined_augmented |>
 write.csv(combined, "test/combined.csv", row.names = FALSE)
 ```
 
+Get TLX data and process results.
+
+```{r}
+# load all excel tabs into a list of tables
+target_sheets <- paste0("TLX-", 0:2)
+tlx_tables <-
+  map(target_sheets,
+      ~ read_excel(
+        "./data/source/i1_raw_data.xlsx",
+        na = c("", "N/A"),
+        sheet = .x
+      ))
+
+# make them name indexed, e.g. `tlx_tables[["TLX-0"]]`
+tlx_tables <- set_names(tlx_tables, target_sheets)
+
+tlx <- tlx_tables[["TLX-0"]] |>
+  select(-Notes) |>
+  gather(key = "Question", value = "Response", -Participant) |>
+  separate(Question, into = c("Letter", "Number"), sep = "(?<=^[SR])(?=\\d+$)") |>
+  mutate(Number = as.numeric(Number),
+         Letter = factor(Letter, levels = c("S", "R"))) |>
+  arrange(Participant, Letter, Number) |>
+  unite(Question, Letter, Number, sep = "") |>
+  janitor::clean_names()
+
+```
+
+Score the TLX
+
+```{r}
+# Tally the Sources of Workload Data (weight) for each participant
+# Define the mapping between S columns and sources
+s_to_sources <- list(
+  S1 = c("EF", "PF"),
+  S2 = c("TD", "FF"),
+  S3 = c("PD", "PF"),
+  S4 = c("TD", "MD"),
+  S5 = c("MD", "PD"),
+  S6 = c("TD", "EF"),
+  S7 = c("PD", "FF"),
+  S8 = c("FF", "EF"),
+  S9 = c("PF", "MD"),
+  S10 = c("EF", "PD"),
+  S11 = c("PF", "FF"),
+  S12 = c("PD", "TD"),
+  S13 = c("PF", "TD"),
+  S14 = c("MD", "EF"),
+  S15 = c("FF", "MD")
+)
+
+# Initialize a table for weights
+weights <- data.frame(
+  participant = unique(tlx$participant),
+  MD = 0,
+  PD = 0,
+  TD = 0,
+  PF = 0,
+  EF = 0,
+  FF = 0
+)
+
+# Loop through each participant
+for (part in unique(tlx$participant)[1]) {
+  # Subset data for current participant
+  part_data <-
+    tlx[tlx$participant == part & grepl("^S", tlx$question), ]
+  
+  # Loop through each response to questions S1:S15
+  for (row in 1:nrow(part_data)) {
+    question <- part_data$question[row]
+    response <- part_data$response[row]
+    
+    if (question %in% names(s_to_sources)) {
+      if (response == 1) {
+        top_choice <- s_to_sources[[question]][1]
+        weights[weights$participant == part, top_choice] <-
+          weights[weights$participant == part, top_choice] + 1
+      } else if (response == 2) {
+        bottom_choice <- s_to_sources[[question]][2]
+        weights[weights$participant == part, bottom_choice] <-
+          weights[weights$participant == part, bottom_choice] + 1
+      } else {
+        cat(
+          "Debug: Unexpected response value for participant",
+          part,
+          "on question",
+          question,
+          ": ",
+          response,
+          "\n"
+        )
+      }
+    } else {
+      cat(
+        "Debug: Question",
+        question,
+        "for participant",
+        part,
+        "not found in s_to_sources.\n"
+      )
+    }
+  }
+  
+  print(weights)
+  # Check if total of all sources of workload tallies equals 15 for the current participant
+  total_weight <- sum(weights[weights$participant == part, 2:(ncol(weights)-1)])
+  
+  if (is.na(total_weight)) {
+    cat("Debug: NA encountered for participant", part, "\n")
+    print(part_data)
+  }
+  
+  if (total_weight != 15) {
+      cat(
+        "Warning: Participant",
+        part,
+        "has discrepancies in tallies. Total is",
+        total_weight,
+        "\n"
+      )
+      # Let's print out the current weights for this participant for debugging purposes
+      print(weights[weights$participant == part,])
+      weights$flag[weights$participant == part] <- 1
+  } else {
+      weights$flag[weights$participant == part] <- 0
+  }
+
+  
+}
+
+write.csv(weights, "test/weights.csv", row.names = FALSE)
+```
+
 
 TODO:
+- update data dictionary and sync to box, let Victoria know
 - "finalize" tables (times, combined) as tabs in XLSX?
-- use combined data to update report generator
 - collect all text data (observation notes in T and O; comment lines in O)
+- add other data -> TLX, SUS, BCS
+- use combined data to update report generator
+- analysis!!
 
 Notes:
 - Observations when thinking about how to organize the data from here... how will it be used?
