@@ -665,11 +665,34 @@ tlx_data_tidy <- map_dfr(
     arrange(Participant, q_type, q_num) |>
     # unite(Question, Letter, Number, sep = "") |>
     mutate(phase = which(target_sheets == .x) - 1) |>
-    janitor::clean_names()
+    janitor::clean_names() |>
+    rename(value = response) |>
+    select(participant, phase, everything())
 )
+
 ```
 
-Score the TLX. First, count the weights.
+Rescale the R responses for the first 5 participants. Their scores were recorded using an older version of the scale, with a range of 1 to 7 instead of the 100 point scale used for others. This is corrected by uniformly scaling all values using the formula:
+
+$$\text{transformed_value} = \frac{\text{original_value} - 1}{7 - 1} \times 100$$
+
+```{r}
+tlx_data_tidy <- tlx_data_tidy |>
+  mutate(value = ifelse(
+    q_type == "R" & participant %in% 1001:1007,
+    ceiling((value - 1) / (7 - 1) * 100),  # all results rounded up
+    value
+  ))
+
+```
+
+Score the TLX:
+1. Count responses to pair-wise source of workload comparisons to get a *weight* for each source, `source_weight`. (aka factor weights or raw ratings)
+2. Find the associated *rating* for each source, `source_rating`. (aka magnitude of load or factor ratings)
+3. Calculate the *workload* score for each source, `source_workload = source_weight * source_rating / 15`.
+4. Calculate the total task *workload* score, `task_workload = sum(source_workload)`
+
+First, count the source weights.
 
 ```{r}
 ## Tally the Sources of Workload Data (weight) for each participant
@@ -694,11 +717,11 @@ s_to_sources <- list(
 
 workload_factors <- c("MD", "PD", "TD", "PF", "EF", "FF")
 
-tlx_factor_counts <- tlx_data_tidy |>
+tlx_source_weights <- tlx_data_tidy |>
   filter(q_type == "S") |>
   group_by(participant, phase) |>
   rowwise() |>
-  mutate(choice = s_to_sources[[paste0(q_type, q_num)]][response]) |>
+  mutate(choice = s_to_sources[[paste0(q_type, q_num)]][value]) |>
   ungroup() |>
   count(participant, phase, choice) |>
   pivot_wider(names_from = choice, values_from = n, values_fill = 0) |>
@@ -706,73 +729,140 @@ tlx_factor_counts <- tlx_data_tidy |>
   select(participant, phase, all_of(workload_factors))
 
 # confirm all rows add to 15
-test <- tlx_factor_counts |>
+test <- tlx_source_weights |>
   rowwise() |>
   mutate(total_weight = sum(c_across(all_of(workload_factors)))) |>
   ungroup()
 
 all(test$total_weight == 15)
 
-# write.csv(weights, "test/weights.csv", row.names = FALSE)
+# convert the result to long format like others
+tlx_source_weights <- tlx_source_weights |>
+  pivot_longer(
+    cols = starts_with(workload_factors),
+    names_to = "source",
+    values_to = "value"
+  ) |>
+  mutate(type = "source weight") |>
+  select(participant, phase, source, type, value)
+
 ```
 
-## rework below
-Calculate ratings and adjusted rating.
+Calculate `source_rating` and `source_workload` for each source.
+Then calculate `task_workload` for each (participant, phase).
+Combine all tlx tables into one.
 
 ```{r}
-# Constructing the tidy-format ratings table
-ratings <- data.frame(
-  participant = integer(),
-  source_of_workload = character(),
-  weight_type = character(),
-  value = numeric()
+# create empty data grid
+expanded_data <- expand_grid(
+  participant = unique(tlx_data_tidy$participant),
+  phase = 0:2,
+  workload_index = 1:length(workload_factors)
+) 
+
+# calculate source ratings
+tlx_source_ratings <- expanded_data |>
+  left_join(tlx_data_tidy, by = c("participant", "phase", "workload_index" = "q_num")) |>
+  filter(q_type == "R") |>
+  mutate(
+    source = workload_factors[workload_index],
+    type = "source rating" # ,
+    # value = response
+  ) |>
+  select(participant, phase, source, type, value)
+
+# calculate source workloads
+tlx_source_workloads <- expanded_data |>
+  left_join(tlx_data_tidy, by = c("participant", "phase", "workload_index" = "q_num")) |>
+  filter(q_type == "R") |>
+  mutate(source = workload_factors[workload_index]) |>
+  left_join(tlx_source_weights, by = c("participant", "phase", "source")) |>
+  rowwise() |>
+  mutate(
+    value = value.x * value.y,
+    type = "source workload"
+  ) |>
+  ungroup() |>
+  select(participant, phase, source, type, value)
+
+# calculate task workloads
+tlx_task_workloads <- tlx_source_workloads |>
+  group_by(participant, phase) |>
+  summarise(value = sum(value), .groups = "drop") |>
+  mutate(
+    source = "combined",
+    type = "task workload"
+  )
+
+tlx_scores <- bind_rows(
+  tlx_source_weights,
+  tlx_source_ratings,
+  tlx_source_workloads,
+  tlx_task_workloads
 )
 
-# Loop through each participant
-for (part in unique(tlx$participant)) {
-  
-  # Extract raw ratings for current participant
-  for (source in c("MD", "PD", "TD", "PF", "EF", "FF")) {
-    rating_question <- paste0("R", match(source, c("MD", "PD", "TD", "PF", "EF", "FF")))
-    raw_value <- tlx[tlx$participant == part & tlx$question == rating_question, "response"]
-    
-    # Append raw ratings to the ratings table
-    ratings <- rbind(ratings, data.frame(
-      participant = part,
-      source_of_workload = source,
-      weight_type = "raw",
-      value = raw_value
-    ))
-    
-    # Calculate the adjusted rating
-    adjusted_value <- raw_value * weights[weights$participant == part, source]
-    
-    # Append adjusted ratings to the ratings table
-    ratings <- rbind(ratings, data.frame(
-      participant = part,
-      source_of_workload = source,
-      weight_type = "adjusted",
-      value = adjusted_value
-    ))
-  }
-}
+# add treatment field from demog_xls and reorder columns
+type_order = c("source weight", "source rating", "source workload", "task workload")
 
-# Calculate the weighted rating for each participant and append to the ratings table
-for (part in unique(tlx$participant)) {
-  total_adjusted <- sum(ratings[ratings$participant == part & ratings$weight_type == "adjusted", "value"])
-  weighted_value <- total_adjusted / 15
-  
-  ratings <- rbind(ratings, data.frame(
-    participant = part,
-    source_of_workload = "Overall",
-    weight_type = "weighted",
-    value = weighted_value
-  ))
-}
-
-
+tlx_scores <- tlx_scores |>
+  left_join(select(demog_xls, participant, treatment), by = "participant") |>
+  select(
+    participant,
+    treatment,
+    everything()
+  ) |>
+  arrange(participant, treatment, phase, match(type, type_order), match(source, workload_factors))
 
 ```
+
+Visualize the difference in task workload by treatment type.
+
+```{r}
+# 1. Filter and summarize the data
+tlx_task_workload_summary <- tlx_scores |>
+  filter(type == "task workload", phase == 1) |>
+  group_by(treatment) |>
+  summarise(
+    mean_value = mean(value, na.rm = TRUE),
+    sd_value = sd(value, na.rm = TRUE)
+  )
+
+# 2. Plot the data using ggplot2
+ggplot(tlx_task_workload_summary, aes(x = treatment, y = mean_value)) +
+  geom_bar(stat = "identity", position = "dodge", fill = "skyblue") +
+  geom_errorbar(
+    aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value),
+    width = 0.25, position = position_dodge(0.9)
+  ) +
+  labs(
+    title = "Task Workload by Treatment",
+    y = "Mean Task Workload",
+    x = "Treatment"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+# Filter data for type == "task workload"
+tlx_task_workload <- tlx_scores |> filter(type == "task workload")
+
+# 1. Run the ANOVA
+anova_result <- aov(value ~ treatment, data = tlx_task_workload)
+anova_summary <- summary(anova_result)
+print(anova_summary)
+
+# 2. If significant, conduct a post hoc test
+p_value = anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  post_hoc <- TukeyHSD(anova_result)
+  print(post_hoc)
+} else {
+  print("not significant")
+}
+
+```
+
 
 
 TODO:
