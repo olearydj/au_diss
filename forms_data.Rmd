@@ -815,6 +815,153 @@ tlx_scores <- tlx_scores |>
 
 ```
 
+Process the System Usability Scale Data
+
+```{r}
+# load all excel tabs into a combined tidy tibble
+target_sheets <- paste0("SUS-", 1:2)
+
+sus_data <- map_dfr(
+  target_sheets,
+  ~ read_excel(
+    "./data/source/i1_raw_data.xlsx",
+    na = c("", "N/A"),
+    sheet = .x
+  ) |>
+  mutate(phase = which(target_sheets == .x)) |>
+  janitor::clean_names() |>
+  select(participant, phase, everything(), -notes)
+)
+
+sus_data_tidy <- sus_data |>
+  pivot_longer(cols = starts_with("q"),
+               names_to = "question",
+               values_to = "value") |>
+  mutate(question = as.numeric(str_extract(question, "\\d+"))) |>
+  arrange(participant, phase, question)
+```
+
+calculate System Usability Scores (sus) for each (participant, phase) using this method:
+
+To calculate the SUS score, first sum the score contributions from each item. Each item's score contribution will range from 0 to 4. For items 1,3,5,7,and 9 the score contribution is the scale position minus 1. For items 2,4,6,8 and 10, the contribution is 5 minus the scale position. Multiply the sum of the scores by 2.5 to obtain the overall value of SU.
+
+```{r}
+# add column for score contribution based on question number
+sus_data_tidy <- sus_data_tidy %>%
+  mutate(score_contribution = case_when(
+    question %in% c(1, 3, 5, 7, 9) ~ value - 1,
+    question %in% c(2, 4, 6, 8, 10) ~ 5 - value,
+    TRUE ~ NA_real_  # this line is just a fail-safe
+  ))
+
+# calculate scores for each (participant, phase)
+sus_scores <- sus_data_tidy |>
+  group_by(participant, phase) %>%
+  summarise(sus = sum(score_contribution) * 2.5, .groups = "drop")
+
+sus_scores <- sus_scores |>
+  left_join(select(demog_xls, participant, treatment), by = "participant") |>
+  select(
+    participant,
+    treatment,
+    everything()
+  ) |>
+  arrange(participant, treatment, phase)
+```
+
+Process the Behaviorial Control Survey Data.
+
+```{r}
+
+
+bcs_data <- read_excel(
+    "./data/source/i1_raw_data.xlsx",
+    na = c("", "N/A"),
+    sheet = "BCS"
+  )
+
+bcs_data_tidy <- bcs_data |>
+  janitor::clean_names() |>
+  pivot_longer(cols = starts_with("q"),
+               names_to = "question",
+               values_to = "value") |>
+  mutate(question = as.numeric(str_extract(question, "\\d+"))) |>
+  arrange(participant, question)
+```
+
+Export combined XLSX file.
+
+```{r}
+library(writexl)
+
+write_xlsx(
+  list(
+    "demographics" = demog_xls,
+    "car outcomes" = outcomes,
+    "car times" = times,
+    "car results" = combined,
+    "bcs raw data" = bcs_data_tidy,
+    "system usability scores" = sus_scores,
+    "tlx scores" = tlx_scores
+  ),
+  "./data/combined_results.xlsx"
+)
+```
+
+TODO:
+- update data dictionary and sync to box, let Victoria know
+- collect all text data (observation notes in T and O; comment lines in O)
+- add phase 3
+- use combined data to update report generator
+- analysis!!
+
+Visualize the difference in sus by treatment type.
+
+```{r}
+# 1. Filter and summarize the data
+sus_summary <- sus_scores |>
+  filter(phase == 1) |>
+  group_by(treatment) |>
+  summarise(
+    mean_value = mean(sus, na.rm = TRUE),
+    sd_value = sd(sus, na.rm = TRUE)
+  )
+
+# 2. Plot the data using ggplot2
+ggplot(sus_summary, aes(x = treatment, y = mean_value)) +
+  geom_bar(stat = "identity", position = "dodge", fill = "skyblue") +
+  geom_errorbar(
+    aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value),
+    width = 0.25, position = position_dodge(0.9)
+  ) +
+  labs(
+    title = "SUS by Treatment",
+    y = "Mean SUS",
+    x = "Treatment"
+  ) +
+  theme_minimal()
+
+```
+
+Significant difference?
+
+```{r}
+# 1. Run the ANOVA
+anova_result <- aov(sus ~ treatment, data = sus_scores)
+anova_summary <- summary(anova_result)
+print(anova_summary)
+
+# 2. If significant, conduct a post hoc test
+p_value = anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  post_hoc <- TukeyHSD(anova_result)
+  print(post_hoc)
+} else {
+  print("not significant")
+}
+
+```
+
 Visualize the difference in task workload by treatment type.
 
 ```{r}
@@ -843,6 +990,8 @@ ggplot(tlx_task_workload_summary, aes(x = treatment, y = mean_value)) +
 
 ```
 
+Significant difference?
+
 ```{r}
 # Filter data for type == "task workload"
 tlx_task_workload <- tlx_scores |> filter(type == "task workload")
@@ -863,15 +1012,47 @@ if (p_value < 0.05) {
 
 ```
 
+Try to recreate the visualization from the original TLX instructions.
+Needs some work to account for sources that don't contribute (weight / rating) and fix spacing.
+
+```{r}
+library(RColorBrewer)
+
+participant_id <- 1001  # Replace with the desired participant ID
+phase_num <- 2  # Replace with the desired phase number
+
+# Filter data
+filtered_data <- tlx_scores %>%
+  filter(participant == participant_id, phase == phase_num)
+
+# Create source weight and source rating datasets
+source_weight_data <- filtered_data %>% filter(type == "source weight")
+source_rating_data <- filtered_data %>% filter(type == "source rating")
+
+# Join the datasets
+combined_data <- left_join(source_weight_data, source_rating_data, by = c("participant", "treatment", "phase", "source"))
+
+# Assigning a numeric value to each source based on the order in workload_factors
+combined_data$source_num <- as.numeric(factor(combined_data$source, levels = workload_factors))
+
+# Adding cumulative sum of source weights for bar positioning
+combined_data$cumsum_weight <- ave(combined_data$value.x, combined_data$participant, FUN = cumsum) - (0.5 * combined_data$value.x)
+
+# Plotting using ggplot
+ggplot(combined_data, aes(x = cumsum_weight - 0.5 * value.x, y = value.y, width = value.x, fill = source)) + 
+  geom_col(position = "identity", colour = "black") + 
+  scale_fill_brewer(palette = "Set3", breaks = workload_factors) +
+  scale_y_continuous(limits = c(0, 100)) +
+  scale_x_continuous(name = "Source Weights", limits = c(0, 15),
+                     breaks = combined_data$cumsum_weight - 0.5 * combined_data$value.x,
+                     labels = combined_data$source) + 
+  labs(title = paste("Task Workload Score for Participant", participant_id, "during Phase", phase_num),
+       y = "Source Rating") +
+  theme_minimal() +
+  theme(axis.title.x = element_text(vjust = -0.5))
 
 
-TODO:
-- update data dictionary and sync to box, let Victoria know
-- "finalize" tables (times, combined) as tabs in XLSX?
-- collect all text data (observation notes in T and O; comment lines in O)
-- add other data -> TLX, SUS, BCS
-- use combined data to update report generator
-- analysis!!
+```
 
 Notes:
 - Observations when thinking about how to organize the data from here... how will it be used?
