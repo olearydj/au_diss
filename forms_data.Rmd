@@ -533,24 +533,53 @@ write.csv(joined, "test/joined.csv", row.names = FALSE)
 Generate two new columns for each type of child event (repair, system, pwi, drop):
 - event_ct: This counts the number of child events of each type per parent.
 - event_time: This sums the durations of child events of each type per parent.
-  - For drop, this will sum the values in adj_drop instead of duration.
+- drop events result in normal event columns plus an additional col for adj_drop_time
 
 ```{r}
-# 
 # Define the function to generate event summaries
+# keep original and adjusted drop times
 generate_event_summary <- function(data, event_type) {
-  time_col <- ifelse(event_type == "drop", "adj_drop", "duration")
   
-  summary_colname <- paste0(event_type, "_event_ct")
-  time_colname <- paste0(event_type, "_event_time")
-  
-  data |>
-    filter(event == event_type) |>
-    group_by(UIDT_sub) |>
-    summarise(!!summary_colname := n(),
-              !!time_colname := sum(get(time_col), na.rm = TRUE)) |>
-    ungroup()
+  # If the event type is "drop", we'll handle it specially
+  if (event_type == "drop") {
+    
+    # For count and original duration
+    summary_colname <- "drop_event_ct"
+    time_colname <- "drop_event_time"
+    
+    # For adjusted duration
+    adj_time_colname <- "adj_drop_time"
+    
+    data_subset <- data |> filter(event == event_type)
+    
+    # Summarize for original and adjusted duration
+    result <- data_subset |>
+      group_by(UIDT_sub) |>
+      summarise(
+        !!summary_colname := n(),
+        !!time_colname := sum(duration, na.rm = TRUE),
+        !!adj_time_colname := sum(ifelse(is.na(adj_drop), duration, adj_drop), na.rm = TRUE)
+      ) |>
+      ungroup()
+    return(result)
+    
+  } else { # original logic for other event types
+    
+    time_col <- "duration"
+    summary_colname <- paste0(event_type, "_event_ct")
+    time_colname <- paste0(event_type, "_event_time")
+    
+    data |>
+      filter(event == event_type) |>
+      group_by(UIDT_sub) |>
+      summarise(
+        !!summary_colname := n(),
+        !!time_colname := sum(get(time_col), na.rm = TRUE)
+      ) |>
+      ungroup()
+  }
 }
+
 
 # Use the function for each event type
 event_types <- c("drop", "repair", "system", "pwi")
@@ -569,16 +598,20 @@ write.csv(joined_augmented, "test/joined_aug.csv", row.names = FALSE)
 Automated tests.
 Check that the aggregated data for each parent matches the sum of its child rows for all event types.
 
-```{r, echo=FALSE, results='hide', message=TRUE}
+```{r}
 # Create a function to perform tests for each event type
 perform_tests <- function(event_type) {
-  
   # Corresponding column names for aggregated counts and durations
   event_ct_col <- paste0(event_type, "_event_ct")
   event_time_col <- paste0(event_type, "_event_time")
   
   # Duration column in the original dataset
-  duration_col <- ifelse(event_type == "drop", "adj_drop", "duration")
+  if (event_type == "drop") {
+    duration_col_original <- "duration"
+    duration_col_adjusted <- "adj_drop"
+  } else {
+    duration_col_original <- "duration"
+  }
   
   # Test 1: Compare total number of child events for original and aggregated data
   total_original <- sum(joined$event == event_type, na.rm = TRUE)
@@ -590,19 +623,47 @@ perform_tests <- function(event_type) {
   stopifnot(total_original == total_aggregated)
   
   # Test 2: Compare total duration for original and aggregated data
-  total_duration_original <- joined |>
-    filter(event == event_type) |>
-    summarise(total_duration = sum(!!sym(duration_col), na.rm = TRUE)) |>
-    pull(total_duration)
-  
-  total_duration_aggregated <- joined_augmented |>
-    filter(type == "parent") |>
-    summarise(total_duration = sum(!!sym(event_time_col), na.rm = TRUE)) |>
-    pull(total_duration)
-  
-  stopifnot(total_duration_original == total_duration_aggregated)
-  
-  message(paste0("All tests passed for event type: ", event_type))
+  if (event_type == "drop") {
+    # Compare original duration with drop_event_time
+    total_duration_original <- joined |>
+      filter(event == event_type) |>
+      summarise(total_duration = sum(!!sym(duration_col_original), na.rm = TRUE)) |>
+      pull(total_duration)
+    
+    total_duration_aggregated <- joined_augmented |>
+      filter(type == "parent") |>
+      summarise(total_duration = sum(!!sym(event_time_col), na.rm = TRUE)) |>
+      pull(total_duration)
+    
+    stopifnot(total_duration_original == total_duration_aggregated)
+    
+    # Compare adjusted drop time with adj_drop_time
+    total_duration_original_adj <- joined |>
+      filter(event == event_type) |>
+      summarise(total_duration = sum(!!sym(duration_col_adjusted), na.rm = TRUE)) |>
+      pull(total_duration)
+    
+    total_duration_aggregated_adj <- joined_augmented |>
+      filter(type == "parent") |>
+      summarise(total_duration = sum(adj_drop_time, na.rm = TRUE)) |>
+      pull(total_duration)
+    
+    stopifnot(total_duration_original_adj == total_duration_aggregated_adj)
+    
+  } else {
+    # Original logic for other event types
+    total_duration_original <- joined |>
+      filter(event == event_type) |>
+      summarise(total_duration = sum(!!sym(duration_col_original), na.rm = TRUE)) |>
+      pull(total_duration)
+    
+    total_duration_aggregated <- joined_augmented |>
+      filter(type == "parent") |>
+      summarise(total_duration = sum(!!sym(event_time_col), na.rm = TRUE)) |>
+      pull(total_duration)
+    
+    stopifnot(total_duration_original == total_duration_aggregated)
+  }
 }
 
 # List of event types
@@ -610,7 +671,6 @@ event_types <- c("drop", "pwi", "repair", "system")
 
 # Apply the function to each event type
 invisible(lapply(event_types, perform_tests))
-
 ```
 
 
@@ -632,10 +692,13 @@ combined <- joined_augmented |>
     ce:count,
     drop_event_count = drop_event_ct,
     drop_event_tot_time = drop_event_time,
+    drop_event_tot_time_adj = adj_drop_time,
     repair_event_count = repair_event_ct,
     repair_event_tot_time = repair_event_time,
     system_event_count = system_event_ct,
     system_event_tot_time = system_event_time,
+    pwi_event_count = pwi_event_ct,
+    pwi_event_tot_time = pwi_event_time,
     error_codes
   )
 
@@ -687,10 +750,12 @@ tlx_data_tidy <- tlx_data_tidy |>
 ```
 
 Score the TLX:
-1. Count responses to pair-wise source of workload comparisons to get a *weight* for each source, `source_weight`. (aka factor weights or raw ratings)
-2. Find the associated *rating* for each source, `source_rating`. (aka magnitude of load or factor ratings)
-3. Calculate the *workload* score for each source, `source_workload = source_weight * source_rating / 15`.
-4. Calculate the total task *workload* score, `task_workload = sum(source_workload)`
+1. Count responses to pair-wise source of workload comparisons to get a *weight* for each source, `source_weight`. (aka factor weights or raw ratings, 0-5)
+2. Find the associated *rating* for each source, `source_rating`. (aka magnitude of load or factor ratings, 0-100)
+3. Calculate the *workload* score for each source, `source_workload = source_weight * source_rating` (0-500).
+4. Calculate the total task *workload* score, `task_workload = sum(source_workload) / 15` (0-100)
+
+Because the total source weights is always 15, the average is 3. Thus the average source workload is 300, with a range of 0-500. The total of source workloads is always 1500, and the task workload is therefore in the range 0-100.
 
 First, count the source weights.
 
@@ -779,7 +844,7 @@ tlx_source_workloads <- expanded_data |>
   left_join(tlx_source_weights, by = c("participant", "phase", "source")) |>
   rowwise() |>
   mutate(
-    value = value.x * value.y / 15,
+    value = value.x * value.y,
     type = "source workload"
   ) |>
   ungroup() |>
@@ -788,7 +853,7 @@ tlx_source_workloads <- expanded_data |>
 # calculate task workloads
 tlx_task_workloads <- tlx_source_workloads |>
   group_by(participant, phase) |>
-  summarise(value = sum(value), .groups = "drop") |>
+  summarise(value = sum(value) / 15, .groups = "drop") |>
   mutate(
     source = "combined",
     type = "task workload"
@@ -813,6 +878,7 @@ tlx_scores <- tlx_scores |>
   ) |>
   arrange(participant, treatment, phase, match(type, type_order), match(source, workload_factors))
 
+write.csv(tlx_scores, "test/tlx_scores.csv", row.names = FALSE)
 ```
 
 Process the System Usability Scale Data
