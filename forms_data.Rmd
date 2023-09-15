@@ -779,7 +779,7 @@ tlx_source_workloads <- expanded_data |>
   left_join(tlx_source_weights, by = c("participant", "phase", "source")) |>
   rowwise() |>
   mutate(
-    value = value.x * value.y,
+    value = value.x * value.y / 15,
     type = "source workload"
   ) |>
   ungroup() |>
@@ -870,6 +870,7 @@ sus_scores <- sus_scores |>
 ```
 
 Process the Behaviorial Control Survey Data.
+Just loading as VB has already performed the analysis and I'm not using this data.
 
 ```{r}
 
