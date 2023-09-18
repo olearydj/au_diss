@@ -1,51 +1,61 @@
 ---
 title: "Initial Analysis"
-output:
-  html_notebook:
-    code_folding: hide
+output: html_notebook
 ---
 
 
 ## Setup Code
 
-```{r}
-try_catch_wrapper <- function(expr) {
-  result <- tryCatch({
-    eval(parse(text = expr))
-    "✅ Successfully"
-  }, error = function(e) {
-    "🛑 Unsuccessfully"
-  })
-  return(result)
-}
-```
-
-
 ```{r setup, echo=FALSE, results='hide'}
 # Set defaults for knitr output
-knitr_result <- try_catch_wrapper(
-  knitr::opts_chunk$set(
-    echo = TRUE,         # include code (folded by default, see above)
-    results = 'markup',  # code output included as markup (default)
-    message = FALSE,     # hide messages
-    # include = no used, controls inclusion of both code and output (T/F);
-    # combination of echo and results settings
-    warning = FALSE      # hide warnings
-  )
+knitr::opts_chunk$set(
+  echo = TRUE,         # include code (folded by default, see above)
+  results = 'markup',  # code output included as markup (default)
+  message = FALSE,     # hide messages
+  # include = no used, controls inclusion of both code and output (T/F);
+  # combination of echo and results settings
+  warning = TRUE       # do not hide warnings
 )
 ```
 
-
-```{r results='hide'}
-#tidy_result <- try_catch_wrapper(library(tidyverse))
-readxl_result <- try_catch_wrapper(library(readxl))
-skimr_result <- try_catch_wrapper(library(skimr))
+```{r load libraries, echo=FALSE}
+library(tidyverse)
+library(readxl)
+library(skimr)
 ```
 
+```{r load data, echo=FALSE}
+car_results <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "car results")
 
-**Setup complete:**
+demographics <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "demographics")
+```
 
-- `r knitr_result` set `{knitr}` defaults.
-- `r readxl_result` loaded `{readxl}` package.
-- `r skimr_result` loaded `{skimr}` package.
+*Loaded libraries and data.*
 
+
+## Questions to Answer
+
+- Is there a significant difference in phase 2 results for different treatments?
+  - result: average car time
+  - result: average car error count
+- Can we assess learning rates by treatment type from phase 1 results?
+- Can we uncover relationships with underlying affordances of treatments?
+- Do demographics affect results?
+
+
+## Descriptive Statistics
+
+```{r}
+# number of participants
+participant_count <- demographics |>
+  pull(participant) |>
+  n_distinct()
+```
+
+Number of participants: `r participant_count`
