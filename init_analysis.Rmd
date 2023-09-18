@@ -1,0 +1,51 @@
+---
+title: "Initial Analysis"
+output:
+  html_notebook:
+    code_folding: hide
+---
+
+
+## Setup Code
+
+```{r}
+try_catch_wrapper <- function(expr) {
+  result <- tryCatch({
+    eval(parse(text = expr))
+    "✅ Successfully"
+  }, error = function(e) {
+    "🛑 Unsuccessfully"
+  })
+  return(result)
+}
+```
+
+
+```{r setup, echo=FALSE, results='hide'}
+# Set defaults for knitr output
+knitr_result <- try_catch_wrapper(
+  knitr::opts_chunk$set(
+    echo = TRUE,         # include code (folded by default, see above)
+    results = 'markup',  # code output included as markup (default)
+    message = FALSE,     # hide messages
+    # include = no used, controls inclusion of both code and output (T/F);
+    # combination of echo and results settings
+    warning = FALSE      # hide warnings
+  )
+)
+```
+
+
+```{r results='hide'}
+#tidy_result <- try_catch_wrapper(library(tidyverse))
+readxl_result <- try_catch_wrapper(library(readxl))
+skimr_result <- try_catch_wrapper(library(skimr))
+```
+
+
+**Setup complete:**
+
+- `r knitr_result` set `{knitr}` defaults.
+- `r readxl_result` loaded `{readxl}` package.
+- `r skimr_result` loaded `{skimr}` package.
+
