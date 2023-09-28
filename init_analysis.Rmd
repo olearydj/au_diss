@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   echo = TRUE,         # include code (folded by default, see above)
   results = 'markup',  # code output included as markup (default)
   message = FALSE,     # hide messages
-  # include = no used, controls inclusion of both code and output (T/F);
+  # include = not used, controls inclusion of both code and output (T/F);
   # combination of echo and results settings
   warning = TRUE       # do not hide warnings
 )
@@ -22,13 +22,15 @@ knitr::opts_chunk$set(
 ```{r load libraries, echo=FALSE}
 library(tidyverse)
 library(readxl)
-library(skimr)
 library(gt)
-library(gtExtras)
 library(gtsummary)
-library(gridExtra)
-library(grid)
 library(patchwork)
+
+# currently unused:
+# library(skimr)
+# library(gtExtras)
+# library(gridExtra)
+# library(grid)
 ```
 
 ```{r load data, echo=FALSE}
@@ -90,7 +92,7 @@ demographics |>
 
 ```
 
-```{r}
+```{r demographic histograms}
 # Participant age range histogram
 demographics |> 
   filter(!is.na(age)) |>
@@ -111,8 +113,26 @@ demographics |>
        x = "Height (ft)",
        y = "Count") +
   theme_minimal()
-
-
-
-
 ```
+
+```{r demographic box plots, warning=FALSE}
+# Creating box plots for 'age'
+age_plot <- demographics |> 
+  ggplot(aes(x = factor(1), y = age)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.2, alpha = 0.5, color = "blue") +
+  labs(x = "Age", y = "Age (years)")
+
+# Creating box plots for 'height'
+height_plot <- demographics |> 
+  ggplot(aes(x = factor(1), y = height)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.2, alpha = 0.5, color = "blue") +
+  labs(x = "Height", y = "Height (inches)")
+
+# Combine and display the plots side by side
+age_plot + height_plot + plot_layout(ncol = 2)
+
+# print(combined_plot)
+```
+
