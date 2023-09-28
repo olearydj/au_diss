@@ -1,8 +1,9 @@
 ---
 title: "Initial Analysis"
-output: html_notebook
+output:
+  html_notebook:
+    code_folding: hide
 ---
-
 
 ## Setup Code
 
@@ -22,6 +23,12 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(readxl)
 library(skimr)
+library(gt)
+library(gtExtras)
+library(gtsummary)
+library(gridExtra)
+library(grid)
+library(patchwork)
 ```
 
 ```{r load data, echo=FALSE}
@@ -36,7 +43,7 @@ demographics <- read_xlsx(
   sheet = "demographics")
 ```
 
-*Loaded libraries and data.*
+Loaded libraries and data.
 
 
 ## Questions to Answer
@@ -56,6 +63,56 @@ demographics <- read_xlsx(
 participant_count <- demographics |>
   pull(participant) |>
   n_distinct()
+
+# result 62 matches table row count and number of appointments (trial_datetime)
 ```
 
 Number of participants: `r participant_count`
+
+```{r}
+# Compute summary statistics
+demographics |>
+  select(age:gender, treatment) |>
+  tbl_summary(
+    by = "treatment",
+    missing = "no",
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})",
+      all_categorical() ~ "{n} / {N} ({p}%)"
+    ),
+    label = "age" ~ "Age"
+  ) |>
+  modify_header(all_stat_cols() ~ "**{level}**<br>N = {n} ({style_percent(p)}%)") |>
+  add_n() |>
+  bold_labels() |>
+  as_gt() |>
+  tab_source_note("Data updated September 19, 2023")
+
+```
+
+```{r}
+# Participant age range histogram
+demographics |> 
+  filter(!is.na(age)) |>
+  ggplot(aes(x = age)) +
+  geom_histogram(binwidth = 1, fill = "#69b3a2", color = "white", alpha = 0.8) +
+  labs(title = "Age Distribution",
+       x = "Age",
+       y = "Count") +
+  theme_minimal()
+
+# Participant height range histogram
+demographics |> 
+  filter(!is.na(height)) |>
+  mutate(height_ft = height / 12) |>
+  ggplot(aes(x = height_ft)) +
+  geom_histogram(binwidth = 0.1, fill = "#69b3a2", color = "white", alpha = 0.8) +
+  labs(title = "Height Distribution",
+       x = "Height (ft)",
+       y = "Count") +
+  theme_minimal()
+
+
+
+
+```
