@@ -5,6 +5,18 @@ output:
     code_folding: hide
 ---
 
+```{markdown, include=FALSE}
+
+# ChatGPT Initializer
+
+Working with two data tables: car_results and demographics, with common columns participant and treatment.
+
+`car_results`: 620 rows, 25 columns. Combines `Car Outcomes` and `Car Times` data. Columns: `participant`(numeric), `treatment`(PWI, PAR, etc.), `phase`(1=learn, 2=recall, 3=retention), `sequence`(order within participant, phase group), `car_outcome`(Comment, Complete, Incomplete, Retired), `ce`(corrected errors count), `uce`(uncorrected errors count), `sel`(uncorrected errors - wrong parts), `pos`(uncorrected errors - wrong position), `rot`(uncorrected errors - wrong rotation), `count`(parts installed for incomplete cars), `error_codes`(error details), `car_start_time`(seconds from video start), `car_end_time`(seconds from video start), `car_elapsed_time`(event duration in seconds), `drop_event_count`(count of drop events), `drop_event_tot_time`(total time of drop events), `drop_event_tot_time_adj`(time-adjusted total of drop events), `repair_event_count`(count of repair events), `repair_event_tot_time`(total time of repair events), `system_event_count`(count of system events), `system_event_tot_time`(total time of system events), `pwi_event_count`(PWI references count in phase 2), `pwi_event_tot_time`(total time of PWI references).
+
+`demographics`: 62 rows, 23 columns. Summarizes participant characteristics. Columns: `participant`(numeric), `age`(years, numeric), `height`(inches, numeric), `gender`(F, M, O), `race`(1 to 7 coded), `ethnicity`(1 to 3 coded), `country`(text), `language`(English, Other), `education`(1 to 7 coded), `college`(text), `program`(text), `lego`(1 to 4 coded), `manuf`(1 to 4 coded), `lenses`(G, C, N), `worn`(Y, N), `color_blind`(Y, N), `condition`(Y, N), `runner`(5, 10, H, M, T, Y, N), `referral`(Class codes, GSE, FLYER, SCREEN, FF), `recruit`(AU, IND), `treatment`(PWI, PAR, AR, MR), `notes`(text), `trial_datetime`(datetime).
+```
+
+
 ## Setup Code
 
 ```{r setup, echo=FALSE, results='hide'}
@@ -15,7 +27,9 @@ knitr::opts_chunk$set(
   message = FALSE,     # hide messages
   # include = not used, controls inclusion of both code and output (T/F);
   # combination of echo and results settings
-  warning = TRUE       # do not hide warnings
+  warning = TRUE,      # do not hide warnings
+  fig.width = 7,
+  fig.height = 5
 )
 ```
 
@@ -25,11 +39,12 @@ library(readxl)
 library(gt)
 library(gtsummary)
 library(patchwork)
+# library(gridExtra)
+# library(ggtext)
 
 # currently unused:
 # library(skimr)
 # library(gtExtras)
-# library(gridExtra)
 # library(grid)
 ```
 
@@ -46,7 +61,6 @@ demographics <- read_xlsx(
 ```
 
 Loaded libraries and data.
-
 
 ## Questions to Answer
 
@@ -69,7 +83,65 @@ participant_count <- demographics |>
 # result 62 matches table row count and number of appointments (trial_datetime)
 ```
 
+Data updated September 19, 2023
+
 Number of participants: `r participant_count`
+
+
+```{r demographic box plots, warning=FALSE}
+
+# options(repr.plot.width = 10, repr.plot.height = 5)
+
+base_color <- "#69b3a2"
+
+# Creating box plots for 'age'
+age_plot <- demographics |> 
+  ggplot(aes(x = "Age (years)", y = age)) +
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
+  labs(
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_minimal(
+    base_size = 14,
+  )
+
+# Creating box plots for 'height'
+height_plot <- demographics |> 
+  ggplot(aes(x = "Height (feet)", y = height)) +
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
+  labs(
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_minimal(
+    base_size = 14,
+    )
+
+# Bar chart for 'gender'
+gender_plot <- demographics |>
+  ggplot(aes(x = gender, fill = gender, alpha = gender)) +
+  geom_bar(width = 0.4) +
+  labs(
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  scale_fill_manual(values = c("F" = base_color, "M" = base_color, "O" = base_color)) +
+  scale_alpha_manual(values = c("F" = 0.3, "M" = 0.6, "O" = 1.0)) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+
+### combine using patchwork
+age_plot + height_plot + gender_plot +
+  plot_annotation(
+    title = "Participant Demographics: Age, Height, and Gender",
+    subtitle = "Age reflects student-oriented nature of the sample"
+  )
+
+```
+
 
 ```{r}
 # Compute summary statistics
@@ -87,8 +159,8 @@ demographics |>
   modify_header(all_stat_cols() ~ "**{level}**<br>N = {n} ({style_percent(p)}%)") |>
   add_n() |>
   bold_labels() |>
-  as_gt() |>
-  tab_source_note("Data updated September 19, 2023")
+  as_gt()
+# tab_source_note("Data updated September 19, 2023")
 
 ```
 
@@ -97,7 +169,7 @@ demographics |>
 demographics |> 
   filter(!is.na(age)) |>
   ggplot(aes(x = age)) +
-  geom_histogram(binwidth = 1, fill = "#69b3a2", color = "white", alpha = 0.8) +
+  geom_histogram(binwidth = 1, fill = base_color, color = "white", alpha = 0.8) +
   labs(title = "Age Distribution",
        x = "Age",
        y = "Count") +
@@ -108,31 +180,11 @@ demographics |>
   filter(!is.na(height)) |>
   mutate(height_ft = height / 12) |>
   ggplot(aes(x = height_ft)) +
-  geom_histogram(binwidth = 0.1, fill = "#69b3a2", color = "white", alpha = 0.8) +
+  geom_histogram(binwidth = 0.1, fill = base_color, color = "white", alpha = 0.8) +
   labs(title = "Height Distribution",
-       x = "Height (ft)",
+       x = "Height (feet)",
        y = "Count") +
   theme_minimal()
 ```
 
-```{r demographic box plots, warning=FALSE}
-# Creating box plots for 'age'
-age_plot <- demographics |> 
-  ggplot(aes(x = factor(1), y = age)) +
-  geom_boxplot() +
-  geom_jitter(width = 0.2, alpha = 0.5, color = "blue") +
-  labs(x = "Age", y = "Age (years)")
-
-# Creating box plots for 'height'
-height_plot <- demographics |> 
-  ggplot(aes(x = factor(1), y = height)) +
-  geom_boxplot() +
-  geom_jitter(width = 0.2, alpha = 0.5, color = "blue") +
-  labs(x = "Height", y = "Height (inches)")
-
-# Combine and display the plots side by side
-age_plot + height_plot + plot_layout(ncol = 2)
-
-# print(combined_plot)
-```
 
