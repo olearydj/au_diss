@@ -244,3 +244,139 @@ if (p_value < 0.05) {
 ```{r}
 plot(error_post_hoc)
 ```
+
+
+
+## Explore Difference in UX by Treatment
+
+Load System Usability and TLX scores.
+
+```{r load sus and tlx data, echo=FALSE}
+sus_scores <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "system usability scores")
+
+tlx_scores <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "tlx scores")
+```
+
+### System Usability Scores (SUS)
+Phase 1 only!
+
+```{r}
+sus_summary <- sus_scores |>
+  filter(phase == 1) |>
+  group_by(treatment) |>
+  summarise(
+    mean_value = mean(sus, na.rm = TRUE),
+    sd_value = sd(sus, na.rm = TRUE)
+  )
+
+ggplot(sus_summary, aes(x = treatment, y = mean_value)) +
+  geom_bar(stat = "identity", position = "dodge", fill = base_color) +
+  geom_errorbar(
+    aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value),
+    width = 0.25, position = position_dodge(0.9)
+  ) +
+  labs(
+    title = "SUS by Treatment",
+    y = "Mean SUS",
+    x = "Treatment"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+# Run the ANOVA
+sus_anova_result <- aov(sus ~ treatment, data = sus_scores)
+sus_anova_summary <- summary(sus_anova_result)
+print(sus_anova_summary)
+```
+
+```{r}
+# If significant, conduct a post hoc test
+p_value = sus_anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  post_hoc <- TukeyHSD(sus_anova_result)
+  print(sus_post_hoc)
+} else {
+  print("not significant")
+}
+```
+
+### Task Load Index Scores (TLX)
+Phase 1 only!
+
+```{r}
+tlx_task_workload_summary <- tlx_scores |>
+  filter(type == "task workload", phase == 1) |>
+  group_by(treatment) |>
+  summarise(
+    mean_value = mean(value, na.rm = TRUE),
+    sd_value = sd(value, na.rm = TRUE)
+  )
+
+ggplot(tlx_task_workload_summary, aes(x = treatment, y = mean_value)) +
+  geom_bar(stat = "identity", position = "dodge", fill = base_color) +
+  geom_errorbar(
+    aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value),
+    width = 0.25, position = position_dodge(0.9)
+  ) +
+  labs(
+    title = "Task Workload by Treatment",
+    y = "Mean Task Workload",
+    x = "Treatment"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+# Run the ANOVA
+tlx_anova_result <- aov(value ~ treatment, data = tlx_scores)
+tlx_anova_summary <- summary(tlx_anova_result)
+print(tlx_anova_summary)
+```
+
+```{r}
+# If significant, conduct a post hoc test
+p_value = tlx_anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  post_hoc <- TukeyHSD(tlx_anova_result)
+  print(tlx_post_hoc)
+} else {
+  print("not significant")
+}
+```
+
+## Visualize Car Time Trends in Phase 1
+
+```{r}
+library(ggplot2)
+
+# Filter data for completed cars
+completed_cars <- car_results |> 
+  filter(car_outcome == "Complete")
+
+# Create car_number column
+completed_cars <- completed_cars |> 
+  group_by(participant, treatment) |> 
+  mutate(car_number = row_number()) |> 
+  ungroup()
+
+# Plot data
+ggplot(data = completed_cars, aes(x = car_number, y = car_elapsed_time)) +
+  geom_point() +
+  facet_wrap(~treatment, scales = "free_x") +
+  labs(
+    title = "Car Completion Times by Treatment",
+    x = "Car Number",
+    y = "Completion Time (seconds)"
+  )
+
+```
+
