@@ -143,6 +143,7 @@ age_plot + height_plot + gender_plot +
 
 ```
 
+### Demographics by Treatment
 
 ```{r}
 # Compute summary statistics
@@ -165,6 +166,10 @@ demographics |>
 
 ```
 
+## Treatment Effects
+
+### Elapsed Time
+
 ```{r}
 car_results |>
   filter(phase == 2) |>
@@ -181,29 +186,61 @@ car_results |>
 ```{r}
 phase_two_data <- car_results |> filter(phase == 2)
 
-anova_result <- aov(car_elapsed_time ~ treatment, data = phase_two_data)
+time_anova_result <- aov(car_elapsed_time ~ treatment, data = phase_two_data)
 
-anova_summary <- summary(anova_result)
-print(anova_summary)
+time_anova_summary <- summary(time_anova_result)
+print(time_anova_summary)
 ```
 
 
 ```{r}
 # If significant, conduct a post hoc test
-p_value = anova_summary[[1]]$`Pr(>F)`[1]
+p_value = time_anova_summary[[1]]$`Pr(>F)`[1]
 if (p_value < 0.05) {
-  post_hoc <- TukeyHSD(anova_result)
-  print(post_hoc)
+  time_post_hoc <- TukeyHSD(time_anova_result)
+  print(time_post_hoc)
 } else {
   print("not significant")
 }
 ```
 
 ```{r}
-plot(post_hoc)
+plot(time_post_hoc)
 ```
 
+### Uncorrected Error Count
 
+```{r}
+car_results |>
+  filter(phase == 2) |>
+  ggplot(aes(x = treatment, y = uce)) +
+  geom_boxplot() +
+  labs(
+    title = "Uncorrected Error Count by Treatment for Phase 2",
+    x = "Treatment",
+    y = "Count"
+  )
+    
+```
 
+```{r}
+error_anova_result <- aov(uce ~ treatment, data = phase_two_data)
 
+error_anova_summary <- summary(error_anova_result)
+print(error_anova_summary)
+```
 
+```{r}
+# If significant, conduct a post hoc test
+p_value = error_anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  error_post_hoc <- TukeyHSD(error_anova_result)
+  print(error_post_hoc)
+} else {
+  print("not significant")
+}
+```
+
+```{r}
+plot(error_post_hoc)
+```
