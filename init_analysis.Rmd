@@ -39,6 +39,7 @@ library(readxl)
 library(gt)
 library(gtsummary)
 library(patchwork)
+library(xtable)
 # library(gridExtra)
 # library(ggtext)
 
@@ -164,27 +165,45 @@ demographics |>
 
 ```
 
-```{r demographic histograms}
-# Participant age range histogram
-demographics |> 
-  filter(!is.na(age)) |>
-  ggplot(aes(x = age)) +
-  geom_histogram(binwidth = 1, fill = base_color, color = "white", alpha = 0.8) +
-  labs(title = "Age Distribution",
-       x = "Age",
-       y = "Count") +
-  theme_minimal()
-
-# Participant height range histogram
-demographics |> 
-  filter(!is.na(height)) |>
-  mutate(height_ft = height / 12) |>
-  ggplot(aes(x = height_ft)) +
-  geom_histogram(binwidth = 0.1, fill = base_color, color = "white", alpha = 0.8) +
-  labs(title = "Height Distribution",
-       x = "Height (feet)",
-       y = "Count") +
-  theme_minimal()
+```{r}
+car_results |>
+  filter(phase == 2) |>
+  ggplot(aes(x = treatment, y = car_elapsed_time)) +
+  geom_boxplot() +
+  labs(
+    title = "Car Elapsed Time by Treatment for Phase 2",
+    x = "Treatment",
+    y = "Car Elapsed Time (seconds)"
+  )
+    
 ```
+
+```{r}
+phase_two_data <- car_results |> filter(phase == 2)
+
+anova_result <- aov(car_elapsed_time ~ treatment, data = phase_two_data)
+
+anova_summary <- summary(anova_result)
+print(anova_summary)
+```
+
+
+```{r}
+# If significant, conduct a post hoc test
+p_value = anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  post_hoc <- TukeyHSD(anova_result)
+  print(post_hoc)
+} else {
+  print("not significant")
+}
+```
+
+```{r}
+plot(post_hoc)
+```
+
+
+
 
 
