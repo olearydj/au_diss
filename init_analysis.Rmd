@@ -5,6 +5,8 @@ output:
     code_folding: hide
 ---
 
+## Notes
+
 ```{markdown, include=FALSE}
 
 # ChatGPT Initializer
@@ -15,6 +17,23 @@ Working with two data tables: car_results and demographics, with common columns 
 
 `demographics`: 62 rows, 23 columns. Summarizes participant characteristics. Columns: `participant`(numeric), `age`(years, numeric), `height`(inches, numeric), `gender`(F, M, O), `race`(1 to 7 coded), `ethnicity`(1 to 3 coded), `country`(text), `language`(English, Other), `education`(1 to 7 coded), `college`(text), `program`(text), `lego`(1 to 4 coded), `manuf`(1 to 4 coded), `lenses`(G, C, N), `worn`(Y, N), `color_blind`(Y, N), `condition`(Y, N), `runner`(5, 10, H, M, T, Y, N), `referral`(Class codes, GSE, FLYER, SCREEN, FF), `recruit`(AU, IND), `treatment`(PWI, PAR, AR, MR), `notes`(text), `trial_datetime`(datetime).
 ```
+### Change Log
+
+- 9/29 - first revision shared with Dr. Harris
+- 10/1 - update for Drs. Harris and Evans
+  - treatment effects only look at completed cars now, ignoring retired (broken) and incomplete (time expired) trials; this did not have a noticable effect on the results, but more accurately reflects the intention
+  - added hypotheses, expectations, and observations throughout
+  - added to-do items
+  - more
+
+### Questions to Answer
+
+- Is there a significant difference in phase 2 results for different treatments?
+  - result: average car time
+  - result: average car error count
+- Can we assess learning rates by treatment type from phase 1 results?
+- Can we uncover relationships with underlying affordances of treatments?
+- Do demographics affect results?
 
 
 ## Setup Code
@@ -63,16 +82,6 @@ demographics <- read_xlsx(
 
 Loaded libraries and data.
 
-## Questions to Answer
-
-- Is there a significant difference in phase 2 results for different treatments?
-  - result: average car time
-  - result: average car error count
-- Can we assess learning rates by treatment type from phase 1 results?
-- Can we uncover relationships with underlying affordances of treatments?
-- Do demographics affect results?
-
-
 ## Descriptive Statistics
 
 ```{r}
@@ -84,10 +93,11 @@ participant_count <- demographics |>
 # result 62 matches table row count and number of appointments (trial_datetime)
 ```
 
+##### Make the date based on file timestamp.
+
 Data updated September 19, 2023
 
 Number of participants: `r participant_count`
-
 
 ```{r demographic box plots, warning=FALSE}
 
@@ -170,9 +180,18 @@ demographics |>
 
 ### Elapsed Time
 
+**Hypothesis:** elapsed times will differ
+
+**Expectation:** PAR will be faster than PWI (in-context instruction). This benefit will be mitigated by some inconsistency in gesture recognition. AR and MR will take progressively longer than PAR, owing to similar benefits but more complex and less reliable interfaces.
+
+Results in line with expectations. Surprised to see mean time with AR the highest. Note increased variance in results in the treatment progression. Surprised that PAR and PWI are not significantly different.
+
+##### Compare with adjusted versions - sig differences?
+##### How would this differ if PAR used a discrete switch rather than a gesture sensor?
+
 ```{r}
 car_results |>
-  filter(phase == 2) |>
+  filter(phase == 2, car_outcome == "complete") |>
   ggplot(aes(x = treatment, y = car_elapsed_time)) +
   geom_boxplot() +
   labs(
@@ -192,7 +211,6 @@ time_anova_summary <- summary(time_anova_result)
 print(time_anova_summary)
 ```
 
-
 ```{r}
 # If significant, conduct a post hoc test
 p_value = time_anova_summary[[1]]$`Pr(>F)`[1]
@@ -210,9 +228,19 @@ plot(time_post_hoc)
 
 ### Uncorrected Error Count
 
+**Hypothesis:** error count will differ
+
+**Expectation:** PWI will be highest, other treatments will show decreasing error counts in order (PWI, AR, MR) due to multimodal learning. Improvements in AR and especially MR may be confounded by added complexity / reduced reliability of added technology.
+
+Results meet expectations. Note that the PWI are clearly problematic as we observed. Though the other treatments are designed around the same instructions, each afford a certain amount of built-in error checking - the operator sees where the part should go - that help avoid making errors and/or learning to complete the task incorrectly.
+
+Surprised to see AR error count so low. Task isn't complex enough to show lower limit.
+
+*ChatGPT: You might say that the results exhibit "floor effects," where the lower limit of the measure (in this case, zero) constrains the range of possible scores, especially for certain treatments. This can indicate that the measure may not be sensitive enough to detect differences at the lower end of the performance spectrum for these treatments.*
+
 ```{r}
 car_results |>
-  filter(phase == 2) |>
+  filter(phase == 2, car_outcome == "complete") |>
   ggplot(aes(x = treatment, y = uce)) +
   geom_boxplot() +
   labs(
@@ -245,6 +273,28 @@ if (p_value < 0.05) {
 plot(error_post_hoc)
 ```
 
+##### Error types? Patterns?
+
+## PWI Reference Count
+
+How many times did participants have to refer to the paper work instructions during phase 2, by treatment?
+
+```{r}
+car_results |>
+  filter(phase == 2) |>
+  ggplot(aes(x = treatment, y = uce)) +
+  geom_boxplot() +
+  labs(
+    title = "Uncorrected Error Count by Treatment for Phase 2",
+    x = "Treatment",
+    y = "Count"
+  )
+    
+```
+
+## PWI Reference Duration
+
+How much total time did participants spend referring to the paper work instructions during phase 2, by treatment?
 
 
 ## Explore Difference in UX by Treatment
@@ -264,7 +314,12 @@ tlx_scores <- read_xlsx(
 ```
 
 ### System Usability Scores (SUS)
-Phase 1 only!
+
+**Hypothesis:** There will be differences in system usability.
+
+**Expectations:** Decreasing usability owing to increased complexity: PWI > PAR > AR > MR.
+
+Surprised to see no significant difference in perceived usability between treatments.
 
 ```{r}
 sus_summary <- sus_scores |>
@@ -308,8 +363,18 @@ if (p_value < 0.05) {
 }
 ```
 
+##### Convert chart to box plot?
+##### Compare PWI treatment across phase 1 and 2?
+##### Phase 2 PWI could serve as baseline for system usability. Use that for comparisons?
+##### Underlying factors of SUS?
+
 ### Task Load Index Scores (TLX)
-Phase 1 only!
+
+**Hypothesis:** There will be differences in perceived workload.
+
+**Expectations:** Variable workload based on a combination of instructional quality and interface complexity: PWI high, PWI medium, AR medium, MR high
+
+Surprised to see very even workload across treatments and no significant difference. Suggests other factors have larger effect across all treatment? Experiment design? Time constraints?
 
 ```{r}
 tlx_task_workload_summary <- tlx_scores |>
@@ -352,6 +417,11 @@ if (p_value < 0.05) {
   print("not significant")
 }
 ```
+
+##### Convert chart to box plot?
+##### Compare PWI treatment across phase 1 and 2?
+##### Phase 2 PWI could serve as baseline for task workload. Use that for comparisons?
+##### Underlying factors of TLX?
 
 ## Visualize Car Time Trends in Phase 1
 
