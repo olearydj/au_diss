@@ -1,0 +1,481 @@
+---
+title: "Initial Analysis"
+format:
+  html: 
+    code-fold: true
+    code-tools: true
+    code-link: true
+    code-line-numbers: true
+    toc: true
+    toc-expand: 2
+    number-sections: true
+    number-depth: 3
+    css: custom.css
+execute: 
+  echo: true          # include code (folded by default, see above)
+  results: 'markup'   # code output included as markup (default)
+  message: false      # hide messages
+  warning: true       # do not hide warnings
+  fig.width: 7
+  fig.height: 5
+  # include: not used, controls inclusion of both code and output (T/F);
+  # combination of echo and results settings
+---
+
+## Notes {.hide .unnumbered .unlisted}
+
+### ChatGPT Initializer
+
+Working with two data tables: car_results and demographics, with common columns participant and treatment.
+
+`car_results`: 620 rows, 25 columns. Combines `Car Outcomes` and `Car Times` data. Columns: `participant`(numeric), `treatment`(PWI, PAR, etc.), `phase`(1=learn, 2=recall, 3=retention), `sequence`(order within participant, phase group), `car_outcome`(Comment, Complete, Incomplete, Retired), `ce`(corrected errors count), `uce`(uncorrected errors count), `sel`(uncorrected errors - wrong parts), `pos`(uncorrected errors - wrong position), `rot`(uncorrected errors - wrong rotation), `count`(parts installed for incomplete cars), `error_codes`(error details), `car_start_time`(seconds from video start), `car_end_time`(seconds from video start), `car_elapsed_time`(event duration in seconds), `drop_event_count`(count of drop events), `drop_event_tot_time`(total time of drop events), `drop_event_tot_time_adj`(time-adjusted total of drop events), `repair_event_count`(count of repair events), `repair_event_tot_time`(total time of repair events), `system_event_count`(count of system events), `system_event_tot_time`(total time of system events), `pwi_event_count`(PWI references count in phase 2), `pwi_event_tot_time`(total time of PWI references).
+
+`demographics`: 62 rows, 23 columns. Summarizes participant characteristics. Columns: `participant`(numeric), `age`(years, numeric), `height`(inches, numeric), `gender`(F, M, O), `race`(1 to 7 coded), `ethnicity`(1 to 3 coded), `country`(text), `language`(English, Other), `education`(1 to 7 coded), `college`(text), `program`(text), `lego`(1 to 4 coded), `manuf`(1 to 4 coded), `lenses`(G, C, N), `worn`(Y, N), `color_blind`(Y, N), `condition`(Y, N), `runner`(5, 10, H, M, T, Y, N), `referral`(Class codes, GSE, FLYER, SCREEN, FF), `recruit`(AU, IND), `treatment`(PWI, PAR, AR, MR), `notes`(text), `trial_datetime`(datetime).
+
+
+## Change Log
+
+- 9/29 - first revision shared with Dr. Harris
+- 10/1 - update for Drs. Harris and Evans
+  - treatment effects only look at completed cars now, ignoring retired (broken) and incomplete (time expired) trials; this did not have a noticable effect on the results, but more accurately reflects the intention
+  - added hypotheses, expectations, and observations throughout
+  - migrated to Quarto format
+  - added to-do items
+
+::: {.callout-note collapse=false}
+# **To Do Items**
+- Misc
+  - [ ] Convert `{r load data, echo=FALSE}` format to Quarto style
+:::
+
+### Questions to Answer
+
+- Is there a significant difference in phase 2 results for different treatments?
+  - result: average car time
+  - result: average car error count
+- Can we assess learning rates by treatment type from phase 1 results?
+- Can we uncover relationships with underlying affordances of treatments?
+- Do demographics affect results?
+
+## Setup Code
+
+```{r load libraries, output=FALSE}
+library(tidyverse)
+library(readxl)
+library(gt)
+library(gtsummary)
+library(patchwork)
+library(xtable)
+# library(gridExtra)
+# library(ggtext)
+
+# currently unused:
+# library(skimr)
+# library(gtExtras)
+# library(grid)
+```
+
+```{r load data, echo=FALSE}
+car_results <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "car results")
+
+demographics <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "demographics")
+```
+
+Loaded libraries and data.
+
+## Descriptive Statistics
+
+```{r}
+# number of participants
+participant_count <- demographics |>
+  pull(participant) |>
+  n_distinct()
+
+# result 62 matches table row count and number of appointments (trial_datetime)
+```
+
+Data updated September 19, 2023
+
+Number of participants: `r participant_count`
+
+::: {.callout-note collapse=false}
+# **To Do Items**
+- Descriptive Statistics
+  - [ ] Make the date based on file timestamp.
+:::
+
+```{r demographic box plots, warning=FALSE}
+base_color <- "#69b3a2"
+
+# Creating box plots for 'age'
+age_plot <- demographics |> 
+  ggplot(aes(x = "Age (years)", y = age)) +
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
+  labs(
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_minimal(
+    base_size = 14,
+  )
+
+# Creating box plots for 'height'
+height_plot <- demographics |> 
+  ggplot(aes(x = "Height (feet)", y = height)) +
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
+  labs(
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_minimal(
+    base_size = 14,
+    )
+
+# Bar chart for 'gender'
+gender_plot <- demographics |>
+  ggplot(aes(x = gender, fill = gender, alpha = gender)) +
+  geom_bar(width = 0.4) +
+  labs(
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  scale_fill_manual(values = c("F" = base_color, "M" = base_color, "O" = base_color)) +
+  scale_alpha_manual(values = c("F" = 0.3, "M" = 0.6, "O" = 1.0)) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+
+### combine using patchwork
+age_plot + height_plot + gender_plot +
+  plot_annotation(
+    title = "Participant Demographics: Age, Height, and Gender",
+    subtitle = "Age reflects student-oriented nature of the sample"
+  )
+
+```
+
+### Demographics by Treatment
+
+```{r}
+# Compute summary statistics
+demographics |>
+  select(age:gender, treatment) |>
+  tbl_summary(
+    by = "treatment",
+    missing = "no",
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})",
+      all_categorical() ~ "{n} / {N} ({p}%)"
+    ),
+    label = "age" ~ "Age"
+  ) |>
+  modify_header(all_stat_cols() ~ "**{level}**<br>N = {n} ({style_percent(p)}%)") |>
+  add_n() |>
+  bold_labels() |>
+  as_gt()
+# tab_source_note("Data updated September 19, 2023")
+
+```
+
+## Treatment Effects
+
+### Elapsed Time
+
+**Hypothesis:** elapsed times will differ
+
+**Expectation:** PAR will be faster than PWI (in-context instruction). This benefit will be mitigated by some inconsistency in gesture recognition. AR and MR will take progressively longer than PAR, owing to similar benefits but more complex and less reliable interfaces.
+
+Results in line with expectations. Surprised to see mean time with AR the highest. Note increased variance in results in the treatment progression. Surprised that PAR and PWI are not significantly different.
+
+::: {.callout-note collapse=false}
+# **To Do Items**
+- Elapsed Time
+  - [ ] Compare with adjusted versions - significant differences?
+  - [ ] How would this differ if PAR used a discrete switch rather than a gesture sensor?
+:::
+
+```{r}
+car_results |>
+  filter(phase == 2, car_outcome == "complete") |>
+  ggplot(aes(x = treatment, y = car_elapsed_time)) +
+  geom_boxplot() +
+  labs(
+    title = "Car Elapsed Time by Treatment for Phase 2",
+    x = "Treatment",
+    y = "Car Elapsed Time (seconds)"
+  )
+    
+```
+
+```{r}
+phase_two_data <- car_results |> filter(phase == 2)
+
+time_anova_result <- aov(car_elapsed_time ~ treatment, data = phase_two_data)
+
+time_anova_summary <- summary(time_anova_result)
+print(time_anova_summary)
+```
+
+```{r}
+# If significant, conduct a post hoc test
+p_value = time_anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  time_post_hoc <- TukeyHSD(time_anova_result)
+  print(time_post_hoc)
+} else {
+  print("not significant")
+}
+```
+
+```{r}
+plot(time_post_hoc)
+```
+
+### Uncorrected Error Count
+
+**Hypothesis:** error count will differ
+
+**Expectation:** PWI will be highest, other treatments will show decreasing error counts in order (PWI, AR, MR) due to multimodal learning. Improvements in AR and especially MR may be confounded by added complexity / reduced reliability of added technology.
+
+Results meet expectations. Note that the PWI are clearly problematic as we observed. Though the other treatments are designed around the same instructions, each afford a certain amount of built-in error checking - the operator sees where the part should go - that help avoid making errors and/or learning to complete the task incorrectly.
+
+Surprised to see AR error count so low. Task isn't complex enough to show lower limit.
+
+*ChatGPT: You might say that the results exhibit "floor effects," where the lower limit of the measure (in this case, zero) constrains the range of possible scores, especially for certain treatments. This can indicate that the measure may not be sensitive enough to detect differences at the lower end of the performance spectrum for these treatments.*
+
+::: {.callout-note collapse=false}
+# **To Do Items**
+- Uncorrected Error Count
+  - [ ] Error types? Patterns?
+:::
+
+```{r}
+car_results |>
+  filter(phase == 2, car_outcome == "complete") |>
+  ggplot(aes(x = treatment, y = uce)) +
+  geom_boxplot() +
+  labs(
+    title = "Uncorrected Error Count by Treatment for Phase 2",
+    x = "Treatment",
+    y = "Count"
+  )
+    
+```
+
+```{r}
+error_anova_result <- aov(uce ~ treatment, data = phase_two_data)
+
+error_anova_summary <- summary(error_anova_result)
+print(error_anova_summary)
+```
+
+```{r}
+# If significant, conduct a post hoc test
+p_value = error_anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  error_post_hoc <- TukeyHSD(error_anova_result)
+  print(error_post_hoc)
+} else {
+  print("not significant")
+}
+```
+
+```{r}
+plot(error_post_hoc)
+```
+
+## PWI Reference Count
+
+::: {.callout-note collapse=false}
+# **To Do Items**
+- Treatment Effects
+  - [ ] Add PWI Reference Count analysis
+  - [ ] Add PWI Reference Duration analysis
+:::
+
+How many times did participants have to refer to the paper work instructions during phase 2, by treatment?
+
+```{r}
+car_results |>
+  filter(phase == 2) |>
+  ggplot(aes(x = treatment, y = uce)) +
+  geom_boxplot() +
+  labs(
+    title = "Uncorrected Error Count by Treatment for Phase 2",
+    x = "Treatment",
+    y = "Count"
+  )
+    
+```
+
+## PWI Reference Duration
+
+How much total time did participants spend referring to the paper work instructions during phase 2, by treatment?
+
+## Explore Difference in UX by Treatment
+
+Load System Usability and TLX scores.
+
+```{r load sus and tlx data, echo=FALSE}
+sus_scores <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "system usability scores")
+
+tlx_scores <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "tlx scores")
+```
+
+### System Usability Scores (SUS)
+
+**Hypothesis:** There will be differences in system usability.
+
+**Expectations:** Decreasing usability owing to increased complexity: PWI > PAR > AR > MR.
+
+Surprised to see no significant difference in perceived usability between treatments.
+
+::: {.callout-note collapse=false}
+# **To Do Items**
+- System Usability Scores
+  - [ ] Convert chart to box plot?
+  - [ ] Compare PWI treatment across phase 1 and 2?
+  - [ ] Phase 2 PWI could serve as baseline for system usability. Use that for comparisons?
+:::
+
+```{r}
+sus_summary <- sus_scores |>
+  filter(phase == 1) |>
+  group_by(treatment) |>
+  summarise(
+    mean_value = mean(sus, na.rm = TRUE),
+    sd_value = sd(sus, na.rm = TRUE)
+  )
+
+ggplot(sus_summary, aes(x = treatment, y = mean_value)) +
+  geom_bar(stat = "identity", position = "dodge", fill = base_color) +
+  geom_errorbar(
+    aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value),
+    width = 0.25, position = position_dodge(0.9)
+  ) +
+  labs(
+    title = "SUS by Treatment",
+    y = "Mean SUS",
+    x = "Treatment"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+# Run the ANOVA
+sus_anova_result <- aov(sus ~ treatment, data = sus_scores)
+sus_anova_summary <- summary(sus_anova_result)
+print(sus_anova_summary)
+```
+
+```{r}
+# If significant, conduct a post hoc test
+p_value = sus_anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  post_hoc <- TukeyHSD(sus_anova_result)
+  print(sus_post_hoc)
+} else {
+  print("not significant")
+}
+```
+
+### Task Load Index Scores (TLX)
+
+**Hypothesis:** There will be differences in perceived workload.
+
+**Expectations:** Variable workload based on a combination of instructional quality and interface complexity: PWI high, PWI medium, AR medium, MR high
+
+Surprised to see very even workload across treatments and no significant difference. Suggests other factors have larger effect across all treatment? Experiment design? Time constraints?
+
+::: {.callout-note collapse=false}
+# **To Do Items**
+- Task Load Index
+  - [ ] Convert chart to box plot?
+  - [ ] Compare PWI treatment across phase 1 and 2?
+  - [ ] Phase 2 PWI could serve as baseline for task workload. Use that for comparisons?
+  - [ ] Underlying factors of TLX?
+:::
+
+```{r}
+tlx_task_workload_summary <- tlx_scores |>
+  filter(type == "task workload", phase == 1) |>
+  group_by(treatment) |>
+  summarise(
+    mean_value = mean(value, na.rm = TRUE),
+    sd_value = sd(value, na.rm = TRUE)
+  )
+
+ggplot(tlx_task_workload_summary, aes(x = treatment, y = mean_value)) +
+  geom_bar(stat = "identity", position = "dodge", fill = base_color) +
+  geom_errorbar(
+    aes(ymin = mean_value - sd_value, ymax = mean_value + sd_value),
+    width = 0.25, position = position_dodge(0.9)
+  ) +
+  labs(
+    title = "Task Workload by Treatment",
+    y = "Mean Task Workload",
+    x = "Treatment"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+# Run the ANOVA
+tlx_anova_result <- aov(value ~ treatment, data = tlx_scores)
+tlx_anova_summary <- summary(tlx_anova_result)
+print(tlx_anova_summary)
+```
+
+```{r}
+# If significant, conduct a post hoc test
+p_value = tlx_anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  post_hoc <- TukeyHSD(tlx_anova_result)
+  print(tlx_post_hoc)
+} else {
+  print("not significant")
+}
+```
+
+## Visualize Car Time Trends in Phase 1
+
+```{r}
+library(ggplot2)
+
+# Filter data for completed cars
+completed_cars <- car_results |> 
+  filter(car_outcome == "Complete")
+
+# Create car_number column
+completed_cars <- completed_cars |> 
+  group_by(participant, treatment) |> 
+  mutate(car_number = row_number()) |> 
+  ungroup()
+
+# # Plot data
+# ggplot(data = completed_cars, aes(x = car_number, y = car_elapsed_time)) +
+#   geom_point() +
+#   facet_wrap(~treatment, scales = "free_x") +
+#   labs(
+#     title = "Car Completion Times by Treatment",
+#     x = "Car Number",
+#     y = "Completion Time (seconds)"
+#   )
+
+```
+
