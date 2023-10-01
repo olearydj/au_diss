@@ -45,7 +45,10 @@ Working with two data tables: car_results and demographics, with common columns 
 ::: {.callout-note collapse=false}
 # **To Do Items**
 - Misc
-  - [ ] Convert `{r load data, echo=FALSE}` format to Quarto style
+  - [x] Convert `{r load data, echo=FALSE}` format to Quarto style
+  - [ ] Add plot labels to code blocks
+  - [ ] Add tests for assumptions of ANOVA, etc.
+  - [ ] Refactor ANOVA, Tukey, and Assumptions into function
 :::
 
 ### Questions to Answer
@@ -59,7 +62,10 @@ Working with two data tables: car_results and demographics, with common columns 
 
 ## Setup Code
 
-```{r load libraries, output=FALSE}
+```{r}
+#| label: load-libs
+#| output: false
+
 library(tidyverse)
 library(readxl)
 library(gt)
@@ -75,7 +81,10 @@ library(xtable)
 # library(grid)
 ```
 
-```{r load data, echo=FALSE}
+```{r}
+#| label: load-data
+#| echo: false
+
 car_results <- read_xlsx(
   "./data/combined_results.xlsx",
   na = c("", "N/A"),
@@ -92,7 +101,8 @@ Loaded libraries and data.
 ## Descriptive Statistics
 
 ```{r}
-# number of participants
+#| label: num-participants
+
 participant_count <- demographics |>
   pull(participant) |>
   n_distinct()
@@ -110,7 +120,10 @@ Number of participants: `r participant_count`
   - [ ] Make the date based on file timestamp.
 :::
 
-```{r demographic box plots, warning=FALSE}
+```{r}
+#| label: demo-box-plots
+#| warning: false
+
 base_color <- "#69b3a2"
 
 # Creating box plots for 'age'
@@ -164,6 +177,8 @@ age_plot + height_plot + gender_plot +
 ### Demographics by Treatment
 
 ```{r}
+#| label: demo-by-treatment
+
 # Compute summary statistics
 demographics |>
   select(age:gender, treatment) |>
@@ -202,6 +217,8 @@ Results in line with expectations. Surprised to see mean time with AR the highes
 :::
 
 ```{r}
+#| label: boxplot-et-by-treat
+
 car_results |>
   filter(phase == 2, car_outcome == "complete") |>
   ggplot(aes(x = treatment, y = car_elapsed_time)) +
@@ -215,7 +232,9 @@ car_results |>
 ```
 
 ```{r}
-phase_two_data <- car_results |> filter(phase == 2)
+#| label: anova-et-by-treat
+
+phase_two_data <- car_results |> filter(phase == 2, car_outcome == "complete")
 
 time_anova_result <- aov(car_elapsed_time ~ treatment, data = phase_two_data)
 
@@ -224,7 +243,8 @@ print(time_anova_summary)
 ```
 
 ```{r}
-# If significant, conduct a post hoc test
+#| label: tukey-et-by-treat
+
 p_value = time_anova_summary[[1]]$`Pr(>F)`[1]
 if (p_value < 0.05) {
   time_post_hoc <- TukeyHSD(time_anova_result)
@@ -235,6 +255,8 @@ if (p_value < 0.05) {
 ```
 
 ```{r}
+#| label: plot-tukey-et
+
 plot(time_post_hoc)
 ```
 
@@ -257,6 +279,8 @@ Surprised to see AR error count so low. Task isn't complex enough to show lower 
 :::
 
 ```{r}
+#| label: boxplot-uce-by-treat
+
 car_results |>
   filter(phase == 2, car_outcome == "complete") |>
   ggplot(aes(x = treatment, y = uce)) +
@@ -270,6 +294,8 @@ car_results |>
 ```
 
 ```{r}
+#| label: anova-uce-by-treat
+
 error_anova_result <- aov(uce ~ treatment, data = phase_two_data)
 
 error_anova_summary <- summary(error_anova_result)
@@ -277,7 +303,8 @@ print(error_anova_summary)
 ```
 
 ```{r}
-# If significant, conduct a post hoc test
+#| label: tukey-uce-by-treat
+
 p_value = error_anova_summary[[1]]$`Pr(>F)`[1]
 if (p_value < 0.05) {
   error_post_hoc <- TukeyHSD(error_anova_result)
@@ -288,6 +315,8 @@ if (p_value < 0.05) {
 ```
 
 ```{r}
+#| label: plot-tukey-uce
+
 plot(error_post_hoc)
 ```
 
@@ -303,8 +332,10 @@ plot(error_post_hoc)
 How many times did participants have to refer to the paper work instructions during phase 2, by treatment?
 
 ```{r}
+#| label: boxplot-pwi-ref-by-treat
+
 car_results |>
-  filter(phase == 2) |>
+  filter(phase == 2, car_outcome == "complete") |>
   ggplot(aes(x = treatment, y = uce)) +
   geom_boxplot() +
   labs(
@@ -323,7 +354,10 @@ How much total time did participants spend referring to the paper work instructi
 
 Load System Usability and TLX scores.
 
-```{r load sus and tlx data, echo=FALSE}
+```{r}
+#| label: load-sus-and-tlx
+#| echo: false
+
 sus_scores <- read_xlsx(
   "./data/combined_results.xlsx",
   na = c("", "N/A"),
@@ -352,6 +386,8 @@ Surprised to see no significant difference in perceived usability between treatm
 :::
 
 ```{r}
+#| label: barplot-sus-by-treat
+
 sus_summary <- sus_scores |>
   filter(phase == 1) |>
   group_by(treatment) |>
@@ -367,7 +403,7 @@ ggplot(sus_summary, aes(x = treatment, y = mean_value)) +
     width = 0.25, position = position_dodge(0.9)
   ) +
   labs(
-    title = "SUS by Treatment",
+    title = "SUS by Treatment in Phase 1",
     y = "Mean SUS",
     x = "Treatment"
   ) +
@@ -376,14 +412,16 @@ ggplot(sus_summary, aes(x = treatment, y = mean_value)) +
 ```
 
 ```{r}
-# Run the ANOVA
+#| label: anova-sus-by-treat
+
 sus_anova_result <- aov(sus ~ treatment, data = sus_scores)
 sus_anova_summary <- summary(sus_anova_result)
 print(sus_anova_summary)
 ```
 
 ```{r}
-# If significant, conduct a post hoc test
+#| label: tukey-sus-by-treat
+
 p_value = sus_anova_summary[[1]]$`Pr(>F)`[1]
 if (p_value < 0.05) {
   post_hoc <- TukeyHSD(sus_anova_result)
@@ -411,6 +449,8 @@ Surprised to see very even workload across treatments and no significant differe
 :::
 
 ```{r}
+#| label: barplot-tlx-by-treat
+
 tlx_task_workload_summary <- tlx_scores |>
   filter(type == "task workload", phase == 1) |>
   group_by(treatment) |>
@@ -426,7 +466,7 @@ ggplot(tlx_task_workload_summary, aes(x = treatment, y = mean_value)) +
     width = 0.25, position = position_dodge(0.9)
   ) +
   labs(
-    title = "Task Workload by Treatment",
+    title = "Task Workload by Treatment in Phase 1",
     y = "Mean Task Workload",
     x = "Treatment"
   ) +
@@ -435,14 +475,16 @@ ggplot(tlx_task_workload_summary, aes(x = treatment, y = mean_value)) +
 ```
 
 ```{r}
-# Run the ANOVA
+#| label: anova-tlx-by-treat
+
 tlx_anova_result <- aov(value ~ treatment, data = tlx_scores)
 tlx_anova_summary <- summary(tlx_anova_result)
 print(tlx_anova_summary)
 ```
 
 ```{r}
-# If significant, conduct a post hoc test
+#| label: tukey-tlx-ty-treat
+
 p_value = tlx_anova_summary[[1]]$`Pr(>F)`[1]
 if (p_value < 0.05) {
   post_hoc <- TukeyHSD(tlx_anova_result)
@@ -455,7 +497,7 @@ if (p_value < 0.05) {
 ## Visualize Car Time Trends in Phase 1
 
 ```{r}
-library(ggplot2)
+#| label: car-time-trends
 
 # Filter data for completed cars
 completed_cars <- car_results |> 
