@@ -41,24 +41,27 @@ Working with two data tables: car_results and demographics, with common columns 
   - added hypotheses, expectations, and observations throughout
   - migrated to Quarto format
   - added to-do items
+  - implemented analysis for PWI counts and total duration
 
 ::: {.callout-note collapse=false}
 # **To Do Items**
-- Misc
+- Quarto Cleanup
   - [x] Convert `{r load data, echo=FALSE}` format to Quarto style
   - [ ] Add plot labels to code blocks
+- Add / Refactor Code
   - [ ] Add tests for assumptions of ANOVA, etc.
-  - [ ] Refactor ANOVA, Tukey, and Assumptions into function
+  - [ ] Refactor box plot by treatment as function
+  - [ ] Refactor ANOVA → Tukey → Tukey Plot as one function
+  - [ ] Order treatment factors consistently in all charts
+  - [ ] Show statistically different groups in TukeyHSD charts
+- Questions to Answer
+  - [ ] Explore impact of age on results
+  - [ ] Can we assess learning rates by treatment type from phase 1 results?
+  - [ ] Can we uncover relationships with underlying affordances of treatments?
+- Other
+  - [ ] Consider incomplete cars as partials?
+  - [ ] Review analysis for NA drop issues (see note in PWI Ref Count)
 :::
-
-### Questions to Answer
-
-- Is there a significant difference in phase 2 results for different treatments?
-  - result: average car time
-  - result: average car error count
-- Can we assess learning rates by treatment type from phase 1 results?
-- Can we uncover relationships with underlying affordances of treatments?
-- Do demographics affect results?
 
 ## Setup Code
 
@@ -94,6 +97,12 @@ demographics <- read_xlsx(
   "./data/combined_results.xlsx",
   na = c("", "N/A"),
   sheet = "demographics")
+```
+
+```{r}
+#| label: define-functions
+
+
 ```
 
 Loaded libraries and data.
@@ -325,30 +334,125 @@ plot(error_post_hoc)
 ::: {.callout-note collapse=false}
 # **To Do Items**
 - Treatment Effects
-  - [ ] Add PWI Reference Count analysis
-  - [ ] Add PWI Reference Duration analysis
+  - [x] Add PWI Reference Count analysis
+  - [x] Add PWI Reference Duration analysis
 :::
 
 How many times did participants have to refer to the paper work instructions during phase 2, by treatment?
 
+**Hypothesis:** PWI reference counts will differ.
+
+**Expectation:** Assuming that better recall of the instructions results in fewer PWI references, expect to see PWI ref counts decrease in order PWI, PAR, AR, MR. This effect may be countered by the participants' lack of familiarity with those instructions, requiring more refs for treatments other than PWI.
+
+In fact, the opposite is seen, with PWI having the lowest average count, followed by PAR, then AR, and finally MR. All treatments exhibit floor effect, which may contribute to this result. Significant differences are only seen in the PAR-AR, PWI-AR, and PWI-MR pairs.
+
+::: {.callout-warning}
+Very important realization here - NA is **not** a good replacement for 0 values in the data. In the original data prep I used NA in the `pwi_event_count` column where no pwi references were recorded. But dropping those rows led to eliminating meaningful data (not looking at the instructions).
+:::
+
 ```{r}
 #| label: boxplot-pwi-ref-by-treat
 
-car_results |>
-  filter(phase == 2, car_outcome == "complete") |>
-  ggplot(aes(x = treatment, y = uce)) +
+pwi_ref_count_data <- car_results |>
+  filter(phase == 2,
+         car_outcome == "complete") |>
+  mutate(pwi_event_count = ifelse(is.na(pwi_event_count), 0, pwi_event_count))
+
+pwi_ref_count_data |>
+  ggplot(aes(x = treatment, y = pwi_event_count)) +
   geom_boxplot() +
   labs(
-    title = "Uncorrected Error Count by Treatment for Phase 2",
+    title = "Number of PWI References During Phase 2",
     x = "Treatment",
     y = "Count"
   )
     
 ```
 
+```{r}
+#| label: anova-pwi-refs-by-treat
+
+pwi_ref_anova_result <-
+  aov(pwi_event_count ~ treatment, data = pwi_ref_count_data)
+
+pwi_ref_anova_summary <- summary(pwi_ref_anova_result)
+print(pwi_ref_anova_summary)
+```
+
+```{r}
+#| label: tukey-pwi-ref-by-treat
+
+p_value = pwi_ref_anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  pwi_ref_post_hoc <- TukeyHSD(pwi_ref_anova_result)
+  print(pwi_ref_post_hoc)
+} else {
+  print("not significant")
+}
+```
+
+```{r}
+#| label: plot-tukey-pwi-ref
+
+plot(pwi_ref_post_hoc)
+```
+
 ## PWI Reference Duration
 
-How much total time did participants spend referring to the paper work instructions during phase 2, by treatment?
+What is the total time that participants spent referring to the paper work instructions during phase 2, by treatment?
+
+**Hypothesis:** PWI reference durations will differ.
+
+**Expectation:** Assuming that better recall of the instructions results in less time spent reviewing the work instructions, expect to see times decrease in order PWI, PAR, AR, MR. This effect may be countered by the participants' lack of familiarity with those instructions, requiring more time for treatments other than PWI.
+
+A pattern similar to what was observed for the PWI references is observed, including the floor effect. This is consistent if the average duration per PWI ref is similar. Significant differences are only seen in the PWI-AR and PWI-MR pairs.
+
+```{r}
+#| label: boxplot-pwi-dur-by-treat
+
+pwi_ref_dur_data <- car_results |>
+  filter(phase == 2,
+         car_outcome == "complete") |>
+  mutate(pwi_event_tot_time = ifelse(is.na(pwi_event_tot_time), 0, pwi_event_tot_time))
+
+pwi_ref_dur_data |>
+  ggplot(aes(x = treatment, y = pwi_event_tot_time)) +
+  geom_boxplot() +
+  labs(
+    title = "Total Duration of PWI References During Phase 2",
+    x = "Treatment",
+    y = "Time (seconds)"
+  )
+    
+```
+
+```{r}
+#| label: anova-pwi-dur-by-treat
+
+pwi_tot_time_anova_result <-
+  aov(pwi_event_tot_time ~ treatment, data = pwi_ref_dur_data)
+
+pwi_tot_time_anova_summary <- summary(pwi_tot_time_anova_result)
+print(pwi_tot_time_anova_summary)
+```
+
+```{r}
+#| label: tukey-pwi-dur-by-treat
+
+p_value = pwi_tot_time_anova_summary[[1]]$`Pr(>F)`[1]
+if (p_value < 0.05) {
+  pwi_tot_time_post_hoc <- TukeyHSD(pwi_tot_time_anova_result)
+  print(pwi_tot_time_post_hoc)
+} else {
+  print("not significant")
+}
+```
+
+```{r}
+#| label: plot-tukey-pwi-tot-time
+
+plot(pwi_tot_time_post_hoc)
+```
 
 ## Explore Difference in UX by Treatment
 
