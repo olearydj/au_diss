@@ -75,6 +75,7 @@ library(gt)
 library(gtsummary)
 library(patchwork)
 library(xtable)
+library(broom)
 # library(gridExtra)
 # library(ggtext)
 
@@ -598,30 +599,68 @@ if (p_value < 0.05) {
 }
 ```
 
-## Visualize Car Time Trends in Phase 1
+## Visualize Car Time Trends in Phase 1 (Learning Rate)
 
 ```{r}
 #| label: car-time-trends
 
-# Filter data for completed cars
-completed_cars <- car_results |> 
-  filter(car_outcome == "Complete")
+plot_data <- car_results |> 
+  filter(phase == 1, car_outcome == "complete") |>
+  group_by(participant, treatment) |>
+  arrange(sequence) |>
+  mutate(car_number = row_number()) |>
+  ungroup() |>
+  arrange(participant, car_number) |>
+  mutate(treatment = factor(treatment, levels = c("PWI", "PAR", "AR", "MR")))
 
-# Create car_number column
-completed_cars <- completed_cars |> 
-  group_by(participant, treatment) |> 
-  mutate(car_number = row_number()) |> 
-  ungroup()
+plot_data |> 
+  ggplot(aes(x = as.factor(car_number), y = car_elapsed_time)) +
+    geom_boxplot() +
+    geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
+    labs(
+      title = "Car Elapsed Time by Car Number for Phase 1",
+      x = "Car Number",
+      y = "Elapsed Time (seconds)"
+    ) +
+    facet_wrap(~ treatment, ncol = 1)
 
-# # Plot data
-# ggplot(data = completed_cars, aes(x = car_number, y = car_elapsed_time)) +
-#   geom_point() +
-#   facet_wrap(~treatment, scales = "free_x") +
-#   labs(
-#     title = "Car Completion Times by Treatment",
-#     x = "Car Number",
-#     y = "Completion Time (seconds)"
-#   )
+```
+
+### Estimate the Learning Rate
+
+Fit an exponential decay model to estimate learning rate, $c$. The equation for this model is:
+
+$$y(t) = a + b \times e^{-ct}$$
+
+```{r}
+# Function to fit nls model and return tidy summary
+fit_model <- function(df) {
+  fit <- tryCatch({
+    nls(car_elapsed_time ~ a + b * exp(-c * car_number),
+        start = list(a = 200, b = 1000, c = 0.1), # Initial guesses
+        data = df)
+  }, error = function(e) {
+    print(paste("Error fitting model for treatment:", unique(df$treatment)[1]))
+    print(e)
+    return(NULL)
+  })
+  
+  if (!is.null(fit)) {
+    tidy_fit <- tidy(fit)
+    tidy_fit$treatment <- unique(df$treatment)[1]
+    return(tidy_fit)
+  } else {
+    return(NULL)
+  }
+}
+
+# Apply the function to each treatment group and collate results
+results <- plot_data |> 
+  (\(df) split(df, df$treatment))() |>
+  map_df(fit_model, .id = "treatment")
+
+
+results
 
 ```
 
