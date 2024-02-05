@@ -79,5 +79,5 @@ format:
   # Rendering
     template: tex/template.tex
     # template-partials: 
-    keep-tex: true
+    # keep-tex: true
 
