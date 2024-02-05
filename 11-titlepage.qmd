@@ -4,8 +4,10 @@
 \center
 \vspace*{48pt}
 
-\textbf{Innovation in Workforce Development for Manufacturing:} \\
-\textbf{A Framework for Assessing the Benefits of Mixed Reality Methods}
+\textbf{Augmented Reality vs. Traditional Instruction}\\
+\textbf{in Manufacturing Assembly:}
+\\
+\textbf{A Multi-Modal Assessment of Learning, Recall, and Retention}
 \vspace{12pt}
 
 by \\
@@ -36,7 +38,7 @@ Copyright 2022 by Danny J. O'Leary
 
 Dr. Gregory Harris, Co-chair, Assoc. Professor \& Chair, Industrial \& Systems Engineering \\
 Dr. John Evans, Co-chair, Professor, Industrial \& Systems Engineering \\
-Dr. Richard Sesek, Assoc. Professor, Industrial \& Systems Engineering \\
+Dr. Richard Sesek, Professor, Industrial \& Systems Engineering \\
 Dr. Konstantinos Mykoniatis, Assistant Professor, Industrial \& Systems Engineering
 
 \end{singlespace}

@@ -14,7 +14,7 @@ project:
 book:
 ### Book reference: https://quarto.org/docs/reference/projects/books.html
 # Book-specific project options
-  title: "Book Title"
+  title: "dissertation"
   subtitle: "Book Subtitle"
   author: "My Name"
   date: today
@@ -80,3 +80,4 @@ format:
     template: tex/template.tex
     # template-partials: 
     keep-tex: true
+

@@ -1,113 +1,75 @@
 # Methods
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus neque ex, vehicula dictum risus fermentum, feugiat faucibus neque. Etiam purus quam, lacinia vel porta in, malesuada ac nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed bibendum placerat tellus, ac finibus lectus euismod eget. Nulla mattis diam vitae bibendum consequat.
+INTRO
 
-![the study area](images/logo.png){#fig-logo}
+## Research Design
 
-See @fig-logo for a picture of the study area. Etiam vitae eros tristique, porta sapien a, aliquet mauris. Praesent ultricies mi nulla, et dignissim nulla mattis at. Fusce rhoncus leo quis odio euismod, hendrerit facilisis risus tincidunt. Aenean at lectus justo. Cras fringilla lacus nisl, ac convallis odio tincidunt vel. Integer vel egestas nisi. Curabitur vitae imperdiet justo.
+::: content-hidden
+Describe the overall design of your study, specifying it as a human subjects study with a between-groups design. Explain why this design is suitable for addressing your research questions.
+:::
 
-## Meet Quarto
+## Participants
 
-```{r}
-#| label: load-packages
-#| include: false
+::: content-hidden
+Detail the criteria for participant selection, including any inclusion or exclusion criteria. Mention the size of your participant pool and the rationale behind choosing this number. Also, describe the process of recruitment and any compensations or incentives provided.
+:::
 
-library(tidyverse)
-library(palmerpenguins)
-```
+## Ethical Considerations
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+::: content-hidden
+Since your study involves human subjects, outline the ethical approvals obtained (e.g., Institutional Review Board - IRB approval), and how informed consent was obtained from the participants. Describe any measures taken to ensure the privacy and confidentiality of participant data.
+:::
 
-## Meet the penguins
+## Experimental Setup
 
-![](images/lter_penguins.png){style="float:right;" fig-alt="Illustration of three species of Palmer Archipelago penguins: Chinstrap, Gentoo, and Adelie. Artwork by @allison_horst." width="300"}
+::: content-hidden
+Detail the setup of your experiment, including the environment (laboratory setting, real-world setting, etc.), the equipment used (specific AR/MR technologies), and any other materials involved in the training sessions.
+:::
 
-The `penguins` data from the [**palmerpenguins**](https://allisonhorst.github.io/palmerpenguins "palmerpenguins R package") package contains size measurements for `r nrow(penguins)` penguins from three species observed on three islands in the Palmer Archipelago, Antarctica.
+## Intervention Description
 
-The plot below shows the relationship between flipper and bill lengths of these penguins.
+::: content-hidden
+Clearly describe the AR/MR methods used in the training of manufacturing operators. Provide details on the content, duration, and frequency of the training sessions. Explain how these methods are intended to impact the assembly training process.
+:::
 
-```{r}
-#| label: plot-penguins
-#| fig-cap: Penguins
-#| warning: false
-#| echo: true
+## Control Group
 
-ggplot(penguins, 
-       aes(x = flipper_length_mm, y = bill_length_mm)) +
-  geom_point(aes(color = species, shape = species)) +
-  scale_color_manual(values = c("darkorange","purple","cyan4")) +
-  labs(
-    title = "Flipper and bill length",
-    subtitle = "Dimensions for penguins at Palmer Station LTER",
-    x = "Flipper length (mm)", y = "Bill length (mm)",
-    color = "Penguin species", shape = "Penguin species"
-  ) +
-  theme_minimal()
-```
+::: content-hidden
+If applicable, describe the control group's conditions, including what traditional training methods were used for comparison against the AR/MR methods.
+:::
 
-## Cars Stuff
+## Data Collection Methods
 
-```{r}
-#| label: fig-charts
-#| fig-cap: Charts
-#| fig-subcap: 
-#|   - "Cars"
-#|   - "Pressure"
-#| layout-ncol: 2
-#| echo: false
+::: content-hidden
+Elaborate on the types of data collected (quantitative, qualitative, or both), the tools and instruments used for data collection (surveys, performance metrics, observational data, interviews, etc.), and the timing of data collection (before, during, after the intervention).
+:::
 
-plot(cars)
-plot(pressure)
-```
+## Measures and Variables
 
-## Islands
+::: content-hidden
+Specify the primary and secondary outcomes measured in your study. Define any dependent and independent variables, including how they were operationalized.
+:::
 
-```{r}
-#| label: fig-islands
-#| tbl-cap: Largest Landmasses
-#| echo: false
+## Data Analysis Plan
 
-# Take the `islands` dataset and use some
-# dplyr functionality to obtain the ten
-# biggest islands in the world
-# source: https://gt.rstudio.com/articles/intro-creating-gt-tables.html
-islands_tbl <- 
-  tibble(
-    name = names(islands),
-    size = islands
-  ) %>%
-  arrange(desc(size)) %>%
-  slice(1:5)
+::: content-hidden
+Describe the statistical or qualitative analysis methods to be used for examining the data. Mention any software or tools that will be utilized for data analysis.
+:::
 
-library(gt)
-gt_tbl <- gt(islands_tbl)
+## Pilot Study
 
-gt_tbl <- 
-  gt_tbl %>%
-  tab_header(
-    title = md("**Large Landmasses of the World**"),
-    subtitle = md("The top ten largest are presented")
-  ) %>%
-  tab_source_note(
-    source_note = md("Source: The World Almanac and Book of Facts, 1975, page 406.")
-  ) %>%
-  tab_source_note(
-    source_note = md("Reference: McNeil, D. R. (1977) *Interactive Data Analysis*. Wiley.")
-  ) %>%
-  # tab_footnote(
-  #   footnote = md("The **largest** by area."),
-  #   locations = cells_body(
-  #     columns = size, rows = max(size)
-  #   )
-  # ) %>%
-  tab_footnote(
-    footnote = "The lowest by population.",
-    locations = cells_body(
-      columns = size, rows = contains("arc")
-    )
-  )
+::: content-hidden
+If a pilot study was conducted prior to the main study, provide details on its purpose, design, and outcomes, and how it informed the main study.
+:::
 
-# Show the gt table
-gt_tbl
-```
+## Limitations
 
+::: content-hidden
+Acknowledge any potential limitations or biases in your study design, participant selection, or data collection methods that could impact the interpretation of your results.
+:::
+
+## Summary
+
+::: content-hidden
+Conclude the methods section with a brief summary that encapsulates the key points of your research methodology, emphasizing its appropriateness and rigor in investigating the efficacy of AR/MR methods for manufacturing operator assembly training.
+:::
