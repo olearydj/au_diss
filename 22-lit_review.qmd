@@ -1,4 +1,4 @@
-# Literature Review
+# Literature Review {#22-lit_review}
 
 ## Market Readiness and Applications
 
@@ -90,6 +90,8 @@ INSERT NEW LIT REVIEW MATERIAL HERE FROM DISS/XRAssessmentMethods.XLS
 
 ## Summary of Findings
 
+Turnover in the manufacturing workforce and the lack of skilled labor necessitates scalable, efficient training methods. Furthermore, the shift from mass production to mass customization forces operators to contend with wide variance in the assembly steps required at each workstation. Together, these trends demand innovative methods for operator training and support.
+
 In light of this comprehensive review of existing literature, it is evident that the integration of XR technologies, particularly AR/MR, has potential to transform manufacturing assembly tasks. Successfully realizing that potential depends, in part, on the availability of frameworks to support sound decision making from the onset. Ideally, those frameworks should serve to align all aspects of the system's design with the business objectives [@borsci2015empir]. They should consider user needs related to usability and benefits to deliver a value proposition that is compelling to end users [@jetter2018augme]. They also should address technology and organizational issues that threaten short and long term success (ROI and the likelihood of further investment, respectively) [@masood2019augme]. Priority should be given to user acceptance, technical integration, organizational fit, and content creation considerations [@masood2020adopt]. Finally, these guidelines should be validated [@danielsson2020augme].
 
 Though the need is established for strategic decision making guidelines as described above, few such frameworks were found in the literature. Of particular note is the questionnaire based approach proposed by @palmarini2017innov. Though innovative, it falls well short of the idealized requirements. It fails to account for economic considerations, is not validated, covers only AR devices, and its recommendations are general and out of date.
@@ -97,3 +99,5 @@ Though the need is established for strategic decision making guidelines as descr
 TIE BACK TO NEW LITERATURE - ABSENCE OF PROOF OF VALUE PROP
 
 *...in spite of all the promising indicators, we find insufficient evidence to clearly quantify the extent to which augmented training can accelerate learning, improve operator performance, or increase retention in manufacturing applications. Without such evidence, the ROI for these systems remains unclear.*
+
+Consequently, there is a pressing need for additional research to quantify the efficacy of augmented instruction for real-world manufacturing tasks. The business case demands evidence that these systems generate significant, measurable returns for operator training or support. Until that can be proven, industry adoption will remain stagnant.

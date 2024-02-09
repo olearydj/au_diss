@@ -43,6 +43,8 @@ format:
     monofont: Cascadia Mono, Menlo, Consolas, Courier New, Courier
     backgroundcolor: "white"
     fontcolor: "black"
+    fig-align: "center"
+    fig-dpi: 300
     knitr:
       opts_chunk:
         dev: "ragg_png"
@@ -89,6 +91,9 @@ format:
       - showframe
     # footer only, with centered page number
     pagestyle: plain
+    fig-align: "center"
+    fig-dpi: 300
+
   # Includes
     # include-before-body: removed from template, unused
     # include-in-header:

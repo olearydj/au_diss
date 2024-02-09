@@ -1,4 +1,4 @@
-# References {.unnumbered}
+# References {#27-references .unnumbered}
 
 \begingroup
 \raggedright

@@ -1,4 +1,4 @@
-# Introduction
+# Introduction {#21-intro}
 
 Challenged to meet the demands of reduced cost, global competition, sustainability, shorter product life cycles, and product complexity, the manufacturing industry is in the midst of a digital transformation. Industry 4.0 and the underlying shift from mass production to mass customization places new demands on the workforce. Today's manufacturing operators must manage a wider range of responsibilities and increased information flow amidst decreasing margins for error, changing methods, and new technologies. These trends show no signs of abatement [@danielsson2020augme]. Extended Reality (XR) devices, in their various forms, are expected to aid this problem through operator training and support.
 
@@ -42,7 +42,7 @@ In fact, the literature suggests that I4.0 is best understood as a general conce
 
 I4.0 has been linked to over 1200 technological components, from 30 disciplines [@chiarello2018extra]. To provide a useful definition of I4.0 in terms of the technologies involved, some abstraction is essential. In their review of over 100 relevant and credible sources, Culot, et al. [@culot2020behin] identified 13 categories of technology. Each was assessed along two continua: software-hardware technology and local-global connectivity, as seen in @fig-tech.
 
-![Enabling technology categories of Industry 4.0. @culot2020behin](images/21-EnablingTechCategories.png){#fig-tech fig-align="center" width="4.5in"}
+![Enabling technology categories of Industry 4.0. @culot2020behin](images/21-EnablingTechCategories.png){#fig-tech width="5in"}
 
 Four technology quadrants emerge in this figure: (a) physical-digital interfaces, (b) networking, (c) data-processing, and (d) physical-digital processes. The sensing, connecting, and analyzing activities of the first three quadrants are what differentiate I4.0 from advanced manufacturing.
 
@@ -65,7 +65,7 @@ CPS enables I4.0 by integrating the previously identified sensing, connecting, a
 
 To understand their roles in an I4.0 CPS, J. Lee's 5C Architecture is instructive [@lee2015cyber]. This popular framework identifies five implementation activities in step-wise fashion: get data from sensors, convert data to information, analyze information, present data, and provide control feedback. These activities correspond to the 5Cs of Connect, Convert, Cyber, Cognition, and Configuration, as depicted in @fig-5c, with related attributes.
 
-![5C architecture to implement I4.0 CPS. @lee2015cyber, as adapted by @pascual2019handb](images/21-5CArchitecture.png){#fig-5c fig-align="center" width="4.5in"}
+![5C architecture to implement I4.0 CPS. @lee2015cyber, as adapted by @pascual2019handb](images/21-5CArchitecture.png){#fig-5c width="5in"}
 
 In this framework IOT and M2M enable smart Connections between sensored devices. In the Conversion level Big Data collects and contextualizes the data. Virtual representations of the physical components are created by Digital Twins in the Cyber step. Extended Reality devices aid visualization and Cognition. Various Modeling methods are employed throughout to support manual and automated decision-making. The Cloud Computing architecture integrates it all and facilitates feedback in Cognition. The resulting closed loop system drives Advanced Manufacturing processes in real-time.
 
@@ -89,7 +89,7 @@ Following similar growth in adjacent fields, interest in the DT concept has acce
 
 Jones described the DT synchronization process, also known as "twinning," as a cycle of measuring and reflecting changes in the parameters of interest [@jones2020chara]. During metrology, changes to one system state are measured. In the realization phase those changes are reflected in the other system. This process operates bi-directionally between physical and virtual entities, creating a system that is capable of continuous adaption. See @fig-twinning.
 
-![The Digital Twinning Process. @jones2020chara](images/21-DigitalTwinningProcess.png){#fig-twinning fig-align="center" width="4.5in"}
+![The Digital Twinning Process. @jones2020chara](images/21-DigitalTwinningProcess.png){#fig-twinning width="5in"}
 
 In Jones' model the term parameter refers to the values synchronized by the DT. Common parameters are related to form, functionality, process, and performance. Examples include part tolerance, assembly time, and machine health. Parameters can be measured, computed, observed, or otherwise derived. The overall system state is described by the current value of all parameters. The fidelity of a DT is a measure of the number of parameters, their accuracy, and the level of abstraction involved [@jones2020chara].
 
@@ -137,7 +137,7 @@ Today, the tools and technologies best suited to deliver on this promise are fou
 
 Extended Reality (XR) is the umbrella term for a range of technologies where human-machine interactions occur in environments that blend real and simulated stimulus [@ul2022xr8400]. XR covers the entire Virtuality Continuum (VC), as famously described by @milgram1994taxon, and pictured in @fig-vc.
 
-![The Virtuality Continuum. @milgram1994taxon](/images/21-VirtualityContinuum.png){#fig-vc fig-align="center" width="4.5in"}
+![The Virtuality Continuum. @milgram1994taxon](/images/21-VirtualityContinuum.png){#fig-vc width="5in"}
 
 This continuum spans the complete range of real to synthetic experiences. Though typically associated with adding or replacing visual stimulus, the VC also includes technologies that are subtractive in nature and/or affect other senses. For example, noise cancellation headphones can be considered a form of "diminished reality" audio AR device [@kress2020optic].
 
@@ -147,7 +147,7 @@ Many precursors to XR can be identified in the 1800s and early 1900s, culminatin
 
 [^21-intro-4]: Footnote about Morton Heilig
 
-![Heilig's Stereoscopic Television Apparatus. @heilig1960stere](images/21-HeiligStereoscopicTV.png){#fig-heilig fig-align="center" width="4.5in"}
+![Heilig's Stereoscopic Television Apparatus. @heilig1960stere](images/21-HeiligStereoscopicTV.png){#fig-heilig width="5in"}
 
 In 1965 Ivan Sutherland[^21-intro-5] published *The Ultimate Display*, which described his vision for a "kinesthetic display" at a time when "the ability to draw simple curves would be useful" [@sutherland1965ultim]. In it, he commented:
 
@@ -167,7 +167,7 @@ Commercial interest in XR has since experienced alternating periods of boom and 
 
 Emblematic of that shift is Field of View To Go (FOV2GO), an experimental, untethered, DIY HMD developed in the Mixed Reality Lab at the University of Southern California's Institute for Creative Technologies, and first shown at the IEEE VR conference in 2012 [@olson2011desig]. Their design utilized two iPhone 4's as displays with an off the shelf lens assembly and tracking system, all mounted on a cardboard body. Software was powered by the Unity game engine and a Python script. Their conference poster is pictured in @fig-fov2go.
 
-![FOV2GO, IEEE VR Conference 2012 Poster. @olson2011desig](images/21-FOV2GoPoster.png){#fig-fov2go fig-align="center" width="4.5in"}
+![FOV2GO, IEEE VR Conference 2012 Poster. @olson2011desig](images/21-FOV2GoPoster.png){#fig-fov2go width="5in"}
 
 FOV2GO team members founded Oculus VR soon thereafter and demonstrated a prototype of their Rift VR HMD in June of that year. The Rift Kickstarter campaign launched in August, meeting its \$250,000 funding target in less than four hours and securing over \$2.4m in total. Oculus subsequently raised over \$90m in venture capital before being acquired by Facebook for \$2b in March of 2014 [@jerald2016book].
 
@@ -213,7 +213,7 @@ While VR has converged on a singular form, Azuma's definition of AR is not const
 
 [^21-intro-9]: Dr. Kress was principal optical architect on the Google Glass project before joining Microsoft in a similar role for their first and second generation HoloLens devices. He has since returned to Google as their Director for XR Engineering. He serves as Vice President of the International Society for Optics and Photonics (SPIE). Dr. Kress' publications are heavily leveraged throughout this section. [spie.org/profile/Bernard.Kress-16356](https://spie.org/profile/Bernard.Kress-16356)
 
-![Current product offerings by device class and market. @kress2020optic](images/21-ARVRProductOfferings.png){#fig-offerings fig-align="center" width="4.5in"}
+![Current product offerings by device class and market. @kress2020optic](images/21-ARVRProductOfferings.png){#fig-offerings width="5in"}
 
 From this chart it can be inferred that HMD physical configurations vary by:
 
@@ -241,17 +241,17 @@ XR devices, particularly AR HMDs, are not "one size fits all." In addition to th
 
 All modern XR HMDs are complex devices comprised of display, sensing, compute, and power management systems. Optical see-through (OST) devices require additional components to project and combine the image in the user's field of view. @fig-buildblocks depicts the major sub-systems of an OST HMD [@kress2020artif]. The peak complexity of an idealized OST AR HMD provides a comprehensive case study in the tradeoffs and benefits of XR. Lessons learned from state of the art requirements and architecture apply, in limited fashion, to devices with a reduced feature set.
 
-![Functional building blocks of an OST XR HMD. @kress2020artif](images/21-BlocksOST-XR-HMD.png){#fig-buildblocks fig-align="center" width="4.5in"}
+![Functional building blocks of an OST XR HMD. @kress2020artif](images/21-BlocksOST-XR-HMD.png){#fig-buildblocks width="5in"}
 
 Mixed Reality (MR) is the label given by Kress to advanced AR devices with the precise head tracking, gesture sensing, and depth mapping capabilities required to support spatially synchronized interactions, providing an elevated and differentiated user experience [@kress2017towar]. He measures the ultimate quality of that experience in two dimensions: comfort, including wearable, vestibular, visual, and social components; and immersion, a function of all sensory input and output. Given the goals of comfort and immersion, an extensive list of design requirements can be derived for idealized MR devices. In @fig-requirements, dark grey shading indicates features that are reliant on fast, accurate, universal eye tracking, a critical enabling technology for idealized MR HMDs.
 
-![Comfort and immersion requirements for an ideal MR experience. From @kress2020optic](images/21-ComfortAndImmersionMR.png){#fig-requirements fig-align="center" width="4.5in"}
+![Comfort and immersion requirements for an ideal MR experience. @kress2020optic](images/21-ComfortAndImmersionMR.png){#fig-requirements width="5in"}
 
 This summary reflects other findings in the literature which identify requirements related to precise tracking, form factor, brightness / contrast, field of view, latency, resolution, occlusion, frame rate, depth of field, and visual discontinuity [@jerald2016book; @fischer2015visua; @ul2022xr8400; @gay-bellile2015appli; @azuma2017makin; @kiyokawa2015head].
 
 Visual comfort is a function of both the display features and the overall speed and accuracy of the integrated sensor output. Sensor fusion refers to that integration process and the hardware / software system that accomplishes it. @fig-fusion depicts the inputs and processing flow for a typical system. The demands of sensor fusion have led companies like Microsoft to design custom processors to provide the best user experience [@kress2020optic].
 
-![Sensor fusion flow in typical MR systems. @kress2020optic](images/21-SensorFusionFlowMR.png){#fig-fusion fig-align="center" width="4.5in"}
+![Sensor fusion flow in typical MR systems. @kress2020optic](images/21-SensorFusionFlowMR.png){#fig-fusion width="5in"}
 
 High-level considerations in the design of HMD systems include tradeoffs between real world visibility and pictorial consistency, FOV and angular resolution, near and far accommodation, and the importance of perceived depth, which is influenced by occlusion and ocularity [@kiyokawa2015head]. Directly conflicting requirements are common in OST HMD design, where the tight interdependencies of these sub-systems and ambitious overall requirements necessitate a global optimization approach to design [@kress2014segme]. Knowledge of the human factors involved can aid the process.
 
@@ -267,13 +267,13 @@ Optical components of the eye, including cornea, iris, pupil, and lens, coordina
 
 Visual acuity refers to a group of measures for human visual performance, including separation and recognition acuity. Separation acuity is the ability to resolve fine details at a distance. Specifically, it is the smallest angular separation that can be resolved between neighboring black stripes on a white background. One arc minute (1/60th of a degree) is the lower limit for "normal" separation acuity, corresponding to a gap of just over 1/16" (1.75mm) when viewed from 20' (6m). This attribute of human vision is rarely measured directly. Instead, recognition acuity tests like the Snellen eye chart are designed to assess separation acuity via the discernment of shapes or symbols. The results are given as a ratio expressing the acuity of the subject relative to someone with "normal" (20/20) vision. For example, "20/40" indicates half the normal acuity. Visual acuity is influenced by the entire optical-neural path, but is primarily a function of the cones and varies with their distribution in the field of view. These concepts are illustrated in @fig-acuity.
 
-![(a) Rod and cone cell density on the retina, and (b) optical axis and line of sight. @kress2020optic](images/21-RodAndConeDensity.png){#fig-acuity fig-align="center" width="4.5in"}
+![(a) Rod and cone cell density on the retina, and (b) optical axis and line of sight. @kress2020optic](images/21-RodAndConeDensity.png){#fig-acuity width="5in"}
 
 ##### Field of View
 
 Field of view (FOV) is the angular measure of the environment that is visible at any instant. As shown in @fig-binocfov, the horizontal FOV is approximately 160 deg for each eye, and 200-220 deg combined. Vertical FOV is slightly smaller, with a slight downward bias. Overlapping monocular vision creates a central binocular range of 120 deg with vertical asymmetries caused by the facial profile.
 
-![Binocular field of view. @kress2020optic](images/21-BinocularFOV.png){#fig-binocfov fig-align="center" width="4.5in"}
+![Binocular field of view. @kress2020optic](images/21-BinocularFOV.png){#fig-binocfov width="5in"}
 
 Though depicted in static terms, the FOV is dynamic due to continuous voluntary and involuntary eye motions that balance our directed attention with general awareness while accounting for motion of the head, body, and environment.
 
@@ -307,7 +307,7 @@ Resolution and FOV are key measures of the fidelity for visual display devices. 
 
 The FOV of an HMD includes the aided region, where real and virtual images are overlaid; the peripheral region, outside the aided region; and the occluded region, where vision is obscured by the device [@kiyokawa2015head]. FOV specification in HMD design must identify the angular span, aspect ratio, and location of the aided region within the user view. These decisions are interrelated and driven by task and market requirements [@kress2015optic]. @fig-xrfov depicts the range of implementations found in state of the art XR HMDs, overlaid on the binocular FOV and the fixed foveated display region [@kress2020optic].
 
-![Typical FOVs for SOTA XR HMDs. @kress2020optic](images/21-XR-HMD-FOVs.png){#fig-xrfov fig-align="center" width="4.5in"}
+![Typical FOVs for SOTA XR HMDs. @kress2020optic](images/21-XR-HMD-FOVs.png){#fig-xrfov width="5in"}
 
 Very high pixel counts are required for ideal resolution in wide FOV devices. For example, a 16:9 display with 50 DPD angular resolution and 160 deg horizontal FOV per eye, would require 8,000 x 4,500 pixels. Two such displays (one per eye) would have more than eight times pixel count of a modern 4k monitor (3,840 x 2,160).
 
@@ -333,13 +333,13 @@ Combining real and virtual scenes in a spatially coherent fashion is the essence
 
 [^21-intro-11]: 3D registration for navigational purposes is commonly achieved using a combination of GPS related technologies, but the results are not sufficiently accurate for AR applications.
 
-![AR Tracking: spatial coherence is achieved by aligning real and virtual cameras with shared intrinsic properties. @marchand2016pose](images/21-ARTracking.png){#fig-tracking fig-align="center" width="4.5in"}
+![AR Tracking: spatial coherence is achieved by aligning real and virtual cameras with shared intrinsic properties. @marchand2016pose](images/21-ARTracking.png){#fig-tracking width="5in"}
 
 Recognition identifies features in the 2D imagery and matches them to corresponding points in a database of 3D features. Typically, the database consists of image, model, or area feature types, which are described in greater detail below. Recognition and tracking are interrelated problems, where the former is used to initialize the later, or reinitialize it when tracking performance degrades. Tracking updates the position of recognized features over time to reduce the computational costs associated with recognition [@you2015visua].
 
 Camera pose estimation calculates the camera's transformation matrix based on the tracked features. It is achieved by solving the perspective-n-point (PnP) problem for 2D-3D pairs based on intrinsic camera parameters (e.g. focal length, aspect ratio, lens distortion). PnP is a fundamental computer vision problem with many modern applications. The details of PnP are beyond the scope of this work but the essence of the problem is captured in @fig-estpose. For more information, including a survey of implementations, see @marchand2016pose.
 
-![The pose estimation problem. @opencv2022pnp](images/21-PoseEstimation.png){#fig-estpose fig-align="center" width="4.5in"}
+![The pose estimation problem. @opencv2022pnp](images/21-PoseEstimation.png){#fig-estpose width="5in"}
 
 Tracking methods are typically characterized by the features used in the registration process. This is an active area of research where terminology and implementations vary, but image, model, and area feature types are common. Image based tracking relies on 2D pixel data. Model and area based methods use discrete and continuous objects of 3D geometry, respectively. Hybrid methods are also used.
 
@@ -347,7 +347,7 @@ Image-based methods use either photographic image data, graphic symbols called t
 
 Marker-based AR affords simplifying assumptions for the registration process with standard fiducial designs optimized for all stages of the tracking process. Black-and-white encoding patterns and clearly delineated boundaries aid recognition and tracking. The corners emphasized by square marker designs provide four coplanar, non-collinear points required for PnP pose detection [@yang2015scala]. DensoWave's Quick Response (QR) codes store 2953 bytes of easily-decoded binary data and are widely used for AR applications [@iso2015qr18004]. The marker-based process is depicted in @fig-markers.
 
-![Marker-based tracking pipeline. @yang2015scala](images/21-MarkerBasedTrackingPipeline.png){#fig-markers fig-align="center" width="4.5in"}
+![Marker-based tracking pipeline. @yang2015scala](images/21-MarkerBasedTrackingPipeline.png){#fig-markers width="5in"}
 
 Marker-based optical tracking systems use two approaches. The "inside-out" approach places markers on the target object and camera pose is estimated from images of the marker in the observer-borne camera. In the "outside-in" case, markers are placed on the observer, who is localized by a set of static cameras surrounding the scene. The outside-in method, more commonly used in motion capture applications, requires an additional pre-calibration process that establishes the pose of the target object. Both cases require prior instrumentation of the scene with markers or cameras, the number and placement of which determines the trackable volume. This deployment process and the visually obtrusive nature of markers may be inappropriate in some applications [@gay-bellile2015appli]. Additionally, markers are often impractical in controlled and/or outdoor environments and are sensitive to occlusion [@ventura2015urban; @yang2015scala]. Together, these shortcomings compel the use of more sophisticated tracking methods.
 
@@ -411,7 +411,7 @@ Current hardware continues the trend of exploiting the latest advances in compon
 
 Due to directly conflicting requirements common in XR systems, there is no "one size fits all" solution. Amidst the hype surrounding this promising but immature technology, it is important to have an accurate understanding and realistic expectations. Numerous considerations important to the design, selection, and implementation of XR solutions are detailed above. @fig-requirements assesses the importance of selected optical requirements in HMD devices across common market segments.
 
-![Requirements from various HMD market segments. Number of '+/-' markers indicates magnitude of positive/negative criticality. @kress2015optic](images/21-HMDRequirements.png){fig-align="center" width="4.5in"}
+![Requirements from various HMD market segments. Number of '+/-' markers indicates magnitude of positive/negative criticality. @kress2015optic](images/21-HMDRequirements.png){width="5in"}
 
 Tradeoffs should be informed by requirements specific to the context, manner, and goals of intended use, prioritizing human factors related to perception. Aligning the desired outcomes with the primary affordance of the chosen device is essential. These choices are aided by an understanding the theoretical underpinnings of those affordances.
 

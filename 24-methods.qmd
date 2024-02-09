@@ -1,4 +1,4 @@
-# Methods
+# Methods {#24-methods}
 
 -   funding?
 -   rct
@@ -10,33 +10,34 @@
 
 The purpose of this study is to measure the effect of instructional media type (IMT) on learning rates and skills transfer for a simulated manufacturing assembly task. The first phase will help us understand how each IMT affects the operator’s learning rate (time or cycles to learn the process) and ultimate measures of performance (speed and accuracy). The second will help assess how learning transfer varies with each treatment. Finally, the exit surveys will help us understand the relationship between those results and perceived workload, system usability, and the participant’s self-reported behavioral control.
 
-Benefits: Turnover in the workforce and the lack of skilled labor necessitates scalable, efficient training methods. Furthermore, the shift from mass production to mass customization forces operators to contend with wide variance in the assembly steps required at each workstation. Together, these trends demand innovative methods for operator training and support.
-
-Augmented and mixed reality are expected to help fill that need, but it is a fragmented market with a variety of solutions. Few studies explore the relationship between those methods (and the affordances that differentiate them) and corresponding learning rates and transfer. We believe this investigation will make meaningful contributions to that effort, helping to build a cohesive understanding of the utility of these systems and best practices for their application.
-
 ## Research Design
 
 ::: content-hidden
 Describe the overall design of your study, specifying it as a human subjects study with a between-groups design. Explain why this design is suitable for addressing your research questions.
 :::
 
+- between groups chosen to limit learning effect between treatments
+- in order to assess RQ...
+- participants are convenience sample of AU population
+- measures chosen to ...
+
 In this between-groups study, human subjects were asked to learn and repeat a simulated manufacturing assembly task. Participants were randomly assigned to one of four instructional treatments, each with a different level of augmentation. The experiment proceeded through two phases, where learning and recall were tested for the assigned treatment level and performance measures recorded. After each phase validated instruments were used to assess the participant's perceived workload and their impression of the treatment's usability. Several weeks after the initial intervention, participants were invited back to an event where retention was also tested. Together, the experimental data was analyzed to quantify the treatment effect for the simulated assembly task. Demographics, perceived workload, and usability data were then used to identify other contributing factors and better understand the results.
 
-These experiments were conducted in the Tiger Motors Lean Education Center, a lab designed to simulate modern automotive manufacturing and teach best practices in a real-world setting using LEGO^®^ vehicle assembly.
+These experiments were conducted in the Tiger Motors Lean Education Center. This award-winning facility, designed to simulate modern automotive manufacturing and teach best practices in a real-world setting using LEGO^®^ vehicle assembly, provided an ideal setting for the study. Pictured in @fig-ws8-a, Tiger Motors (aka the Lean Lab) is an integral research and education component of the Industrial and Systems Engineering Department, Samuel Ginn College of Engineering at Auburn University.
 
-![Conveyor and final assembly workstations, Tiger Motors Lean Education Center](images/24-LegoLab.png){#fig-lego fig-align="center" width="4.5in"}
-
-Participants will act as operators learning to assemble the SUV (Model T) car at workstation 8.
+Participants acted as operators learning the Model T (SUV) assembly process at workstation eight. A completed SUV model is pictured in @fig-ws8-b. This process has been repeated thousands of times in lean education courses without significant incident.
 
 ::: {#fig-ws8 layout-ncol="2"}
-![Lab](images/24-LegoLab.png){#fig-a}
+![Conveyor and final assembly workstations](images/24-LegoLab.png){#fig-ws8-a}
 
-![Lab](images/24-LegoLab.png){#fig-b}
+![Completed SUV model](images/24-SUVComplete.jpg){#fig-ws8-b}
 
-Lab Images
+Tiger Motors Lean Education Center and SUV Model
 :::
 
-same task and instructions shared - control for both, focus on effect of the treatment's affordances
+Each participant completes the same tasks with one of four different Instructional Media Treatments (IMTs). Each IMT offers a different level of augmented instruction, ranging from traditional paper instructions with no augmentation to a mixed reality head-mounted display with interactive instruction superimposed on their field of view.
+
+The instructional design for all augmented IMTs was based on the paper work instructions, adapted only as needed to leverage the specific affordances of that technology. This helped ensure that any differences observed in the study were due to the augmentation level of each IMT, not variations in instructional content.
 
 ## Participants
 
@@ -51,7 +52,7 @@ Mention the size of your participant pool and the rationale behind choosing this
 
 Participants were recruited from the Auburn University community using digital and printed promotions around campus, the graduate school mailing list, and outreach in various undergraduate engineering classrooms. The later focused on freshman and sophomore engineering students in Industrial & Systems Engineering, as they are accessible and most likely to meet all requirements. @fig-recruit exemplifies the recruiting materials, approved copies of which are included in [Appendix A, IRB Documentation](#app-irb).
 
-![Digital recruitment flyer distributed on campus monitors.](images/24-RecruitSlideV3.png){#fig-recruit fig-align="center" width="4.5in"}
+![Digital recruitment flyer distributed on campus monitors.](images/24-RecruitSlideV3.png){#fig-recruit width="5in"}
 
 Potential participants in the first investigation were screened for exclusion based on their age (under 19) or a tendency to motion sickness. Additionally, we screened for experience using head-mounted or projected AR devices with gesture based controls. This does not exclude those having experience with VR headsets like META's Occulus product line, which is relatively common among the target population, but utilize traditional input devices.[^24-methods-1] Finally, we excluded anyone that had previously participated in a manufacturing simulation in the Tiger Motors Lean Education Center as part of INSY 5800/6800 or otherwise. This ensured that none of our participants had experience with the assembly task.
 
@@ -163,6 +164,13 @@ Detail the setup of your experiment, including the environment (laboratory setti
 
 Each participant in this between-groups design experiences a single level of the Instructional Media Type (IMT) treatment.
 
+workstation 8 and bins
+
+This is one of 15 stations in the complete SUV assembly. It consists of a three step sequence where eight different parts, a total of 16 pieces, are affixed to the workpiece. The standard paper work instructions for this process are pictured in @fig-ws8instruct.
+
+![SUV assembly instructions for workstation 8.](images/24-SUVWorkstation8.png){#fig-ws8instruct width="5in"}
+
+
 ### Treatment Levels
 
 There are four levels of this treatment, each with increasingly augmented work instructions:
@@ -228,6 +236,8 @@ Acknowledge any potential limitations or biases in your study design, participan
 -   compensation added after IRB v3, approved April 10; 5 prior subjects plus some thereafter were recruited without knowledge of compensation
 -   convenience sample
 -   pseudo-random selection
+- legos are not real cars
+- difficulty / complexity of the task
 
 ## Summary
 

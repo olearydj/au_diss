@@ -1,14 +1,12 @@
-# Problem Statement
+# Problem Statement {#23-prob_statement}
 
 Despite a demonstrated need for operator assistance, the emergence of promising technology, a theoretical basis for performance enhancement, a "solution" that connects it all, and frameworks to support development and assessment, XR adoption remains slow in manufacturing. Until a compelling business case can be made for the substantial investment required, it is unlikely that industry will move beyond isolated proof of concept studies. With continued delays to adoption comes the risk that hardware providers lose their appetite for the massive ongoing R&D budgets these systems demand and reduce or end their commitment in the sector.
 
-Consequently, there is a pressing need for additional research to quantify the efficacy of augmented instruction for real-world manufacturing tasks. The business case demands evidence that these systems generate significant, measurable returns for operator training or support. Until that can be proven, industry adoption will remain stagnant.
+Very few studies explore the benefits of various XR-assisted training methods for manufacturing, relative to traditional methods, with an emphasis on the features that differentiate them. This gives rise to the central research question of this work:
 
-This gives rise to the central research question of this work:
+> *What effect does augmented instruction, in a variety of forms, have on operator learning, recall, and retention for a given manufacturing assembly task?*
 
-> *What effect does augmented instruction, in a variety of forms, have on operator learning curves, performance, and retention for manufacturing assembly tasks?*
-
-To answer this question, a series of experiments were designed and executed to compare participants' learning, recall, and retention on one of four levels of instructional augmentation (treatments). To the best of our knowledge, this experiment is unique in its design. Data related to perceived workload and user experience, along with participant demographics and feedback, were also gathered to provide context for the findings. The details of the experimental methods are described in Chapter 4.
+To answer this question, a series of experiments were designed and executed to compare participant performance for one of four levels of instructional augmentation (treatments). To the best of our knowledge, this experiment is unique in its design. Data related to perceived workload and user experience, along with participant demographics and feedback, were also gathered to provide context for the findings.
 
 The primary contributions of this work are:
 
@@ -16,4 +14,6 @@ The primary contributions of this work are:
 2.  Findings from the main study, primarily the treatment effect on learning rates and operator performance.
 3.  Findings from the follow-up study, focused on retention.
 
-In addition, we will provide detailed analysis of other data collected, and a hollistic interpretation of the results.
+This study will provide a detailed analysis of other data collected, and a comprehensive interpretation of the results. Together, I believe this investigation will advance the understanding of these systems' overall utility and better quantify their relative benefits. This ultimately supports more informed decision making related to the research, development, and adoption of XR in manufacturing.
+
+The [following chapter](#24-methods) will detail the study design and methods employed in this study.

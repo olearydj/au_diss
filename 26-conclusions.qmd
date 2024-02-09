@@ -1,4 +1,4 @@
-# Conclusions
+# Conclusions {#26-conclusions}
 
 ## Future Work
 In addition to the participants described above, Investigation 1 will recruit 20-30 participants from local manufacturing companies. The same requirements, recruiting, consent, and onboarding procedures will apply, and the experimental protocol is unchanged, except that those participants will be compensated.
