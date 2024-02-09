@@ -14,9 +14,9 @@ project:
 book:
 ### Book reference: https://quarto.org/docs/reference/projects/books.html
 # Book-specific project options
-  title: "dissertation"
-  subtitle: "Book Subtitle"
-  author: "My Name"
+  title: "Augmented Reality vs. Traditional Instruction in Manufacturing Assembly"
+  subtitle: "A Multi-Modal Assessment of Learning, Recall, and Retention"
+  author: "Danny J. O'Leary"
   date: today
   chapters:
     - index.qmd
@@ -28,31 +28,48 @@ book:
     - 26-conclusions.qmd
     - 27-references.qmd
   appendices:
-    - 31-firstapp.qmd
+    - 31-irb.qmd
 
 bibliography: references.bib
+# csl: apa.csl
+editor: source
 
 format:
+  html:
+    theme: simplex
+    fontsize: 1.2em
+    linestretch: 1.35
+    mainfont: Helvetica Neue, Helvetica, Arial, sans
+    monofont: Cascadia Mono, Menlo, Consolas, Courier New, Courier
+    backgroundcolor: "white"
+    fontcolor: "black"
+    knitr:
+      opts_chunk:
+        dev: "ragg_png"
+  
   pdf:
   ### PDF reference: https://quarto.org/docs/reference/formats/pdf.html
   # Title & Author - see book options
   # Format Options
     ## results in build error, missing packages:
     # pdf-engine-opt: -output-directory=work
+    output-file: "dissertation"
+    output-ext: "pdf"
   # Table of Contents
     toc: true
     toc-depth: 3
-    toc-title: Table of Contents
+    toc-title: "Table of Contents"
     lof: true
     lot: true
   # Numbering
     number-sections: true
+    # number-depth: 1
   # Fonts
     # main: body, sans: headings, mono: codeblocks
     mainfont: Georgia
     sansfont: Verdana
     monofont: Source Code Pro
-    fontsize: 12pt
+    fontsize: 11pt
     # so that draft overfill indicators match final results:
     microtypeoptions: ["final"]
     ## stretches all lines, not just body paragraphs:

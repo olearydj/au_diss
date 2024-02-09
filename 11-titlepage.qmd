@@ -30,7 +30,7 @@ Keywords: ***Insert up to six key words or phrases*** \\ %TODO
 ***on no more than two lines*** %TODO
 \vspace{24pt}
 
-Copyright 2022 by Danny J. O'Leary
+Copyright 2024 by Danny J. O'Leary
 \vspace{24pt}
 
 ***Approved by*** %TODO

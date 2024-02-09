@@ -84,7 +84,7 @@ The *NASA Task Load Index* (TLX) [@hart2006tlx] has been used to estimate worklo
 
 Here we focus on case studies that evaluate the effectiveness of XR assisted ("augmented") instruction for manufacturing operations.
 
-INSERT NEW LIT REVIEW MATERIAL HERE
+INSERT NEW LIT REVIEW MATERIAL HERE FROM DISS/XRAssessmentMethods.XLS
 
 ...
 

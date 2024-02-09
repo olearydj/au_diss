@@ -1,0 +1,30 @@
+# Contribution Matrix
+
+- IRB
+  - Admin
+  - Strategy
+  - Writing
+  - Review / Edit
+- Experiments
+  - Design
+  - Administration
+  - Conduct
+  - Recruitment
+- Data
+  - Collection
+  - Analysis
+- SW
+  - Direction
+  - Development
+
+Sesek
+Harris
+Evans
+Mykoniatis
+Victoria Ballard
+Md Monir Hossain
+Diego Roberto Caputo Rodriguez
+Alex Barras
+David “Brown” Teague
+Carson Tillery
+Kralyn Thomas

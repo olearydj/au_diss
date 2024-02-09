@@ -1,6 +1,18 @@
 # Methods
 
-INTRO
+-   funding?
+-   rct
+-   structured as main and retention studies
+-   two related but separate experiments
+-   expedited review
+
+## Purpose
+
+The purpose of this study is to measure the effect of instructional media type (IMT) on learning rates and skills transfer for a simulated manufacturing assembly task. The first phase will help us understand how each IMT affects the operator’s learning rate (time or cycles to learn the process) and ultimate measures of performance (speed and accuracy). The second will help assess how learning transfer varies with each treatment. Finally, the exit surveys will help us understand the relationship between those results and perceived workload, system usability, and the participant’s self-reported behavioral control.
+
+Benefits: Turnover in the workforce and the lack of skilled labor necessitates scalable, efficient training methods. Furthermore, the shift from mass production to mass customization forces operators to contend with wide variance in the assembly steps required at each workstation. Together, these trends demand innovative methods for operator training and support.
+
+Augmented and mixed reality are expected to help fill that need, but it is a fragmented market with a variety of solutions. Few studies explore the relationship between those methods (and the affordances that differentiate them) and corresponding learning rates and transfer. We believe this investigation will make meaningful contributions to that effort, helping to build a cohesive understanding of the utility of these systems and best practices for their application.
 
 ## Research Design
 
@@ -8,11 +20,84 @@ INTRO
 Describe the overall design of your study, specifying it as a human subjects study with a between-groups design. Explain why this design is suitable for addressing your research questions.
 :::
 
+In this between-groups study, human subjects were asked to learn and repeat a simulated manufacturing assembly task. Participants were randomly assigned to one of four instructional treatments, each with a different level of augmentation. The experiment proceeded through two phases, where learning and recall were tested for the assigned treatment level and performance measures recorded. After each phase validated instruments were used to assess the participant's perceived workload and their impression of the treatment's usability. Several weeks after the initial intervention, participants were invited back to an event where retention was also tested. Together, the experimental data was analyzed to quantify the treatment effect for the simulated assembly task. Demographics, perceived workload, and usability data were then used to identify other contributing factors and better understand the results.
+
+These experiments were conducted in the Tiger Motors Lean Education Center, a lab designed to simulate modern automotive manufacturing and teach best practices in a real-world setting using LEGO^®^ vehicle assembly.
+
+![Conveyor and final assembly workstations, Tiger Motors Lean Education Center](images/24-LegoLab.png){#fig-lego fig-align="center" width="4.5in"}
+
+Participants will act as operators learning to assemble the SUV (Model T) car at workstation 8.
+
+::: {#fig-ws8 layout-ncol="2"}
+![Lab](images/24-LegoLab.png){#fig-a}
+
+![Lab](images/24-LegoLab.png){#fig-b}
+
+Lab Images
+:::
+
+same task and instructions shared - control for both, focus on effect of the treatment's affordances
+
 ## Participants
 
 ::: content-hidden
-Detail the criteria for participant selection, including any inclusion or exclusion criteria. Mention the size of your participant pool and the rationale behind choosing this number. Also, describe the process of recruitment and any compensations or incentives provided.
+Mention the size of your participant pool and the rationale behind choosing this number. Also, describe the process of recruitment and any compensations or incentives provided.
 :::
+
+-   final result
+-   convenience sample
+
+### Recruiting and Screening
+
+Participants were recruited from the Auburn University community using digital and printed promotions around campus, the graduate school mailing list, and outreach in various undergraduate engineering classrooms. The later focused on freshman and sophomore engineering students in Industrial & Systems Engineering, as they are accessible and most likely to meet all requirements. @fig-recruit exemplifies the recruiting materials, approved copies of which are included in [Appendix A, IRB Documentation](#app-irb).
+
+![Digital recruitment flyer distributed on campus monitors.](images/24-RecruitSlideV3.png){#fig-recruit fig-align="center" width="4.5in"}
+
+Potential participants in the first investigation were screened for exclusion based on their age (under 19) or a tendency to motion sickness. Additionally, we screened for experience using head-mounted or projected AR devices with gesture based controls. This does not exclude those having experience with VR headsets like META's Occulus product line, which is relatively common among the target population, but utilize traditional input devices.[^24-methods-1] Finally, we excluded anyone that had previously participated in a manufacturing simulation in the Tiger Motors Lean Education Center as part of INSY 5800/6800 or otherwise. This ensured that none of our participants had experience with the assembly task.
+
+[^24-methods-1]: This distinction had to be explained to several interested participants, which supports the notion that the differences between AR and VR are not yet well understood. Ultimately, no participants were eliminated by this requirement.
+
+### Benefits and Compensation
+
+Other than the compensation described below, there were no direct benefits for participants in this study. All were offered an opportunity to interact with projection and/or head-mounted AR hardware and training methods for the first time. This may have lead them to a greater appreciation of the benefits and opportunities these technologies offer.
+
+In order to incentivize sign-ups, some extra credit and the possibility of financial compensation were offered. In addition, all participants were invited to an event at the end of the study.
+
+#### Extra Credit
+
+Any instructor promoting these studies to their students was free to provide extra credit for participation. This was entirely at their discretion. We cautioned all instructors to offer no more than 1% on the final class average, and encouraged them to provide alternative bonuses for students unable to participate.
+
+#### End of Study Event
+
+At the conclusion of the main study, all participants were invited to return to the lab for an "open house" event. This gave them the opportunity to experience other treatments and related technologies, and learn more about the experiment and lab. Food and drink were provided. In exchange, we asked all attendees to participate in a brief retention experiment. Attendance and participation were voluntary.
+
+#### Compensation
+
+The possibility of financial compensation was introduced in the final IRB Modification, submitted April 3, 2023. Following its approval on April 10, we began promoting this retroactive benefit. All participants in the main study were eligible for one of three random drawings. Those that attended the end of study open house qualified for additional awards, as outlined in @tbl-comp.
+
+| Study     | Category      | Quantity | Amount (each) | Sub-Total |
+|-----------|---------------|:--------:|:-------------:|:---------:|
+| Main      | Participation |    6     |     \$25      |   \$150   |
+| Retention | Performance   |    1     |     \$50      |   \$50    |
+| Retention | Participation |    4     |     \$25      |   \$100   |
+
+: Compensation drawings by study and award category. {#tbl-comp .striped}
+
+For the performance prize in the retention study, eligibility was limited to those who completed the experiment in under one minute without errors. A total of \$300 was awarded via email in the form of digital Amazon Gift Cards.
+
+No member of the research team was eligible for any of the financial compensation described, and all payment processing was handled by appropriate members of the ISE staff.
+
+### Onboarding
+
+The initial onboarding process was conducted manually by the PI. In a phone call with interested participants the PI would (1) briefly explain the investigation, recapping and elaborating on the recruiting materials; (2) discuss the exclusion criteria and identify relevant issues for the candidate; (3) set expectations for participant involvement, including time commitment and tasks; and (4) answer any questions the candidate had regarding participation in the investigation.
+
+If the candidate indicated a willingness to proceed, their information was collected using the Subject Recruitment Data Sheet included in [Appendix A](#app-irb). A unique participant ID and a date and time for data collection were then assigned.
+
+This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-2] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
+
+[^24-methods-2]: [signupgenius.com](signupgenius.com)
+
+### Outcome
 
 ## Ethical Considerations
 
@@ -20,11 +105,83 @@ Detail the criteria for participant selection, including any inclusion or exclus
 Since your study involves human subjects, outline the ethical approvals obtained (e.g., Institutional Review Board - IRB approval), and how informed consent was obtained from the participants. Describe any measures taken to ensure the privacy and confidentiality of participant data.
 :::
 
-## Experimental Setup
+### IRB
+
+As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-3]
+
+[^24-methods-3]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
+
+The IRB submission and approval process began in December of 2022, and final approval was granted on April 10, 2023. During that time four versions of the IRB were approved, and only two rejected. The approval dates and changes are summarized in @tbl-irbs.
+
+| Version | Description                                 | Approved |
+|---------|---------------------------------------------|:--------:|
+| 1.1     | Original submission                         | 1/30/23  |
+| 1.1a1   | Adjusted protocol to add survey instruments | 2/13/23  |
+| 2.1     | Incorporated 2nd investigation              | 2/23/23  |
+| 3.0     | Added compensation                          | 4/10/23  |
+
+: IRB Version History {#tbl-irbs .striped}
+
+This process was somewhat complicated by the decision to incorporate two separate but related investigations into a single application. The first investigation (I1) is the focus of this dissertation. I2 (the second investigation) is a separate work that used similar methods to investigate the relationship between I4.0 technologies and Lean Manufacturing systems. There is no connection between I1 and I2 beyond the collaborative relationship between their research teams.
+
+### Consent
+
+All participants were provided a copy of the approved informed consent form in advance of their trial. As part of the intake process they were provided a paper copy for further review and encouraged to ask any questions or share any concerns they might have. After a verbal confirmation that the participant had read and is satisfied with the terms of the informed consent agreement, they were asked to sign and date it. The form was then countersigned and placed in a locked filebox.
+
+### Privacy and Data Security
+
+-   data collected Confidentially with collection and protection of linkages to identifiable information. Only for the purpose of contacting participants while the protocol is open. Once completed, the code list will be destroyed, making the data anonymous.
+
+In addition to the consent form, a code list will be maintained that includes identifying data of each participant (name, contact information, and ID number). This will be linked to all other data collection forms by the participant number. The consent forms and code list will be maintained on paper only, to facilitate secure storage and disposal (shredding). The consent form will not include reference to the participant’s ID number. Only the code list will directly connect participants to their data.
+
+Signed consent forms and the code list will be kept in a secure, locked file in offices 3301J (first investigation) or 0317 (second investigation) of Shelby Center.
+
+The video recordings may also allow for participants to be identified, though the first-person recording will not allow a view of their face and the third-person view will focus on the work area. If the recorders do not provide a video-only option, audio from those sessions, which may also provide identifying data, will be stripped from the recordings before storage.
+
+All electronic data pertaining to the study will be stored on a secured server. Non-identifiable data will be available to other members of the research team.
+
+consent forms and code lists only available to PI, Committee (Sesek); non-identifiable data available to the full research team, by request
+
+### Risks and Discomforts
+
+1.  Physical Discomfort: All participants will be required to wear the HoloLens2 device, regardless of treatment group to control for its effects on user fatigue, etc., and to allow us to record a first-person view of their session. As a result, they may experience mild physical discomfort including neck strain after prolonged use. The limited duration of this study should mitigate this effect.
+2.  Vestibular and Visual Discomfort: Participants assigned to the HMDAR and HMDMR treatments will experience display technology that may cause mild dizziness, eye strain, and related effects. Owing to the see-through design of the HoloLens2 device these effects are less common and less pronounced than seen in fully immersive Virtual Reality (VR) headsets.
+3.  Trip and Impact Risk: Any head-mounted display can reduce the wearer's peripheral vision and otherwise impact their natural field of view. Consequently, they may become more susceptible to tripping over or running into things around them. This risk is minimized by the HoloLens2's design, which offers a very wide, minimally obscured field of view. Furthermore, the HL2 is a standalone device, so there is no risk of tripping over a cord. Additionally, the participant is generally stationary in an environment free of obstruction. Finally, the Lean Lab is a clean, organized, safe, and well-lit environment with no history of related hazards.
+4.  Breach of Confidentiality Risk: All resulting data will be anonymized, and video of each session will be recorded from the first person and top-down angles to prevent participant exposure. That said, subjects could be seen entering, leaving, or during the experiment. All of these create a small possibility that subjects could be identified, inadvertently breaching their confidentiality. Additionally, there is the possibility that the subject code list, which connects each participant’s identity with their experimental data, could be obtained. Mitigation methods for this risk are described in section 17 Protection of Data.
+5.  Psychological Discomfort: Due to the nature of the experiment, some participants may experience mild psychological discomfort induced by its time and performance-based measures. Participants will be told that their objective is to learn to perform the task quickly and error free. Otherwise, no overt pressure is put on the subjects to perform. Given that the outcome of their performance has no impact on their life outside the experiment, any related psychological discomfort should be minimal and short-lived.
+6.  COVID-19 Exposure: This study will be a Category C study with no High-Risk Procedures or Participants. Precautions will be implemented using the COVID-19 2022 Precautions Matrix to determine appropriate precautions at the time of data collection(s) for a Category C study. All work surfaces and the HMD will be wiped down before and after each participant. Necessary supplies will be made available, including as masks, hand sanitizer (60%+ alcohol), tissues, paper towels, trash baskets, and cleaners / disinfectants. All research participants will follow the University’s guidance on self-screening. At the time of this writing, the CDC’s COVID-19 community level for Lee County, Alabama is LOW, so participant screening is not required. The Shelby Center for Engineering Technology, where this protocol will be administered, is assigned the highest level of building readiness due to increased air turn-over and filtration. Further details and resources can be found in Appendix D.
+
+This study does not involve any vulnerable populations. Please see section 14, where the primary mitigations are described for each identified risk. Additionally, all participant activities will be supervised and monitored for relevant symptoms. If any participant experiences dizziness or related vestibular issues, or any other significant but unexpected side-effect, we will suspend the experiment, remove the HMD, have them sit and offer drinking water while assessing the situation. If escalation is required, the emergency plan and contact list is included in Appendix D. During the debriefing all participants will be asked if they were injured or experienced any discomfort during their trials. The debriefing also serves to keep each participant under our supervision long enough to ensure no lingering or delayed effects.
+
+## Experiments
 
 ::: content-hidden
 Detail the setup of your experiment, including the environment (laboratory setting, real-world setting, etc.), the equipment used (specific AR/MR technologies), and any other materials involved in the training sessions.
 :::
+
+### Design
+
+Each participant in this between-groups design experiences a single level of the Instructional Media Type (IMT) treatment.
+
+### Treatment Levels
+
+There are four levels of this treatment, each with increasingly augmented work instructions:
+
+1.  Paper Work Instructions (PWI): traditional printed instructions (control)
+2.  Projected Augmented Reality (PAR): interactive instructions projected on the work surface via the LightGuide system
+3.  Head-Mounted Display Augmented Reality (HMDAR): interactive instructions overlaid on the user's field of view using the HoloLens2 (HL2) head-mounted display (HMD) using area-based tracking
+4.  HMD Mixed Reality (HMDMR): extends the capabilities of the third treatment by incorporating model-based tracking, allowing for more natural interactions with the work piece
+
+The PWI treatment serves as the control.
+
+### Administer
+
+-   all personnel involved in the experiment were CITI certified
+-   assignment of treatments
+
+### Conduct
+
+-   Data collection will take place at the Lean Lab in the basement of the Shelby Center for Engineering Technology, room 0317, located at 345 W Magnolia Ave, Auburn, AL  36849
 
 ## Intervention Description
 
@@ -67,6 +224,10 @@ If a pilot study was conducted prior to the main study, provide details on its p
 ::: content-hidden
 Acknowledge any potential limitations or biases in your study design, participant selection, or data collection methods that could impact the interpretation of your results.
 :::
+
+-   compensation added after IRB v3, approved April 10; 5 prior subjects plus some thereafter were recruited without knowledge of compensation
+-   convenience sample
+-   pseudo-random selection
 
 ## Summary
 
