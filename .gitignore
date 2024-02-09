@@ -18,10 +18,10 @@
 *.lot
 *.toc
 *.pdf
-Book-Title.tex
+/*.tex
 
 # Output directory
-_book/
+/html
 
 # Don't ignore these...
 !issues.md
