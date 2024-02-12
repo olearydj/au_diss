@@ -5,3 +5,14 @@ In addition to the participants described above, Investigation 1 will recruit 20
 
 
 Additionally, the industry recruitment will allow us to compare the results between our initial convenience sample and a more representative population to see how well the results generalize. IRB approved - one participant from first recruitment effort. All subjects recruited from the local manufacturing industry will be offered gift cards in exchange for their participation. This is considered important to the success of that recruitment. All industry volunteers will be given $40 in cash / gift card at the completion of their participation.
+
+AR better than paper because it provides a kind of error correction, but falls short of error prevention. Avoid learning wrong like PWI. Corrects for poor PWI designs.
+
+AR better for more complex tasks, e.g. in-field repair. Operator support. For low takt time processes, where the individual assembly steps are relatively small and simple, it is not terribly helpful. Gets in the way after initial training. It could be helpful to refresh operators, especially if they are required to move between stations.
+
+Discrete physical inputs are generally preferrable to gesture based. Slow response and error-prone. PAR foot control.
+
+see ROI calculators at:
+- lightguide: https://www.lightguidesys.com/why-lightguide/lightguide-value-calculator/
+  - claimed increases: >90% quality, >50% throughput, >30% learning rate ("accelerate training")
+- microsoft: ?

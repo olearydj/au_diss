@@ -6,38 +6,171 @@
 -   two related but separate experiments
 -   expedited review
 
-## Purpose
+different in that it focuses on providing evidence of the theoretical benefits of the underlying affordances of different commercially available systems; most studies have fewer treatments and focus on with / without benefits. this doesn't tell us why
+
+*Your outline could benefit from a more detailed description of the methodological framework at the beginning. This includes the specific type of research methodology (qualitative, quantitative, mixed-methods) and the rationale behind choosing this methodology for studying AR in manufacturing assembly.*
+
+*While you have a purpose section, it might be beneficial to explicitly state your hypotheses or research questions near the beginning of the Methods chapter. This will provide a clearer guide for readers on what the study aims to address.*
+
+*If not already done in previous chapters, briefly relate your chosen methods to existing literature. This can demonstrate how your approach addresses gaps or builds upon existing research.*
 
 The purpose of this study is to measure the effect of instructional media type (IMT) on learning rates and skills transfer for a simulated manufacturing assembly task. The first phase will help us understand how each IMT affects the operator’s learning rate (time or cycles to learn the process) and ultimate measures of performance (speed and accuracy). The second will help assess how learning transfer varies with each treatment. Finally, the exit surveys will help us understand the relationship between those results and perceived workload, system usability, and the participant’s self-reported behavioral control.
 
-## Research Design
+## Overview
 
-::: content-hidden
-Describe the overall design of your study, specifying it as a human subjects study with a between-groups design. Explain why this design is suitable for addressing your research questions.
-:::
+In order to assess the effect of augmented instruction on operator performance, human subjects were asked to learn and repeat a simulated manufacturing assembly task. A convenience sample of adult participants without relevant experience were recruited from the Auburn University community and randomly assigned to one of four instructional treatments, each with a different level of augmentation. This between-groups approach was adopted to allow for direct comparison between different levels of the treatment and to minimize the learning effect that would otherwise occur over repeated trainings.
 
-- between groups chosen to limit learning effect between treatments
-- in order to assess RQ...
-- participants are convenience sample of AU population
-- measures chosen to ...
+The experiment included two phases, where learning and recall were tested for the assigned treatment level while performance measures were recorded. After each phase, validated instruments were used to assess the participant's perceived workload and their impression of the treatment's usability. Several weeks after the initial intervention, participants were invited back to an event where retention was also tested.
 
-In this between-groups study, human subjects were asked to learn and repeat a simulated manufacturing assembly task. Participants were randomly assigned to one of four instructional treatments, each with a different level of augmentation. The experiment proceeded through two phases, where learning and recall were tested for the assigned treatment level and performance measures recorded. After each phase validated instruments were used to assess the participant's perceived workload and their impression of the treatment's usability. Several weeks after the initial intervention, participants were invited back to an event where retention was also tested. Together, the experimental data was analyzed to quantify the treatment effect for the simulated assembly task. Demographics, perceived workload, and usability data were then used to identify other contributing factors and better understand the results.
+Data related to the timing, errors, and ultimate outcome for each task was recorded, allowing for a detailed performance assessment at the task and participant level. Subsequent analysis of all performance data quantified the treatment effect. The addition of retention data allows the study to also compare the long-term effectiveness of each treatment. Demographics, perceived workload, and usability data were then used to identify other contributing factors and better understand the results.
 
-These experiments were conducted in the Tiger Motors Lean Education Center. This award-winning facility, designed to simulate modern automotive manufacturing and teach best practices in a real-world setting using LEGO^®^ vehicle assembly, provided an ideal setting for the study. Pictured in @fig-ws8-a, Tiger Motors (aka the Lean Lab) is an integral research and education component of the Industrial and Systems Engineering Department, Samuel Ginn College of Engineering at Auburn University.
+These experiments were conducted in the Tiger Motors Lean Education Center (aka the Lean Lab). Designed to simulate modern automotive manufacturing and teach best practices in a real-world setting using LEGO^®^ vehicle assembly, this award-winning facility provided an ideal setting for the study. Pictured in @fig-tmlec-a, Tiger Motors is an integral research and education component of the Industrial and Systems Engineering Department in the Samuel Ginn College of Engineering at Auburn University.
 
-Participants acted as operators learning the Model T (SUV) assembly process at workstation eight. A completed SUV model is pictured in @fig-ws8-b. This process has been repeated thousands of times in lean education courses without significant incident.
+Participants acted as operators learning part of the Model T (SUV) assembly process. A completed SUV model is pictured in @fig-tmlec-b. This process has been repeated thousands of times in lean education courses without significant incident.
 
-::: {#fig-ws8 layout-ncol="2"}
-![Conveyor and final assembly workstations](images/24-LegoLab.png){#fig-ws8-a}
+::: {#fig-tmlec layout-ncol="2"}
+![Conveyor and final assembly workstations](images/24-LegoLab.png){#fig-tmlec-a}
 
-![Completed SUV model](images/24-SUVComplete.jpg){#fig-ws8-b}
+![Completed SUV model](images/24-SUVComplete.jpg){#fig-tmlec-b}
 
 Tiger Motors Lean Education Center and SUV Model
 :::
 
-Each participant completes the same tasks with one of four different Instructional Media Treatments (IMTs). Each IMT offers a different level of augmented instruction, ranging from traditional paper instructions with no augmentation to a mixed reality head-mounted display with interactive instruction superimposed on their field of view.
+Each participant completes the same task sequence with one of four different Instructional Media Treatments (IMTs). Each IMT offers a different level of augmented instruction, ranging from traditional paper instructions with no augmentation to a mixed reality head-mounted display where interactive instructions are superimposed on their field of view.
 
-The instructional design for all augmented IMTs was based on the paper work instructions, adapted only as needed to leverage the specific affordances of that technology. This helped ensure that any differences observed in the study were due to the augmentation level of each IMT, not variations in instructional content.
+Instructional design for all augmented IMTs was based on the paper work instructions, adapted only as needed to leverage the specific affordances of each technology. This helped ensure that any differences observed in the study were due to the augmentation level of each IMT, not variations in instructional content.
+
+The remainder of this chapter will describe in detail all aspects of the study's methodology, including participant recruitment, human subjects considerations, experimental design, data collection, and analysis. The chapter will conclude by considering the limitations of this study.
+
+## Experimental Design {#exp-design}
+
+::: content-hidden
+Detail the setup of your experiment, including the environment (laboratory setting, real-world setting, etc.), the equipment used (specific AR/MR technologies), and any other materials involved in the training sessions.
+:::
+
+### Task and Context
+
+Each participant is tasked with the operation of one of 15 workstations involved in the SUV assembly. The Lean Lab assembly line consists of two manufacturing cells followed by a conveyor with five additional stations. Each manufacturing cell consists of five workstations arranged in a U-shape.
+
+The experiment is run at ST-8, which is located in the middle of the second manufacturing cell, flanked on either side by workstations six through ten. This arrangement is pictured in @fig-tmline.
+
+![Tiger Motors Assembly Line](images/24-LegoFloorplan.svg){#fig-tmline width="5in"}
+
+All workstations in both cells are similarly equipped with work surface and trays for parts bins. Work instructions for both car models normally produced on the line are displayed above the bins. The bins are removable to facilitate part resupply, but their arrangement at each station is standardized and specified on the work instructions. @fig-st8 shows ST-8 and its bin layout.
+
+::: {#fig-st8 layout-ncol="2"}
+![ST-8](images/24-WS8Landscape.png){#fig-st8-a}
+
+![Bin Layout](images/24-ST8Bins.png){#fig-st8-b}
+
+Workstation Eight
+:::
+
+The green and red trays pictured on the right of the work surface are for finished goods and rework, respectively. The central fixture provides for standard placement and secure retention of the workpiece. All of these are removable to allow the lab to operate with varying levels of Lean practice in effect.
+
+### Treatment Levels
+
+Each participant in this between-groups design experiences a single level of the Instructional Media Type (IMT) treatment. There are four levels of this treatment, each with increasingly augmented work instructions: (1) traditional paper work instructions, (2) projected augmented reality, (3) head-mounted optical see-through augmented reality, and (4) head-mounted optical see-through mixed reality. All are detailed in the sections that follow.
+
+#### Paper Work Instructions
+
+Paper work instructions (PWI) are printed instructions traditionally used in manufacturing assembly processes. Unlike all other IMTs in this study, PWIs are inherently static and do not adapt to the operator in any fashion.
+
+The process at workstation eight (ST-8) is a three step sequence in which 16 pieces, consisting of eight different part types, are affixed to the workpiece. The PWIs for this process are pictured in @fig-ws8instruct.
+
+![SUV assembly instructions for ST-8.](images/24-SUVWorkstation8.png){#fig-ws8instruct width="5in"}
+
+The instructions consist of one top-down view of the workpiece for each step, plus an isometric view of the ST-8 assembly. In each step, the car's prior state is shown in grey and new parts have the correct color. A sequence of parts is shown for each step, with the unique part number and quantity required. It is up to the operator to discern the correct placement of those parts from the diagram. Additional detail views are incorporated to each PWI where more clarity or detail are required. At the bottom center of each PWI a map of the workstation's parts bins depicts which are used in the task.
+
+Manufacturing simulations in the Lean Lab are expected to run at a takt time of one minute. Therefore, the instructions for all 15 workstations have been carefully designed to include one minute of work content.
+
+While it may seem trivial to complete the work at ST-8 correctly in one minute or less, experience shows that is not the case. The Lean Manufacturing Systems class at Auburn University (INSY 5800/6800), has validated these instructions through countless lab sessions in the administration of that course. They served as the basis for the design of all other IMTs, and as the control for this study.
+
+#### Projected AR
+
+Projected AR (PAR) systems integrate work and instruction by projecting the later onto the work surface. Work steps are displayed sequentially, either under operator control or automatically triggered.
+
+ST-8 is equipped with a PAR system by LightGuide[^24-methods-1] (LG), a Michigan-based company focused on innovative, AR-based manufacturing solutions. As shown in @fig-lgs, Their system uses a Windows PC, industrial-grade projector, and 2D or 3D vision system, along with other optional input devices and tools. All components are commercially available and integrated by the LG software, where digital work instructions are both authored and played back.
+
+[^24-methods-1]: <https://www.lightguidesys.com/>
+
+![LG System Architecture. Source: LightGuide website](images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
+ 
+The system at ST-8 uses a PROJECTOR MODEL and CAMERA MODEL mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide VERSION NUMBER is displayed on a MONITOR MODEL, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure made from 80/20's[^24-methods-2] extruded aluminum components to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
+
+[^24-methods-2]: <https://8020.net/>
+
+![ST-8 LG Installation](images/24-ST8LightGuide.png){#fig-st8lgs width="4in"}
+
+In order to create a consistent user interface across all XR treatments this study leveraged the LG's vision-based system for operator control. In this mode, an infrared time-of-flight camera provides a real-time depth map of the work area. This 2D video signal encodes the distance of objects from the camera as a color value at each pixel. That output, commonly known as a depth map, is processed using computer vision techniques to detect motion and identify any obstructions in the workspace. @fig-lgvision demonstrates the output of this system in a simulated operator interaction.
+
+::: {#fig-lgvision layout-ncol="2"}
+![Demonstrating LG Vision](images/24-LGVisionDiego.png){#fig-lgvision-a}
+
+![LG Vision Input](images/24-LGVision.png){#fig-lgvision-b}
+
+LightGuide Vision System
+:::
+
+With this information the LG can, for example, recognize the operator's hand placement and trigger system actions, warnings, or data logging events. In our implementation, some applications of this method include triggering a green or red overlay when the operator reached into the right or wrong part bin, advancing to the next assembly step when the operator swipes over the virtual `NEXT` button, and automatically advancing when it appeared that the operator had installed a piece.
+
+The images below were grabbed from PAR trial recordings. @fig-parcap-a shows a side view of the workspace and @fig-parcap-b shows the same moment from the operator's perspective. Both images are cropped to focus on the work surface, but the operator view maintained the original aspect ratio with minimal cropping.
+
+::: {#fig-parcap layout-ncol="2"}
+![Side View](images/24-PARDemoSide.png){#fig-parcap-a}
+
+![Operator View](images/24-PARDemoHMD.png){#fig-parcap-b}
+
+PAR in Operation
+:::
+
+The PAR instructions were designed and implemented by students and graduate assistants in the Lean Manufacturing class. They were adapted from the same PWIs used as the first treatment and control in this experiment. Like the PWIs, the PAR system has been validated through repeated use in the lab.
+
+#### Head-Mounted AR
+
+Head-mounted AR (HMDAR) systems improve on PAR by overlaying instructions on the user's field of view and employing gesture-based controls. Area based tracking allows... (improve over PAR?)
+
+Microsoft's HoloLens2[^24-methods-3] (HL2) head-mounted display (HMD)
+
+[^24-methods-3]: <https://www.microsoft.com/en-us/hololens>
+
+#### Head Mounted MR
+
+Head-mounted MR (HMDMR) extends the capabilities of the third treatment by incorporating model-based tracking, allowing for more natural interactions with the work piece
+
+### Benefits and Theoretical Basis
+
+tabulate benefits (affordances) for each IMT - one row per bene, one col per IMT, checks to indicate presence
+
+- PAR
+  - affordances: in-context instruction, instruction sequence, interaction, overlay, confirmation, error prevention
+  - theoretical basis of benefit: 
+
+### Intervention Description
+
+::: content-hidden
+Clearly describe the AR/MR methods used in the training of manufacturing operators. Provide details on the content, duration, and frequency of the training sessions. Explain how these methods are intended to impact the assembly training process.
+:::
+
+### Control Group
+
+The PWI treatment serves as the control.
+
+::: content-hidden
+If applicable, describe the control group's conditions, including what traditional training methods were used for comparison against the AR/MR methods.
+:::
+
+### Data Collection
+
+::: content-hidden
+Elaborate on the types of data collected (quantitative, qualitative, or both), the tools and instruments used for data collection (surveys, performance metrics, observational data, interviews, etc.), and the timing of data collection (before, during, after the intervention).
+:::
+
+### Measures and Variables
+
+::: content-hidden
+Specify the primary and secondary outcomes measured in your study. Define any dependent and independent variables, including how they were operationalized.
+:::
 
 ## Participants
 
@@ -48,15 +181,15 @@ Mention the size of your participant pool and the rationale behind choosing this
 -   final result
 -   convenience sample
 
-### Recruiting and Screening
+### Recruitment and Selection
 
 Participants were recruited from the Auburn University community using digital and printed promotions around campus, the graduate school mailing list, and outreach in various undergraduate engineering classrooms. The later focused on freshman and sophomore engineering students in Industrial & Systems Engineering, as they are accessible and most likely to meet all requirements. @fig-recruit exemplifies the recruiting materials, approved copies of which are included in [Appendix A, IRB Documentation](#app-irb).
 
 ![Digital recruitment flyer distributed on campus monitors.](images/24-RecruitSlideV3.png){#fig-recruit width="5in"}
 
-Potential participants in the first investigation were screened for exclusion based on their age (under 19) or a tendency to motion sickness. Additionally, we screened for experience using head-mounted or projected AR devices with gesture based controls. This does not exclude those having experience with VR headsets like META's Occulus product line, which is relatively common among the target population, but utilize traditional input devices.[^24-methods-1] Finally, we excluded anyone that had previously participated in a manufacturing simulation in the Tiger Motors Lean Education Center as part of INSY 5800/6800 or otherwise. This ensured that none of our participants had experience with the assembly task.
+Potential participants in the first investigation were screened for exclusion based on their age (under 19) or a tendency to motion sickness. Additionally, we screened for experience using head-mounted or projected AR devices with gesture based controls. This does not exclude those having experience with VR headsets like META's Occulus product line, which is relatively common among the target population, but utilize traditional input devices.[^24-methods-4] Finally, we excluded anyone that had previously participated in a manufacturing simulation in the Tiger Motors Lean Education Center as part of INSY 5800/6800 or otherwise. This ensured that none of our participants had experience with the assembly task.
 
-[^24-methods-1]: This distinction had to be explained to several interested participants, which supports the notion that the differences between AR and VR are not yet well understood. Ultimately, no participants were eliminated by this requirement.
+[^24-methods-4]: This distinction had to be explained to several interested participants, which supports the notion that the differences between AR and VR are not yet well understood. Ultimately, no participants were eliminated by this requirement.
 
 ### Benefits and Compensation
 
@@ -88,29 +221,17 @@ For the performance prize in the retention study, eligibility was limited to tho
 
 No member of the research team was eligible for any of the financial compensation described, and all payment processing was handled by appropriate members of the ISE staff.
 
-### Onboarding
-
-The initial onboarding process was conducted manually by the PI. In a phone call with interested participants the PI would (1) briefly explain the investigation, recapping and elaborating on the recruiting materials; (2) discuss the exclusion criteria and identify relevant issues for the candidate; (3) set expectations for participant involvement, including time commitment and tasks; and (4) answer any questions the candidate had regarding participation in the investigation.
-
-If the candidate indicated a willingness to proceed, their information was collected using the Subject Recruitment Data Sheet included in [Appendix A](#app-irb). A unique participant ID and a date and time for data collection were then assigned.
-
-This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-2] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
-
-[^24-methods-2]: [signupgenius.com](signupgenius.com)
-
-### Outcome
-
 ## Ethical Considerations
 
 ::: content-hidden
 Since your study involves human subjects, outline the ethical approvals obtained (e.g., Institutional Review Board - IRB approval), and how informed consent was obtained from the participants. Describe any measures taken to ensure the privacy and confidentiality of participant data.
 :::
 
-### IRB
+### Institutional Review Board
 
-As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-3]
+As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-5]
 
-[^24-methods-3]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
+[^24-methods-5]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
 
 The IRB submission and approval process began in December of 2022, and final approval was granted on April 10, 2023. During that time four versions of the IRB were approved, and only two rejected. The approval dates and changes are summarized in @tbl-irbs.
 
@@ -125,62 +246,49 @@ The IRB submission and approval process began in December of 2022, and final app
 
 This process was somewhat complicated by the decision to incorporate two separate but related investigations into a single application. The first investigation (I1) is the focus of this dissertation. I2 (the second investigation) is a separate work that used similar methods to investigate the relationship between I4.0 technologies and Lean Manufacturing systems. There is no connection between I1 and I2 beyond the collaborative relationship between their research teams.
 
+The final approved version, including all supporting materials, is incorporated as [Appendix A: Institutional Review Board Approval](#app-irb). The processes described hereafter are all based on the approved protocols.
+
 ### Consent
 
 All participants were provided a copy of the approved informed consent form in advance of their trial. As part of the intake process they were provided a paper copy for further review and encouraged to ask any questions or share any concerns they might have. After a verbal confirmation that the participant had read and is satisfied with the terms of the informed consent agreement, they were asked to sign and date it. The form was then countersigned and placed in a locked filebox.
 
-### Privacy and Data Security
+### Privacy and Data Security {#sec-privacy}
 
--   data collected Confidentially with collection and protection of linkages to identifiable information. Only for the purpose of contacting participants while the protocol is open. Once completed, the code list will be destroyed, making the data anonymous.
+A variety of data were collected for this study, including video recordings, performance metrics, demographic information, and survey responses. All data were collected anonymously, referenced only by the unique ID assigned to each participant. The code list, used solely for contacting participants during the ongoing protocol, was securely stored alongside the consent forms in a locked box within a restricted-access location. Notably, the consent forms do not include any reference to the participants' ID numbers. Both the consent forms and the code list are maintained exclusively in paper format to facilitate secure storage and subsequent disposal through shredding. Upon the completion of the protocol, the code list will be destroyed, thus rendering the data completely anonymous. These measures were diligently enforced to protect the privacy and confidentiality of participant data.
 
-In addition to the consent form, a code list will be maintained that includes identifying data of each participant (name, contact information, and ID number). This will be linked to all other data collection forms by the participant number. The consent forms and code list will be maintained on paper only, to facilitate secure storage and disposal (shredding). The consent form will not include reference to the participant’s ID number. Only the code list will directly connect participants to their data.
+All electronic data pertaining to the study are stored on a secure server. Non-identifiable data is available to other members of the research group, for the purposes of approved research, under conditions that ensure continued confidentiality. Access to consent forms and the code list is limited to the PI and, if required, the research committee.
 
-Signed consent forms and the code list will be kept in a secure, locked file in offices 3301J (first investigation) or 0317 (second investigation) of Shelby Center.
-
-The video recordings may also allow for participants to be identified, though the first-person recording will not allow a view of their face and the third-person view will focus on the work area. If the recorders do not provide a video-only option, audio from those sessions, which may also provide identifying data, will be stripped from the recordings before storage.
-
-All electronic data pertaining to the study will be stored on a secured server. Non-identifiable data will be available to other members of the research team.
-
-consent forms and code lists only available to PI, Committee (Sesek); non-identifiable data available to the full research team, by request
+For reasons detailed in the [experimental design](#exp-design), two angles of each trial were recorded on video; a view from the participant's perspective and a side view focused on the work surface. The side view was carefully framed to limit identification of the participant, and later edited to crop out identifying features, ensuring participant privacy. Additionally, all participants were required to wear the HoloLens2 head-mounted display, which further obscured their appearance.
 
 ### Risks and Discomforts
 
-1.  Physical Discomfort: All participants will be required to wear the HoloLens2 device, regardless of treatment group to control for its effects on user fatigue, etc., and to allow us to record a first-person view of their session. As a result, they may experience mild physical discomfort including neck strain after prolonged use. The limited duration of this study should mitigate this effect.
-2.  Vestibular and Visual Discomfort: Participants assigned to the HMDAR and HMDMR treatments will experience display technology that may cause mild dizziness, eye strain, and related effects. Owing to the see-through design of the HoloLens2 device these effects are less common and less pronounced than seen in fully immersive Virtual Reality (VR) headsets.
-3.  Trip and Impact Risk: Any head-mounted display can reduce the wearer's peripheral vision and otherwise impact their natural field of view. Consequently, they may become more susceptible to tripping over or running into things around them. This risk is minimized by the HoloLens2's design, which offers a very wide, minimally obscured field of view. Furthermore, the HL2 is a standalone device, so there is no risk of tripping over a cord. Additionally, the participant is generally stationary in an environment free of obstruction. Finally, the Lean Lab is a clean, organized, safe, and well-lit environment with no history of related hazards.
-4.  Breach of Confidentiality Risk: All resulting data will be anonymized, and video of each session will be recorded from the first person and top-down angles to prevent participant exposure. That said, subjects could be seen entering, leaving, or during the experiment. All of these create a small possibility that subjects could be identified, inadvertently breaching their confidentiality. Additionally, there is the possibility that the subject code list, which connects each participant’s identity with their experimental data, could be obtained. Mitigation methods for this risk are described in section 17 Protection of Data.
-5.  Psychological Discomfort: Due to the nature of the experiment, some participants may experience mild psychological discomfort induced by its time and performance-based measures. Participants will be told that their objective is to learn to perform the task quickly and error free. Otherwise, no overt pressure is put on the subjects to perform. Given that the outcome of their performance has no impact on their life outside the experiment, any related psychological discomfort should be minimal and short-lived.
-6.  COVID-19 Exposure: This study will be a Category C study with no High-Risk Procedures or Participants. Precautions will be implemented using the COVID-19 2022 Precautions Matrix to determine appropriate precautions at the time of data collection(s) for a Category C study. All work surfaces and the HMD will be wiped down before and after each participant. Necessary supplies will be made available, including as masks, hand sanitizer (60%+ alcohol), tissues, paper towels, trash baskets, and cleaners / disinfectants. All research participants will follow the University’s guidance on self-screening. At the time of this writing, the CDC’s COVID-19 community level for Lee County, Alabama is LOW, so participant screening is not required. The Shelby Center for Engineering Technology, where this protocol will be administered, is assigned the highest level of building readiness due to increased air turn-over and filtration. Further details and resources can be found in Appendix D.
+Beyond the privacy and data concerns previously described, other potential risks and discomforts were identified. Prolonged used of HMD VSTs has been reported to cause mild neck strain, disorientation, and eye strain in some cases. (ADD CITATION) The optical and physical design of these systems can also result in a limited or obscured field of view and degraded acuity, (ADD CITATION) which could increase the participant's risk of trip or impact.
 
-This study does not involve any vulnerable populations. Please see section 14, where the primary mitigations are described for each identified risk. Additionally, all participant activities will be supervised and monitored for relevant symptoms. If any participant experiences dizziness or related vestibular issues, or any other significant but unexpected side-effect, we will suspend the experiment, remove the HMD, have them sit and offer drinking water while assessing the situation. If escalation is required, the emergency plan and contact list is included in Appendix D. During the debriefing all participants will be asked if they were injured or experienced any discomfort during their trials. The debriefing also serves to keep each participant under our supervision long enough to ensure no lingering or delayed effects.
+The HL2's untethered design with wide, unobstructed field of view mitigates many of these concerns, but additional precautions were taken. All participants were screened for a tendency towards motion sickness. The study was intentionally designed to limit each participant's time wearing the HL2, and to ensure that they were generally stationary in an obstruction-free environment. Finally, the Lean Lab was selected in part because it is a organized, safe, and well-lit environment with no history of related hazards.
 
-## Experiments
+As these experiments were conducted in the Spring of 2023, the risk of COVID-19 exposure remained a lingering concern. Precautions were implemented during data collection as outlined in the University-provided protocol for studies without high-risk procedures or participants (Category C). All work surfaces and equipment were wiped down before and after each participant, and necessary supplies were made available. All research participants followed the University’s guidance on self-screening. Throughout the administration of this study, the CDC’s COVID-19 community level for Lee County, Alabama remained LOW, eliminating the need for participant screening. The Shelby Center for Engineering Technology, where this protocol was administered, is assigned the highest level of building readiness due to increased air turn-over and filtration.
 
-::: content-hidden
-Detail the setup of your experiment, including the environment (laboratory setting, real-world setting, etc.), the equipment used (specific AR/MR technologies), and any other materials involved in the training sessions.
+This study did not involve any vulnerable populations. Overall, the likelihood and impact of any of the risks outlined above were considered low. Nevertheless, all participant activities were supervised to monitor for likely symptoms or unexpected side-effects. In either event, the experiment would be suspended and the situation assessed. If escalation was deemed necessary, an emergency plan and contact list were available to the research team.
+
+During the post-experiment debriefing all participants were asked about injury and discomfort, and were observed for lingering or delayed effects. Ultimately, only a few mild discomforts were reported, and no significant side effects, injuries, or need for escalation.
+
+## Procedures
+
+trial runs with monir, etc. to test out / refine procedure and script
+
+### Onboarding
+
+The initial onboarding process was conducted manually by the PI. In a phone call with interested participants the PI would (1) briefly explain the investigation, recapping and elaborating on the recruiting materials; (2) discuss the exclusion criteria and identify relevant issues for the candidate; (3) set expectations for participant involvement, including time commitment and tasks; and (4) answer any questions the candidate had regarding participation in the investigation.
+
+If the candidate indicated a willingness to proceed, their information was collected using the Subject Recruitment Data Sheet included in [Appendix A](#app-irb). A unique participant ID was logged on the code list and a date and time for data collection were then assigned.
+
+::: callout-note
+As [detailed below](#sec-privacy), the code list and consent form provided the only link between personally identifiable information and experimental data.
 :::
 
-### Design
+This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-6] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
 
-Each participant in this between-groups design experiences a single level of the Instructional Media Type (IMT) treatment.
-
-workstation 8 and bins
-
-This is one of 15 stations in the complete SUV assembly. It consists of a three step sequence where eight different parts, a total of 16 pieces, are affixed to the workpiece. The standard paper work instructions for this process are pictured in @fig-ws8instruct.
-
-![SUV assembly instructions for workstation 8.](images/24-SUVWorkstation8.png){#fig-ws8instruct width="5in"}
-
-
-### Treatment Levels
-
-There are four levels of this treatment, each with increasingly augmented work instructions:
-
-1.  Paper Work Instructions (PWI): traditional printed instructions (control)
-2.  Projected Augmented Reality (PAR): interactive instructions projected on the work surface via the LightGuide system
-3.  Head-Mounted Display Augmented Reality (HMDAR): interactive instructions overlaid on the user's field of view using the HoloLens2 (HL2) head-mounted display (HMD) using area-based tracking
-4.  HMD Mixed Reality (HMDMR): extends the capabilities of the third treatment by incorporating model-based tracking, allowing for more natural interactions with the work piece
-
-The PWI treatment serves as the control.
+[^24-methods-6]: [signupgenius.com](signupgenius.com)
 
 ### Administer
 
@@ -191,40 +299,10 @@ The PWI treatment serves as the control.
 
 -   Data collection will take place at the Lean Lab in the basement of the Shelby Center for Engineering Technology, room 0317, located at 345 W Magnolia Ave, Auburn, AL  36849
 
-## Intervention Description
-
-::: content-hidden
-Clearly describe the AR/MR methods used in the training of manufacturing operators. Provide details on the content, duration, and frequency of the training sessions. Explain how these methods are intended to impact the assembly training process.
-:::
-
-## Control Group
-
-::: content-hidden
-If applicable, describe the control group's conditions, including what traditional training methods were used for comparison against the AR/MR methods.
-:::
-
-## Data Collection Methods
-
-::: content-hidden
-Elaborate on the types of data collected (quantitative, qualitative, or both), the tools and instruments used for data collection (surveys, performance metrics, observational data, interviews, etc.), and the timing of data collection (before, during, after the intervention).
-:::
-
-## Measures and Variables
-
-::: content-hidden
-Specify the primary and secondary outcomes measured in your study. Define any dependent and independent variables, including how they were operationalized.
-:::
-
-## Data Analysis Plan
+## Analysis
 
 ::: content-hidden
 Describe the statistical or qualitative analysis methods to be used for examining the data. Mention any software or tools that will be utilized for data analysis.
-:::
-
-## Pilot Study
-
-::: content-hidden
-If a pilot study was conducted prior to the main study, provide details on its purpose, design, and outcomes, and how it informed the main study.
 :::
 
 ## Limitations
@@ -233,11 +311,13 @@ If a pilot study was conducted prior to the main study, provide details on its p
 Acknowledge any potential limitations or biases in your study design, participant selection, or data collection methods that could impact the interpretation of your results.
 :::
 
+*Ensure that the limitations discussed are directly related to your methodology and how they might impact the interpretation of your results. Discuss any potential biases and the steps taken to minimize them.*
+
 -   compensation added after IRB v3, approved April 10; 5 prior subjects plus some thereafter were recruited without knowledge of compensation
 -   convenience sample
 -   pseudo-random selection
-- legos are not real cars
-- difficulty / complexity of the task
+-   legos are not real cars
+-   difficulty / complexity of the task
 
 ## Summary
 

@@ -14,6 +14,6 @@ The primary contributions of this work are:
 2.  Findings from the main study, primarily the treatment effect on learning rates and operator performance.
 3.  Findings from the follow-up study, focused on retention.
 
-This study will provide a detailed analysis of other data collected, and a comprehensive interpretation of the results. Together, I believe this investigation will advance the understanding of these systems' overall utility and better quantify their relative benefits. This ultimately supports more informed decision making related to the research, development, and adoption of XR in manufacturing.
+This study will also provide a detailed analysis of other data collected, and a comprehensive interpretation of the results. Together, this investigation is designed to advance the understanding of these systems' overall utility and better quantify their relative benefits. This ultimately supports more informed decision making related to the research, development, and adoption of XR in manufacturing.
 
 The [following chapter](#24-methods) will detail the study design and methods employed in this study.

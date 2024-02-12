@@ -1,12 +1,9 @@
 # Results {#25-results}
 
-See @tbl-numbers for the table of results. Phasellus quis orci nec erat suscipit imperdiet. Aenean pulvinar enim ut ante convallis, vel sollicitudin purus malesuada. Sed sed ullamcorper urna. Morbi sed lobortis neque, sit amet hendrerit magna. Donec ultricies pretium lorem, eget sagittis metus posuere et. Aenean ex purus, aliquam sit amet tellus ut, pellentesque porttitor orci. Integer quis mi pharetra, bibendum neque nec, viverra nulla. Cras quis magna in erat facilisis consequat. Vivamus sed lectus iaculis, euismod ligula eu, fermentum sem.
+62 participants recruited...
 
-| Thing | Value |
-|:------|------:|
-| A 42  |    18 |
-| B 15  |    18 |
-| C 34  |    17 |
-| D 99  |    24 |
+## Pilot Study
 
-: Table of numbers. {#tbl-numbers}
+::: content-hidden
+If a pilot study was conducted prior to the main study, provide details on its purpose, design, and outcomes, and how it informed the main study.
+:::
