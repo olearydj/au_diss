@@ -1,5 +1,9 @@
 # Literature Review {#22-lit_review}
 
+::: content-hidden
+DISCUSS LR methodology.
+:::
+
 ## Market Readiness and Applications
 
 While XR has yet to provide consumers with a value proposition that is broadly compelling and sustainable,[^22-lit_review-1] the industrial, healthcare, and military markets have embraced its potential for cost savings and competitive advantage.

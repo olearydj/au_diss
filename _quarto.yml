@@ -29,6 +29,7 @@ book:
     - 27-references.qmd
   appendices:
     - 31-irb.qmd
+    - 32-contributions.qmd
 
 bibliography: references.bib
 # csl: apa.csl

@@ -82,7 +82,7 @@ The process at workstation eight (ST-8) is a three step sequence in which 16 pie
 
 The instructions consist of one top-down view of the workpiece for each step, plus an isometric view of the ST-8 assembly. In each step, the car's prior state is shown in grey and new parts have the correct color. A sequence of parts is shown for each step, with the unique part number and quantity required. It is up to the operator to discern the correct placement of those parts from the diagram. Additional detail views are incorporated to each PWI where more clarity or detail are required. At the bottom center of each PWI a map of the workstation's parts bins depicts which are used in the task.
 
-Manufacturing simulations in the Lean Lab are expected to run at a takt time of one minute. Therefore, the instructions for all 15 workstations have been carefully designed to include one minute of work content.
+Manufacturing simulations in the Lean Lab are expected to run at a takt time of one minute. Therefore, the instructions for each of the 15 workstations have been carefully designed to include one minute of work content.
 
 While it may seem trivial to complete the work at ST-8 correctly in one minute or less, experience shows that is not the case. The Lean Manufacturing Systems class at Auburn University (INSY 5800/6800), has validated these instructions through countless lab sessions in the administration of that course. They served as the basis for the design of all other IMTs, and as the control for this study.
 
@@ -94,8 +94,12 @@ ST-8 is equipped with a PAR system by LightGuide[^24-methods-1] (LG), a Michigan
 
 [^24-methods-1]: <https://www.lightguidesys.com/>
 
+::: callout-note
+The Lean Lab's LightGuide system predates this study. The specification, installation, setup, and configuration of this system, along with the design and implementation of the instructional materials it uses at ST-8, were conducted by prior teams. (TODO: CITE?)
+:::
+
 ![LG System Architecture. Source: LightGuide website](images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
- 
+
 The system at ST-8 uses a PROJECTOR MODEL and CAMERA MODEL mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide VERSION NUMBER is displayed on a MONITOR MODEL, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure made from 80/20's[^24-methods-2] extruded aluminum components to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
 
 [^24-methods-2]: <https://8020.net/>
@@ -112,39 +116,104 @@ In order to create a consistent user interface across all XR treatments this stu
 LightGuide Vision System
 :::
 
-With this information the LG can, for example, recognize the operator's hand placement and trigger system actions, warnings, or data logging events. In our implementation, some applications of this method include triggering a green or red overlay when the operator reached into the right or wrong part bin, advancing to the next assembly step when the operator swipes over the virtual `NEXT` button, and automatically advancing when it appeared that the operator had installed a piece.
+With this information the LG can, for example, recognize the operator's hand placement and trigger system actions, warnings, or data logging events. In the ST-8 implementation, some applications of this method include triggering a green or red overlay when the operator reached into the right or wrong part bin, advancing to the next assembly step when the operator swipes over the virtual `NEXT` button, and automatically advancing when it appeared that the operator had installed a piece.
 
 The images below were grabbed from PAR trial recordings. @fig-parcap-a shows a side view of the workspace and @fig-parcap-b shows the same moment from the operator's perspective. Both images are cropped to focus on the work surface, but the operator view maintained the original aspect ratio with minimal cropping.
 
 ::: {#fig-parcap layout-ncol="2"}
-![Side View](images/24-PARDemoSide.png){#fig-parcap-a}
+![PAR Side View](images/24-PARDemoSide.png){#fig-parcap-a}
 
-![Operator View](images/24-PARDemoHMD.png){#fig-parcap-b}
+![PAR Operator View](images/24-PARDemoHMD.png){#fig-parcap-b}
 
 PAR in Operation
 :::
 
-The PAR instructions were designed and implemented by students and graduate assistants in the Lean Manufacturing class. They were adapted from the same PWIs used as the first treatment and control in this experiment. Like the PWIs, the PAR system has been validated through repeated use in the lab.
+The PAR instructions were designed and implemented by students and graduate assistants in the Lean Manufacturing class. They were adapted from the same PWIs used as the control in this experiment. Like the PWIs, the PAR system has been validated through extensive use in the lab.
 
 #### Head-Mounted AR
 
-Head-mounted AR (HMDAR) systems improve on PAR by overlaying instructions on the user's field of view and employing gesture-based controls. Area based tracking allows... (improve over PAR?)
+Like PAR, head-mounted AR (HMDAR) systems integrate dynamic instructions into the work area. Whereas PAR relies on traditional projectors and classical computer vision techniques, HMDAR employs sophisticated displays and fused sensor data to superimpose instructions and virtual controls directly into the operator's field of view, properly aligned with the work area.
 
-Microsoft's HoloLens2[^24-methods-3] (HL2) head-mounted display (HMD)
+As detailed in the subsequent section on [XR System Development](#sec-xrdev), Microsoft's HoloLens2[^24-methods-3] (HL2) was used for this treatment. The HL2's area-based tracking capabilities were used to align the virtual and physical coordinate systems, enabling the proper in-view placement of UI objects, independent of the position and orientation of the operator's head. As with the PAR treatment, user motion was the only input modality, implemented via the HL2's more sophisticated hand tracking and gesture recognition systems. @fig-arcap shows the side and operator view of this treatment at the same moment.
 
-[^24-methods-3]: <https://www.microsoft.com/en-us/hololens>
+::: {#fig-arcap layout-ncol="2"}
+![HMDAR Side View](images/24-ARDemoSide.png){#fig-arcap-a}
+
+![HMDAR Operator View](images/24-ARDemoHMD.png){#fig-arcap-b}
+
+HMDAR in Operation
+:::
+
+The instructional content for this treatment was intentionally designed to mirror that of the PAR system. By controlling for variables such as instructional content and task complexity, the study design allows for a direct comparison based on the distinct affordances of each technology—namely, the nature of their display and interface. This approach ensures that differences in operator experience and performance can be attributed most directly to the technological medium.
+
+![HMDAR at Pick Part 67](images/24-ARCompare.png){#fig-arcomp width="5in"}
+
+For comparison purposes, @fig-arcomp shows the HMDAR operator's view of the same instructions pictured in @fig-parcap for the PAR treatment. The two differ only in that the digital work instruction is placed on the operator's left in the HMDAR version to prevent overlap.
 
 #### Head Mounted MR
 
-Head-mounted MR (HMDMR) extends the capabilities of the third treatment by incorporating model-based tracking, allowing for more natural interactions with the work piece
+Head-mounted MR (HMDMR) extends the capabilities of the HMDAR treatment with a more sophisticated tracking method that allows for more natural interactions with the workpiece. For all other treatments, the work piece remains in a fixture, forcing the operator to align themselves, both physically and mentally to its placement.
 
-### Benefits and Theoretical Basis
+HMDMR eliminates the need for a fixture and allows the operator to rotate and/or lift the work off the surface if it seemed natural to them to do so. It achieves this by incorporating model-based tracking to to align instructions with the workpiece itself. The added flexibility was expected to make the process more intuitive and ergonomic, enhancing operator performance.
+
+Using model-based tracking, part placement indicators remain properly aligned with the workpiece, regardless of its position and orientation in space. This is demonstrated in @fig-mrmodtrack, where participant \#1040 has rotated the workpiece approximately 45 degrees from its normal orientation to facilitate the installation of parts at the rear of the model. Note that the green part proxies and white placement arrows, all virtual, remain properly oriented.
+
+![HMDMR Tracks Model Orientation](images/24-MRModelTrackingCU.png){#fig-mrmodtrack width="5in"}
+
+@fig-mrcap provides a side and operator view of this treatment, and illustrates the lack of a fixture. Otherwise, the HMDMR treatment was unchanged from the HMDAR, allowing for direct comparisons of all treatments based only on the affordances of interest.
+
+::: {#fig-mrcap layout-ncol="2"}
+![HMDMR Side View](images/24-MRDemoSide.png){#fig-mrcap-a}
+
+![HMDMR Operator View](images/24-MRDemoHMD.png){#fig-mrcap-b}
+
+HMDMR in Operation
+:::
+
+### Affordances and Theoretical Basis
 
 tabulate benefits (affordances) for each IMT - one row per bene, one col per IMT, checks to indicate presence
 
-- PAR
-  - affordances: in-context instruction, instruction sequence, interaction, overlay, confirmation, error prevention
-  - theoretical basis of benefit: 
+-   PAR
+    -   affordances: in-context instruction, instruction sequence, interaction, overlay, confirmation, error prevention
+    -   theoretical basis of benefit:
+
+## XR System Development {#sec-xrdev}
+
+describe the design and development of the XR system
+
+### HMD Hardware Selection
+
+Of the HMDAR systems commercially available in 2021, when the precursor to this study began, only the HL2 was well-suited for enterprise applications, including manufacturing. Originally released for that market in 2019, the HL2's distinguishing features are tabulated in @tbl-hl2, below.
+
+[^24-methods-3]: <https://www.microsoft.com/en-us/hololens>
+
+| Feature               | Description                                                                                                                                                                                                                                                                                                                                                         |
+|-------------------------|-----------------------------------------------|
+| Natural Field of View | The HL2 is an optical-see-through system (OST) where its display is overlayed on the user's normal view of the world. Its optical design provides a wide and minimally obstructed field of view (FOV), giving a natural and safe user experience. The HL2 also can be used with glasses and features a unique, flip-up design that eliminates the device from view. |
+| Hands-free use        | The HL2 relies entirely on natural inputs - gestures and voice controls - rather than physical input devices like tablets or game-style controllers. This leaves operators free to use their hands for their required tasks.                                                                                                                                        |
+| Untethered            | The HL2 is a stand alone design with integrated power and compute. This eliminates the need for power or data connections that can encumber users, limit their motion, and introduce tripping hazards.                                                                                                                                                              |
+| General Purpose       | HL2 is a versatile XR device that supports open development across various industries. Its hardware supports image, model, and area tracking methods to allow for a wide range of augmentation. Unlike some devices, the HL2 is not limited to specific applications or development by authorized partners.                                                         |
+
+: HoloLens2's Distinguishing Features {#tbl-hl2 tbl-colwidths="\[30,70\]" .striped}
+
+Only the Magic Leap 2[^24-methods-4] design is similar. However, despite being released nearly three years later, it has a more limited FOV, requires prescription inserts for vision correction, offers less extensive developer support, and has achieved less market adoption than the HL2. Both devices are pictured in @fig-hmdxrs, below.
+
+[^24-methods-4]: <https://www.magicleap.com>
+
+::: {#fig-hmdxrs layout-ncol="2"}
+![Microsoft HoloLens2. Source: Microsoft](images/24-HL2.png){#fig-hmdxrs-a alt="Microsoft HoloLens2. Source: Microsoft"}
+
+![Magic Leap 2. Source: Magic Leap](images/24-ML2.png){#fig-hmdxrs-b alt="Magic Leap 2. Source: Magic Leap"}
+
+HoloLens 2 and Magic Leap 2
+:::
+
+Because the HL2 represented the state of the art in OST HMD enterprise XR devices when this study commenced, it was adopted for treatments three and four. At the time of this writing, nearly four years after its introduction, the HL2 hardware design and the feature set it enables remain largely unchallenged.
+
+Unlike the LG, the HL2 is entirely self-contained, processing data from an array of sensors to enable visual tracking, spatial mapping, gesture recognition, voice commands, hologram rendering, and optical compositing in real-time. @fig-hl2exp provides an exploded view of the HL2 components.
+
+![HoloLens 2 Exploded View. Source: Microsoft](images/24-HL2Exploded.png){#fig-hl2exp alt="HoloLens 2 Exploded View. Source: Microsoft"}
 
 ### Intervention Description
 
@@ -187,9 +256,9 @@ Participants were recruited from the Auburn University community using digital a
 
 ![Digital recruitment flyer distributed on campus monitors.](images/24-RecruitSlideV3.png){#fig-recruit width="5in"}
 
-Potential participants in the first investigation were screened for exclusion based on their age (under 19) or a tendency to motion sickness. Additionally, we screened for experience using head-mounted or projected AR devices with gesture based controls. This does not exclude those having experience with VR headsets like META's Occulus product line, which is relatively common among the target population, but utilize traditional input devices.[^24-methods-4] Finally, we excluded anyone that had previously participated in a manufacturing simulation in the Tiger Motors Lean Education Center as part of INSY 5800/6800 or otherwise. This ensured that none of our participants had experience with the assembly task.
+Potential participants in the first investigation were screened for exclusion based on their age (under 19) or a tendency to motion sickness. Additionally, we screened for experience using head-mounted or projected AR devices with gesture based controls. This does not exclude those having experience with VR headsets like META's Occulus product line, which is relatively common among the target population, but utilize traditional input devices.[^24-methods-5] Finally, we excluded anyone that had previously participated in a manufacturing simulation in the Tiger Motors Lean Education Center as part of INSY 5800/6800 or otherwise. This ensured that none of our participants had experience with the assembly task.
 
-[^24-methods-4]: This distinction had to be explained to several interested participants, which supports the notion that the differences between AR and VR are not yet well understood. Ultimately, no participants were eliminated by this requirement.
+[^24-methods-5]: This distinction had to be explained to several interested participants, which supports the notion that the differences between AR and VR are not yet well understood. Ultimately, no participants were eliminated by this requirement.
 
 ### Benefits and Compensation
 
@@ -229,9 +298,9 @@ Since your study involves human subjects, outline the ethical approvals obtained
 
 ### Institutional Review Board
 
-As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-5]
+As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-6]
 
-[^24-methods-5]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
+[^24-methods-6]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
 
 The IRB submission and approval process began in December of 2022, and final approval was granted on April 10, 2023. During that time four versions of the IRB were approved, and only two rejected. The approval dates and changes are summarized in @tbl-irbs.
 
@@ -245,6 +314,8 @@ The IRB submission and approval process began in December of 2022, and final app
 : IRB Version History {#tbl-irbs .striped}
 
 This process was somewhat complicated by the decision to incorporate two separate but related investigations into a single application. The first investigation (I1) is the focus of this dissertation. I2 (the second investigation) is a separate work that used similar methods to investigate the relationship between I4.0 technologies and Lean Manufacturing systems. There is no connection between I1 and I2 beyond the collaborative relationship between their research teams.
+
+The development of the IRB was a collaborative effort which I spearheaded as the Principle Investigator (PI), authoring the majority of the application, and ensuring alignment with the study's goals and ethical standards. Contributions from other members of the research teams, as specified in [Appendix B: Team Contribution Matrix](#app-contribs), were essential to its thorough design and timely approval.
 
 The final approved version, including all supporting materials, is incorporated as [Appendix A: Institutional Review Board Approval](#app-irb). The processes described hereafter are all based on the approved protocols.
 
@@ -262,7 +333,7 @@ For reasons detailed in the [experimental design](#exp-design), two angles of ea
 
 ### Risks and Discomforts
 
-Beyond the privacy and data concerns previously described, other potential risks and discomforts were identified. Prolonged used of HMD VSTs has been reported to cause mild neck strain, disorientation, and eye strain in some cases. (ADD CITATION) The optical and physical design of these systems can also result in a limited or obscured field of view and degraded acuity, (ADD CITATION) which could increase the participant's risk of trip or impact.
+Beyond the privacy and data concerns previously described, other potential risks and discomforts were identified. Prolonged used of HMD VSTs has been reported to cause mild neck strain, disorientation, and eye strain in some cases. (TODO: ADD CITATION) The optical and physical design of these systems can also result in a limited or obscured field of view and degraded acuity, (TODO: ADD CITATION) which could increase the participant's risk of trip or impact.
 
 The HL2's untethered design with wide, unobstructed field of view mitigates many of these concerns, but additional precautions were taken. All participants were screened for a tendency towards motion sickness. The study was intentionally designed to limit each participant's time wearing the HL2, and to ensure that they were generally stationary in an obstruction-free environment. Finally, the Lean Lab was selected in part because it is a organized, safe, and well-lit environment with no history of related hazards.
 
@@ -286,9 +357,9 @@ If the candidate indicated a willingness to proceed, their information was colle
 As [detailed below](#sec-privacy), the code list and consent form provided the only link between personally identifiable information and experimental data.
 :::
 
-This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-6] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
+This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-7] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
 
-[^24-methods-6]: [signupgenius.com](signupgenius.com)
+[^24-methods-7]: [signupgenius.com](signupgenius.com)
 
 ### Administer
 
@@ -318,6 +389,8 @@ Acknowledge any potential limitations or biases in your study design, participan
 -   pseudo-random selection
 -   legos are not real cars
 -   difficulty / complexity of the task
+- the HMDAR and MR treatments are not exact replications of the PAR instructions but no material difference
+- few participants assigned HMDMR took advantage of the affordance
 
 ## Summary
 

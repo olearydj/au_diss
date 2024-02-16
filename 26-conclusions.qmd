@@ -12,6 +12,9 @@ AR better for more complex tasks, e.g. in-field repair. Operator support. For lo
 
 Discrete physical inputs are generally preferrable to gesture based. Slow response and error-prone. PAR foot control.
 
+HL2 was way before its time
+Challenges and limitations of OST designs have encouraged more recent devices to adopt a VST approach (not well suited for manufacturing?)
+
 see ROI calculators at:
 - lightguide: https://www.lightguidesys.com/why-lightguide/lightguide-value-calculator/
   - claimed increases: >90% quality, >50% throughput, >30% learning rate ("accelerate training")
