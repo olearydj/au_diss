@@ -1,5 +1,7 @@
 # Methods {#24-methods}
 
+TODO: FINISH SECTION
+
 -   funding?
 -   rct
 -   structured as main and retention studies
@@ -100,7 +102,9 @@ The Lean Lab's LightGuide system predates this study. The specification, install
 
 ![LG System Architecture. Source: LightGuide website](images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
 
-The system at ST-8 uses a PROJECTOR MODEL and CAMERA MODEL mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide VERSION NUMBER is displayed on a MONITOR MODEL, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure made from 80/20's[^24-methods-2] extruded aluminum components to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
+TODO: REPLACE BOLD TERMS IN FOLLOWING
+
+The system at ST-8 uses a **PROJECTOR MODEL** and **CAMERA MODEL** mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide **VERSION NUMBER** is displayed on a **MONITOR MODEL**, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure made from 80/20's[^24-methods-2] extruded aluminum components to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
 
 [^24-methods-2]: <https://8020.net/>
 
@@ -136,6 +140,8 @@ Like PAR, head-mounted AR (HMDAR) systems integrate dynamic instructions into th
 
 As detailed in the subsequent section on [XR System Development](#sec-xrdev), Microsoft's HoloLens2[^24-methods-3] (HL2) was used for this treatment. The HL2's area-based tracking capabilities were used to align the virtual and physical coordinate systems, enabling the proper in-view placement of UI objects, independent of the position and orientation of the operator's head. As with the PAR treatment, user motion was the only input modality, implemented via the HL2's more sophisticated hand tracking and gesture recognition systems. @fig-arcap shows the side and operator view of this treatment at the same moment.
 
+[^24-methods-3]: <https://www.microsoft.com/en-us/hololens>
+
 ::: {#fig-arcap layout-ncol="2"}
 ![HMDAR Side View](images/24-ARDemoSide.png){#fig-arcap-a}
 
@@ -156,7 +162,7 @@ Head-mounted MR (HMDMR) extends the capabilities of the HMDAR treatment with a m
 
 HMDMR eliminates the need for a fixture and allows the operator to rotate and/or lift the work off the surface if it seemed natural to them to do so. It achieves this by incorporating model-based tracking to to align instructions with the workpiece itself. The added flexibility was expected to make the process more intuitive and ergonomic, enhancing operator performance.
 
-Using model-based tracking, part placement indicators remain properly aligned with the workpiece, regardless of its position and orientation in space. This is demonstrated in @fig-mrmodtrack, where participant \#1040 has rotated the workpiece approximately 45 degrees from its normal orientation to facilitate the installation of parts at the rear of the model. Note that the green part proxies and white placement arrows, all virtual, remain properly oriented.
+Using model-based tracking, part placement indicators remain properly aligned with the workpiece, regardless of its position and orientation in space. This is demonstrated in @fig-mrmodtrack, where participant #1040 has rotated the workpiece approximately 45 degrees from its normal orientation to facilitate the installation of parts at the rear of the model. Note that the green part proxies and white placement arrows, all virtual, remain properly oriented.
 
 ![HMDMR Tracks Model Orientation](images/24-MRModelTrackingCU.png){#fig-mrmodtrack width="5in"}
 
@@ -172,21 +178,59 @@ HMDMR in Operation
 
 ### Affordances and Theoretical Basis
 
-tabulate benefits (affordances) for each IMT - one row per bene, one col per IMT, checks to indicate presence
+In order to better understand the underlying factors that contribute to any significant measured differences in treatment outcomes, a set of nine affordances were defined as described below.
 
--   PAR
-    -   affordances: in-context instruction, instruction sequence, interaction, overlay, confirmation, error prevention
-    -   theoretical basis of benefit:
+1.  Task Instructions: A description of how to complete the task.
+2.  Hands-On Engagement: The learning method involves physical interaction with the subject matter.
+3.  Direct View of Work: The work area is viewed without mediating devices like screens or displays.
+4.  Step-Wise Guidance: Instructions are presented sequentially, adapting to user needs and pace.
+5.  Feedback Mechanisms: The system provides real-time feedback on user actions.
+6.  Workspace Integration: Instructional materials are integrated with the workspace.
+7.  Sensor-Based Interaction: The system is controlled with sensor-based input devices, eliminating the need for physical controllers.
+8.  User-Centric Display: Instructions are displayed in the user's view, rendered from their perspective.
+9.  Freeform Interaction: The system allows for natural manipulation of the workpiece.
+
+These affordances were identified based on their direct applicability to the learning tasks within an AR/MR environment, their alignment with a carefully chosen set of instructional treatments, and their foundation in educational theories known to influence learning outcomes positively. Each affordance serves to operationalize these theories within the context of the experimental design, with the expectation that their integration into the instructional treatments will lead to measurable improvements in learning and performance.
+
+| **Affordance**           | **PWI** | **PAR** | **HMDAR** | **HMDMR** |
+|--------------------------|:-------:|:-------:|:---------:|:---------:|
+| Task Instructions        |    Y    |    Y    |     Y     |     Y     |
+| Hands-On Engagement      |    Y    |    Y    |     Y     |     Y     |
+| Direct View of Work      |    Y    |    Y    |     Y     |     Y     |
+| Step-Wise Guidance       |         |    Y    |     Y     |     Y     |
+| Feedback Mechanisms      |         |    Y    |     Y     |     Y     |
+| Workspace Integration    |         |    Y    |     Y     |     Y     |
+| Sensor-Based Interaction |         |    Y    |     Y     |     Y     |
+| User-Centric Display     |         |         |     Y     |     Y     |
+| Freeform Interaction     |         |         |           |     Y     |
+
+: Summary of Affordances by Treatment {#tbl-affords tbl-colwidths="\[40,15,15,15,15\]" .striped}
+
+@tbl-affords maps each treatment to its set of affordances. It demonstrates a progression of complexity and sophistication. "Task Instructions," "Hands-On Engagement," and "Direct View of Work" provide the baseline capabilities for all treatments. Additional affordances add layers of instructional complexity and interactivity.
+
+As discussed in @sec-theory, the theoretical benefits underpinning these affordances are rooted in educational theories that are particularly relevant to AR/MR learning environments. *Active learning theories*, including *experiential learning theory* support the idea that learning is enhanced through direct experience and reflection, which is fundamental to several of the identified affordances, including "Hands-On Engagement," "Step-Wise Guidance," and "Feedback Mechanisms."
+
+*Flow theory* emphasizes the importance of a state of heightened focus and immersion for optimal learning, which is fostered by affordances that engage users in a compelling and intuitive way, such as "Egocentric Display" that ensures the instructional content is seamlessly integrated into the user’s field of view.
+
+The theory of *embodied cognition* posits that cognitive processes are deeply intertwined with the physical actions of the body. In an AR/MR setting, affordances that align with this theory, such as "Freeform Interaction," allow for a more natural and intuitive learning process by leveraging the body's movement and spatial orientation. Other *constructivist* theories, including *animate vision* and *spatial cognition theory* are similarly represented by "User-Centric Display," and "Workspace Integration."
+
+*Cognitive load theory* provides a framework for understanding how information is processed and suggests that well-designed instructional materials can reduce unnecessary cognitive load, making learning more efficient. This directly relates to affordances like "Sensor-Based Interaction" which simplifies the user interface, and "Workspace Integration," which eliminates context switching associated with referencing instructions away from the work surface.
+
+Lastly, the affordances have been selected with *educational best practices* in mind, ensuring that they not only align with theoretical perspectives but also adhere to the principles of effective instruction design, such as clarity, engagement, and scaffolding.
+
+This design links the chosen affordances with the framework for instructional design with AR/MR augmentation for industrial training applications that was proposed in @sec-framework and illustrated by @fig-idforar.
+
+While it may be tempting to make a-priori claims about the most influential affordances or theories in this context, the relationships are not so clear-cut. Each identified affordance can claim some benefit from most identified theories; all are interrelated and contribute to the overall learning experience.
+
+Instead, this work hypothesizes that treatments leveraging more affordances will result in better learning outcomes. But the success of these treatments also depends on the quality of their implementation and the balance between enhanced functionality and added complexity. The later may have a negative impact on the overall user experience, increasing cognitive load, breaking flow, and otherwise offsetting the intended gains. Finally, the interplay between different affordances — how they complement or interfere with one another — is also a significant consideration.
 
 ## XR System Development {#sec-xrdev}
 
-describe the design and development of the XR system
+TODO: describe the design and development of the XR system
 
 ### HMD Hardware Selection
 
 Of the HMDAR systems commercially available in 2021, when the precursor to this study began, only the HL2 was well-suited for enterprise applications, including manufacturing. Originally released for that market in 2019, the HL2's distinguishing features are tabulated in @tbl-hl2, below.
-
-[^24-methods-3]: <https://www.microsoft.com/en-us/hololens>
 
 | Feature               | Description                                                                                                                                                                                                                                                                                                                                                         |
 |-------------------------|-----------------------------------------------|
@@ -202,18 +246,18 @@ Only the Magic Leap 2[^24-methods-4] design is similar. However, despite being r
 [^24-methods-4]: <https://www.magicleap.com>
 
 ::: {#fig-hmdxrs layout-ncol="2"}
-![Microsoft HoloLens2. Source: Microsoft](images/24-HL2.png){#fig-hmdxrs-a alt="Microsoft HoloLens2. Source: Microsoft"}
+![Microsoft HoloLens2. Source: Microsoft](images/24-HL2.png){#fig-hmdxrs-a}
 
-![Magic Leap 2. Source: Magic Leap](images/24-ML2.png){#fig-hmdxrs-b alt="Magic Leap 2. Source: Magic Leap"}
+![Magic Leap 2. Source: Magic Leap](images/24-ML2.png){#fig-hmdxrs-b}
 
 HoloLens 2 and Magic Leap 2
 :::
 
-Because the HL2 represented the state of the art in OST HMD enterprise XR devices when this study commenced, it was adopted for treatments three and four. At the time of this writing, nearly four years after its introduction, the HL2 hardware design and the feature set it enables remain largely unchallenged.
+Because the HL2 represented the state of the art in OST HMD enterprise XR devices when this study commenced, it was adopted for the HMD AR/MR treatments. At the time of this writing, nearly four years after its introduction, the HL2 hardware design and the feature set it enables remain largely unchallenged.
 
 Unlike the LG, the HL2 is entirely self-contained, processing data from an array of sensors to enable visual tracking, spatial mapping, gesture recognition, voice commands, hologram rendering, and optical compositing in real-time. @fig-hl2exp provides an exploded view of the HL2 components.
 
-![HoloLens 2 Exploded View. Source: Microsoft](images/24-HL2Exploded.png){#fig-hl2exp alt="HoloLens 2 Exploded View. Source: Microsoft"}
+![HoloLens 2 Exploded View. Source: Microsoft](images/24-HL2Exploded.png){#fig-hl2exp}
 
 ### Intervention Description
 
@@ -333,7 +377,7 @@ For reasons detailed in the [experimental design](#exp-design), two angles of ea
 
 ### Risks and Discomforts
 
-Beyond the privacy and data concerns previously described, other potential risks and discomforts were identified. Prolonged used of HMD VSTs has been reported to cause mild neck strain, disorientation, and eye strain in some cases. (TODO: ADD CITATION) The optical and physical design of these systems can also result in a limited or obscured field of view and degraded acuity, (TODO: ADD CITATION) which could increase the participant's risk of trip or impact.
+Beyond the privacy and data concerns previously described, other potential risks and discomforts were identified. Prolonged used of HMD VSTs has been reported to cause mild neck strain, disorientation, and eye strain in some cases. (TODO: CITE?) The optical and physical design of these systems can also result in a limited or obscured field of view and degraded acuity, (TODO: CITE?) which could increase the participant's risk of trip or impact.
 
 The HL2's untethered design with wide, unobstructed field of view mitigates many of these concerns, but additional precautions were taken. All participants were screened for a tendency towards motion sickness. The study was intentionally designed to limit each participant's time wearing the HL2, and to ensure that they were generally stationary in an obstruction-free environment. Finally, the Lean Lab was selected in part because it is a organized, safe, and well-lit environment with no history of related hazards.
 
@@ -389,8 +433,9 @@ Acknowledge any potential limitations or biases in your study design, participan
 -   pseudo-random selection
 -   legos are not real cars
 -   difficulty / complexity of the task
-- the HMDAR and MR treatments are not exact replications of the PAR instructions but no material difference
-- few participants assigned HMDMR took advantage of the affordance
+-   the HMDAR and MR treatments are not exact replications of the PAR instructions but no material difference
+-   few participants assigned HMDMR took advantage of the affordance
+-   does not account for interactions between affordances
 
 ## Summary
 
