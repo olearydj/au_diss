@@ -1,9 +1,12 @@
 # Results {#25-results}
 
-62 participants recruited...
+- 62 participants recruited...
+- sample size calculation / justification - power analysis, practical considerations, precident
+- timeline of study
 
 ## Pilot Study
 
 ::: content-hidden
 If a pilot study was conducted prior to the main study, provide details on its purpose, design, and outcomes, and how it informed the main study.
 :::
+

@@ -44,11 +44,13 @@ Instructional design for all augmented IMTs was based on the paper work instruct
 
 The remainder of this chapter will describe in detail all aspects of the study's methodology, including participant recruitment, human subjects considerations, experimental design, data collection, and analysis. The chapter will conclude by considering the limitations of this study.
 
-## Experimental Design {#exp-design}
+## Study Design {#study-design}
 
 ::: content-hidden
 Detail the setup of your experiment, including the environment (laboratory setting, real-world setting, etc.), the equipment used (specific AR/MR technologies), and any other materials involved in the training sessions.
 :::
+
+TODO: This study is true experiment with random...
 
 ### Task and Context
 
@@ -97,7 +99,9 @@ ST-8 is equipped with a PAR system by LightGuide[^24-methods-1] (LG), a Michigan
 [^24-methods-1]: <https://www.lightguidesys.com/>
 
 ::: callout-note
-The Lean Lab's LightGuide system predates this study. The specification, installation, setup, and configuration of this system, along with the design and implementation of the instructional materials it uses at ST-8, were conducted by prior teams. (TODO: CITE?)
+The Lean Lab's LightGuide system predates this study. The specification, installation, setup, and configuration of this system, along with the design and implementation of the instructional materials it uses at ST-8, were conducted by prior teams.
+
+TODO: cite papers related to LEGO lab development
 :::
 
 ![LG System Architecture. Source: LightGuide website](images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
@@ -138,7 +142,7 @@ The PAR instructions were designed and implemented by students and graduate assi
 
 Like PAR, head-mounted AR (HMDAR) systems integrate dynamic instructions into the work area. Whereas PAR relies on traditional projectors and classical computer vision techniques, HMDAR employs sophisticated displays and fused sensor data to superimpose instructions and virtual controls directly into the operator's field of view, properly aligned with the work area.
 
-As detailed in the subsequent section on [XR System Development](#sec-xrdev), Microsoft's HoloLens2[^24-methods-3] (HL2) was used for this treatment. The HL2's area-based tracking capabilities were used to align the virtual and physical coordinate systems, enabling the proper in-view placement of UI objects, independent of the position and orientation of the operator's head. As with the PAR treatment, user motion was the only input modality, implemented via the HL2's more sophisticated hand tracking and gesture recognition systems. @fig-arcap shows the side and operator view of this treatment at the same moment.
+As detailed in the subsequent section on [System Development](#sysdev), Microsoft's HoloLens2[^24-methods-3] (HL2) was used for this treatment. The HL2's area-based tracking capabilities were used to align the virtual and physical coordinate systems, enabling the proper in-view placement of UI objects, independent of the position and orientation of the operator's head. As with the PAR treatment, user motion was the only input modality, implemented via the HL2's more sophisticated hand tracking and gesture recognition systems. @fig-arcap shows the side and operator view of this treatment at the same moment.
 
 [^24-methods-3]: <https://www.microsoft.com/en-us/hololens>
 
@@ -176,7 +180,7 @@ Using model-based tracking, part placement indicators remain properly aligned wi
 HMDMR in Operation
 :::
 
-### Affordances and Theoretical Basis
+### Affordances and Theoretical Benefits
 
 In order to better understand the underlying factors that contribute to any significant measured differences in treatment outcomes, a set of nine affordances were defined as described below.
 
@@ -218,13 +222,121 @@ The theory of *embodied cognition* posits that cognitive processes are deeply in
 
 Lastly, the affordances have been selected with *educational best practices* in mind, ensuring that they not only align with theoretical perspectives but also adhere to the principles of effective instruction design, such as clarity, engagement, and scaffolding.
 
-This design links the chosen affordances with the framework for instructional design with AR/MR augmentation for industrial training applications that was proposed in @sec-framework and illustrated by @fig-idforar.
+This design links the chosen affordances with the framework for instructional design with AR/MR augmentation for industrial training applications that was proposed in @sec-guidelines and illustrated by @fig-idforar.
 
 While it may be tempting to make a-priori claims about the most influential affordances or theories in this context, the relationships are not so clear-cut. Each identified affordance can claim some benefit from most identified theories; all are interrelated and contribute to the overall learning experience.
 
 Instead, this work hypothesizes that treatments leveraging more affordances will result in better learning outcomes. But the success of these treatments also depends on the quality of their implementation and the balance between enhanced functionality and added complexity. The later may have a negative impact on the overall user experience, increasing cognitive load, breaking flow, and otherwise offsetting the intended gains. Finally, the interplay between different affordances — how they complement or interfere with one another — is also a significant consideration.
 
-## XR System Development {#sec-xrdev}
+## Experimental Procedure
+
+This section will detail the methods, variables, and rationale behind each experiment. For a step-by-step description of how each session was conducted, see @sec-conduct.
+
+This study was conducted in two sessions. The first was designed to test each treatment's effect on learning and recall. All participants were assessed individually during this session. The second session was optional and administered several weeks later, as part of the [end of study event](#comp-event). It was designed to compare the treatment effects on retention.
+
+### Initial Data Collection
+
+Prior to the first session, each consented participant is required to complete a questionnaire and two survey instruments. Copies of each are included in the [IRB approval forms](#app-irb).
+
+#### Participant Intake Sheet
+
+The *Participant Intake Sheet* is designed to gather the following information, which is essential for understanding the participant demographic makeup, assessing the generalizability of the study, identifying potential confounding factors, and facilitating post-hoc analyses involving matching or grouping:
+
+1. General demographics, including gender, age, height, race, ethnicity, country of origin, primary language, education level, and student status.
+2. The presence of color blindness.
+3. The need for corrective lenses, and whether they will be used during the experiment.
+4. Any other condition that might affect their performance during the study.
+5. Self-rated experience with LEGO building and background in manufacturing.
+6. The method by which they learned about the study.
+
+#### NASA Task Load Index
+
+As discussed in @sec-lrinstruments, the *NASA Task Load Index* [TLX, @hart2006tlx] was designed to assess the perceived workload of a task. The primary outcome of the TLX is a weighted average of six factors that contribute to overall workload. Three of those factors are related to the mental, physical, and temporal demands placed on the participant by a task. The remaining three measure the participant's perceived effort, frustration, and performance during it.
+
+In preparation for the study, participants were familiarized with the instrument through instruction and a trial run, as described in @sec-conduct. This is in accordance with the experimental procedure outlined in the TLX instructions.
+
+The TLX is comprised of weighting and scoring processes that are repeated by participants upon task completion. First, to account for the subjective nature of workload, each factor is weighted by the participant. This *Sources of Workload Evaluation* is accomplished by having them indicate which element of each pair made the greatest contribution to their perceived workload. This is illustrated in @fig-tlxsow. For example, given the pair "Mental Demand or Effort," a participant would likely indicate perceived effort for a task like lawn work but mental demand for a philosophical debate. This is repeated for all fifteen possible combinations of the six factors.
+
+![Sources of Workload Evaluation](images/24-TLXsow.png){#fig-tlxsow width="5.5in"}
+
+Next, participants complete the *Workload Rating Scales* form to assess the magnitude of each factor for the given task. This uses a Likert-like scale with 20 equal intervals and bipolar descriptors. No numeric values are given and participants are instructed to mark it freely. The mental demand rating scale shown in @fig-tlxwrs is representative.
+
+![Workload Rating Scale, Mental Demand](images/24-TLXwrs.png){#fig-tlxwrs width="5in"}
+
+The results of the TLX are expected to provide insight into the overall user experience for each treatment, along with how workload varies across treatments and what underlying factors contribute to both. This will aid in contextualizing the positive or negative influence that workload might have on learning outcomes.
+
+#### Behavioral Control Survey
+
+The final instrument completed during the intake process was the Adult ADHD Self-Report Scale (ASRSv1.1). Referred to simply as a "Behavioral Control Survey" in order to avoid the possibility of biasing participant responses, the results of this outcome are the focus of a separate study and not further discussed in this work.
+
+TODO: cite scale and VB's poster
+
+### First Session - Learning and Recall
+
+The first session of the study tested its primary hypotheses in two phases. Phase one, Learning, compared the effects of the assigned treatment on the speed (task completion time) and accuracy (number and type of corrected and uncorrected errors) with which participants performed each repetition of the task. These measures, tracked for each assembly during the 10-minute session, will enable the assessment of both learning rate and depth of skill acquisition. This approach offers insights into how efficiently and effectively each treatment imparts necessary skills and knowledge for the task.
+
+In the first phase, participants will be asked to complete the assembly process for as many cars as they can, while learning the steps and limiting the number of errors produced. This phase will be conducted with the support of the assigned IMT and will last 10 minutes. Observations will be recorded on Data Collection Sheet #1. During that time, we expect that each participant will produce between 3 and 6 cars, based on prior performance data and the 60-second takt time for which the instructions were designed. (10 mins)
+
+Oversight: the PI for this investigation will observe the participant’s activity remotely, making notes on the process. Primary data collection will be completed later through analysis of the video recordings.
+
+During the second phase, Recall, participants repeated the same task four times in the control condition (PWI), while the same measures are observed. Their results from both phases were later analyzed to compare transfer effectiveness between treatments.
+
+In the second phase each participant will build 4 more cars using only paper work instructions. Their stated goal will be to deliver error-free results quickly, while referencing the instructions only when necessary. Observations will be recorded on Data Collection Sheet #2. (5-10 mins)
+
+### Second Session - Retention
+
+#### Intake and Orientation
+
+began with intake and orientation process described in @sec-conduct
+
+instrument - demographics, participant intake sheet
+
+read about TLX and complete trial run (marathon)
+
+includes a brief demonstration of general process and practice session with assigned treatment, to provide basic familiarity with technology and control for initial learning curve
+
+
+#### Instruments
+
+Describe TLX and SUS, also "BCS" with ref to VB's study
+
+
+### Second Session
+
+optional, for retention, with party
+
+#### Retention
+
+### Intervention Description
+
+::: content-hidden
+Clearly describe the AR/MR methods used in the training of manufacturing operators. Provide details on the content, duration, and frequency of the training sessions. Explain how these methods are intended to impact the assembly training process.
+:::
+
+### Control Group
+
+The PWI treatment serves as the control.
+
+::: content-hidden
+If applicable, describe the control group's conditions, including what traditional training methods were used for comparison against the AR/MR methods.
+:::
+
+### Data Collection
+
+::: content-hidden
+Elaborate on the types of data collected (quantitative, qualitative, or both), the tools and instruments used for data collection (surveys, performance metrics, observational data, interviews, etc.), and the timing of data collection (before, during, after the intervention).
+:::
+
+video
+
+### Measures and Variables
+
+::: content-hidden
+Specify the primary and secondary outcomes measured in your study. Define any dependent and independent variables, including how they were operationalized.
+:::
+
+
+## System Development {#sysdev}
 
 TODO: describe the design and development of the XR system
 
@@ -255,35 +367,13 @@ HoloLens 2 and Magic Leap 2
 
 Because the HL2 represented the state of the art in OST HMD enterprise XR devices when this study commenced, it was adopted for the HMD AR/MR treatments. At the time of this writing, nearly four years after its introduction, the HL2 hardware design and the feature set it enables remain largely unchallenged.
 
-Unlike the LG, the HL2 is entirely self-contained, processing data from an array of sensors to enable visual tracking, spatial mapping, gesture recognition, voice commands, hologram rendering, and optical compositing in real-time. @fig-hl2exp provides an exploded view of the HL2 components.
+Unlike the LG, the HL2 is entirely self-contained, processing data from an array of sensors to enable six degree-of-freedom visual tracking, spatial mapping, gesture recognition, voice commands, hologram rendering, and optical compositing in real-time. @fig-hl2exp provides an exploded view of the HL2 components.
 
 ![HoloLens 2 Exploded View. Source: Microsoft](images/24-HL2Exploded.png){#fig-hl2exp}
 
-### Intervention Description
-
-::: content-hidden
-Clearly describe the AR/MR methods used in the training of manufacturing operators. Provide details on the content, duration, and frequency of the training sessions. Explain how these methods are intended to impact the assembly training process.
-:::
-
-### Control Group
-
-The PWI treatment serves as the control.
-
-::: content-hidden
-If applicable, describe the control group's conditions, including what traditional training methods were used for comparison against the AR/MR methods.
-:::
-
-### Data Collection
-
-::: content-hidden
-Elaborate on the types of data collected (quantitative, qualitative, or both), the tools and instruments used for data collection (surveys, performance metrics, observational data, interviews, etc.), and the timing of data collection (before, during, after the intervention).
-:::
-
-### Measures and Variables
-
-::: content-hidden
-Specify the primary and secondary outcomes measured in your study. Define any dependent and independent variables, including how they were operationalized.
-:::
+TODO: add HL2 hardware details?
+https://learn.microsoft.com/en-us/hololens/hololens-commercial-features
+https://learn.microsoft.com/en-us/hololens/hololens2-hardware
 
 ## Participants
 
@@ -314,7 +404,7 @@ In order to incentivize sign-ups, some extra credit and the possibility of finan
 
 Any instructor promoting these studies to their students was free to provide extra credit for participation. This was entirely at their discretion. We cautioned all instructors to offer no more than 1% on the final class average, and encouraged them to provide alternative bonuses for students unable to participate.
 
-#### End of Study Event
+#### End of Study Event {#comp-event}
 
 At the conclusion of the main study, all participants were invited to return to the lab for an "open house" event. This gave them the opportunity to experience other treatments and related technologies, and learn more about the experiment and lab. Food and drink were provided. In exchange, we asked all attendees to participate in a brief retention experiment. Attendance and participation were voluntary.
 
@@ -334,7 +424,7 @@ For the performance prize in the retention study, eligibility was limited to tho
 
 No member of the research team was eligible for any of the financial compensation described, and all payment processing was handled by appropriate members of the ISE staff.
 
-## Ethical Considerations
+## Research Compliance
 
 ::: content-hidden
 Since your study involves human subjects, outline the ethical approvals obtained (e.g., Institutional Review Board - IRB approval), and how informed consent was obtained from the participants. Describe any measures taken to ensure the privacy and confidentiality of participant data.
@@ -373,11 +463,13 @@ A variety of data were collected for this study, including video recordings, per
 
 All electronic data pertaining to the study are stored on a secure server. Non-identifiable data is available to other members of the research group, for the purposes of approved research, under conditions that ensure continued confidentiality. Access to consent forms and the code list is limited to the PI and, if required, the research committee.
 
-For reasons detailed in the [experimental design](#exp-design), two angles of each trial were recorded on video; a view from the participant's perspective and a side view focused on the work surface. The side view was carefully framed to limit identification of the participant, and later edited to crop out identifying features, ensuring participant privacy. Additionally, all participants were required to wear the HoloLens2 head-mounted display, which further obscured their appearance.
+For reasons detailed in the [study design](#study-design), two angles of each trial were recorded on video; a view from the participant's perspective and a side view focused on the work surface. The side view was carefully framed to limit identification of the participant, and later edited to crop out identifying features, ensuring participant privacy. Additionally, all participants were required to wear the HoloLens2 head-mounted display, which further obscured their appearance.
 
 ### Risks and Discomforts
 
-Beyond the privacy and data concerns previously described, other potential risks and discomforts were identified. Prolonged used of HMD VSTs has been reported to cause mild neck strain, disorientation, and eye strain in some cases. (TODO: CITE?) The optical and physical design of these systems can also result in a limited or obscured field of view and degraded acuity, (TODO: CITE?) which could increase the participant's risk of trip or impact.
+Beyond the privacy and data concerns previously described, other potential risks and discomforts were identified. Prolonged used of HMD VSTs has been reported to cause mild neck strain, disorientation, and eye strain in some cases. The optical and physical design of these systems can also result in a limited or obscured field of view and degraded acuity, which could increase the participant's risk of trip or impact.
+
+TODO: cite risks, ISO paper?
 
 The HL2's untethered design with wide, unobstructed field of view mitigates many of these concerns, but additional precautions were taken. All participants were screened for a tendency towards motion sickness. The study was intentionally designed to limit each participant's time wearing the HL2, and to ensure that they were generally stationary in an obstruction-free environment. Finally, the Lean Lab was selected in part because it is a organized, safe, and well-lit environment with no history of related hazards.
 
@@ -387,7 +479,7 @@ This study did not involve any vulnerable populations. Overall, the likelihood a
 
 During the post-experiment debriefing all participants were asked about injury and discomfort, and were observed for lingering or delayed effects. Ultimately, only a few mild discomforts were reported, and no significant side effects, injuries, or need for escalation.
 
-## Procedures
+## Conduct of Protocol {#sec-conduct}
 
 trial runs with monir, etc. to test out / refine procedure and script
 
@@ -408,19 +500,23 @@ This process quickly proved impractical, and a self-service web-based alternativ
 ### Administer
 
 -   all personnel involved in the experiment were CITI certified
--   assignment of treatments
+-   random assignment of treatments
+
+The experimental procedure outlined for the TLX recommends that participants are introduced to the instrument before using it for data collection. Accordingly, the intake process for this study includes a trial run of the TLX once the participant has been briefed on the instrument, read the provided *Subject Instructions*, and had their questions answered. In order to familiarize themselves with the instrument all participants were asked to complete it imagining they had just run a marathon. This exercise was chosen as it is easy for runners and non-runners to rate that imagined experience.
 
 ### Conduct
 
 -   Data collection will take place at the Lean Lab in the basement of the Shelby Center for Engineering Technology, room 0317, located at 345 W Magnolia Ave, Auburn, AL  36849
 
-## Analysis
+
+
+## Data Analysis
 
 ::: content-hidden
 Describe the statistical or qualitative analysis methods to be used for examining the data. Mention any software or tools that will be utilized for data analysis.
 :::
 
-## Limitations
+## Study Limitations
 
 ::: content-hidden
 Acknowledge any potential limitations or biases in your study design, participant selection, or data collection methods that could impact the interpretation of your results.

@@ -142,7 +142,7 @@ The following year @masood2020adopt extended their prior research with 22 experi
 
 @danielsson2020augme developed and applied a framework to assess the state of AR for industrial assembly applications. From a manufacturing engineering perspective, the authors considered authoring, infrastructure, and validation. Technical maturity concerns focused on the readiness levels (TRLs) of available devices. Key requirements and enabling technologies were described. From both perspectives, AR is rapidly improving but still only suitable for limited usage. The authors identified a need for strategic decision-making guidelines for the integration of these systems. Such guidelines should need to be validated and account for economic considerations.
 
-### Instruments
+### Instruments {#sec-lrinstruments}
 
 Witmer and Singer's [-@witmer1998measu] *Presence Questionnaire* consists of 32 items and measures the degree of presence experienced in a virtual environment. The same publication describes the Immersive Tendencies Questionnaire which measures the tendency of an individual towards immersion with 29 items. Both instruments use a seven-point scale where the endpoints are anchored by opposing descriptors (e.g. not compelling / very compelling).
 
@@ -150,7 +150,7 @@ The *Flow State Scale* by @jackson1996devel is a 36 item instrument used to meas
 
 @kennedy1993simul derived the *Simulator Sickness Questionnaire* from a prior instrument intended to measure real-world motion sickness. Differences in the origin, type, and severity of simulator sickness symptoms demanded it. Users self-report the presence of 16 symptoms ranging from general discomfort to nausea. Each symptom is measured on a scale of none, slight, moderate, severe. Three principal factors of this instrument are interpreted as clusters of oculomotor, disorientation, and nausea symptoms.
 
-Hart's *NASA Task Load Index* [TLX, -@hart2006tlx] has been used to estimate workload for almost 40 years. It assesses overall task workload based on the magnitude of mental, physical, and mental demands imposed by the task, the operator's emotional response to those demands (effort, frustration), and their perceived ability to meet them (performance). These six factors are weighted based on the factors each subject feels best describe the workload associated with the task under study.
+Hart's *NASA Task Load Index* [TLX, -@hart2006tlx] has been used to estimate workload for almost 40 years. It assesses overall task workload based on the magnitude of mental, physical, and temporal demands imposed by the task, the operator's emotional response to those demands (effort, frustration), and their perceived ability to meet them (performance). These six factors are weighted based on the factors each subject feels best describe the workload associated with the task under study.
 
 ## XR in Manufacturing
 
@@ -177,7 +177,7 @@ Consequently, there is a pressing need for additional research to quantify the e
 *magnitude of return will depend on alignment of the provided affordances, their theoretical benefits, which is determined by instructional design*
 
 
-### Proposed Framework {#sec-framework}
+### Proposed Guidelines {#sec-guidelines}
 
 TODO: Finish and relocate?
 
