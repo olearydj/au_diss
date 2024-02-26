@@ -98,11 +98,9 @@ ST-8 is equipped with a PAR system by LightGuide[^24-methods-1] (LG), a Michigan
 
 [^24-methods-1]: <https://www.lightguidesys.com/>
 
-::: callout-note
-The Lean Lab's LightGuide system predates this study. The specification, installation, setup, and configuration of this system, along with the design and implementation of the instructional materials it uses at ST-8, were conducted by prior teams.
+Note that the Lean Lab's LightGuide system predates this study. Its specification, installation, setup, and configuration, along with the design and implementation of the instructional materials it uses at ST-8, were conducted by prior teams.
 
 TODO: cite papers related to LEGO lab development
-:::
 
 ![LG System Architecture. Source: LightGuide website](images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
 
@@ -162,7 +160,7 @@ For comparison purposes, @fig-arcomp shows the HMDAR operator's view of the same
 
 #### Head Mounted MR
 
-Head-mounted MR (HMDMR) extends the capabilities of the HMDAR treatment with a more sophisticated tracking method that allows for more natural interactions with the workpiece. For all other treatments, the work piece remains in a fixture, forcing the operator to align themselves, both physically and mentally to its placement.
+Head-mounted MR (HMDMR) extends the capabilities of the HMDAR treatment with a more sophisticated tracking method that allows for more natural interactions with the workpiece. For all other treatments, the work piece remains in a fixture, forcing the operator to align themselves, both physically and mentally, to its placement.
 
 HMDMR eliminates the need for a fixture and allows the operator to rotate and/or lift the work off the surface if it seemed natural to them to do so. It achieves this by incorporating model-based tracking to to align instructions with the workpiece itself. The added flexibility was expected to make the process more intuitive and ergonomic, enhancing operator performance.
 
@@ -182,7 +180,7 @@ HMDMR in Operation
 
 ### Affordances and Theoretical Benefits
 
-In order to better understand the underlying factors that contribute to any significant measured differences in treatment outcomes, a set of nine affordances were defined as described below.
+In order to better understand the underlying factors that contribute to any significant measured differences in treatment outcomes, a set of nine affordances were defined, as described below.
 
 1.  Task Instructions: A description of how to complete the task.
 2.  Hands-On Engagement: The learning method involves physical interaction with the subject matter.
@@ -210,6 +208,8 @@ These affordances were identified based on their direct applicability to the lea
 
 : Summary of Affordances by Treatment {#tbl-affords tbl-colwidths="\[40,15,15,15,15\]" .striped}
 
+TODO: should freedom of movement (untethered) be an affordance or requirement?
+
 @tbl-affords maps each treatment to its set of affordances. It demonstrates a progression of complexity and sophistication. "Task Instructions," "Hands-On Engagement," and "Direct View of Work" provide the baseline capabilities for all treatments. Additional affordances add layers of instructional complexity and interactivity.
 
 As discussed in @sec-theory, the theoretical benefits underpinning these affordances are rooted in educational theories that are particularly relevant to AR/MR learning environments. *Active learning theories*, including *experiential learning theory* support the idea that learning is enhanced through direct experience and reflection, which is fundamental to several of the identified affordances, including "Hands-On Engagement," "Step-Wise Guidance," and "Feedback Mechanisms."
@@ -228,11 +228,93 @@ While it may be tempting to make a-priori claims about the most influential affo
 
 Instead, this work hypothesizes that treatments leveraging more affordances will result in better learning outcomes. But the success of these treatments also depends on the quality of their implementation and the balance between enhanced functionality and added complexity. The later may have a negative impact on the overall user experience, increasing cognitive load, breaking flow, and otherwise offsetting the intended gains. Finally, the interplay between different affordances — how they complement or interfere with one another — is also a significant consideration.
 
-## Experimental Procedure
+## Measures and Variables
 
-This section will detail the methods, variables, and rationale behind each experiment. For a step-by-step description of how each session was conducted, see @sec-conduct.
+TODO: section intro
 
-This study was conducted in two sessions. The first was designed to test each treatment's effect on learning and recall. All participants were assessed individually during this session. The second session was optional and administered several weeks later, as part of the [end of study event](#comp-event). It was designed to compare the treatment effects on retention.
+### Dependent Variables
+
+The key measures of this study are learning, recall, and retention.
+
+*Learning* is the process through which knowledge, skills, behaviors, or values are acquired or modified. For this study, it is measured by how quickly a participant progresses towards the level of proficiency expected of a qualified operator. Specifically, it is a function of quality (error rate) and performance (time efficiency).
+
+*Recall* refers to the ability to access information from memory without being re-exposed to it after initial training. Here, it is assessed by how well participants can perform the task after the learning phase, without ongoing instructional support.
+
+*Retention* is the ability to maintain information, skills, or knowledge over time. For this study it is measured by re-testing recall some time after the initial training.
+
+TODO: cite definitions? relate quality and performance to OEE? justify these choices?
+
+### Independent Variables
+
+The primary independent variable in this study is the treatment level assigned to each participant. Of the four treatments, three serve as interventions: PAR, HDMAR, and HMDMR. The fourth treatment, PWI, is the standard for manufacturing assembly training and therefore a natural choice for the control.
+
+Post-hoc analysis will be conducted to determine if any of the participant demographics should be considered secondary independent variables. Those of particular interest include age and prior experience with LEGO or manufacturing. The results of this analysis may have implications for the generalizability of the study.
+
+### Controlled Factors
+
+To ensure the validity of the outcomes, the study design carefully controlled for various factors, isolating the impact of the treatments.
+
+1. Participant Sampling: The recruitment strategy aimed for a diverse and representative sample within the constraints of the study's target population.
+2. Random Treatment Assignment: This method was utilized to evenly distribute potential confounding variables across the different treatment groups, thereby minimizing biases.
+3. Uniform Device Usage: All participants wore the HL2 during the learning and recall experiments to standardize any potential impact of using the device.
+4. Screening for Prior Experience: Prospective participants were screened and excluded if they had prior experience with similar AR/MR devices or Lean Lab assembly tasks.
+5. Task Consistency: The content, complexity, and duration of the task were uniform for all participants, ensuring that any learning differences were attributable to the treatments rather than task variability.
+6. Standardized Session Conduct: The environment and methodology of conducting each session were kept consistent, further ensuring that differences in outcomes were treatment-related.
+
+These control measures were integral to maintaining the integrity of the study and ensuring that the results accurately reflect the effects of the instructional treatments.
+
+### Primary Outcomes
+
+The primary outcomes of this study are the results of the hypotheses tests outlined below. 
+
+#### Learning Phase Hypotheses
+
+The first group of hypotheses are designed to test the effect of each treatment on training outcomes.
+
+> **Research Question 1**
+>
+> *How does each IMT affect performance during the learning phase?*
+> 
+> $$H_{1a}\textrm{: Average time per car varies with treatment}$$
+> $$H_{1b}\textrm{: Average error count per car varies with treatment}$$
+> $$H_{1c}\textrm{: Learning rates vary with treatment}$$
+
+To better understand those results, additional analysis will consider the treatment effect on error types, task completion rate, and first-task performance. Finally, we'll investigate which treatment group had the highest percentage of "qualified operators" at the end of the 10-min session. This will be assessed relative to expected performance metrics, including takt time and OEE.
+
+This approach provides a robust assessment of the instructional treatments' effectiveness during the learning phase. It examines key performance metrics — efficiency, accuracy, and learning progression — to capture a comprehensive understanding of participant performance. The evaluation against real-world manufacturing standards further ensures the study's relevance to practical training contexts. This design allows for a nuanced interpretation of how each treatment influences learning outcomes in manufacturing assembly training.
+
+#### Recall Phase Hypotheses
+
+The second group of hypotheses aim to evaluate the residual impact of each treatment on recall — specifically, participants' ability to correctly replicate the task without further training.
+
+> **Research Question 2**
+>
+> *How does each IMT affect performance during the recall phase?*
+>
+> $$H_{2a}\textrm{: OEE varies with treatment}$$
+> $$H_{2b}\textrm{: Total duration of PWI references varies with treatment}$$
+
+In contrast with the RQ1 analyses, which focused on the learning *progress*, these hypotheses are designed to assess the training *results*. OEE was chosen as the primary measure due to its practical relevance in answering "Did the training work?" It effectively quantifies the participants' ability to utilize acquired skills under conditions that mimic real-world expectations, where both speed and accuracy are crucial.
+
+Subsequent analyses will investigate the primary drivers of OEE (efficiency vs. quality) and PWI reference duration (frequency and length of references). Additional exploration into error types, task completion rate, first-task performance, and ongoing learning rate may also provide additional insight into the nuances of recall performance across treatment types.
+
+#### Retention Phase Outcomes
+
+This final group of ...
+
+### Secondary Outcomes
+
+Secondary: TLX, SUS, other analysis
+
+
+
+## Experiments
+
+This study was organized into two sessions, encompassing three distinct experiments, each aimed at evaluating one of the three measures of training effectiveness described above.
+
+This section will detail the methods, variables, and rationale behind the design of each experiment. For a step-by-step description of how each session was conducted, see @sec-conduct.
+
+TODO: update above?
 
 ### Initial Data Collection
 
@@ -242,12 +324,12 @@ Prior to the first session, each consented participant is required to complete a
 
 The *Participant Intake Sheet* is designed to gather the following information, which is essential for understanding the participant demographic makeup, assessing the generalizability of the study, identifying potential confounding factors, and facilitating post-hoc analyses involving matching or grouping:
 
-1. General demographics, including gender, age, height, race, ethnicity, country of origin, primary language, education level, and student status.
-2. The presence of color blindness.
-3. The need for corrective lenses, and whether they will be used during the experiment.
-4. Any other condition that might affect their performance during the study.
-5. Self-rated experience with LEGO building and background in manufacturing.
-6. The method by which they learned about the study.
+1.  General demographics, including gender, age, height, race, ethnicity, country of origin, primary language, education level, and student status.
+2.  The presence of color blindness.
+3.  The need for corrective lenses, and whether they will be used during the experiment.
+4.  Any other condition that might affect their performance during the study.
+5.  Self-rated experience with LEGO building and background in manufacturing.
+6.  The method by which they learned about the study.
 
 #### NASA Task Load Index
 
@@ -255,11 +337,13 @@ As discussed in @sec-lrinstruments, the *NASA Task Load Index* [TLX, @hart2006tl
 
 In preparation for the study, participants were familiarized with the instrument through instruction and a trial run, as described in @sec-conduct. This is in accordance with the experimental procedure outlined in the TLX instructions.
 
-The TLX is comprised of weighting and scoring processes that are repeated by participants upon task completion. First, to account for the subjective nature of workload, each factor is weighted by the participant. This *Sources of Workload Evaluation* is accomplished by having them indicate which element of each pair made the greatest contribution to their perceived workload. This is illustrated in @fig-tlxsow. For example, given the pair "Mental Demand or Effort," a participant would likely indicate perceived effort for a task like lawn work but mental demand for a philosophical debate. This is repeated for all fifteen possible combinations of the six factors.
+The TLX is comprised of weighting and scoring processes that are repeated by participants upon task completion. First, to account for the subjective nature of workload, each factor is weighted by the participant. This *Sources of Workload Evaluation* is accomplished by having them indicate which element of each pair made the greatest contribution to their perceived workload. This is illustrated in @fig-tlxsow. For example, given the pair "Mental Demand or Effort," a participant would likely indicate *effort* for a task like lawn work, but *mental demand* for a philosophical debate. This is repeated for all fifteen possible combinations of the six factors.
 
 ![Sources of Workload Evaluation](images/24-TLXsow.png){#fig-tlxsow width="5.5in"}
 
 Next, participants complete the *Workload Rating Scales* form to assess the magnitude of each factor for the given task. This uses a Likert-like scale with 20 equal intervals and bipolar descriptors. No numeric values are given and participants are instructed to mark it freely. The mental demand rating scale shown in @fig-tlxwrs is representative.
+
+TODO: cite Likert?
 
 ![Workload Rating Scale, Mental Demand](images/24-TLXwrs.png){#fig-tlxwrs width="5in"}
 
@@ -273,55 +357,25 @@ TODO: cite scale and VB's poster
 
 ### First Session - Learning and Recall
 
-The first session of the study tested its primary hypotheses in two phases. Phase one, Learning, compared the effects of the assigned treatment on the speed (task completion time) and accuracy (number and type of corrected and uncorrected errors) with which participants performed each repetition of the task. These measures, tracked for each assembly during the 10-minute session, will enable the assessment of both learning rate and depth of skill acquisition. This approach offers insights into how efficiently and effectively each treatment imparts necessary skills and knowledge for the task.
+The first session of the study tested its primary hypotheses in two phases. Phase one, Learning, compared the effects of the assigned treatment on the speed (task completion time) and accuracy (number and type of corrected and uncorrected errors) with which participants performed each repetition of the task. These measures, tracked for each assembly during the 10-minute session, were later used to assess both the learning rate and depth of skill acquisition. This approach offers insights into how efficiently and effectively each treatment imparts necessary skills and knowledge for the task.
 
-In the first phase, participants will be asked to complete the assembly process for as many cars as they can, while learning the steps and limiting the number of errors produced. This phase will be conducted with the support of the assigned IMT and will last 10 minutes. Observations will be recorded on Data Collection Sheet #1. During that time, we expect that each participant will produce between 3 and 6 cars, based on prior performance data and the 60-second takt time for which the instructions were designed. (10 mins)
+#### Learning Phase
 
-Oversight: the PI for this investigation will observe the participant’s activity remotely, making notes on the process. Primary data collection will be completed later through analysis of the video recordings.
+Participants were instructed to focus on three priorities during the first phase: (1) learn the steps of the assembly process, (2) complete each assembly correctly, and (3) finish as many assemblies as possible in the time allowed. This approach mirrors the principles of Overall Equipment Effectiveness (OEE) in manufacturing, which balances the need for accuracy and precision (reflecting the Quality aspect of OEE) with efficiency (mirroring the Performance aspect of OEE). In the context of this study, OEE's third component, Availability, is out of the participant's control, but, as discussed elsewhere, does manifest in some system related issues that were encountered.
+
+TODO: link elsewhere, cite OEE
+
+The fixed duration of 10-minutes was deliberately chosen to align with various aspects of the learning process and the operational context of the task. In addition to the OEE considerations outlined above, using a fixed duration ensured that all participants have the same opportunity to learn the procedure. A fixed car count approach (e.g. "make 6 cars") was rejected due to concerns that the lack of a time constraint could lead to uneven learning opportunities and extend session lengths beyond practical limits.
+
+A 10-minute timeline was chosen based on prior experience with learning curves for the task. The Lean Lab is designed around a 60-second takt time, which constrains the work content for experienced operators at each station. Before training, the time to complete these tasks varies widely. Our expectation was that participants would typically complete between three and six cars during their 10-minute session, but any individual participant might complete only one or as many as ten cars.
+
+#### Recall Phase
 
 During the second phase, Recall, participants repeated the same task four times in the control condition (PWI), while the same measures are observed. Their results from both phases were later analyzed to compare transfer effectiveness between treatments.
 
 In the second phase each participant will build 4 more cars using only paper work instructions. Their stated goal will be to deliver error-free results quickly, while referencing the instructions only when necessary. Observations will be recorded on Data Collection Sheet #2. (5-10 mins)
 
-### Second Session - Retention
-
-#### Intake and Orientation
-
-began with intake and orientation process described in @sec-conduct
-
-instrument - demographics, participant intake sheet
-
-read about TLX and complete trial run (marathon)
-
-includes a brief demonstration of general process and practice session with assigned treatment, to provide basic familiarity with technology and control for initial learning curve
-
-
-#### Instruments
-
-Describe TLX and SUS, also "BCS" with ref to VB's study
-
-
-### Second Session
-
-optional, for retention, with party
-
-#### Retention
-
-### Intervention Description
-
-::: content-hidden
-Clearly describe the AR/MR methods used in the training of manufacturing operators. Provide details on the content, duration, and frequency of the training sessions. Explain how these methods are intended to impact the assembly training process.
-:::
-
-### Control Group
-
-The PWI treatment serves as the control.
-
-::: content-hidden
-If applicable, describe the control group's conditions, including what traditional training methods were used for comparison against the AR/MR methods.
-:::
-
-### Data Collection
+#### Data Collection
 
 ::: content-hidden
 Elaborate on the types of data collected (quantitative, qualitative, or both), the tools and instruments used for data collection (surveys, performance metrics, observational data, interviews, etc.), and the timing of data collection (before, during, after the intervention).
@@ -329,11 +383,14 @@ Elaborate on the types of data collected (quantitative, qualitative, or both), t
 
 video
 
-### Measures and Variables
+include SUS instrument
 
-::: content-hidden
-Specify the primary and secondary outcomes measured in your study. Define any dependent and independent variables, including how they were operationalized.
-:::
+### Second Session - Retention
+
+optional, for retention, with party
+
+#### Data Collection
+
 
 
 ## System Development {#sysdev}
@@ -371,9 +428,7 @@ Unlike the LG, the HL2 is entirely self-contained, processing data from an array
 
 ![HoloLens 2 Exploded View. Source: Microsoft](images/24-HL2Exploded.png){#fig-hl2exp}
 
-TODO: add HL2 hardware details?
-https://learn.microsoft.com/en-us/hololens/hololens-commercial-features
-https://learn.microsoft.com/en-us/hololens/hololens2-hardware
+TODO: add HL2 hardware details? https://learn.microsoft.com/en-us/hololens/hololens-commercial-features https://learn.microsoft.com/en-us/hololens/hololens2-hardware
 
 ## Participants
 
@@ -487,11 +542,7 @@ trial runs with monir, etc. to test out / refine procedure and script
 
 The initial onboarding process was conducted manually by the PI. In a phone call with interested participants the PI would (1) briefly explain the investigation, recapping and elaborating on the recruiting materials; (2) discuss the exclusion criteria and identify relevant issues for the candidate; (3) set expectations for participant involvement, including time commitment and tasks; and (4) answer any questions the candidate had regarding participation in the investigation.
 
-If the candidate indicated a willingness to proceed, their information was collected using the Subject Recruitment Data Sheet included in [Appendix A](#app-irb). A unique participant ID was logged on the code list and a date and time for data collection were then assigned.
-
-::: callout-note
-As [detailed below](#sec-privacy), the code list and consent form provided the only link between personally identifiable information and experimental data.
-:::
+If the candidate indicated a willingness to proceed, their information was collected using the Subject Recruitment Data Sheet included in [Appendix A](#app-irb). A unique participant ID was logged on the code list and a date and time for data collection were then assigned. As [detailed below](#sec-privacy), the code list and consent form provided the only link between personally identifiable information and experimental data.
 
 This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-7] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
 
@@ -504,11 +555,11 @@ This process quickly proved impractical, and a self-service web-based alternativ
 
 The experimental procedure outlined for the TLX recommends that participants are introduced to the instrument before using it for data collection. Accordingly, the intake process for this study includes a trial run of the TLX once the participant has been briefed on the instrument, read the provided *Subject Instructions*, and had their questions answered. In order to familiarize themselves with the instrument all participants were asked to complete it imagining they had just run a marathon. This exercise was chosen as it is easy for runners and non-runners to rate that imagined experience.
 
+Oversight: the PI for this investigation will observe the participant’s activity remotely, making notes on the process. Primary data collection will be completed later through analysis of the video recordings.
+
 ### Conduct
 
 -   Data collection will take place at the Lean Lab in the basement of the Shelby Center for Engineering Technology, room 0317, located at 345 W Magnolia Ave, Auburn, AL  36849
-
-
 
 ## Data Analysis
 

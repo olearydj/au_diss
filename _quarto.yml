@@ -14,8 +14,8 @@ project:
 book:
 ### Book reference: https://quarto.org/docs/reference/projects/books.html
 # Book-specific project options
-  title: "Augmented Reality vs. Traditional Instruction in Manufacturing Assembly"
-  subtitle: "A Multi-Modal Assessment of Learning, Recall, and Retention"
+  title: "Augmented vs. Traditional Instruction in Manufacturing Assembly"
+  subtitle: "An Affordance-Based, Multi-Modal Assessment of Learning, Recall, and Retention"
   author: "Danny J. O'Leary"
   date: today
   chapters:
@@ -32,7 +32,8 @@ book:
     - 32-contributions.qmd
 
 bibliography: references.bib
-# csl: apa.csl
+# csl: "csl/apa7-single-spaced.csl"  # no obvious difference in HTML output
+csl: "csl/apa7.csl"
 editor: source
 
 format:
@@ -60,10 +61,13 @@ format:
     output-ext: "pdf"
   # Table of Contents
     toc: true
-    toc-depth: 3
+    toc-depth: 2
     toc-title: "Table of Contents"
     lof: true
     lot: true
+  # Hypperref
+    hyperrefoptions: 
+      - "linktoc=all"
   # Numbering
     number-sections: true
     # number-depth: 1
@@ -79,6 +83,17 @@ format:
     linestretch: 1.35
   # Colors
     colorlinks: true
+    urlcolor: "DarkOrange2"
+    linkcolor: "DodgerBlue4"
+    filecolor: "Turquoise3"
+    citecolor: "DarkOliveGreen4"
+  # Citations
+    link-citations: true
+    cite-method: "biblatex"
+    biblio-style: "apa"
+    biblatexoptions: 
+      - "backend=biber"
+      - "backref=true"
   # Layout
     documentclass: scrbook
     classoption: 

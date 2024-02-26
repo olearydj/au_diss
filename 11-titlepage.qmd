@@ -4,10 +4,11 @@
 \center
 \vspace*{48pt}
 
-\textbf{Augmented Reality vs. Traditional Instruction}\\
+\textbf{Augmented vs. Traditional Instruction}\\
 \textbf{in Manufacturing Assembly:}
 \\
-\textbf{A Multi-Modal Assessment of Learning, Recall, and Retention}
+\textbf{An Affordance-Based, Multi-Modal Assessment}\\
+\textbf{of Learning, Recall, and Retention}
 \vspace{12pt}
 
 by \\
