@@ -230,7 +230,7 @@ Instead, this work hypothesizes that treatments leveraging more affordances will
 
 ## Measures and Variables
 
-TODO: section intro
+In this study, we evaluate the efficacy of different instructional methods in manufacturing assembly training, focusing on key variables that impact learning, recall, and retention. This section outlines these crucial variables, alongside a comprehensive set of hypotheses for both primary and secondary outcomes, ensuring a robust and systematic assessment of each instructional treatment's effectiveness.
 
 ### Dependent Variables
 
@@ -265,7 +265,7 @@ These control measures were integral to maintaining the integrity of the study a
 
 ### Primary Outcomes
 
-The primary outcomes of this study are the results of the hypotheses tests outlined below. 
+The primary outcomes of this study are the results of the hypotheses tests for each phase, as outlined below. 
 
 #### Learning Phase Hypotheses
 
@@ -298,15 +298,44 @@ In contrast with the RQ1 analyses, which focused on the learning *progress*, the
 
 Subsequent analyses will investigate the primary drivers of OEE (efficiency vs. quality) and PWI reference duration (frequency and length of references). Additional exploration into error types, task completion rate, first-task performance, and ongoing learning rate may also provide additional insight into the nuances of recall performance across treatment types.
 
-#### Retention Phase Outcomes
+#### Retention Phase Hypotheses
 
-This final group of ...
+Phase three of the study is designed to assess the residual impact of each treatment on retention. This describes the "stickiness" of the learning and is measured by testing recall several weeks post-intervention. No additional training is provided in the meantime.
+
+> **Research Question 3**
+>
+> *How does each IMT affect performance during the retention phase?*
+> 
+> $$H_{3a}\textrm{: Change in OEE varies with treatment}$$
+
+Here we look at the change in operator performance since the recall experiment. We expect performance to degrade for all treatments, but are interested to find if there are significant differences in the magnitude of change based on the instructional method. Both absolute and percentage change will be tested, and the primary driver of OEE identified as before.
+
+Given the limited data available from the retention phase (only one replication per volunteer participant), these results will be treated as exploratory. While these findings may not be conclusive, they can help illuminate underlying patterns in treatment effects.
 
 ### Secondary Outcomes
 
-Secondary: TLX, SUS, other analysis
+The study design supports several other areas for statistical, exploratory, and qualitative analysis. A variety of secondary outcomes, each described in the sections that follow, are incorporated to provide better context for and understanding of the primary outcomes.
 
+#### Statistical
 
+A variety of additional statistical tests will be performed, involving workload, usability, demographics, and performance variability. Specifically, we plan to investigate the following relationships:
+
+- TLX composite score (workload) and performance across treatments.
+- SUS composite score (usability) and performance across treatments.
+- Demographics (e.g. age, prior experience) and performance across treatments.
+- Within-group performance variance
+
+#### Exploratory
+
+In addition to commonly used descriptive statistics and visualization methods, this study will employ a variety of other statistical methods to explore second level effects.
+
+- The TLX components (e.g. mental workload, frustration) with the greatest influence on performance.
+- The relationship between workload, usability, treatment, and their interactions on performance.
+- Factors influencing within-group performance variance during the recall phase.
+
+#### Qualitative
+
+Qualitative feedback from participants is an essential complement to our other findings. Through thematic analysis, we aim to systematically identify and interpret patterns in comments gathered during exit interviews and other interactions throughout the study. These insights are crucial for integrating and enriching our findings beyond what quantitative data alone can reveal.
 
 ## Experiments
 
@@ -316,13 +345,13 @@ This section will detail the methods, variables, and rationale behind the design
 
 TODO: update above?
 
-### Initial Data Collection
+### Surveys and Instruments
 
-Prior to the first session, each consented participant is required to complete a questionnaire and two survey instruments. Copies of each are included in the [IRB approval forms](#app-irb).
+Two surveys and three instruments were completed during the course of this study, all during the first session. Each is described below, and copies are included in the [IRB approval forms](#app-irb).
 
-#### Participant Intake Sheet
+#### Participant Intake Form
 
-The *Participant Intake Sheet* is designed to gather the following information, which is essential for understanding the participant demographic makeup, assessing the generalizability of the study, identifying potential confounding factors, and facilitating post-hoc analyses involving matching or grouping:
+The *Participant Intake Form* (PIF) is a survey designed to gather information, essential to understanding the participant demographic makeup, assessing the generalizability of the study, identifying potential confounding factors, and facilitating post-hoc analyses involving matching or grouping:
 
 1.  General demographics, including gender, age, height, race, ethnicity, country of origin, primary language, education level, and student status.
 2.  The presence of color blindness.
@@ -331,11 +360,13 @@ The *Participant Intake Sheet* is designed to gather the following information, 
 5.  Self-rated experience with LEGO building and background in manufacturing.
 6.  The method by which they learned about the study.
 
+#### General Feedback Sheet
+
+This simple form is used to record each participant's qualitative feedback on their overall experience. It is administered by the PI in a very open-ended manner. A list of standard questions is available for participants that aren't forthcoming or otherwise benefit from prompting. It is only used at the end of the first session.
+
 #### NASA Task Load Index
 
 As discussed in @sec-lrinstruments, the *NASA Task Load Index* [TLX, @hart2006tlx] was designed to assess the perceived workload of a task. The primary outcome of the TLX is a weighted average of six factors that contribute to overall workload. Three of those factors are related to the mental, physical, and temporal demands placed on the participant by a task. The remaining three measure the participant's perceived effort, frustration, and performance during it.
-
-In preparation for the study, participants were familiarized with the instrument through instruction and a trial run, as described in @sec-conduct. This is in accordance with the experimental procedure outlined in the TLX instructions.
 
 The TLX is comprised of weighting and scoring processes that are repeated by participants upon task completion. First, to account for the subjective nature of workload, each factor is weighted by the participant. This *Sources of Workload Evaluation* is accomplished by having them indicate which element of each pair made the greatest contribution to their perceived workload. This is illustrated in @fig-tlxsow. For example, given the pair "Mental Demand or Effort," a participant would likely indicate *effort* for a task like lawn work, but *mental demand* for a philosophical debate. This is repeated for all fifteen possible combinations of the six factors.
 
@@ -349,9 +380,23 @@ TODO: cite Likert?
 
 The results of the TLX are expected to provide insight into the overall user experience for each treatment, along with how workload varies across treatments and what underlying factors contribute to both. This will aid in contextualizing the positive or negative influence that workload might have on learning outcomes.
 
+#### System Usability Scale (SUS)
+
+TODO: add SUS and citation to LR
+
+As discussed in @sec-lrinstruments, the *System Usability Scale* [SUS, citeme] is a widely used instrument designed to quickly and reliably assess the overall usability of a product or service. The SUS is composed of 10 questions that participants respond to according to their experience with the system. Each is ranked on a five point scale anchored by "Strongly Agree" and "Strongly Disagree" bipolar descriptors. Note that alternating items are reverse-scored to improve validity. A portion of the form used is shown in @fig-sus.
+
+![System Usability Scale, Questions 1-3 of 10](images/24-SUS.png){#fig-sus width="5.5in"}
+
+The SUS score is calculated by summing the scores of each question. For odd-numbered questions, the formula is the response value minus one; for even-numbered questions, it is five minus the response value. The total is then multiplied by 2.5:
+
+$$\textstyle{S = 2.5 \times \left( \sum_{i \text{, odd}} (R_i - 1) + \sum_{i \text{, even}} (5 - R_i) \right)}$$ {#eq-sus}
+
+where $R_i$ represents the response to each of the ten items. The SUS score, $S$, calculated by @eq-sus will range from zero to 100. Values above 68 are generally understood to represent above-average usability.
+
 #### Behavioral Control Survey
 
-The final instrument completed during the intake process was the Adult ADHD Self-Report Scale (ASRSv1.1). Referred to simply as a "Behavioral Control Survey" in order to avoid the possibility of biasing participant responses, the results of this outcome are the focus of a separate study and not further discussed in this work.
+The final instrument completed during the intake process was the Adult ADHD Self-Report Scale (ASRSv1.1). Referred to simply as a *Behavioral Control Survey* (BCS) in order to avoid the possibility of biasing participant responses, the data collected are the focus of a separate study and not further discussed in this work.
 
 TODO: cite scale and VB's poster
 
@@ -359,21 +404,21 @@ TODO: cite scale and VB's poster
 
 The first session of the study tested its primary hypotheses in two phases. Phase one, Learning, compared the effects of the assigned treatment on the speed (task completion time) and accuracy (number and type of corrected and uncorrected errors) with which participants performed each repetition of the task. These measures, tracked for each assembly during the 10-minute session, were later used to assess both the learning rate and depth of skill acquisition. This approach offers insights into how efficiently and effectively each treatment imparts necessary skills and knowledge for the task.
 
+TODO: rephrase "primary hypotheses" in terms of research questions in these sections, refer back to primary outcomes
+
 #### Learning Phase
 
 Participants were instructed to focus on three priorities during the first phase: (1) learn the steps of the assembly process, (2) complete each assembly correctly, and (3) finish as many assemblies as possible in the time allowed. This approach mirrors the principles of Overall Equipment Effectiveness (OEE) in manufacturing, which balances the need for accuracy and precision (reflecting the Quality aspect of OEE) with efficiency (mirroring the Performance aspect of OEE). In the context of this study, OEE's third component, Availability, is out of the participant's control, but, as discussed elsewhere, does manifest in some system related issues that were encountered.
 
 TODO: link elsewhere, cite OEE
 
-The fixed duration of 10-minutes was deliberately chosen to align with various aspects of the learning process and the operational context of the task. In addition to the OEE considerations outlined above, using a fixed duration ensured that all participants have the same opportunity to learn the procedure. A fixed car count approach (e.g. "make 6 cars") was rejected due to concerns that the lack of a time constraint could lead to uneven learning opportunities and extend session lengths beyond practical limits.
+The fixed duration of 10-minutes was deliberately chosen to align with various aspects of the learning process and the operational context of the task. In addition to the OEE considerations outlined above, using a fixed duration ensured that all participants have the same opportunity to learn the procedure. A fixed car count approach (e.g. "make 6 cars") was rejected due to concerns that the absence of a time constraint could lead to uneven learning opportunities and extend session lengths beyond practical limits.
 
 A 10-minute timeline was chosen based on prior experience with learning curves for the task. The Lean Lab is designed around a 60-second takt time, which constrains the work content for experienced operators at each station. Before training, the time to complete these tasks varies widely. Our expectation was that participants would typically complete between three and six cars during their 10-minute session, but any individual participant might complete only one or as many as ten cars.
 
 #### Recall Phase
 
-During the second phase, Recall, participants repeated the same task four times in the control condition (PWI), while the same measures are observed. Their results from both phases were later analyzed to compare transfer effectiveness between treatments.
-
-In the second phase each participant will build 4 more cars using only paper work instructions. Their stated goal will be to deliver error-free results quickly, while referencing the instructions only when necessary. Observations will be recorded on Data Collection Sheet #2. (5-10 mins)
+During the second phase, Recall, participants repeated the same assembly task four times in the control condition, while similar measures are observed. Their stated priorities were: (1) deliver error-free results, (2) reference the work instructions only if necessary, and (3) work quickly. This emphasizes working from memory with expectations appropriate for an operator in training. No time limit was set in order to ensure that all four assemblies were completed.
 
 #### Data Collection
 
@@ -381,9 +426,23 @@ In the second phase each participant will build 4 more cars using only paper wor
 Elaborate on the types of data collected (quantitative, qualitative, or both), the tools and instruments used for data collection (surveys, performance metrics, observational data, interviews, etc.), and the timing of data collection (before, during, after the intervention).
 :::
 
-video
+Manual data collection was limited during the learning and recall experiments. Each assembly was reviewed for correctness and the number and types of uncorrected errors were recorded on the appropriate data sheet. For incomplete (time expired) or retired (breakage requiring rework) assemblies, the final part count was also recorded.
 
-include SUS instrument
+The majority of the data was collected from video recordings. For each participant, both experiments were recorded on a pair of cameras. One, integrated into the HL2, provided a clear view of the process from the participant's perspective. The other camera was positioned and oriented to record the entire work area from the operator's left, as seen in @fig-sidecam.
+
+::: {#fig-sidecam layout-ncol="2"}
+![Side Camera Positioning](images/24-SideCam1.png){#fig-sidecam-a width=80%}
+
+![Side Camera Orientation and FOV](images/24-SideCam2.png){#fig-sidecam-b width=80%}
+
+Side Camera Setup
+:::
+
+Subsequent analyses, as detailed in @sec-analysis, confirmed the original results and extracted additional data related to timing, error type, PWI usage during recall, and more. While video review was a long and tedious process, this approach allowed us to focus on administering the experiment correctly while carefully observing the participant without the distraction of data collection. It also improved the accuracy and traceability of the results.
+
+The TLX and SUS instruments were both administered twice during this session, once after each experiment. This gave us workload and usability information for all treatment groups during the learning task and for all participants during recall. The later could be used as baseline measurements for the ST-8 work content.
+
+The PIF, BCS, and a trial run of the TLX were also administered during the intake process of this session. Finally, during the exit interview, general feedback was collected. All of this is detailed in @sec-conduct.
 
 ### Second Session - Retention
 
@@ -553,6 +612,10 @@ This process quickly proved impractical, and a self-service web-based alternativ
 -   all personnel involved in the experiment were CITI certified
 -   random assignment of treatments
 
+Prior to the first session, each consented participant is required to complete a the Participant Intake Sheet, a trial run of the NASA TLX, and the Behavioral Control Survey.
+
+In preparation for the study, participants were familiarized with the instrument through instruction and a trial run, as described in @sec-conduct. This is in accordance with the experimental procedure outlined in the TLX instructions.
+
 The experimental procedure outlined for the TLX recommends that participants are introduced to the instrument before using it for data collection. Accordingly, the intake process for this study includes a trial run of the TLX once the participant has been briefed on the instrument, read the provided *Subject Instructions*, and had their questions answered. In order to familiarize themselves with the instrument all participants were asked to complete it imagining they had just run a marathon. This exercise was chosen as it is easy for runners and non-runners to rate that imagined experience.
 
 Oversight: the PI for this investigation will observe the participant’s activity remotely, making notes on the process. Primary data collection will be completed later through analysis of the video recordings.
@@ -561,7 +624,7 @@ Oversight: the PI for this investigation will observe the participant’s activi
 
 -   Data collection will take place at the Lean Lab in the basement of the Shelby Center for Engineering Technology, room 0317, located at 345 W Magnolia Ave, Auburn, AL  36849
 
-## Data Analysis
+## Data Analysis {#sec-analysis}
 
 ::: content-hidden
 Describe the statistical or qualitative analysis methods to be used for examining the data. Mention any software or tools that will be utilized for data analysis.

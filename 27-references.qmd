@@ -1,6 +1,13 @@
 # References {#27-references .unnumbered}
 
+::: {#refs .content-visible when-format="html"}
+:::
+
+::: {.content-visible when-format="pdf"}
+
 \begingroup
 \raggedright
 \printbibliography[heading=none]
 \endgroup
+
+:::
