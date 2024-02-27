@@ -1,15 +1,6 @@
-::: {.unlisted #27-references}
-# References
+# References {#27-references .unnumbered}
 
-<!-- For PDF output -->
-::: {#refs .latex}
 \begingroup
 \raggedright
 \printbibliography[heading=none]
 \endgroup
-:::
-
-<!-- For HTML output -->
-::: {#refs .html}
-:::
-:::
