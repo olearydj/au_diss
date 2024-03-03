@@ -327,7 +327,7 @@ Pictorial consistency refers to the degree with which virtual objects match thei
 
 VST devices trade combiner related discontinuities for those introduced by the image acquisition and processing pipeline. Intrinsic parameters of the camera, including the lens properties, sensor characteristics, and camera settings (e.g. exposure time, ISO, and white balance), introduce noise, geometric distortion, motion blur, defocus blur, and color cast. Virtual objects rendered free of those distortions stand out as relatively crude but synthetically perfect elements of the scene. Methods to emulate camera distortions or stylize the entire scene can reduce this effect, but may not be suitable for all applications [@fischer2015visua].
 
-#### Tracking
+#### Tracking {#sec-tracking}
 
 Combining real and virtual scenes in a spatially coherent fashion is the essence of AR [@azuma1994impro]. See @fig-tracking. To maintain accurate "registration" (alignment) of the virtual and real world scenes in three dimensions, AR devices must determine their position and orientation in the world, or "pose" [@you2015visua]. This process, known as tracking, typically uses methods from computer vision to estimate the pose of a camera based on features identified in its video stream.[^21-intro-11] In general, this process involves three steps: recognition, tracking, and pose estimation [@yang2015scala]. Once the camera's real world pose is aligned with the virtual coordinate system virtual objects can be rendered in the scene with appropriate scale, orientation, and placement.
 

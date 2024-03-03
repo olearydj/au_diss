@@ -1,12 +1,8 @@
 # Methods {#24-methods}
 
-TODO: FINISH SECTION
+TODO: write chapter intro
 
--   funding?
--   rct
--   structured as main and retention studies
--   two related but separate experiments
--   expedited review
+TODO: funding? where and how?
 
 different in that it focuses on providing evidence of the theoretical benefits of the underlying affordances of different commercially available systems; most studies have fewer treatments and focus on with / without benefits. this doesn't tell us why
 
@@ -46,11 +42,7 @@ The remainder of this chapter will describe in detail all aspects of the study's
 
 ## Study Design {#study-design}
 
-::: content-hidden
-Detail the setup of your experiment, including the environment (laboratory setting, real-world setting, etc.), the equipment used (specific AR/MR technologies), and any other materials involved in the training sessions.
-:::
-
-TODO: This study is true experiment with random...
+TODO: write intro for study design: This study design is a randomized controlled trial, consisting of three true experiments with human subjects, conducted in two sessions. between groups design...
 
 ### Task and Context
 
@@ -104,7 +96,7 @@ TODO: cite papers related to LEGO lab development
 
 ![LG System Architecture. Source: LightGuide website](images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
 
-TODO: REPLACE BOLD TERMS IN FOLLOWING
+TODO: replace bold terms in LG system description
 
 The system at ST-8 uses a **PROJECTOR MODEL** and **CAMERA MODEL** mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide **VERSION NUMBER** is displayed on a **MONITOR MODEL**, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure made from 80/20's[^24-methods-2] extruded aluminum components to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
 
@@ -160,7 +152,7 @@ For comparison purposes, @fig-arcomp shows the HMDAR operator's view of the same
 
 #### Head Mounted MR
 
-Head-mounted MR (HMDMR) extends the capabilities of the HMDAR treatment with a more sophisticated tracking method that allows for more natural interactions with the workpiece. For all other treatments, the work piece remains in a fixture, forcing the operator to align themselves, both physically and mentally, to its placement.
+Head-mounted MR (HMDMR) extends the capabilities of the HMDAR treatment with a more sophisticated tracking method that allows for more natural interactions with the workpiece. For all other treatments, the workpiece remains in a fixture, forcing the operator to align themselves, both physically and mentally, to its placement.
 
 HMDMR eliminates the need for a fixture and allows the operator to rotate and/or lift the work off the surface if it seemed natural to them to do so. It achieves this by incorporating model-based tracking to to align instructions with the workpiece itself. The added flexibility was expected to make the process more intuitive and ergonomic, enhancing operator performance.
 
@@ -228,6 +220,12 @@ While it may be tempting to make a-priori claims about the most influential affo
 
 Instead, this work hypothesizes that treatments leveraging more affordances will result in better learning outcomes. But the success of these treatments also depends on the quality of their implementation and the balance between enhanced functionality and added complexity. The later may have a negative impact on the overall user experience, increasing cognitive load, breaking flow, and otherwise offsetting the intended gains. Finally, the interplay between different affordances — how they complement or interfere with one another — is also a significant consideration.
 
+### Tradeoff
+
+Both HMD treatments were designed to resemble the PAR, and, by extension, PWI experiences as closely as possible. This choice was made to deliberately control for the instructional design and focus treatment differences on the benefit of underlying affordances. While any of the treatments could have been "improved" with additional system-specific functionality, that would have been detrimental to the experimental design. For example, obvious shortcomings of the PWI could have been corrected, or participants could have been given the option to use the PAR's footswitch. Either would likely have improved the results for those treatments but led to less relevant comparisons.
+
+This methodology acknowledges the potential limits to each treatment's efficacy, but upholds the integrity and clarity of the study's comparative analysis.
+
 ## Measures and Variables
 
 In this study, we evaluate the efficacy of different instructional methods in manufacturing assembly training, focusing on key variables that impact learning, recall, and retention. This section outlines these crucial variables, alongside a comprehensive set of hypotheses for both primary and secondary outcomes, ensuring a robust and systematic assessment of each instructional treatment's effectiveness.
@@ -242,7 +240,7 @@ The key measures of this study are learning, recall, and retention.
 
 *Retention* is the ability to maintain information, skills, or knowledge over time. For this study it is measured by re-testing recall some time after the initial training.
 
-TODO: cite definitions? relate quality and performance to OEE? justify these choices?
+TODO: cite learning / recall / retention definitions? relate quality and performance to OEE? justify these choices?
 
 ### Independent Variables
 
@@ -254,18 +252,18 @@ Post-hoc analysis will be conducted to determine if any of the participant demog
 
 To ensure the validity of the outcomes, the study design carefully controlled for various factors, isolating the impact of the treatments.
 
-1. Participant Sampling: The recruitment strategy aimed for a diverse and representative sample within the constraints of the study's target population.
-2. Random Treatment Assignment: This method was utilized to evenly distribute potential confounding variables across the different treatment groups, thereby minimizing biases.
-3. Uniform Device Usage: All participants wore the HL2 during the learning and recall experiments to standardize any potential impact of using the device.
-4. Screening for Prior Experience: Prospective participants were screened and excluded if they had prior experience with similar AR/MR devices or Lean Lab assembly tasks.
-5. Task Consistency: The content, complexity, and duration of the task were uniform for all participants, ensuring that any learning differences were attributable to the treatments rather than task variability.
-6. Standardized Session Conduct: The environment and methodology of conducting each session were kept consistent, further ensuring that differences in outcomes were treatment-related.
+1.  Participant Sampling: The recruitment strategy aimed for a diverse and representative sample within the constraints of the study's target population.
+2.  Random Treatment Assignment: This method was utilized to evenly distribute potential confounding variables across the different treatment groups, thereby minimizing biases.
+3.  Uniform Device Usage: All participants wore the HL2 during the learning and recall experiments to standardize any potential impact of using the device.
+4.  Screening for Prior Experience: Prospective participants were screened and excluded if they had prior experience with similar AR/MR devices or Lean Lab assembly tasks.
+5.  Task Consistency: The content, complexity, and duration of the task were uniform for all participants, ensuring that any learning differences were attributable to the treatments rather than task variability.
+6.  Standardized Session Conduct: The environment and methodology of conducting each session were kept consistent, further ensuring that differences in outcomes were treatment-related.
 
 These control measures were integral to maintaining the integrity of the study and ensuring that the results accurately reflect the effects of the instructional treatments.
 
 ### Primary Outcomes
 
-The primary outcomes of this study are the results of the hypotheses tests for each phase, as outlined below. 
+The primary outcomes of this study are the results of the hypotheses tests for each phase, as outlined below.
 
 #### Learning Phase Hypotheses
 
@@ -274,10 +272,8 @@ The first group of hypotheses are designed to test the effect of each treatment 
 > **Research Question 1**
 >
 > *How does each IMT affect performance during the learning phase?*
-> 
-> $$H_{1a}\textrm{: Average time per car varies with treatment}$$
-> $$H_{1b}\textrm{: Average error count per car varies with treatment}$$
-> $$H_{1c}\textrm{: Learning rates vary with treatment}$$
+>
+> $$H_{1a}\textrm{: Average time per car varies with treatment}$$ $$H_{1b}\textrm{: Average error count per car varies with treatment}$$ $$H_{1c}\textrm{: Learning rates vary with treatment}$$
 
 To better understand those results, additional analysis will consider the treatment effect on error types, task completion rate, and first-task performance. Finally, we'll investigate which treatment group had the highest percentage of "qualified operators" at the end of the 10-min session. This will be assessed relative to expected performance metrics, including takt time and OEE.
 
@@ -291,8 +287,7 @@ The second group of hypotheses aim to evaluate the residual impact of each treat
 >
 > *How does each IMT affect performance during the recall phase?*
 >
-> $$H_{2a}\textrm{: OEE varies with treatment}$$
-> $$H_{2b}\textrm{: Total duration of PWI references varies with treatment}$$
+> $$H_{2a}\textrm{: OEE varies with treatment}$$ $$H_{2b}\textrm{: Total duration of PWI references varies with treatment}$$
 
 In contrast with the RQ1 analyses, which focused on the learning *progress*, these hypotheses are designed to assess the training *results*. OEE was chosen as the primary measure due to its practical relevance in answering "Did the training work?" It effectively quantifies the participants' ability to utilize acquired skills under conditions that mimic real-world expectations, where both speed and accuracy are crucial.
 
@@ -305,12 +300,12 @@ Phase three of the study is designed to assess the residual impact of each treat
 > **Research Question 3**
 >
 > *How does each IMT affect performance during the retention phase?*
-> 
+>
 > $$H_{3a}\textrm{: Change in OEE varies with treatment}$$
 
 Here we look at the change in operator performance since the recall experiment. We expect performance to degrade for all treatments, but are interested to find if there are significant differences in the magnitude of change based on the instructional method. Both absolute and percentage change will be tested, and the primary driver of OEE identified as before.
 
-Given the limited data available from the retention phase (only one replication per volunteer participant), these results will be treated as exploratory. While these findings may not be conclusive, they can help illuminate underlying patterns in treatment effects.
+Given the limited data available from the retention phase (only one replication per volunteer participant), and the variable delay between experiments, these results will be treated as exploratory. While they may not be conclusive, these findings can help illuminate underlying patterns in treatment effects.
 
 ### Secondary Outcomes
 
@@ -320,18 +315,18 @@ The study design supports several other areas for statistical, exploratory, and 
 
 A variety of additional statistical tests will be performed, involving workload, usability, demographics, and performance variability. Specifically, we plan to investigate the following relationships:
 
-- TLX composite score (workload) and performance across treatments.
-- SUS composite score (usability) and performance across treatments.
-- Demographics (e.g. age, prior experience) and performance across treatments.
-- Within-group performance variance
+-   TLX composite score (workload) and performance across treatments.
+-   SUS composite score (usability) and performance across treatments.
+-   Demographics (e.g. age, prior experience) and performance across treatments.
+-   Within-group performance variance
 
 #### Exploratory
 
 In addition to commonly used descriptive statistics and visualization methods, this study will employ a variety of other statistical methods to explore second level effects.
 
-- The TLX components (e.g. mental workload, frustration) with the greatest influence on performance.
-- The relationship between workload, usability, treatment, and their interactions on performance.
-- Factors influencing within-group performance variance during the recall phase.
+-   The TLX components (e.g. mental workload, frustration) with the greatest influence on performance.
+-   The relationship between workload, usability, treatment, and their interactions on performance.
+-   Factors influencing within-group performance variance during the recall phase.
 
 #### Qualitative
 
@@ -342,8 +337,6 @@ Qualitative feedback from participants is an essential complement to our other f
 This study was organized into two sessions, encompassing three distinct experiments, each aimed at evaluating one of the three measures of training effectiveness described above.
 
 This section will detail the methods, variables, and rationale behind the design of each experiment. For a step-by-step description of how each session was conducted, see @sec-conduct.
-
-TODO: update above?
 
 ### Surveys and Instruments
 
@@ -384,7 +377,7 @@ The results of the TLX are expected to provide insight into the overall user exp
 
 TODO: add SUS and citation to LR
 
-As discussed in @sec-lrinstruments, the *System Usability Scale* [SUS, citeme] is a widely used instrument designed to quickly and reliably assess the overall usability of a product or service. The SUS is composed of 10 questions that participants respond to according to their experience with the system. Each is ranked on a five point scale anchored by "Strongly Agree" and "Strongly Disagree" bipolar descriptors. Note that alternating items are reverse-scored to improve validity. A portion of the form used is shown in @fig-sus.
+As discussed in @sec-lrinstruments, the *System Usability Scale* \[SUS, citeme\] is a widely used instrument designed to quickly and reliably assess the overall usability of a product or service. The SUS is composed of 10 questions that participants respond to according to their experience with the system. Each is ranked on a five point scale anchored by "Strongly Agree" and "Strongly Disagree" bipolar descriptors. Note that alternating items are reverse-scored to improve validity. A portion of the form used is shown in @fig-sus.
 
 ![System Usability Scale, Questions 1-3 of 10](images/24-SUS.png){#fig-sus width="5.5in"}
 
@@ -398,19 +391,19 @@ where $R_i$ represents the response to each of the ten items. The SUS score, $S$
 
 The final instrument completed during the intake process was the Adult ADHD Self-Report Scale (ASRSv1.1). Referred to simply as a *Behavioral Control Survey* (BCS) in order to avoid the possibility of biasing participant responses, the data collected are the focus of a separate study and not further discussed in this work.
 
-TODO: cite scale and VB's poster
+TODO: cite ADHD instrument and VB's poster
 
 ### First Session - Learning and Recall
 
-The first session of the study tested its primary hypotheses in two phases. Phase one, Learning, compared the effects of the assigned treatment on the speed (task completion time) and accuracy (number and type of corrected and uncorrected errors) with which participants performed each repetition of the task. These measures, tracked for each assembly during the 10-minute session, were later used to assess both the learning rate and depth of skill acquisition. This approach offers insights into how efficiently and effectively each treatment imparts necessary skills and knowledge for the task.
-
-TODO: rephrase "primary hypotheses" in terms of research questions in these sections, refer back to primary outcomes
+The first session of the study tested its primary research questions in two phases, as described below.
 
 #### Learning Phase
 
+Phase one, Learning, compared the effects of the assigned treatment on the speed (task completion time) and accuracy (number and type of corrected and uncorrected errors) with which participants performed each repetition of the task. These measures, tracked for each assembly during the 10-minute session, were later used to assess both the learning rate and depth of skill acquisition. This approach offers insights into how efficiently and effectively each treatment imparts necessary skills and knowledge for the task.
+
 Participants were instructed to focus on three priorities during the first phase: (1) learn the steps of the assembly process, (2) complete each assembly correctly, and (3) finish as many assemblies as possible in the time allowed. This approach mirrors the principles of Overall Equipment Effectiveness (OEE) in manufacturing, which balances the need for accuracy and precision (reflecting the Quality aspect of OEE) with efficiency (mirroring the Performance aspect of OEE). In the context of this study, OEE's third component, Availability, is out of the participant's control, but, as discussed elsewhere, does manifest in some system related issues that were encountered.
 
-TODO: link elsewhere, cite OEE
+TODO: add OEE and citation to LR, update above?
 
 The fixed duration of 10-minutes was deliberately chosen to align with various aspects of the learning process and the operational context of the task. In addition to the OEE considerations outlined above, using a fixed duration ensured that all participants have the same opportunity to learn the procedure. A fixed car count approach (e.g. "make 6 cars") was rejected due to concerns that the absence of a time constraint could lead to uneven learning opportunities and extend session lengths beyond practical limits.
 
@@ -418,27 +411,29 @@ A 10-minute timeline was chosen based on prior experience with learning curves f
 
 #### Recall Phase
 
-During the second phase, Recall, participants repeated the same assembly task four times in the control condition, while similar measures are observed. Their stated priorities were: (1) deliver error-free results, (2) reference the work instructions only if necessary, and (3) work quickly. This emphasizes working from memory with expectations appropriate for an operator in training. No time limit was set in order to ensure that all four assemblies were completed.
+The second phase was designed to assess the residual effects of the instructional treatment on each participant's ability to perform the task correctly and efficiently. The assembly task was repeated four times in the control condition, and the same measures were recorded.
 
-#### Data Collection
+Participants were given three priorities: (1) deliver error-free results, (2) reference the work instructions only if necessary, and (3) work quickly. This emphasized working from memory with expectations appropriate for an operator in training. Although participants were encouraged to work quickly, no time limit was set to ensure each produced four complete assemblies.
 
-::: content-hidden
-Elaborate on the types of data collected (quantitative, qualitative, or both), the tools and instruments used for data collection (surveys, performance metrics, observational data, interviews, etc.), and the timing of data collection (before, during, after the intervention).
-:::
+#### First Session Data Collection
 
 Manual data collection was limited during the learning and recall experiments. Each assembly was reviewed for correctness and the number and types of uncorrected errors were recorded on the appropriate data sheet. For incomplete (time expired) or retired (breakage requiring rework) assemblies, the final part count was also recorded.
 
-The majority of the data was collected from video recordings. For each participant, both experiments were recorded on a pair of cameras. One, integrated into the HL2, provided a clear view of the process from the participant's perspective. The other camera was positioned and oriented to record the entire work area from the operator's left, as seen in @fig-sidecam.
+The majority of the data was collected from photographs and video recordings. For each participant, both experiments were recorded on a pair of cameras. One, integrated into the HL2, provided a clear view of the process from the participant's perspective. The other camera was positioned and oriented to record the entire work area from the operator's left, as seen in @fig-sidecam.
 
 ::: {#fig-sidecam layout-ncol="2"}
-![Side Camera Positioning](images/24-SideCam1.png){#fig-sidecam-a width=80%}
+![Side Camera Positioning](images/24-SideCam1.png){#fig-sidecam-a width="80%"}
 
-![Side Camera Orientation and FOV](images/24-SideCam2.png){#fig-sidecam-b width=80%}
+![Side Camera Orientation and FOV](images/24-SideCam2.png){#fig-sidecam-b width="80%"}
 
 Side Camera Setup
 :::
 
-Subsequent analyses, as detailed in @sec-analysis, confirmed the original results and extracted additional data related to timing, error type, PWI usage during recall, and more. While video review was a long and tedious process, this approach allowed us to focus on administering the experiment correctly while carefully observing the participant without the distraction of data collection. It also improved the accuracy and traceability of the results.
+Photos were also taken to provide a detailed, high-quality record of the results for each experiment, complementing the video data. This is exemplified by @fig-resphoto, which shows that participant #1053 completed three cars in the learning phase. The 4^th^ car pictured here is rotated to indicate that it was incomplete or retired when time expired. Participant cards are included in these photos to easily embed essential metadata.
+
+![Sample Learning Result Photo](images/24-ResPhoto.png){#fig-resphoto width="5in"}
+
+Subsequent analyses, as detailed in @sec-analysis, confirmed the original results and extracted additional data related to timing, error type, PWI usage during recall, and more. While video review was a long and tedious process, this approach allowed us to focus on administering the experiment correctly and carefully observing the participant without the distraction of data collection. This ultimately improved the accuracy and traceability of the results.
 
 The TLX and SUS instruments were both administered twice during this session, once after each experiment. This gave us workload and usability information for all treatment groups during the learning task and for all participants during recall. The later could be used as baseline measurements for the ST-8 work content.
 
@@ -446,32 +441,40 @@ The PIF, BCS, and a trial run of the TLX were also administered during the intak
 
 ### Second Session - Retention
 
-optional, for retention, with party
+The second session took place several weeks after the learning and recall experiments, as part of an [end of study event](#comp-event). Participation was optional and open to all prior subjects. The interval between the original intervention and this session varied for each participant. This variable time gap, which could range from one to 11 weeks, will be a consideration during analysis.
 
-#### Data Collection
+This experiment was designed to assess longer-term benefits of the original intervention. Each participant was asked to build a single car from memory, without additional instruction. They were asked to prioritize (1) complete the assembly correctly and (2) finish within the station takt time of 60 seconds. Again, no time limit was set in order to ensure each trial could a complete assembly.
 
+#### Second Session Data Collection
 
+As in the first session, the emphasis was on minimizing the amount of manual data collection required. Each trial was recorded using a compact forehead-mounted video camera. The completed car was also photographed, ensuring that the observed data and finishing time were visible in the frame.
 
-## System Development {#sysdev}
+![Sample Retention Result Photo](images/24-RetentionRes.png){width="5in"}
 
-TODO: describe the design and development of the XR system
+This single photo approach streamlined data collection during the event without compromising the integrity of the results. While the photos alone provide sufficient data for our primary analysis, the video recordings offer additional detail if desired.
 
-### HMD Hardware Selection
+## HMD System Development {#sysdev}
+
+TODO: write intro for sysdev section
+
+### Hardware
 
 Of the HMDAR systems commercially available in 2021, when the precursor to this study began, only the HL2 was well-suited for enterprise applications, including manufacturing. Originally released for that market in 2019, the HL2's distinguishing features are tabulated in @tbl-hl2, below.
 
 | Feature               | Description                                                                                                                                                                                                                                                                                                                                                         |
-|-------------------------|-----------------------------------------------|
+|---------------------|---------------------------------------------------|
 | Natural Field of View | The HL2 is an optical-see-through system (OST) where its display is overlayed on the user's normal view of the world. Its optical design provides a wide and minimally obstructed field of view (FOV), giving a natural and safe user experience. The HL2 also can be used with glasses and features a unique, flip-up design that eliminates the device from view. |
 | Hands-free use        | The HL2 relies entirely on natural inputs - gestures and voice controls - rather than physical input devices like tablets or game-style controllers. This leaves operators free to use their hands for their required tasks.                                                                                                                                        |
 | Untethered            | The HL2 is a stand alone design with integrated power and compute. This eliminates the need for power or data connections that can encumber users, limit their motion, and introduce tripping hazards.                                                                                                                                                              |
 | General Purpose       | HL2 is a versatile XR device that supports open development across various industries. Its hardware supports image, model, and area tracking methods to allow for a wide range of augmentation. Unlike some devices, the HL2 is not limited to specific applications or development by authorized partners.                                                         |
 
-: HoloLens2's Distinguishing Features {#tbl-hl2 tbl-colwidths="\[30,70\]" .striped}
+: HoloLens2's Distinguishing Features[^24-methods-4] {#tbl-hl2 tbl-colwidths="\[30,70\]" .striped}
 
-Only the Magic Leap 2[^24-methods-4] design is similar. However, despite being released nearly three years later, it has a more limited FOV, requires prescription inserts for vision correction, offers less extensive developer support, and has achieved less market adoption than the HL2. Both devices are pictured in @fig-hmdxrs, below.
+[^24-methods-4]: HoloLens2 Hardware Details: <https://learn.microsoft.com/en-us/hololens/hololens2-hardware>
 
-[^24-methods-4]: <https://www.magicleap.com>
+Only the Magic Leap 2[^24-methods-5] design is similar. However, despite being released nearly three years later, it has a more limited FOV, requires prescription inserts for vision correction, offers less extensive developer support, and has achieved less market adoption than the HL2. Both devices are pictured in @fig-hmdxrs, below.
+
+[^24-methods-5]: <https://www.magicleap.com>
 
 ::: {#fig-hmdxrs layout-ncol="2"}
 ![Microsoft HoloLens2. Source: Microsoft](images/24-HL2.png){#fig-hmdxrs-a}
@@ -487,26 +490,262 @@ Unlike the LG, the HL2 is entirely self-contained, processing data from an array
 
 ![HoloLens 2 Exploded View. Source: Microsoft](images/24-HL2Exploded.png){#fig-hl2exp}
 
-TODO: add HL2 hardware details? https://learn.microsoft.com/en-us/hololens/hololens-commercial-features https://learn.microsoft.com/en-us/hololens/hololens2-hardware
+### Software
+
+Development options for XR systems are limited. For creating custom apps on HL2, Microsoft supports and endorses Unity[^24-methods-6] with the Mixed Reality Toolkit[^24-methods-7]. Ultimately, the need for model and area based tracking capabilities required further tooling. Each element is described below.
+
+[^24-methods-6]: <https://unity.com/>
+
+[^24-methods-7]: <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity>
+
+#### Unity
+
+Best known as a "game engine," Unity is a very capable tool, commonly used for industrial, commercial, and defense applications. It offers a comprehensive feature set for creating and animating objects, rendering high-quality visuals, programming systems and interactions, simulating physics-based dynamics, processing music and audio, designing user interfaces, and much more.
+
+Despite its complexity, Unity is relatively easy to learn. High quality training, documentation, and support are widely available, both through official channels and from a large and enthusiastic development community. Like most tools of its type, Unity is extremely extensible via plugins, many of which are distributed through the official asset store.
+
+Unity is free for non-commercial and academic applications[^24-methods-8]. For research applications like this one, which won't be distributed or otherwise commercialized, its Terms of Service[^24-methods-9] did not pose major concerns. Crucially, Unity allows users to retain rights to content they create, and makes no ownership claims over it.
+
+[^24-methods-8]: <https://unity.com/pricing#plans-student-and-hobbyist>
+
+[^24-methods-9]: Unity's Terms of Service and other legal info: <https://unity.com/legal>
+
+Other options, including Epic's Unreal and Vuforia Studio, were carefully considered but ultimately rejected due to a lack of support, functionality, flexibility, or some combination thereof.
+
+#### Mixed Reality Toolkit (MRTK)
+
+The MRTK is a software development kit (SDK) designed to simplify and accelerate the development for XR hardware, including the HL2. It provides developers access to essential HL2 capabilities, including spatial mapping, hand and eye tracking, natural input modalities, and more, all from within Unity.
+
+MRTK is a free, open-source project that was initiated by Microsoft and first released under the very permissive MIT License [@saltzer2020origi] in 2017[^24-methods-10].
+
+[^24-methods-10]: License and repository: <https://github.com/microsoft/MixedRealityToolkit-Unity>
+
+#### Vuforia Engine
+
+MRTK's built-in tracking support is limited to image-based solutions and spatial anchoring techniques that were insufficient for this project. After exploring available options, it was determined that the Vuforia Engine[^24-methods-11] (VE) by PTC could best address that limitation. This SDK works with Unity, MRTK, and the HL2 to add robust marker, model, and area based tracking capabilities that were necessary for this project.
+
+[^24-methods-11]: <https://www.ptc.com/en/products/vuforia/vuforia-engine/ar-app-development>
+
+PTC's Vuforia product line is a commercial product designed for enterprise customers, but the Basic version of the Engine SDK is available at no cost. With that plan a limited number of model and area targets can be generated, so long as the resulting app is not published[^24-methods-12]. Within the constraints of this work, PTC's Terms of Use and Developer Licensing Agreement[^24-methods-13] posed no significant concerns.
+
+[^24-methods-12]: <https://developer.vuforia.com/library/faqs/pricing-and-licensing-options>
+
+[^24-methods-13]: Terms of Use: <https://developer.vuforia.com/legal/tos>. Developer Agreement: <https://developer.vuforia.com/legal/vuforia-developer-agreement>.
+
+### Timeline
+
+The software used for both HL2 treatments was based on work originally done during the Summer of 2022 by a team of three undergraduate computer science and software engineering students. Led and directed by the author, that team created an augmented in-situ training prototype for manufacturing operators. The resulting system utilized a HL2 to align in-context instruction with the workpiece using image based methods — QR codes attached to the fixture.
+
+In the following semester the same team adapted and extended the underlying codebase to support this study. This effort primarily consisted of assessing enhanced tracking tools, integrating the selected SDK, configuring area and model based tracking, and adapting instructional content from the PAR treatment. The project timeline is approximately illustrated by @fig-timeline.
+
+```{r}
+#| label: fig-timeline
+#| fig-cap: "Approximate Project Timeline"
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 7
+#| fig-height: 2.5
+
+library(ggplot2)
+library(dplyr)
+
+## Timeline
+# Summer 22 - osh dev
+# Fall 22 - osh/lego dev
+# Spring 23 - trials
+# Summer 23 - data stuff
+# Fall 23 - too little
+# Spring 24 - finish
+
+# Define the tasks data frame with reversed levels for Section
+tasks <- data.frame(
+  Section = factor(c("HL2 Prototyping", "HMDAR/MR Development", "Study Conducted", "Data Extraction and Cleaning"), 
+                   levels = c("Data Extraction and Cleaning", "Study Conducted", "HMDAR/MR Development", "HL2 Prototyping")),
+  Start = as.Date(c("2022-05-16", "2022-08-19", "2023-02-10", "2023-04-01")),
+  End = as.Date(c("2022-10-15", "2023-03-10", "2023-04-29", "2023-08-31")),
+  Description = c("des1", "des2", "des3", "des4")
+)
+
+# Plot Gantt chart with reversed order and reduced vertical gap
+ggplot(tasks, aes(y = Section, x = Start, xend = End, yend = Section, group = Description)) +
+  geom_segment(size = 10, aes(color = Description), show.legend = FALSE) +
+  scale_x_date(date_labels = "%m/%y") +
+  theme_minimal(
+    base_size = 14
+  ) +
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+    )
+```
+
+### Strategy
+
+Development was iterative with roughly two-week sprints. Except during the summer, the developers were full-time students and were managed accordingly. Expectations had to reasonably balance their availability and inexperience with the project goals and timeline. Flexibility was critical to everyone's success. Atlassian's Trello[^24-methods-14], a lightweight, web-based project collaboration tool with kanban style task tracking, was used to manage the project.
+
+[^24-methods-14]: <https://trello.com/home>
+
+### Tactics
+
+The HMDAR and HMDMR apps were developed in Unity version 2022.x with MRTK v2.7x and VE v10.7x. Development was done entirely on MSI GE76/66 Raider (11UH-053/227) laptops running the 64-bit version of Windows 10 with the latest updates. Both laptop models were equipped with an Intel Core i9-11980HK CPU, NVIDIA GeForce RTX3080 GPU, 32 or 64GB, and 2GB of M.2 NVMe storage.
+
+Systems were configured the Visual Studio 2019 integrated development environment (VS) as described in the MRTK setup instructions[^24-methods-15]. Unity Version Control (VCS, formerly Plastic) was used to manage all assets and source code, allowing the developers to track changes and collaborate effectively.
+
+[^24-methods-15]: <https://learn.microsoft.com/en-us/windows/mixed-reality/develop/install-the-tools>
+
+All programming was done in C#, as required by Unity. C# is an object-oriented language with strong typing and simplified memory management. It has a familiar syntax that is similar to Java and C++, both of which influenced its design. This enabled the developers, all new to C#, to adapt with relative ease.
+
+![Development Workflow](images/24-HL2DevWorkflow.png){#fig-devwkflow width="5in"}
+
+TODO: create an accurate image of HL/Unity/MRTK workflow to replace this one
+
+Unity development for HoloLens2 generally proceeds as illustrated in @fig-devwkflow, and described below.
+
+1.  Configure a scene in the Unity editor, including the placement, orientation, and properties of rendered items and UI components, along with cameras, lights, and other "helper objects" used to manage the experience.
+
+2.  Write C# scripts to control scene interactions. These scripts are attached to game objects and get events, trigger responses, and pass messages to other objects. Unity's component-driven architecture offers a variety of predefined methods and event functions, which is extended by MRTK.
+
+3.  Do initial testing, using the Unity editor to simulate HL2 interactions directly on the laptop screens. This approach allows for rapid iteration and real-time feedback to changes made in the editor, facilitating early debugging.
+
+4.  Building for the HL2 device is a two step process. First, Unity generates a bundle of processed data and scripts. The result is then used by VS to compile and package a UWP (Universal Windows Platform) app for the HL2. In the process all C# scripts are converted into C++, and then into a native binary for the HL2's ARM-based architecture.
+
+5.  Finally, the UWP app is transferred to the HL2 via USB.
+
+The inter-dependencies between Unity, MRTK, and VS, each with their own packaging systems, dependencies, and versions, made this an intricate process. Our initial understanding was greatly accelerated by Microsoft's online resources[^24-methods-16] and tutorials[^24-methods-17], along with Ferrone's *Learning C# by Developing Games in Unity* [-@ferrone2021learn].
+
+[^24-methods-16]: <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/mrtk2/?view=mrtkunity-2022-05>
+
+[^24-methods-17]: <https://learn.microsoft.com/en-us/training/modules/learn-mrtk-tutorials/>
+
+![Unity HoloLens2 Simulator](images/24-UnityHL2Sim.png){#fig-unityhl width="5in"}
+
+TODO: get a better image of Unity HL2 simulator interface
+
+### Design
+
+#### HMDAR Treatment
+
+The HMDAR experience was analogous to that of the PAR treatment. Interactions in both were controlled by hand placement / motion in the scene, mimicking button inputs. Both used a fixture to keep the model in the reference position, facilitating the alignment of virtual objects. Essentially, both were projected AR experiences, differentiated primarily by the manner of projection and input detection.
+
+The PAR system used traditional optics to project virtual instructions onto the work surface and a depth-sensing camera to detect inputs. "Tracking" in this case was static and mechanically set, where the projector's orientation, throw angle, and focal length were fixed based on its location relative to the workpiece.
+
+The HMDAR system used the HL2 to project virtual instructions into the operator's visual field via a sophisticated sensing, display, imaging, and optical systems. This user-centric display is the affordance that differentiates the HMDAR treatment. Tracking was dynamic, based on the operator's position and head angle relative to the work surface, and intrinsic properties of the HL2 system. Input detection utilized the system's hand tracking capabilities, which rely on fused sensor data and machine learning techniques.
+
+#### HMDMR Treatment
+
+A consistent approach was taken for the HMDMR treatment design, extending the capabilities of the HMDAR treatment. HMDMR used more sophisticated tracking methods to enable freeform interaction with the workpiece. This
+
+### Implementation
+
+TODO: make project code and data available?
+
+The HMDAR treatment was developed first. Using the HMDAR version as a baseline, the HMDMR version extended it to incorporate model based tracking methods.
+
+#### HMDAR Implementation
+
+This effort primarily involved: (1) recreating the PAR's instructional design approach, (2) setting up the interaction methods, and (3) implementing the tracking system.
+
+The first was relatively straightforward. Assets were modeled in Unity to resemble components from the PAR instructions. They were arranged in the scene relative to the workpiece location, based on an established scale. Finally, scripts were written to control the scenario logic, changing the scene based on user behavior.
+
+Our interaction implementation relied on HL2 input systems provided by MRTK's modular, component-based architecture. In this system, input actions like `select` or `activate` and the events they trigger act as the bridge between the user's physical actions and the software's response. Physical actions are captured via HL2 sensors and interpreted by MRTK's various modalities, including gesture and hand tracking. Different interaction styles are associated with available pointer types, e.g. ray pointers for distant interactions and poke pointers for nearby. With this approach a diverse range of interactions can be design through careful composition of components.
+
+For HMDAR tracking, we relied on VE's *Area Targets*[^24-methods-18] feature, an implementation of the area-based tracking methods described in @sec-tracking. This approach was chosen over image-based methods, which can be more sensitive to drop-out and require permanent markers.
+
+[^24-methods-18]: <https://developer.vuforia.com/library/environments/area-targets>
+
+The area-based tracking method compares a 3D model of the workspace with a real-time spatial map of the same to determine the current position and angle of the participant's head relative to it. The spatial map is a polygonal mesh generated by the HL2 at runtime. It is created with live scene data from the depth sensor, visible light cameras, and inertial measurement unit. A sample is shown in @fig-spatmap.
+
+![HoloLens Spatial Mapping](images/24-HLSpatialMap.png){#fig-spatmap width="5in"}
+
+TODO: replace with image of spatial mapping from study
+
+The 3D model is created offline, first by scanning the area with the Vuforia Creator App[^24-methods-19]. Pictured in @fig-areatgt-a, this tool uses a LiDAR equipped iPhone / iPad Pro to capture an accurate model of the area in E57 format, per ASTM E2807 [@astm2019stand]. The E57 data is then processed to generate an Area Target asset package for Unity, which includes all the required geometry, textures, and metadata.
+
+[^24-methods-19]: <https://developer.vuforia.com/library/tools/creator-app>
+
+::: {#fig-areatgt layout-ncol="2"}
+![Vuforia Creator App](images/24-VEScan.png){#fig-areatgt-a}
+
+![Area Target in Unity](images/24-VEUnity.png){#fig-areatgt-b width="85%"}
+
+Vuforia Area Target Processing
+:::
+
+TODO: replace with images from study: VE creator app and work area target
+
+Once imported into Unity and properly configured[^24-methods-20], the 3D model is used to align the placement of virtual objects in the real world scene. This allows the developer to design the experience in the context of the real world model, as seen in @fig-areatgt-b.
+
+[^24-methods-20]: <https://developer.vuforia.com/library/develop-area-targets/area-targets-unity>
+
+Finally, at runtime, key points encoded from the Area Target mesh are compared with the real-time spatial map to estimate the operator's head position and angle relative to the workpiece, thus establishing a coordinate system for the spatially coherent placement of virtual objects.
+
+#### HMDMR Implementation
+
+In order to support freeform interaction, the system needed a way to properly place instructional cues on the workpiece, regardless of its position and orientation. This was accomplished with model-based tracking, using the Model Targets[^24-methods-21] feature from VE. Note that this treatment continues to use Area Targets for workspace pose estimation, but adds Model Targets for those involving the workpiece. Otherwise, the HMDMR implementation is unaltered.
+
+[^24-methods-21]: <https://developer.vuforia.com/library/objects/model-targets>
+
+The distinct technical requirements of model and area based tracking necessitate separate implementations. Where area-based tracking focuses on spatial orientation within a static environment, the prime challenge for model-based tracking is dynamic object recognition and pose estimation. While there might be some overlap in the fundamental computer vision and machine learning techniques used, the specific algorithms and their optimization differ significantly, catering to the unique challenges of each tracking type.
+
+Overall, the Model Target implementation process was similar to that for Area Targets. First, a 3D model of the object was constructed and converted into a Model Target using VE tools. These steps were completed offline. At runtime, the system again compares live sensor data with Model Target data to recognize and then track object(s) in the scene.
+
+Model source data was constructed in LeoCAD[^24-methods-22], a tool for designing models using LEGO bricks. LeoCAD uses the comprehensive LDraw[^24-methods-23] database of LEGO parts, most of which are modeled from actual pieces. This standard uses a proprietary unit of measure, the LDraw Unit (LDU), which is based on the smallest stud-to-stud spacing on a standard LEGO brick: 1 LDU = 0.4mm.
+
+[^24-methods-22]: <https://www.leocad.org/>
+
+[^24-methods-23]: <https://ldraw.org/>
+
+TODO: cite LDraw standard?
+
+LeoCAD's design adheres to LEGO design principles, ensuring that the way parts attach in the software reflects the real-world equivalent. The combination of LDraw's precision and LeoCAD's tooling ensures that the resulting models are faithful representations of their physical counterparts.
+
+@fig-leocad-a is a screenshot of the LeoCAD interface, highlighting some of its capabilities. Both LDraw and LeoCAD are unofficial, open source, community run, multi-platform tools that are free to use.
+
+::: {#fig-leocad layout-ncol="2"}
+![LeoCAD Interface Screenshot](images/24-LeoCAD.png){#fig-leocad-a}
+
+![Model Target Constructed in LeoCAD](images/24-ModelTarget.png){#fig-leocad-b}
+
+LeoCAD UI and Model Target
+:::
+
+Our source model was constructed in LeoCAD based on the PWI, using LDraw models of the specified LEGO parts. The result, seen in @fig-leocad-b, was exported as a 3DS[^24-methods-24] file and imported into Unity as a part hierarchy. There, it was scaled from LDUs to conventional units and exported in the FBX[^24-methods-25] interchange format for VE's Model Target Generator (MTG).
+
+[^24-methods-24]: <https://en.wikipedia.org/wiki/.3ds>
+
+[^24-methods-25]: <https://en.wikipedia.org/wiki/FBX>
+
+The MTG supports two Model Target types. *Advanced Model Targets* can be automatically recognized and tracked from any angle, without the manual alignment and recognition process required by *Standard Model Targets*. The requirement for the HMDMR treatment to provide freeform interactions in an otherwise equivalent experience mandated the use of Advanced Model Targets.
+
+The MTG process begins by checking for model suitability. Model targets must be free of errors and unnecessary internal geometry, with rigid geometry and real-world scale. Ideal candidates for Advanced tracking also feature optically stable surface features, minimal symmetry, and accurate surface colors. Highly reflective, transparent, or featureless surfaces provide insufficient visual cues and highly symmetric objects make it difficult to determine orientation.
+
+Next, the model geometry is analyzed and a set of Guide Views are automatically generated for a 360-degree recognition range. This step leverages deep learning methods trained to generate optimal views from arbitrary angles based on the geometric features and surface qualities of the model. The output of this process includes the trained recognition model, along with the associated dataset and guide views. This package is imported into Unity and used by VE to provide the desired model-tracking functionality.
+
+### Challenges
+
+TODO: elaborate on list of challenges and/or convert into narrative
+
+-   reflectance of aluminum fixture confused trackers
+-   complexity of MR, less reliable tracking, crashes
+-   complexity of software dev environment; inexperience of developers; part time development
+-   The build times for step four can be quite disruptive; donning / doffing
+-   Managing and optimizing for the computational constraints of the HL2.
+-   Balancing fidelity and performance in the model and area-based tracking.
 
 ## Participants
 
-::: content-hidden
-Mention the size of your participant pool and the rationale behind choosing this number. Also, describe the process of recruitment and any compensations or incentives provided.
-:::
-
--   final result
--   convenience sample
-
 ### Recruitment and Selection
 
-Participants were recruited from the Auburn University community using digital and printed promotions around campus, the graduate school mailing list, and outreach in various undergraduate engineering classrooms. The later focused on freshman and sophomore engineering students in Industrial & Systems Engineering, as they are accessible and most likely to meet all requirements. @fig-recruit exemplifies the recruiting materials, approved copies of which are included in [Appendix A, IRB Documentation](#app-irb).
+A convenience sample of participants were recruited from the Auburn University community using digital and printed promotions around campus, the graduate school mailing list, and outreach in various undergraduate engineering classrooms. The later focused on freshman and sophomore engineering students in Industrial & Systems Engineering, as they are accessible and most likely to meet all requirements. @fig-recruit exemplifies the recruiting materials, approved copies of which are included in [Appendix A, IRB Documentation](#app-irb).
 
 ![Digital recruitment flyer distributed on campus monitors.](images/24-RecruitSlideV3.png){#fig-recruit width="5in"}
 
-Potential participants in the first investigation were screened for exclusion based on their age (under 19) or a tendency to motion sickness. Additionally, we screened for experience using head-mounted or projected AR devices with gesture based controls. This does not exclude those having experience with VR headsets like META's Occulus product line, which is relatively common among the target population, but utilize traditional input devices.[^24-methods-5] Finally, we excluded anyone that had previously participated in a manufacturing simulation in the Tiger Motors Lean Education Center as part of INSY 5800/6800 or otherwise. This ensured that none of our participants had experience with the assembly task.
+Potential participants in the first investigation were screened for exclusion based on their age (under 19) or a tendency to motion sickness. Additionally, we screened for experience using head-mounted or projected AR devices with gesture based controls. This does not exclude those having experience with VR headsets like META's Occulus product line, which is relatively common among the target population, but utilize traditional input devices.[^24-methods-26] Finally, we excluded anyone that had previously participated in a manufacturing simulation in the Tiger Motors Lean Education Center as part of INSY 5800/6800 or otherwise. This ensured that none of our participants had experience with the assembly task.
 
-[^24-methods-5]: This distinction had to be explained to several interested participants, which supports the notion that the differences between AR and VR are not yet well understood. Ultimately, no participants were eliminated by this requirement.
+[^24-methods-26]: This distinction had to be explained to several interested participants, which supports the notion that the differences between AR and VR are not yet well understood. Ultimately, no participants were eliminated by this requirement.
+
+TODO: mention target sample size and justify based on power / practical limits
 
 ### Benefits and Compensation
 
@@ -540,17 +779,13 @@ No member of the research team was eligible for any of the financial compensatio
 
 ## Research Compliance
 
-::: content-hidden
-Since your study involves human subjects, outline the ethical approvals obtained (e.g., Institutional Review Board - IRB approval), and how informed consent was obtained from the participants. Describe any measures taken to ensure the privacy and confidentiality of participant data.
-:::
-
 ### Institutional Review Board
 
-As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-6]
+As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-27]
 
-[^24-methods-6]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
+[^24-methods-27]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
 
-The IRB submission and approval process began in December of 2022, and final approval was granted on April 10, 2023. During that time four versions of the IRB were approved, and only two rejected. The approval dates and changes are summarized in @tbl-irbs.
+The IRB submission and expedited review process began in December of 2022, and final approval was granted on April 10, 2023. During that time four versions of the IRB were approved, and only two rejected. The approval dates and changes are summarized in @tbl-irbs.
 
 | Version | Description                                 | Approved |
 |---------|---------------------------------------------|:--------:|
@@ -565,7 +800,7 @@ This process was somewhat complicated by the decision to incorporate two separat
 
 The development of the IRB was a collaborative effort which I spearheaded as the Principle Investigator (PI), authoring the majority of the application, and ensuring alignment with the study's goals and ethical standards. Contributions from other members of the research teams, as specified in [Appendix B: Team Contribution Matrix](#app-contribs), were essential to its thorough design and timely approval.
 
-The final approved version, including all supporting materials, is incorporated as [Appendix A: Institutional Review Board Approval](#app-irb). The processes described hereafter are all based on the approved protocols.
+The final approved version, including all supporting materials, is incorporated as [Appendix A: Institutional Review Board Approval](#app-irb). All processes described herein are all based on the approved protocols.
 
 ### Consent
 
@@ -583,7 +818,7 @@ For reasons detailed in the [study design](#study-design), two angles of each tr
 
 Beyond the privacy and data concerns previously described, other potential risks and discomforts were identified. Prolonged used of HMD VSTs has been reported to cause mild neck strain, disorientation, and eye strain in some cases. The optical and physical design of these systems can also result in a limited or obscured field of view and degraded acuity, which could increase the participant's risk of trip or impact.
 
-TODO: cite risks, ISO paper?
+TODO: cite risk of prolonged use using ISO paper?
 
 The HL2's untethered design with wide, unobstructed field of view mitigates many of these concerns, but additional precautions were taken. All participants were screened for a tendency towards motion sickness. The study was intentionally designed to limit each participant's time wearing the HL2, and to ensure that they were generally stationary in an obstruction-free environment. Finally, the Lean Lab was selected in part because it is a organized, safe, and well-lit environment with no history of related hazards.
 
@@ -603,9 +838,9 @@ The initial onboarding process was conducted manually by the PI. In a phone call
 
 If the candidate indicated a willingness to proceed, their information was collected using the Subject Recruitment Data Sheet included in [Appendix A](#app-irb). A unique participant ID was logged on the code list and a date and time for data collection were then assigned. As [detailed below](#sec-privacy), the code list and consent form provided the only link between personally identifiable information and experimental data.
 
-This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-7] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
+This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-28] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
 
-[^24-methods-7]: [signupgenius.com](signupgenius.com)
+[^24-methods-28]: [signupgenius.com](signupgenius.com)
 
 ### Administer
 
@@ -630,22 +865,23 @@ Oversight: the PI for this investigation will observe the participant’s activi
 Describe the statistical or qualitative analysis methods to be used for examining the data. Mention any software or tools that will be utilized for data analysis.
 :::
 
-## Study Limitations
+## Limitations of Study Design
 
 ::: content-hidden
 Acknowledge any potential limitations or biases in your study design, participant selection, or data collection methods that could impact the interpretation of your results.
-:::
 
-*Ensure that the limitations discussed are directly related to your methodology and how they might impact the interpretation of your results. Discuss any potential biases and the steps taken to minimize them.*
+Ensure that the limitations discussed are directly related to your methodology and how they might impact the interpretation of your results. Discuss any potential biases and the steps taken to minimize them.
+:::
 
 -   compensation added after IRB v3, approved April 10; 5 prior subjects plus some thereafter were recruited without knowledge of compensation
 -   convenience sample
 -   pseudo-random selection
 -   legos are not real cars
--   difficulty / complexity of the task
+-   difficulty / complexity of the task insufficient?
 -   the HMDAR and MR treatments are not exact replications of the PAR instructions but no material difference
 -   few participants assigned HMDMR took advantage of the affordance
 -   does not account for interactions between affordances
+-   learning effect (training, etc.)
 
 ## Summary
 

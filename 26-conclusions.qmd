@@ -19,3 +19,9 @@ see ROI calculators at:
 - lightguide: https://www.lightguidesys.com/why-lightguide/lightguide-value-calculator/
   - claimed increases: >90% quality, >50% throughput, >30% learning rate ("accelerate training")
 - microsoft: ?
+
+ MS support for HL2 and MRTK (wiki layoffs)
+ 
+ future adaptability / scalability; custom application development
+ 
+ from scratch apps not directly comparable to other findings. implementation details matter in performance, experience, etc. need standard platforms that implement mid-level features and allow researchers to build higher level functionality with them to allow directly comparable results

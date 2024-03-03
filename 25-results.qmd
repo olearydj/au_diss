@@ -15,3 +15,8 @@ exploratory:
 - what treatment group had the highest OEE during recall?
 - first task performance in learning as a measure of initial comprehension, intuitiveness of each treatment, effectiveness of instructional design, etc.; may correlate with SUS / TLX
 
+height and "down-lookers"; tracking dropouts;
+
+battery life and performance; brightness and accuracy; 
+
+- complexity of MR, less reliable tracking, crashes
