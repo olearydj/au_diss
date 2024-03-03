@@ -88,7 +88,7 @@ Projected AR (PAR) systems integrate work and instruction by projecting the late
 
 ST-8 is equipped with a PAR system by LightGuide[^24-methods-1] (LG), a Michigan-based company focused on innovative, AR-based manufacturing solutions. As shown in @fig-lgs, Their system uses a Windows PC, industrial-grade projector, and 2D or 3D vision system, along with other optional input devices and tools. All components are commercially available and integrated by the LG software, where digital work instructions are both authored and played back.
 
-[^24-methods-1]: <https://www.lightguidesys.com/>
+[^24-methods-1]: Lightguide: <https://www.lightguidesys.com/>
 
 Note that the Lean Lab's LightGuide system predates this study. Its specification, installation, setup, and configuration, along with the design and implementation of the instructional materials it uses at ST-8, were conducted by prior teams.
 
@@ -100,7 +100,7 @@ TODO: replace bold terms in LG system description
 
 The system at ST-8 uses a **PROJECTOR MODEL** and **CAMERA MODEL** mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide **VERSION NUMBER** is displayed on a **MONITOR MODEL**, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure made from 80/20's[^24-methods-2] extruded aluminum components to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
 
-[^24-methods-2]: <https://8020.net/>
+[^24-methods-2]: 80/20: <https://8020.net/>
 
 ![ST-8 LG Installation](images/24-ST8LightGuide.png){#fig-st8lgs width="4in"}
 
@@ -134,7 +134,7 @@ Like PAR, head-mounted AR (HMDAR) systems integrate dynamic instructions into th
 
 As detailed in the subsequent section on [System Development](#sysdev), Microsoft's HoloLens2[^24-methods-3] (HL2) was used for this treatment. The HL2's area-based tracking capabilities were used to align the virtual and physical coordinate systems, enabling the proper in-view placement of UI objects, independent of the position and orientation of the operator's head. As with the PAR treatment, user motion was the only input modality, implemented via the HL2's more sophisticated hand tracking and gesture recognition systems. @fig-arcap shows the side and operator view of this treatment at the same moment.
 
-[^24-methods-3]: <https://www.microsoft.com/en-us/hololens>
+[^24-methods-3]: HoloLens2: <https://www.microsoft.com/en-us/hololens>
 
 ::: {#fig-arcap layout-ncol="2"}
 ![HMDAR Side View](images/24-ARDemoSide.png){#fig-arcap-a}
@@ -474,7 +474,7 @@ Of the HMDAR systems commercially available in 2021, when the precursor to this 
 
 Only the Magic Leap 2[^24-methods-5] design is similar. However, despite being released nearly three years later, it has a more limited FOV, requires prescription inserts for vision correction, offers less extensive developer support, and has achieved less market adoption than the HL2. Both devices are pictured in @fig-hmdxrs, below.
 
-[^24-methods-5]: <https://www.magicleap.com>
+[^24-methods-5]: MagicLeap: <https://www.magicleap.com>
 
 ::: {#fig-hmdxrs layout-ncol="2"}
 ![Microsoft HoloLens2. Source: Microsoft](images/24-HL2.png){#fig-hmdxrs-a}
@@ -494,9 +494,9 @@ Unlike the LG, the HL2 is entirely self-contained, processing data from an array
 
 Development options for XR systems are limited. For creating custom apps on HL2, Microsoft supports and endorses Unity[^24-methods-6] with the Mixed Reality Toolkit[^24-methods-7]. Ultimately, the need for model and area based tracking capabilities required further tooling. Each element is described below.
 
-[^24-methods-6]: <https://unity.com/>
+[^24-methods-6]: Unity: <https://unity.com/>
 
-[^24-methods-7]: <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity>
+[^24-methods-7]: Mixed Reality Toolkit (MRTK): <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity>
 
 #### Unity
 
@@ -506,7 +506,7 @@ Despite its complexity, Unity is relatively easy to learn. High quality training
 
 Unity is free for non-commercial and academic applications[^24-methods-8]. For research applications like this one, which won't be distributed or otherwise commercialized, its Terms of Service[^24-methods-9] did not pose major concerns. Crucially, Unity allows users to retain rights to content they create, and makes no ownership claims over it.
 
-[^24-methods-8]: <https://unity.com/pricing#plans-student-and-hobbyist>
+[^24-methods-8]: Unity Pricing: <https://unity.com/pricing#plans-student-and-hobbyist>
 
 [^24-methods-9]: Unity's Terms of Service and other legal info: <https://unity.com/legal>
 
@@ -518,19 +518,19 @@ The MRTK is a software development kit (SDK) designed to simplify and accelerate
 
 MRTK is a free, open-source project that was initiated by Microsoft and first released under the very permissive MIT License [@saltzer2020origi] in 2017[^24-methods-10].
 
-[^24-methods-10]: License and repository: <https://github.com/microsoft/MixedRealityToolkit-Unity>
+[^24-methods-10]: MRKT Github Repository and Licensing File: <https://github.com/microsoft/MixedRealityToolkit-Unity>
 
 #### Vuforia Engine
 
 MRTK's built-in tracking support is limited to image-based solutions and spatial anchoring techniques that were insufficient for this project. After exploring available options, it was determined that the Vuforia Engine[^24-methods-11] (VE) by PTC could best address that limitation. This SDK works with Unity, MRTK, and the HL2 to add robust marker, model, and area based tracking capabilities that were necessary for this project.
 
-[^24-methods-11]: <https://www.ptc.com/en/products/vuforia/vuforia-engine/ar-app-development>
+[^24-methods-11]: Vuforia Engine SDK: <https://www.ptc.com/en/products/vuforia/vuforia-engine/ar-app-development>
 
 PTC's Vuforia product line is a commercial product designed for enterprise customers, but the Basic version of the Engine SDK is available at no cost. With that plan a limited number of model and area targets can be generated, so long as the resulting app is not published[^24-methods-12]. Within the constraints of this work, PTC's Terms of Use and Developer Licensing Agreement[^24-methods-13] posed no significant concerns.
 
-[^24-methods-12]: <https://developer.vuforia.com/library/faqs/pricing-and-licensing-options>
+[^24-methods-12]: Vuforia Pricing and Licensing: <https://developer.vuforia.com/library/faqs/pricing-and-licensing-options>
 
-[^24-methods-13]: Terms of Use: <https://developer.vuforia.com/legal/tos>. Developer Agreement: <https://developer.vuforia.com/legal/vuforia-developer-agreement>.
+[^24-methods-13]: Vuforia Terms of Use and Developer Agreement:<br><https://developer.vuforia.com/legal/tos><br> <https://developer.vuforia.com/legal/vuforia-developer-agreement>
 
 ### Timeline
 
@@ -584,7 +584,7 @@ ggplot(tasks, aes(y = Section, x = Start, xend = End, yend = Section, group = De
 
 Development was iterative with roughly two-week sprints. Except during the summer, the developers were full-time students and were managed accordingly. Expectations had to reasonably balance their availability and inexperience with the project goals and timeline. Flexibility was critical to everyone's success. Atlassian's Trello[^24-methods-14], a lightweight, web-based project collaboration tool with kanban style task tracking, was used to manage the project.
 
-[^24-methods-14]: <https://trello.com/home>
+[^24-methods-14]: Trello: <https://trello.com/home>
 
 ### Tactics
 
@@ -592,7 +592,7 @@ The HMDAR and HMDMR apps were developed in Unity version 2022.x with MRTK v2.7x 
 
 Systems were configured the Visual Studio 2019 integrated development environment (VS) as described in the MRTK setup instructions[^24-methods-15]. Unity Version Control (VCS, formerly Plastic) was used to manage all assets and source code, allowing the developers to track changes and collaborate effectively.
 
-[^24-methods-15]: <https://learn.microsoft.com/en-us/windows/mixed-reality/develop/install-the-tools>
+[^24-methods-15]: MRTK Setup Instructions: <https://learn.microsoft.com/en-us/windows/mixed-reality/develop/install-the-tools>
 
 All programming was done in C#, as required by Unity. C# is an object-oriented language with strong typing and simplified memory management. It has a familiar syntax that is similar to Java and C++, both of which influenced its design. This enabled the developers, all new to C#, to adapt with relative ease.
 
@@ -614,9 +614,9 @@ Unity development for HoloLens2 generally proceeds as illustrated in @fig-devwkf
 
 The inter-dependencies between Unity, MRTK, and VS, each with their own packaging systems, dependencies, and versions, made this an intricate process. Our initial understanding was greatly accelerated by Microsoft's online resources[^24-methods-16] and tutorials[^24-methods-17], along with Ferrone's *Learning C# by Developing Games in Unity* [-@ferrone2021learn].
 
-[^24-methods-16]: <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/mrtk2/?view=mrtkunity-2022-05>
+[^24-methods-16]: MRTK Unity Documentation: <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/mrtk2/?view=mrtkunity-2022-05>
 
-[^24-methods-17]: <https://learn.microsoft.com/en-us/training/modules/learn-mrtk-tutorials/>
+[^24-methods-17]: MRTK Tutorials: <https://learn.microsoft.com/en-us/training/modules/learn-mrtk-tutorials/>
 
 ![Unity HoloLens2 Simulator](images/24-UnityHL2Sim.png){#fig-unityhl width="5in"}
 
@@ -652,7 +652,7 @@ Our interaction implementation relied on HL2 input systems provided by MRTK's mo
 
 For HMDAR tracking, we relied on VE's *Area Targets*[^24-methods-18] feature, an implementation of the area-based tracking methods described in @sec-tracking. This approach was chosen over image-based methods, which can be more sensitive to drop-out and require permanent markers.
 
-[^24-methods-18]: <https://developer.vuforia.com/library/environments/area-targets>
+[^24-methods-18]: Vuforia Area Targets: <https://developer.vuforia.com/library/environments/area-targets>
 
 The area-based tracking method compares a 3D model of the workspace with a real-time spatial map of the same to determine the current position and angle of the participant's head relative to it. The spatial map is a polygonal mesh generated by the HL2 at runtime. It is created with live scene data from the depth sensor, visible light cameras, and inertial measurement unit. A sample is shown in @fig-spatmap.
 
@@ -662,7 +662,7 @@ TODO: replace with image of spatial mapping from study
 
 The 3D model is created offline, first by scanning the area with the Vuforia Creator App[^24-methods-19]. Pictured in @fig-areatgt-a, this tool uses a LiDAR equipped iPhone / iPad Pro to capture an accurate model of the area in E57 format, per ASTM E2807 [@astm2019stand]. The E57 data is then processed to generate an Area Target asset package for Unity, which includes all the required geometry, textures, and metadata.
 
-[^24-methods-19]: <https://developer.vuforia.com/library/tools/creator-app>
+[^24-methods-19]: Vuforia Creator App: <https://developer.vuforia.com/library/tools/creator-app>
 
 ::: {#fig-areatgt layout-ncol="2"}
 ![Vuforia Creator App](images/24-VEScan.png){#fig-areatgt-a}
@@ -676,7 +676,7 @@ TODO: replace with images from study: VE creator app and work area target
 
 Once imported into Unity and properly configured[^24-methods-20], the 3D model is used to align the placement of virtual objects in the real world scene. This allows the developer to design the experience in the context of the real world model, as seen in @fig-areatgt-b.
 
-[^24-methods-20]: <https://developer.vuforia.com/library/develop-area-targets/area-targets-unity>
+[^24-methods-20]: Vuforia Area Targets in Unity: <https://developer.vuforia.com/library/develop-area-targets/area-targets-unity>
 
 Finally, at runtime, key points encoded from the Area Target mesh are compared with the real-time spatial map to estimate the operator's head position and angle relative to the workpiece, thus establishing a coordinate system for the spatially coherent placement of virtual objects.
 
@@ -684,7 +684,7 @@ Finally, at runtime, key points encoded from the Area Target mesh are compared w
 
 In order to support freeform interaction, the system needed a way to properly place instructional cues on the workpiece, regardless of its position and orientation. This was accomplished with model-based tracking, using the Model Targets[^24-methods-21] feature from VE. Note that this treatment continues to use Area Targets for workspace pose estimation, but adds Model Targets for those involving the workpiece. Otherwise, the HMDMR implementation is unaltered.
 
-[^24-methods-21]: <https://developer.vuforia.com/library/objects/model-targets>
+[^24-methods-21]: Vuforia Model Targets: <https://developer.vuforia.com/library/objects/model-targets>
 
 The distinct technical requirements of model and area based tracking necessitate separate implementations. Where area-based tracking focuses on spatial orientation within a static environment, the prime challenge for model-based tracking is dynamic object recognition and pose estimation. While there might be some overlap in the fundamental computer vision and machine learning techniques used, the specific algorithms and their optimization differ significantly, catering to the unique challenges of each tracking type.
 
@@ -692,9 +692,9 @@ Overall, the Model Target implementation process was similar to that for Area Ta
 
 Model source data was constructed in LeoCAD[^24-methods-22], a tool for designing models using LEGO bricks. LeoCAD uses the comprehensive LDraw[^24-methods-23] database of LEGO parts, most of which are modeled from actual pieces. This standard uses a proprietary unit of measure, the LDraw Unit (LDU), which is based on the smallest stud-to-stud spacing on a standard LEGO brick: 1 LDU = 0.4mm.
 
-[^24-methods-22]: <https://www.leocad.org/>
+[^24-methods-22]: LeoCAD: <https://www.leocad.org/>
 
-[^24-methods-23]: <https://ldraw.org/>
+[^24-methods-23]: LDraw: <https://ldraw.org/>
 
 TODO: cite LDraw standard?
 
@@ -712,9 +712,9 @@ LeoCAD UI and Model Target
 
 Our source model was constructed in LeoCAD based on the PWI, using LDraw models of the specified LEGO parts. The result, seen in @fig-leocad-b, was exported as a 3DS[^24-methods-24] file and imported into Unity as a part hierarchy. There, it was scaled from LDUs to conventional units and exported in the FBX[^24-methods-25] interchange format for VE's Model Target Generator (MTG).
 
-[^24-methods-24]: <https://en.wikipedia.org/wiki/.3ds>
+[^24-methods-24]: 3DS File Type: <https://en.wikipedia.org/wiki/.3ds>
 
-[^24-methods-25]: <https://en.wikipedia.org/wiki/FBX>
+[^24-methods-25]: FBX File Type: <https://en.wikipedia.org/wiki/FBX>
 
 The MTG supports two Model Target types. *Advanced Model Targets* can be automatically recognized and tracked from any angle, without the manual alignment and recognition process required by *Standard Model Targets*. The requirement for the HMDMR treatment to provide freeform interactions in an otherwise equivalent experience mandated the use of Advanced Model Targets.
 
@@ -840,7 +840,7 @@ If the candidate indicated a willingness to proceed, their information was colle
 
 This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-28] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
 
-[^24-methods-28]: [signupgenius.com](signupgenius.com)
+[^24-methods-28]: SignUpGenius: <https://signupgenius.com>
 
 ### Administer
 
