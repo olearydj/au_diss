@@ -36,6 +36,10 @@ bibliography: references.bib
 csl: "csl/apa7.csl"
 editor: source
 
+# all fenced code blocks
+code-link: true
+code-copy: true
+
 format:
   html:
     theme: simplex
@@ -50,6 +54,9 @@ format:
     knitr:
       opts_chunk:
         dev: "ragg_png"
+  # fenced code blocks
+    highlight-style: dracula
+    code-line-numbers: true
   
   pdf:
   ### PDF reference: https://quarto.org/docs/reference/formats/pdf.html
@@ -81,6 +88,8 @@ format:
     microtypeoptions: ["final"]
     ## stretches all lines, not just body paragraphs:
     linestretch: 1.35
+  # Fenced code blocks
+    highlight-style: arrow
   # Colors
     colorlinks: true
     urlcolor: "DarkOrange2"

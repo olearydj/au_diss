@@ -66,7 +66,7 @@ The green and red trays pictured on the right of the work surface are for finish
 
 ### Treatment Levels
 
-Each participant in this between-groups design experiences a single level of the Instructional Media Type (IMT) treatment. There are four levels of this treatment, each with increasingly augmented work instructions: (1) traditional paper work instructions, (2) projected augmented reality, (3) head-mounted optical see-through augmented reality, and (4) head-mounted optical see-through mixed reality. All are detailed in the sections that follow.
+As described in @sec-random, each participant in this between-groups design is randomly assigned to a single level of the Instructional Media Type (IMT) treatment. There are four levels of this treatment, each with increasingly augmented work instructions: (1) traditional paper work instructions, (2) projected augmented reality, (3) head-mounted optical see-through augmented reality, and (4) head-mounted optical see-through mixed reality. All are detailed in the sections that follow.
 
 #### Paper Work Instructions
 
@@ -462,7 +462,7 @@ TODO: write intro for sysdev section
 Of the HMDAR systems commercially available in 2021, when the precursor to this study began, only the HL2 was well-suited for enterprise applications, including manufacturing. Originally released for that market in 2019, the HL2's distinguishing features are tabulated in @tbl-hl2, below.
 
 | Feature               | Description                                                                                                                                                                                                                                                                                                                                                         |
-|---------------------|---------------------------------------------------|
+|-----------------------|-------------------------------------------------|
 | Natural Field of View | The HL2 is an optical-see-through system (OST) where its display is overlayed on the user's normal view of the world. Its optical design provides a wide and minimally obstructed field of view (FOV), giving a natural and safe user experience. The HL2 also can be used with glasses and features a unique, flip-up design that eliminates the device from view. |
 | Hands-free use        | The HL2 relies entirely on natural inputs - gestures and voice controls - rather than physical input devices like tablets or game-style controllers. This leaves operators free to use their hands for their required tasks.                                                                                                                                        |
 | Untethered            | The HL2 is a stand alone design with integrated power and compute. This eliminates the need for power or data connections that can encumber users, limit their motion, and introduce tripping hazards.                                                                                                                                                              |
@@ -530,7 +530,7 @@ PTC's Vuforia product line is a commercial product designed for enterprise custo
 
 [^24-methods-12]: Vuforia Pricing and Licensing: <https://developer.vuforia.com/library/faqs/pricing-and-licensing-options>
 
-[^24-methods-13]: Vuforia Terms of Use and Developer Agreement:<br><https://developer.vuforia.com/legal/tos><br> <https://developer.vuforia.com/legal/vuforia-developer-agreement>
+[^24-methods-13]: Vuforia Terms of Use and Developer Agreement: <br><https://developer.vuforia.com/legal/tos><br> <https://developer.vuforia.com/legal/vuforia-developer-agreement>
 
 ### Timeline
 
@@ -614,7 +614,7 @@ Unity development for HoloLens2 generally proceeds as illustrated in @fig-devwkf
 
 The inter-dependencies between Unity, MRTK, and VS, each with their own packaging systems, dependencies, and versions, made this an intricate process. Our initial understanding was greatly accelerated by Microsoft's online resources[^24-methods-16] and tutorials[^24-methods-17], along with Ferrone's *Learning C# by Developing Games in Unity* [-@ferrone2021learn].
 
-[^24-methods-16]: MRTK Unity Documentation: <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/mrtk2/?view=mrtkunity-2022-05>
+[^24-methods-16]: MRTK Unity Documentation: <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/mrtk2>
 
 [^24-methods-17]: MRTK Tutorials: <https://learn.microsoft.com/en-us/training/modules/learn-mrtk-tutorials/>
 
@@ -650,15 +650,15 @@ The first was relatively straightforward. Assets were modeled in Unity to resemb
 
 Our interaction implementation relied on HL2 input systems provided by MRTK's modular, component-based architecture. In this system, input actions like `select` or `activate` and the events they trigger act as the bridge between the user's physical actions and the software's response. Physical actions are captured via HL2 sensors and interpreted by MRTK's various modalities, including gesture and hand tracking. Different interaction styles are associated with available pointer types, e.g. ray pointers for distant interactions and poke pointers for nearby. With this approach a diverse range of interactions can be design through careful composition of components.
 
-For HMDAR tracking, we relied on VE's *Area Targets*[^24-methods-18] feature, an implementation of the area-based tracking methods described in @sec-tracking. This approach was chosen over image-based methods, which can be more sensitive to drop-out and require permanent markers.
+For HMDAR tracking, we relied on VE's *Area Targets*[^24-methods-18] feature, an implementation of the area-based tracking methods described in @sec-tracking. The area-based tracking method compares a 3D model of the workspace with a real-time spatial map of the same to determine the current position and angle of the participant's head relative to it. The spatial map is a polygonal mesh generated by the HL2 at runtime. It is created with live scene data from the depth sensor, visible light cameras, and inertial measurement unit. A sample is shown in @fig-spatmap.
 
 [^24-methods-18]: Vuforia Area Targets: <https://developer.vuforia.com/library/environments/area-targets>
-
-The area-based tracking method compares a 3D model of the workspace with a real-time spatial map of the same to determine the current position and angle of the participant's head relative to it. The spatial map is a polygonal mesh generated by the HL2 at runtime. It is created with live scene data from the depth sensor, visible light cameras, and inertial measurement unit. A sample is shown in @fig-spatmap.
 
 ![HoloLens Spatial Mapping](images/24-HLSpatialMap.png){#fig-spatmap width="5in"}
 
 TODO: replace with image of spatial mapping from study
+
+Area-based tracking was selected over image or marker-based methods to minimize tracking loss. Marker-based tracking will fail if there are no markers within view of the HMD's sensors. Area-based tracking provides a continuous map of registration points for the entire scene, greatly reducing drop-outs. It also tends to (re)acquire tracking more quickly than marker-based methods, again due to the number and distribution of features available.
 
 The 3D model is created offline, first by scanning the area with the Vuforia Creator App[^24-methods-19]. Pictured in @fig-areatgt-a, this tool uses a LiDAR equipped iPhone / iPad Pro to capture an accurate model of the area in E57 format, per ASTM E2807 [@astm2019stand]. The E57 data is then processed to generate an Area Target asset package for Unity, which includes all the required geometry, textures, and metadata.
 
@@ -724,7 +724,7 @@ Next, the model geometry is analyzed and a set of Guide Views are automatically 
 
 ### Challenges
 
-TODO: elaborate on list of challenges and/or convert into narrative
+TODO: elaborate on list of development challenges and/or convert into narrative
 
 -   reflectance of aluminum fixture confused trackers
 -   complexity of MR, less reliable tracking, crashes
@@ -777,13 +777,65 @@ For the performance prize in the retention study, eligibility was limited to tho
 
 No member of the research team was eligible for any of the financial compensation described, and all payment processing was handled by appropriate members of the ISE staff.
 
+### Onboarding
+
+The initial participant onboarding process was conducted manually by the PI. In a phone call with interested participants the PI would (1) briefly explain the investigation, recapping and elaborating on the recruiting materials; (2) discuss the exclusion criteria and identify relevant issues for the candidate; (3) set expectations for participant involvement, including time commitment and tasks; and (4) answer any questions the candidate had regarding participation in the investigation.
+
+If the candidate indicated a willingness to proceed, their information was collected using the Subject Recruitment Data Sheet included in [Appendix A](#app-irb). A unique participant ID was logged on the code list and a date and time for data collection were then assigned. As [detailed below](#sec-privacy), the code list and consent form provided the only link between personally identifiable information and experimental data.
+
+This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-27] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
+
+[^24-methods-27]: SignUpGenius: <https://signupgenius.com>
+
+### Trial Schedule
+
+
+
+### Random Assignment {#sec-random}
+
+Random assignment of participants was accomplished through a combination of randomized ordering of treatments and random participant scheduling. Treatments were ordered using a methodical yet randomized process to ensure a balanced distribution. Participants set their own appointments based on availability, without knowledge of the underlying treatments or their ordering. During the intake process, each was assigned the next randomly-ordered treatment type. By randomized the order of both participation and treatment assignment this design ensures assignment without bias or predictability. Another advantage of this approach was that it helped ensure a dataset balanced by treatment type, regardless of the final number of participants.
+
+Treatment randomization was completed before the onboarding process began. To ensure that each treatment was tested at the start, a random sequence of all four treatments started the order. Next, a set of eight treatments, including two of each type, was shuffled to create a randomly ordered batch with an even distribution. This block-wise process was repeated as necessary to cover the maximum number of participants. The batches were combined, in the order generated, to create the final treatment sequence.
+
+The treatment randomization process was implemented with a simple Python function, `gen_treatment_order()`, as seen in @fig-rctpy, below. The `random.shuffle`[^24-methods-28] function from the base Python 3.x distribution was used to randomly reorder a group of values. Though this program was only run once (after validating and verifying its output), no random seed was set to ensure that a unique sequence was generated with each use.
+
+[^24-methods-28]: `random.shuffle` Documentation: <https://docs.python.org/3/library/random.html#random.shuffle>
+
+::: {#fig-rctpy}
+``` python
+def gen_treatment_order(n=2):
+    '''
+    generate random treatment order
+    
+    IMTS is a list of the four treatments
+    NUM_CYCLES is the number of 4-treat batches
+    '''
+
+    # start with random selection of all treats
+    trials = []
+    first_set = IMTS.copy()
+    random.shuffle(first_set)
+    trials.extend(first_set)
+
+    # shuffle IMTS in groups of 8 (two cycles)
+    for _ in range(NUM_CYCLES // n):
+        part_trial = IMTS * n
+        random.shuffle(part_trial)
+        trials.extend(part_trial)
+    
+    return trials
+```
+
+Python 3.x Code for Treatment Randomization
+:::
+
 ## Research Compliance
 
 ### Institutional Review Board
 
-As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-27]
+As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-29]
 
-[^24-methods-27]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
+[^24-methods-29]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
 
 The IRB submission and expedited review process began in December of 2022, and final approval was granted on April 10, 2023. During that time four versions of the IRB were approved, and only two rejected. The approval dates and changes are summarized in @tbl-irbs.
 
@@ -830,22 +882,9 @@ During the post-experiment debriefing all participants were asked about injury a
 
 ## Conduct of Protocol {#sec-conduct}
 
-trial runs with monir, etc. to test out / refine procedure and script
-
-### Onboarding
-
-The initial onboarding process was conducted manually by the PI. In a phone call with interested participants the PI would (1) briefly explain the investigation, recapping and elaborating on the recruiting materials; (2) discuss the exclusion criteria and identify relevant issues for the candidate; (3) set expectations for participant involvement, including time commitment and tasks; and (4) answer any questions the candidate had regarding participation in the investigation.
-
-If the candidate indicated a willingness to proceed, their information was collected using the Subject Recruitment Data Sheet included in [Appendix A](#app-irb). A unique participant ID was logged on the code list and a date and time for data collection were then assigned. As [detailed below](#sec-privacy), the code list and consent form provided the only link between personally identifiable information and experimental data.
-
-This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-28] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
-
-[^24-methods-28]: SignUpGenius: <https://signupgenius.com>
-
-### Administer
+### Administration of Study
 
 -   all personnel involved in the experiment were CITI certified
--   random assignment of treatments
 
 Prior to the first session, each consented participant is required to complete a the Participant Intake Sheet, a trial run of the NASA TLX, and the Behavioral Control Survey.
 
@@ -858,6 +897,18 @@ Oversight: the PI for this investigation will observe the participant’s activi
 ### Conduct
 
 -   Data collection will take place at the Lean Lab in the basement of the Shelby Center for Engineering Technology, room 0317, located at 345 W Magnolia Ave, Auburn, AL  36849
+
+### Trials
+
+trial runs with monir, etc. to test out / refine procedure and script
+
+::: content-hidden
+Documenting the test runs is important for the transparency and completeness of your research methodology. Since these test runs were conducted to refine your experimental procedures and no data from them were used in your study, it's most appropriate to include this information in the "Conduct of Protocol" section of your methods chapter. This placement will help readers understand how you prepared and optimized the procedures before the actual participant trials.
+
+In the "Conduct of Protocol" section, you can briefly describe these test runs, including their purpose (to identify and resolve any procedural issues), the involvement of research team members, and the fact that no data from these runs were used in the study results. This will provide context to your experimental setup and demonstrate your commitment to ensuring the reliability and validity of your research process.
+
+Including this information in the methods section, rather than in the results section, helps to maintain a clear distinction between the preparatory phases of your study and the actual data collection and analysis phases.
+:::
 
 ## Data Analysis {#sec-analysis}
 
@@ -872,6 +923,8 @@ Acknowledge any potential limitations or biases in your study design, participan
 
 Ensure that the limitations discussed are directly related to your methodology and how they might impact the interpretation of your results. Discuss any potential biases and the steps taken to minimize them.
 :::
+
+TODO: elaborate on list of study limitations and/or convert into narrative
 
 -   compensation added after IRB v3, approved April 10; 5 prior subjects plus some thereafter were recruited without knowledge of compensation
 -   convenience sample
