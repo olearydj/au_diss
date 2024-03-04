@@ -336,7 +336,7 @@ Qualitative feedback from participants is an essential complement to our other f
 
 This study was organized into two sessions, encompassing three distinct experiments, each aimed at evaluating one of the three measures of training effectiveness described above.
 
-This section will detail the methods, variables, and rationale behind the design of each experiment. For a step-by-step description of how each session was conducted, see @sec-conduct.
+This section will detail the methods, variables, and rationale behind the design of each experiment. For a step-by-step description of how each session was conducted, see @sec-conduct1 and @sec-conduct2.
 
 ### Surveys and Instruments
 
@@ -437,7 +437,7 @@ Subsequent analyses, as detailed in @sec-analysis, confirmed the original result
 
 The TLX and SUS instruments were both administered twice during this session, once after each experiment. This gave us workload and usability information for all treatment groups during the learning task and for all participants during recall. The later could be used as baseline measurements for the ST-8 work content.
 
-The PIF, BCS, and a trial run of the TLX were also administered during the intake process of this session. Finally, during the exit interview, general feedback was collected. All of this is detailed in @sec-conduct.
+The PIF, BCS, and a trial run of the TLX were also administered during the intake process of this session. Finally, during the exit interview, general feedback was collected. All of this is detailed in @sec-conduct1.
 
 ### Second Session - Retention
 
@@ -787,10 +787,6 @@ This process quickly proved impractical, and a self-service web-based alternativ
 
 [^24-methods-27]: SignUpGenius: <https://signupgenius.com>
 
-### Trial Schedule
-
-
-
 ### Random Assignment {#sec-random}
 
 Random assignment of participants was accomplished through a combination of randomized ordering of treatments and random participant scheduling. Treatments were ordered using a methodical yet randomized process to ensure a balanced distribution. Participants set their own appointments based on availability, without knowledge of the underlying treatments or their ordering. During the intake process, each was assigned the next randomly-ordered treatment type. By randomized the order of both participation and treatment assignment this design ensures assignment without bias or predictability. Another advantage of this approach was that it helped ensure a dataset balanced by treatment type, regardless of the final number of participants.
@@ -880,25 +876,77 @@ This study did not involve any vulnerable populations. Overall, the likelihood a
 
 During the post-experiment debriefing all participants were asked about injury and discomfort, and were observed for lingering or delayed effects. Ultimately, only a few mild discomforts were reported, and no significant side effects, injuries, or need for escalation.
 
-## Conduct of Protocol {#sec-conduct}
+## Conduct of First Session {#sec-conduct1}
 
-### Administration of Study
+This section will describe the operational details for conducting the protocol in the first session, including the learning and recall phases.
 
--   all personnel involved in the experiment were CITI certified
+### Session Preparation
+
+Trial Preparation
+Steps taken to prepare for each trial (e.g., equipment setup, calibration)
+Pre-trial checks or procedures to ensure readiness
+
+### Session Process
+
+#### Participant Intake
+
+Participant Onboarding
+Process of welcoming and orienting participants
+Explanation of informed consent procedures
+Description of any pre-experiment questionnaires or assessments
 
 Prior to the first session, each consented participant is required to complete a the Participant Intake Sheet, a trial run of the NASA TLX, and the Behavioral Control Survey.
 
-In preparation for the study, participants were familiarized with the instrument through instruction and a trial run, as described in @sec-conduct. This is in accordance with the experimental procedure outlined in the TLX instructions.
+In preparation for the study, participants were familiarized with the instrument through instruction and a trial run, as described in @sec-conduct1. This is in accordance with the experimental procedure outlined in the TLX instructions.
 
 The experimental procedure outlined for the TLX recommends that participants are introduced to the instrument before using it for data collection. Accordingly, the intake process for this study includes a trial run of the TLX once the participant has been briefed on the instrument, read the provided *Subject Instructions*, and had their questions answered. In order to familiarize themselves with the instrument all participants were asked to complete it imagining they had just run a marathon. This exercise was chosen as it is easy for runners and non-runners to rate that imagined experience.
 
+#### Learning Experiment
+
+Trial Process
+Step-by-step breakdown of how each trial was conducted
+Description of the tasks participants performed
+Explanation of how instructions were provided and how participant queries were handled
+
+Data Collection and Management
+Description of how data was collected during the trials
+Information on data recording equipment and techniques
+Explanation of how data was stored, managed, and protected
+
+#### Intermission
+
+#### Recall Experiment
+
+#### Debriefing
+
+Debriefing and Participant Feedback
+Explanation of the debriefing process post-trial
+How participant feedback was collected and utilized
+
+### Post-Session Procedures
+
+Post-Trial Procedures
+Description of post-trial activities (e.g., equipment teardown, data backup)
+Follow-up procedures with participants if applicable
+
+## Conduct of Second Session {#sec-conduct2}
+
+This section will describe the operational details for conducting the protocol in the second session, which focused on retention.
+
+## Administration of Protocol
+
+### Personnel and Certifications
+
+Personnel and Certifications
+Description of the team involved in conducting the trials
+Specific roles and responsibilities of each team member
+Relevant certifications or training completed by personnel (e.g., ethics training, safety certifications)
+
+-   all personnel involved in the experiment were CITI certified
+
 Oversight: the PI for this investigation will observe the participant’s activity remotely, making notes on the process. Primary data collection will be completed later through analysis of the video recordings.
 
-### Conduct
-
--   Data collection will take place at the Lean Lab in the basement of the Shelby Center for Engineering Technology, room 0317, located at 345 W Magnolia Ave, Auburn, AL  36849
-
-### Trials
+### Test Runs
 
 trial runs with monir, etc. to test out / refine procedure and script
 
@@ -909,6 +957,36 @@ In the "Conduct of Protocol" section, you can briefly describe these test runs, 
 
 Including this information in the methods section, rather than in the results section, helps to maintain a clear distinction between the preparatory phases of your study and the actual data collection and analysis phases.
 :::
+
+### Trial Schedule
+
+Trial Schedule
+Details on the overall timeline of the study
+Specific days and times when trials were conducted
+Any variations or adjustments made to the schedule and reasons for these changes
+
+### Location
+
+-   Data collection will take place at the Lean Lab in the basement of the Shelby Center for Engineering Technology, room 0317, located at 345 W Magnolia Ave, Auburn, AL  36849
+
+### Safety Measures and Contingencies
+
+Description of safety protocols and measures in place
+Explanation of how unexpected events or emergencies were handled
+Details on any contingency plans used during the study
+
+### Quality Assurance and Protocol Adherence
+
+Quality Assurance and Protocol Adherence
+Measures taken to ensure consistency and quality across trials
+Strategies used to monitor and maintain adherence to the protocol
+
+### Challenges and Modifications
+
+better suited to results?
+
+Discussion of any challenges encountered during the conduct of the protocol
+Modifications made to the protocol in response to these challenges
 
 ## Data Analysis {#sec-analysis}
 
