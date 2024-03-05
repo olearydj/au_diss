@@ -30,6 +30,7 @@ book:
   appendices:
     - 31-irb.qmd
     - 32-contributions.qmd
+    - 33-conduct.qmd
 
 bibliography: references.bib
 # csl: "csl/apa7-single-spaced.csl"  # no obvious difference in HTML output

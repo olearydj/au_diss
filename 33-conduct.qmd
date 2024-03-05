@@ -1,0 +1,3 @@
+# Detailed Conduct {#app-conduct}
+
+Add details of conduct from `Experiment Script.pdf` (in dl/diss_stuff) and/or `Experiment Script.doc` (in diss/trials/procedures)

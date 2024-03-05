@@ -98,7 +98,7 @@ TODO: cite papers related to LEGO lab development
 
 TODO: replace bold terms in LG system description
 
-The system at ST-8 uses a **PROJECTOR MODEL** and **CAMERA MODEL** mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide **VERSION NUMBER** is displayed on a **MONITOR MODEL**, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure made from 80/20's[^24-methods-2] extruded aluminum components to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
+The system at ST-8 uses a **PROJECTOR MODEL** and **CAMERA MODEL** mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide **VERSION NUMBER** is displayed on a **MONITOR MODEL**, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure of extruded aluminum components from 80/20[^24-methods-2] to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
 
 [^24-methods-2]: 80/20: <https://8020.net/>
 
@@ -342,7 +342,7 @@ This section will detail the methods, variables, and rationale behind the design
 
 Two surveys and three instruments were completed during the course of this study, all during the first session. Each is described below, and copies are included in the [IRB approval forms](#app-irb).
 
-#### Participant Intake Form
+#### Participant Intake Form {#sec-pif}
 
 The *Participant Intake Form* (PIF) is a survey designed to gather information, essential to understanding the participant demographic makeup, assessing the generalizability of the study, identifying potential confounding factors, and facilitating post-hoc analyses involving matching or grouping:
 
@@ -357,7 +357,7 @@ The *Participant Intake Form* (PIF) is a survey designed to gather information, 
 
 This simple form is used to record each participant's qualitative feedback on their overall experience. It is administered by the PI in a very open-ended manner. A list of standard questions is available for participants that aren't forthcoming or otherwise benefit from prompting. It is only used at the end of the first session.
 
-#### NASA Task Load Index
+#### NASA Task Load Index {#sec-tlx}
 
 As discussed in @sec-lrinstruments, the *NASA Task Load Index* [TLX, @hart2006tlx] was designed to assess the perceived workload of a task. The primary outcome of the TLX is a weighted average of six factors that contribute to overall workload. Three of those factors are related to the mental, physical, and temporal demands placed on the participant by a task. The remaining three measure the participant's perceived effort, frustration, and performance during it.
 
@@ -387,7 +387,7 @@ $$\textstyle{S = 2.5 \times \left( \sum_{i \text{, odd}} (R_i - 1) + \sum_{i \te
 
 where $R_i$ represents the response to each of the ten items. The SUS score, $S$, calculated by @eq-sus will range from zero to 100. Values above 68 are generally understood to represent above-average usability.
 
-#### Behavioral Control Survey
+#### Behavioral Control Survey {#sec-bcs}
 
 The final instrument completed during the intake process was the Adult ADHD Self-Report Scale (ASRSv1.1). Referred to simply as a *Behavioral Control Survey* (BCS) in order to avoid the possibility of biasing participant responses, the data collected are the focus of a separate study and not further discussed in this work.
 
@@ -397,7 +397,7 @@ TODO: cite ADHD instrument and VB's poster
 
 The first session of the study tested its primary research questions in two phases, as described below.
 
-#### Learning Phase
+#### Learning Phase {#sec-learning}
 
 Phase one, Learning, compared the effects of the assigned treatment on the speed (task completion time) and accuracy (number and type of corrected and uncorrected errors) with which participants performed each repetition of the task. These measures, tracked for each assembly during the 10-minute session, were later used to assess both the learning rate and depth of skill acquisition. This approach offers insights into how efficiently and effectively each treatment imparts necessary skills and knowledge for the task.
 
@@ -409,7 +409,7 @@ The fixed duration of 10-minutes was deliberately chosen to align with various a
 
 A 10-minute timeline was chosen based on prior experience with learning curves for the task. The Lean Lab is designed around a 60-second takt time, which constrains the work content for experienced operators at each station. Before training, the time to complete these tasks varies widely. Our expectation was that participants would typically complete between three and six cars during their 10-minute session, but any individual participant might complete only one or as many as ten cars.
 
-#### Recall Phase
+#### Recall Phase {#sec-recall}
 
 The second phase was designed to assess the residual effects of the instructional treatment on each participant's ability to perform the task correctly and efficiently. The assembly task was repeated four times in the control condition, and the same measures were recorded.
 
@@ -439,7 +439,7 @@ The TLX and SUS instruments were both administered twice during this session, on
 
 The PIF, BCS, and a trial run of the TLX were also administered during the intake process of this session. Finally, during the exit interview, general feedback was collected. All of this is detailed in @sec-conduct1.
 
-### Second Session - Retention
+### Second Session - Retention {#sec-retention}
 
 The second session took place several weeks after the learning and recall experiments, as part of an [end of study event](#comp-event). Participation was optional and open to all prior subjects. The interval between the original intervention and this session varied for each participant. This variable time gap, which could range from one to 11 weeks, will be a consideration during analysis.
 
@@ -462,7 +462,7 @@ TODO: write intro for sysdev section
 Of the HMDAR systems commercially available in 2021, when the precursor to this study began, only the HL2 was well-suited for enterprise applications, including manufacturing. Originally released for that market in 2019, the HL2's distinguishing features are tabulated in @tbl-hl2, below.
 
 | Feature               | Description                                                                                                                                                                                                                                                                                                                                                         |
-|-----------------------|-------------------------------------------------|
+|-------------------------|-----------------------------------------------|
 | Natural Field of View | The HL2 is an optical-see-through system (OST) where its display is overlayed on the user's normal view of the world. Its optical design provides a wide and minimally obstructed field of view (FOV), giving a natural and safe user experience. The HL2 also can be used with glasses and features a unique, flip-up design that eliminates the device from view. |
 | Hands-free use        | The HL2 relies entirely on natural inputs - gestures and voice controls - rather than physical input devices like tablets or game-style controllers. This leaves operators free to use their hands for their required tasks.                                                                                                                                        |
 | Untethered            | The HL2 is a stand alone design with integrated power and compute. This eliminates the need for power or data connections that can encumber users, limit their motion, and introduce tripping hazards.                                                                                                                                                              |
@@ -703,9 +703,9 @@ LeoCAD's design adheres to LEGO design principles, ensuring that the way parts a
 @fig-leocad-a is a screenshot of the LeoCAD interface, highlighting some of its capabilities. Both LDraw and LeoCAD are unofficial, open source, community run, multi-platform tools that are free to use.
 
 ::: {#fig-leocad layout-ncol="2"}
-![LeoCAD Interface Screenshot](images/24-LeoCAD.png){#fig-leocad-a}
+![LeoCAD Interface Screenshot](images/24-LeoCAD.png){#fig-leocad-a width="95%"}
 
-![Model Target Constructed in LeoCAD](images/24-ModelTarget.png){#fig-leocad-b}
+![Model Target Constructed in LeoCAD](images/24-ModelTarget.png){#fig-leocad-b width="95%"}
 
 LeoCAD UI and Model Target
 :::
@@ -732,6 +732,7 @@ TODO: elaborate on list of development challenges and/or convert into narrative
 -   The build times for step four can be quite disruptive; donning / doffing
 -   Managing and optimizing for the computational constraints of the HL2.
 -   Balancing fidelity and performance in the model and area-based tracking.
+-   area tracking sensitive to changes in the configuration of the workstation
 
 ## Participants
 
@@ -878,56 +879,131 @@ During the post-experiment debriefing all participants were asked about injury a
 
 ## Conduct of First Session {#sec-conduct1}
 
-This section will describe the operational details for conducting the protocol in the first session, including the learning and recall phases.
+This section will describe key operational details for conducting the first session protocol, including the learning and recall experiments. For more information, see [Appendix C - Detailed Conduct](#app-conduct).
 
-### Session Preparation
+### Division of Labor
 
-Trial Preparation
-Steps taken to prepare for each trial (e.g., equipment setup, calibration)
-Pre-trial checks or procedures to ensure readiness
+The approach detailed herein was designed for three roles, referred to as the primary, secondary, and tech. The role of the primary investigator (PI) was always played by the author.[^24-methods-30] The secondary investigator (SI) role was typically filled by his counterparts on collaborating studies. Finally, the tech support (TS) role was played by a member of the study's HL2 development team.
 
-### Session Process
+[^24-methods-30]: Except when he was quarantined for a week with COVID, during which PIs from collaborating studies generously substituted. The show must go on!
 
-#### Participant Intake
+The responsibilities of each role vary throughout the session as described below. All three roles were usually filled for each session, allowing for the most comfortable division of labor, but some trials were run effectively with fewer.
 
-Participant Onboarding
-Process of welcoming and orienting participants
-Explanation of informed consent procedures
-Description of any pre-experiment questionnaires or assessments
+### Start and End of Day Procedures
 
-Prior to the first session, each consented participant is required to complete a the Participant Intake Sheet, a trial run of the NASA TLX, and the Behavioral Control Survey.
+Daily preparation for the study involves careful setup across three roles. The PI ensures the schedule and trial documents are ready, workstations and PCs are prepared and operational, and camera equipment is correctly configured and tested. The SI handles the specifics of the trial setup, including treatment slates, car checks, and part inventories, while coordinating with additional support staff. TS focuses on maintaining the software, streaming setup, and hardware sanitation. Together, the team ensures a controlled environment ready for trials.
 
-In preparation for the study, participants were familiarized with the instrument through instruction and a trial run, as described in @sec-conduct1. This is in accordance with the experimental procedure outlined in the TLX instructions.
+![The Battle Wagon](images/24-BattleWagon.png){#fig-cart width="5in"}
 
-The experimental procedure outlined for the TLX recommends that participants are introduced to the instrument before using it for data collection. Accordingly, the intake process for this study includes a trial run of the TLX once the participant has been briefed on the instrument, read the provided *Subject Instructions*, and had their questions answered. In order to familiarize themselves with the instrument all participants were asked to complete it imagining they had just run a marathon. This exercise was chosen as it is easy for runners and non-runners to rate that imagined experience.
+The PI is also responsible for returning the lab it its original condition at the end of each day. Post-session procedures include resetting all cell two workstations, powering down equipment, cleaning and sanitizing the lab, turning off lights, and securing the premises. Additionally, batteries and memory cards are tended to, and consent forms securely stored. Both setup and tear-down were facilitated by the rolling cart adopted for this study (@fig-cart), affectionately known as the "battle wagon."
+
+### Workflow and Roles
+
+Workstations seven through nine are configured for the first session as seen in @fig-wssetup1. The numbered positions indicate the flow of work in process (WIP) through the system. Assemblies completed to the specifications of WS-7 begin at (1) and move, sequentially, to WS-8 (2). When a car is completed or retired there, it is moved to either the green (3a) or red tray (3b), respectively. WIP at (3a) and (3b) is promptly collected and moved to (4) for inspection. Video recording and HL2 performance are monitored via the PC and iPad represented. This figure is not to scale but does effectively convey the approach used.
+
+![Workstation Configuration for Session 1](images/24-Setup.svg){#fig-wssetup1 width="5in"}
+
+The flow of WIP is facilitated by the SI, who is responsible for collecting and inspecting finished assemblies, recording results, and related tasks. The PI is focused on interactions with the participant and recording observations about their performance. The TS manages the HL2 system and acts as a secondary observer. In addition to these primary duties, all team members collaborated effectively to ensure the successful conduct of this study. This division of labor is summarized in @tbl-resp.
+
+| Responsibility  | Description                                                                                                                                                                                               | Role |
+|----------------|---------------------------------------------|:---------:|
+| Workflow        | Facilitate the flow of work into and out of ST-8. Ensure that an inventory is available on ST-7 and promptly collect completed or rework items from ST-8.                                                 |  SI  |
+| Data Collection | Review all completed, retired, and incomplete assemblies. Record the number and type of errors for each, along with the steps completed if incomplete.                                                    |  SI  |
+| Documentation   | Photograph the starting setup and the final output with the trial card in frame. Get additional photos were required to document unexpected results.                                                      |  SI  |
+| Run HL2         | Manage operation of the HL2 for treatments and/or recording. Monitor the stream and recording. Troubleshoot as required.                                                                                  |  TS  |
+| Interact        | Lead all participant interactions.                                                                                                                                                                        |  PI  |
+| Observe         | Carefully observe the participant without disrupting their work. Intervene if required to correct unexpected behavior. Record interesting observations and insights. Respond to any work-stoppage events. |  PI  |
+
+: Primary Responsibilities, First Session {#tbl-resp .striped}
+
+### General Policies
+
+Except as otherwise noted, several policies are followed throughout the conduct of each session. Participants are encouraged to ask questions at any time. At each transition point, their understanding and readiness to proceed are confirmed. Discussion is allowed but limited and questions are answered but not embellished upon. Members of the research team are not allowed to prompt or otherwise instruct participants, except as specified. Overall, these policies were established to put participants at ease while maintaining a semi-formal tone and staying "on-script."
+
+### Session Procedure
+
+Following the initial setup, each session would proceed as follows.
+
+1.  Intake: welcome the participant, complete initial paperwork and instruments
+2.  Orientation: introduce the participant to the Lean Lab and their work area
+3.  Introduction: describe the general workflow at ST-7
+4.  Demo: demonstrate the assigned treatment at ST-8
+5.  HoloLens: introduce the participant to the HL2; don it and adjust fitment
+6.  Practice: have the participant practice using their assigned treatment
+7.  Learning Experiment: conduct the first experiment
+8.  Intermission: complete TLX and SUS for first experiment
+9.  Reset: prepare ST-8 for the second experiment
+10. Recall Experiment: conduct the second experiment
+11. Debrief: complete TLX and SUS for the second experiment; gather General Feedback
+12. Recycle: prepare ST-8 for the next participant
+
+#### Initial Setup
+
+To prepare for the first participant, the workstations cleared and configured as described above. Specifically, ten prebuilt assemblies
+
+#### Intake
+
+The intake process for each participant involved several key steps to ensure their comfort, understanding of the study, and proper collection of preliminary data.
+
+Each participant is greeted and welcomed into the conference room, where drinks and snacks are offered. After they are settled, the participant is talked through the consent document, which was previously supplied. Once any questions are answered, they are asked to acknowledge their understanding and acceptance of it, initial each page, and sign. The document is countersigned by the primary investigator and placed in a lockbox with other consent forms before proceeding.
+
+In accordance with the experimental procedure outlined in the [NASA TLX](#sec-tlx) instructions, all participants were familiarized with that instrument during the intake process. The primary investigator first introduces the TLX as a tool for workload assessment and briefly summarizes its design. The participant is then asked to read the provided *Subject Instructions*, after which their questions are answered. Finally, the participant is asked to complete a mock administration of the TLX for a hypothetical task, including both the *Sources of Workload Evaluation* and *Workload Rating Scales*. For this step they were asked to imagine they had just run a marathon, a task chosen for the high level of workload likely associated by all participants, regardless of running experience.
+
+Next, the participant provides a variety of demographic data on the [Participant Intake Form](#sec-pif) and self-reports behavioral data on the [Behavioral Control Survey](#sec-bcs). Finally, they are briefed on COVID protocols and emergency procedures.
+
+#### Orientation
+
+The participant is guided to the second work cell while receiving a brief summary of the lab's LEGO-based training methodology, which emphasizes real-world practices and efficient, high quality production. Importantly, they are made aware of the line's 60-second takt time and its implications. This description is read from a script to ensure consistent delivery of the information. Upon arrival at the second work cell, they are introduced to assisting members of the research team.
+
+#### Introduction
+
+At the second work cell, workstations seven and eight are identified. Before moving to ST-8, where the experiment is conducted, participants are introduced to the general assembly process at ST-7. They are shown how to interpret the paper work instructions and a few assembly steps are demonstrated. The PWI from ST-7 is used to limit exposure to the ST-8 task details.
+
+Then, a few rules and expectations are set related to dropped parts, correcting errors, breakage, and rework. It is also explained that the research team will only intervene in the event of an event that stops work.
+
+#### Demonstration
+
+The participant is led to ST-8 where they are informed of the assigned treatment. Interventions are briefly demonstrated to all those assigned, while members of the control group proceed to the next step. Each intervention is demonstrated in a manner similar to that used for the PWI at ST-7, with a focus on the treatment's operational details rather than the instructional content. Critically, all system controls, UI elements, and feedback mechanisms are explicitly described.
+
+The HMDAR and HMDMR treatments, whose output is invisible to observers, requires a different approach. One member of the research team performs the demo while another narrates the process. The HL2's output is simultaneously streamed to a nearby laptop on ST-9. This allows participants to observe the HL2 operations as they are described, from both real and virtual perspectives.
+
+#### HoloLens
+
+Participants are reminded that, for observation and recording purposes, they are required to wear the HL2 during the practice session and all subsequent experiments. Additionally, they are notified of a second camera, positioned to the left of ST-8 and adjusted to only capture the work area.
+
+Streaming is initiated on the HL2 before the participant is advised to don the device. Assistance is provided as necessary to ensure proper fit, after which the participant is asked to look at a reference point. If the streamed video centers on that target, it confirms that the wearer's line of sight aligns with the HL2's field of view.
+
+#### Practice
+
+Participants are instructed to engage in a brief practice session during which they assemble the first four bricks according to the provided instructions. This task is designed to ensure their operational understanding of the instructional treatment, while deliberately avoiding undesirable task training.
 
 #### Learning Experiment
 
-Trial Process
-Step-by-step breakdown of how each trial was conducted
-Description of the tasks participants performed
-Explanation of how instructions were provided and how participant queries were handled
+The assigned task, timeline, and priorities (as outlined in @sec-learning) are described, along with how each workpiece flows through the station. Recording is then initiated on both cameras and participants are asked to view the treatment slate (see @fig-slate) while recording and alignment are re-checked. This also serves to mark the start of both videos with essential details that might help avoid confusion later. A 10-minute timer in view of the participant and both cameras is initiated when the experiment begins.
 
-Data Collection and Management
-Description of how data was collected during the trials
-Information on data recording equipment and techniques
-Explanation of how data was stored, managed, and protected
+![Laminated Treatment Slate](images/24-TrialSlate.png){#fig-slate width="5in"}
+
+TODO: add setup / process photo?
+
+During the experiment each workpiece is picked from ST-7 and assembled on ST-8 before being placed in the green "out" box to the right of the work area. In the event of breakage that the participant considers irrecoverable, the workpiece(s) would instead be placed in the adjacent red "rework" box.
+
+TODO: add sample start / finish photos to document process?
+
+> Data Collection and Management Description of how data was collected during the trials Information on data recording equipment and techniques Explanation of how data was stored, managed, and protected
 
 #### Intermission
 
+#### Reset
+
 #### Recall Experiment
 
-#### Debriefing
+#### Debrief
 
-Debriefing and Participant Feedback
-Explanation of the debriefing process post-trial
-How participant feedback was collected and utilized
+Debriefing and Participant Feedback Explanation of the debriefing process post-trial How participant feedback was collected and utilized
 
-### Post-Session Procedures
+#### Recycle
 
-Post-Trial Procedures
-Description of post-trial activities (e.g., equipment teardown, data backup)
-Follow-up procedures with participants if applicable
+Reset for next participant
 
 ## Conduct of Second Session {#sec-conduct2}
 
@@ -937,10 +1013,7 @@ This section will describe the operational details for conducting the protocol i
 
 ### Personnel and Certifications
 
-Personnel and Certifications
-Description of the team involved in conducting the trials
-Specific roles and responsibilities of each team member
-Relevant certifications or training completed by personnel (e.g., ethics training, safety certifications)
+Personnel and Certifications Description of the team involved in conducting the trials Specific roles and responsibilities of each team member Relevant certifications or training completed by personnel (e.g., ethics training, safety certifications)
 
 -   all personnel involved in the experiment were CITI certified
 
@@ -960,33 +1033,35 @@ Including this information in the methods section, rather than in the results se
 
 ### Trial Schedule
 
-Trial Schedule
-Details on the overall timeline of the study
-Specific days and times when trials were conducted
-Any variations or adjustments made to the schedule and reasons for these changes
+Trial Schedule Details on the overall timeline of the study Specific days and times when trials were conducted Any variations or adjustments made to the schedule and reasons for these changes
+
+-   duration
+-   weekly Update available signups
+-   Print SignUpGenius (SUG) participant schedule / details for the week
+-   Compile list of upcoming treatments
+-   Check SUG staff schedule and send requests as necessary
 
 ### Location
 
--   Data collection will take place at the Lean Lab in the basement of the Shelby Center for Engineering Technology, room 0317, located at 345 W Magnolia Ave, Auburn, AL  36849
+-   Data collection will take place at the Lean Lab in the basement of the Shelby Center for Engineering Technology, room 0317, located at 345 W Magnolia Ave, Auburn, AL 36849
 
 ### Safety Measures and Contingencies
 
-Description of safety protocols and measures in place
-Explanation of how unexpected events or emergencies were handled
-Details on any contingency plans used during the study
+Description of safety protocols and measures in place Explanation of how unexpected events or emergencies were handled Details on any contingency plans used during the study
+
+wipe down surfaces, etc. wipe down HL2 between users
 
 ### Quality Assurance and Protocol Adherence
 
-Quality Assurance and Protocol Adherence
-Measures taken to ensure consistency and quality across trials
-Strategies used to monitor and maintain adherence to the protocol
+Quality Assurance and Protocol Adherence Measures taken to ensure consistency and quality across trials Strategies used to monitor and maintain adherence to the protocol
 
 ### Challenges and Modifications
 
 better suited to results?
 
-Discussion of any challenges encountered during the conduct of the protocol
-Modifications made to the protocol in response to these challenges
+Discussion of any challenges encountered during the conduct of the protocol Modifications made to the protocol in response to these challenges
+
+demoing AR/MR: The challenge of this choreography was compounded by significant latency in streamed video, which lagged the live action by approximately 2 seconds. With practice
 
 ## Data Analysis {#sec-analysis}
 
@@ -1013,6 +1088,7 @@ TODO: elaborate on list of study limitations and/or convert into narrative
 -   few participants assigned HMDMR took advantage of the affordance
 -   does not account for interactions between affordances
 -   learning effect (training, etc.)
+-   orientation doesn't precisely control for learning across treatments, e.g. PAR, AR/MR all introduce the treatment using ST-8 instructions (in addition to ST-7), where PWI gets only ST-7 and no prior training with ST-8
 
 ## Summary
 
