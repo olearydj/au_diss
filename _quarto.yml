@@ -26,11 +26,13 @@ book:
     - 24-methods.qmd
     - 25-results.qmd
     - 26-conclusions.qmd
-    - 27-references.qmd
+    - 27-colophon.qmd
+    - 28-references.qmd
   appendices:
     - 31-irb.qmd
     - 32-contributions.qmd
-    - 33-conduct.qmd
+    - 33-s1conduct.qmd
+    - 34-s2conduct.qmd
 
 bibliography: references.bib
 # csl: "csl/apa7-single-spaced.csl"  # no obvious difference in HTML output

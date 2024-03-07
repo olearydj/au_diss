@@ -373,7 +373,7 @@ TODO: cite Likert?
 
 The results of the TLX are expected to provide insight into the overall user experience for each treatment, along with how workload varies across treatments and what underlying factors contribute to both. This will aid in contextualizing the positive or negative influence that workload might have on learning outcomes.
 
-#### System Usability Scale (SUS)
+#### System Usability Scale (SUS) {#sec-sus}
 
 TODO: add SUS and citation to LR
 
@@ -415,7 +415,7 @@ The second phase was designed to assess the residual effects of the instructiona
 
 Participants were given three priorities: (1) deliver error-free results, (2) reference the work instructions only if necessary, and (3) work quickly. This emphasized working from memory with expectations appropriate for an operator in training. Although participants were encouraged to work quickly, no time limit was set to ensure each produced four complete assemblies.
 
-#### First Session Data Collection
+#### First Session Data Collection {#sec-s1data}
 
 Manual data collection was limited during the learning and recall experiments. Each assembly was reviewed for correctness and the number and types of uncorrected errors were recorded on the appropriate data sheet. For incomplete (time expired) or retired (breakage requiring rework) assemblies, the final part count was also recorded.
 
@@ -429,7 +429,7 @@ The majority of the data was collected from photographs and video recordings. Fo
 Side Camera Setup
 :::
 
-Photos were also taken to provide a detailed, high-quality record of the results for each experiment, complementing the video data. This is exemplified by @fig-resphoto, which shows that participant #1053 completed three cars in the learning phase. The 4^th^ car pictured here is rotated to indicate that it was incomplete or retired when time expired. Participant cards are included in these photos to easily embed essential metadata.
+Photos were also taken to provide a detailed, high-quality record of the results for each experiment, complementing the video data. This is exemplified by @fig-resphoto, which shows that participant #1053 completed three cars in the learning phase. The 4^th^ car pictured here is rotated to indicate that it was incomplete or retired when time expired. Laminated treatment slates are included in these photos to easily embed essential metadata.
 
 ![Sample Learning Result Photo](images/24-ResPhoto.png){#fig-resphoto width="5in"}
 
@@ -441,13 +441,17 @@ The PIF, BCS, and a trial run of the TLX were also administered during the intak
 
 ### Second Session - Retention {#sec-retention}
 
-The second session took place several weeks after the learning and recall experiments, as part of an [end of study event](#comp-event). Participation was optional and open to all prior subjects. The interval between the original intervention and this session varied for each participant. This variable time gap, which could range from one to 11 weeks, will be a consideration during analysis.
+The second session took place in the Lean Lab several weeks after the learning and recall experiments, as part of an [end of study event](#comp-event). All prior participants were invited to attend. In order to address confidentiality concerns that might arise due to the public nature of this event, attendance was entirely voluntary.
 
-This experiment was designed to assess longer-term benefits of the original intervention. Each participant was asked to build a single car from memory, without additional instruction. They were asked to prioritize (1) complete the assembly correctly and (2) finish within the station takt time of 60 seconds. Again, no time limit was set in order to ensure each trial could a complete assembly.
+Based on the number of trials in the first session, the maximum anticipated turnout during this 4-hour event was 40. That suggested a traffic rate of 10 to 15 participants per hour, implying a conservative maximum duration of 3 minutes per trial. This necessarily limited the scope and complexity of the experiment.
 
-#### Second Session Data Collection
+This experiment was designed to assess longer-term benefits of the original intervention. Each participant was asked to build a single car from memory, without additional instruction. They were asked to prioritize (1) completing the assembly correctly and (2) finish within the station takt time of 60 seconds. Task completion time was collected, but a generous 2-minute time limit was imposed in the interest of expediency. Compensation was awarded as described in @sec-comp.
 
-As in the first session, the emphasis was on minimizing the amount of manual data collection required. Each trial was recorded using a compact forehead-mounted video camera. The completed car was also photographed, ensuring that the observed data and finishing time were visible in the frame.
+The interval between the original intervention and this session varied for each participant. This variable time gap, which could range from one to 11 weeks, will be a consideration during analysis.
+
+#### Second Session Data Collection {#sec-s2data}
+
+As in the first session, the emphasis was on minimizing the amount of manual data collection required. Each trial was recorded using a compact forehead-mounted video camera. Task completion time and error count, along with any essential observations, were documented. The completed car was also photographed, ensuring that the timer and notes were visible in the frame.
 
 ![Sample Retention Result Photo](images/24-RetentionRes.png){width="5in"}
 
@@ -762,7 +766,7 @@ Any instructor promoting these studies to their students was free to provide ext
 
 At the conclusion of the main study, all participants were invited to return to the lab for an "open house" event. This gave them the opportunity to experience other treatments and related technologies, and learn more about the experiment and lab. Food and drink were provided. In exchange, we asked all attendees to participate in a brief retention experiment. Attendance and participation were voluntary.
 
-#### Compensation
+#### Compensation {#sec-comp}
 
 The possibility of financial compensation was introduced in the final IRB Modification, submitted April 3, 2023. Following its approval on April 10, we began promoting this retroactive benefit. All participants in the main study were eligible for one of three random drawings. Those that attended the end of study open house qualified for additional awards, as outlined in @tbl-comp.
 
@@ -828,9 +832,11 @@ Python 3.x Code for Treatment Randomization
 
 ## Research Compliance
 
+As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. This section will describe that process, and detail considerations related to consent, privacy, security, and risks / discomforts identified.
+
 ### Institutional Review Board
 
-As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-29]
+An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-29]
 
 [^24-methods-29]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
 
@@ -879,7 +885,9 @@ During the post-experiment debriefing all participants were asked about injury a
 
 ## Conduct of First Session {#sec-conduct1}
 
-This section will describe key operational details for conducting the first session protocol, including the learning and recall experiments. For more information, see [Appendix C - Detailed Conduct](#app-conduct).
+This section will describe key operational details for conducting the first session protocol, including the learning and recall experiments. For more information, see [Appendix C - Session 1 Conduct](#app-s1conduct).
+
+The conduct of this study was designed to ensure participants felt comfortable and understood the tasks, while also aiming for valid results and thorough data collection. The approach balanced a need for clear procedures and ethical integrity with the flexibility required to adapt to individual participant needs.
 
 ### Division of Labor
 
@@ -897,26 +905,41 @@ Daily preparation for the study involves careful setup across three roles. The P
 
 The PI is also responsible for returning the lab it its original condition at the end of each day. Post-session procedures include resetting all cell two workstations, powering down equipment, cleaning and sanitizing the lab, turning off lights, and securing the premises. Additionally, batteries and memory cards are tended to, and consent forms securely stored. Both setup and tear-down were facilitated by the rolling cart adopted for this study (@fig-cart), affectionately known as the "battle wagon."
 
-### Workflow and Roles
+### Workflow and Roles {#sec-workflow}
 
-Workstations seven through nine are configured for the first session as seen in @fig-wssetup1. The numbered positions indicate the flow of work in process (WIP) through the system. Assemblies completed to the specifications of WS-7 begin at (1) and move, sequentially, to WS-8 (2). When a car is completed or retired there, it is moved to either the green (3a) or red tray (3b), respectively. WIP at (3a) and (3b) is promptly collected and moved to (4) for inspection. Video recording and HL2 performance are monitored via the PC and iPad represented. This figure is not to scale but does effectively convey the approach used.
+Workstations seven through nine are configured for the first session as seen in @fig-wssetup1. The numbered positions indicate the flow of work in process (WIP) through the system. Assemblies begin at (1) and move, sequentially, to WS-8 (2). When a car is completed or retired (due to breakage considered irreparable by the participant), it is moved to either the green (3a) or red tray (3b), respectively. WIP at (3a) and (3b) is promptly collected and moved to (4) for inspection, after which they are moved to the results tray (not represented). Video recording and HL2 performance are monitored via the PC and iPad represented. This figure is not to scale but does effectively convey the approach used.
 
 ![Workstation Configuration for Session 1](images/24-Setup.svg){#fig-wssetup1 width="5in"}
 
 The flow of WIP is facilitated by the SI, who is responsible for collecting and inspecting finished assemblies, recording results, and related tasks. The PI is focused on interactions with the participant and recording observations about their performance. The TS manages the HL2 system and acts as a secondary observer. In addition to these primary duties, all team members collaborated effectively to ensure the successful conduct of this study. This division of labor is summarized in @tbl-resp.
 
-| Responsibility  | Description                                                                                                                                                                                               | Role |
-|----------------|---------------------------------------------|:---------:|
-| Workflow        | Facilitate the flow of work into and out of ST-8. Ensure that an inventory is available on ST-7 and promptly collect completed or rework items from ST-8.                                                 |  SI  |
-| Data Collection | Review all completed, retired, and incomplete assemblies. Record the number and type of errors for each, along with the steps completed if incomplete.                                                    |  SI  |
-| Documentation   | Photograph the starting setup and the final output with the trial card in frame. Get additional photos were required to document unexpected results.                                                      |  SI  |
-| Run HL2         | Manage operation of the HL2 for treatments and/or recording. Monitor the stream and recording. Troubleshoot as required.                                                                                  |  TS  |
-| Interact        | Lead all participant interactions.                                                                                                                                                                        |  PI  |
-| Observe         | Carefully observe the participant without disrupting their work. Intervene if required to correct unexpected behavior. Record interesting observations and insights. Respond to any work-stoppage events. |  PI  |
+| Responsibility  | Description                                                                                                                                                                                               |  Role   |
+|----------------|----------------------------------------------|:---------:|
+| Workflow        | Facilitate the flow of work into and out of ST-8. Ensure that an inventory is available on ST-7 and promptly collect completed or rework items from ST-8.                                                 |   SI    |
+| Data Collection | Review all completed, retired, and incomplete assemblies. Record the number and type of errors for each, along with the steps completed if incomplete.                                                    |   SI    |
+| Documentation   | Photograph the starting setup and the final output with the trial card in frame. Get additional photos were required to document unexpected results.                                                      |   SI    |
+| Run HL2         | Manage operation of the HL2 for treatments and/or recording. Monitor the stream and recording. Troubleshoot as required.                                                                                  |   TS    |
+| Interact        | Lead all participant interactions.                                                                                                                                                                        |   PI    |
+| Observe         | Carefully observe the participant without disrupting their work. Intervene if required to correct unexpected behavior. Record interesting observations and insights. Respond to any work-stoppage events. |   PI    |
+| Recycle         | Prepare work area for next experiment or participant. Disassemble ST-8 complete cars to ST-7 state and verify. Maintain bin inventory, reset recording devices and HL2.                                   | SI & TS |
 
 : Primary Responsibilities, First Session {#tbl-resp .striped}
 
-### General Policies
+At the start of each day, ST-7 through 9 are cleared and configured as described above. Ten pre-built assemblies are positioned to the participant's left, at position (1). The construction of all ST-7 inventory is carefully verified against ST-7 standards, as pictured in @fig-st8wip, to ensure an accurate starting point for all ST-8 tasks. A completed ST-8 assembly is also pictured for comparison.
+
+::: {#fig-st8wip layout-ncol="2"}
+![ST-7 Complete Assembly](images/24-ST8Start.png){#fig-st8wip-a width="95%"}
+
+![ST-8 Complete Assembly](images/24-ST8End.png){#fig-st8wip-b width="95%"}
+
+Start and End Configurations for ST-8 Assemblies
+:::
+
+TODO: replace ST8 start and end images with photos?
+
+TODO: fixture blue
+
+### General Policies {#sec-genpol}
 
 Except as otherwise noted, several policies are followed throughout the conduct of each session. Participants are encouraged to ask questions at any time. At each transition point, their understanding and readiness to proceed are confirmed. Discussion is allowed but limited and questions are answered but not embellished upon. Members of the research team are not allowed to prompt or otherwise instruct participants, except as specified. Overall, these policies were established to put participants at ease while maintaining a semi-formal tone and staying "on-script."
 
@@ -937,13 +960,7 @@ Following the initial setup, each session would proceed as follows.
 11. Debrief: complete TLX and SUS for the second experiment; gather General Feedback
 12. Recycle: prepare ST-8 for the next participant
 
-#### Initial Setup
-
-To prepare for the first participant, the workstations cleared and configured as described above. Specifically, ten prebuilt assemblies
-
 #### Intake
-
-The intake process for each participant involved several key steps to ensure their comfort, understanding of the study, and proper collection of preliminary data.
 
 Each participant is greeted and welcomed into the conference room, where drinks and snacks are offered. After they are settled, the participant is talked through the consent document, which was previously supplied. Once any questions are answered, they are asked to acknowledge their understanding and acceptance of it, initial each page, and sign. The document is countersigned by the primary investigator and placed in a lockbox with other consent forms before proceeding.
 
@@ -979,35 +996,67 @@ Participants are instructed to engage in a brief practice session during which t
 
 #### Learning Experiment
 
-The assigned task, timeline, and priorities (as outlined in @sec-learning) are described, along with how each workpiece flows through the station. Recording is then initiated on both cameras and participants are asked to view the treatment slate (see @fig-slate) while recording and alignment are re-checked. This also serves to mark the start of both videos with essential details that might help avoid confusion later. A 10-minute timer in view of the participant and both cameras is initiated when the experiment begins.
+The assigned task, timeline, priorities (as outlined in @sec-learning), and workflow (as outlined in @sec-workflow) are described. Recording is then initiated on both cameras and participants are asked to view the treatment slate (see @fig-slate) while recording and alignment are re-checked. This also serves to mark the start of both videos with essential details that might help avoid confusion later. A 10-minute timer in view of the participant and both cameras is initiated, and they begin building with the aid of their IMT. Data is collected during the experiment as described in @sec-s1data.
 
 ![Laminated Treatment Slate](images/24-TrialSlate.png){#fig-slate width="5in"}
 
-TODO: add setup / process photo?
+#### Intermission and Reset
 
-During the experiment each workpiece is picked from ST-7 and assembled on ST-8 before being placed in the green "out" box to the right of the work area. In the event of breakage that the participant considers irrecoverable, the workpiece(s) would instead be placed in the adjacent red "rework" box.
+At the conclusion of the first experiment recordings are stopped and the participant is asked to remove the HL2. Then they are escorted back to the conference room, where they are asked to complete the [TLX](#sec-tlx) and [SUS](#sec-sus) based on their experience.
 
-TODO: add sample start / finish photos to document process?
+During this intermission, the research team records the learning results and resets the workstation for the next experiment. Four pre-built assemblies are put into inventory at ST-7, and any models built in the previous experiment are recycled to that standard. Photos of the results tray and reset inventory are taken to document the process and results.
 
-> Data Collection and Management Description of how data was collected during the trials Information on data recording equipment and techniques Explanation of how data was stored, managed, and protected
+::: {#fig-st8docs layout-ncol="2"}
+![Results Tray](images/24-ST8LearnResults.png){#fig-st8docs-a width="100%"}
 
-#### Intermission
+![Recall Setup](images/24-ST8RecallSetup.png){#fig-st8docs-b width="100%"}
 
-#### Reset
+Documenting Results and Setup
+:::
 
 #### Recall Experiment
 
+The second experiment is conducted in the same manner as before. No timer or intervention is used, and the instructions / priorities are altered, per @sec-recall. Otherwise, the procedure is identical. This experiment concludes when four cars are completed.
+
 #### Debrief
 
-Debriefing and Participant Feedback Explanation of the debriefing process post-trial How participant feedback was collected and utilized
+Following the second experiment the participant is led back to the conference room for the accompanying round of the TLX and SUS. Finally, the PI solicits any additional feedback the participant is willing to offer. For those that require prompting, the PI can refer to a list of standard topics. All participants are asked if they experienced injury or discomfort during the session. Feedback and responses are recorded on the General Feedback Sheet. Finally, the participant is thanked for their time and escorted to the exit.
 
 #### Recycle
 
-Reset for next participant
+During the debrief, the research team records the recall results, resets the workstation for the next participant, and documents both with photographs.
 
 ## Conduct of Second Session {#sec-conduct2}
 
-This section will describe the operational details for conducting the protocol in the second session, which focused on retention.
+This section will describe key operational details for the retention assessment, which was conducted during the end of study event. As described in @sec-retention, the scope and complexity of these trials was limited by expected traffic at the event. This also necessitated different signup procedures, lab arrangement, workflow, and staffing, all of which are described below.
+
+For additional details on the conduct of these trials, refer to [Appendix D](#app-s2conduct), where the step-by-step script used to conduct them is included.
+
+### Signup
+
+The signup process was again managed by SignUpGenius, making it easy for the research team and invitees alike. The system was configured to help even out the flow of arrivals, preventing a backlog and keeping the event well attended throughout the day.
+
+Twelve different start times were offered, one every 15-minutes between noon and 3:15pm. Up to five people could sign up for any start time, allowing for up to 60 total signups. Since we expected fewer, this ensured some flexibility in start times for those interested in attending. Though start times were set, all attendees were free to stay as long as they liked.
+
+### Setup and Traffic Flow
+
+Prior to the event, the Lean Lab was arranged as depicted in @fig-party. Ongoing demonstrations for attendees would require the LG system at ST-8. Consequently, the retention experiment was relocated to ST-3, a similarly configured workstation in work cell \#1. This choice ensured that the experience at ST-3 would most closely mimic ST-8, thus controlling for the effects of the change.
+
+![Party Plan](images/24-PartyPlan.svg){#fig-party}
+
+Experiments and demos from the collaborating study were conducted at ST-5 and 10, respectively.
+
+### Workflow and Roles
+
+Before entering, attendees would register at (1), where they were given the appropriate data sheet and welcomed inside. Seating was provided at (3) to handle the queue of attendees waiting for their trial. Partitions placed at (2) obscured their view of the ongoing experiments and demos. This provided privacy and prevented re-exposure to the instructional material. As each retention trial concluded participants were led, in order of arrival, to ST-3. Those finishing were thanked and informed of the food and available educational / entertainment options.
+
+Volunteers from both studies were responsible for directing attendees through registration process, through the queue to their assigned experiment, and onto the activities that followed. The [general policies](sec-genpol) set forth in the first session were again applied.
+
+At the end of the day the lab was cleaned and restored to its normal operating state.
+
+### Session Procedure
+
+Participants were asked to complete the ST-8 task for one car, from memory, without reference (e.g. paper work instructions). Data was efficiently collected with a single video camera, timer, and photos. With this approach, only a single research associate (RA) was required to direct and document the trial. An additional volunteer was responsible for recycling the inventory of assemblies.
 
 ## Administration of Protocol
 
