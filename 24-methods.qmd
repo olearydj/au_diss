@@ -1042,7 +1042,7 @@ Twelve different start times were offered, one every 15-minutes between noon and
 
 Prior to the event, the Lean Lab was arranged as depicted in @fig-party. Ongoing demonstrations for attendees would require the LG system at ST-8. Consequently, the retention experiment was relocated to ST-3, a similarly configured workstation in work cell \#1. This choice ensured that the experience at ST-3 would most closely mimic ST-8, thus controlling for the effects of the change.
 
-![Party Plan](images/24-PartyPlan.svg){#fig-party}
+![Lab Arrangement for Second Session](images/24-PartyPlan.svg){#fig-party}
 
 Experiments and demos from the collaborating study were conducted at ST-5 and 10, respectively.
 

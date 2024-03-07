@@ -12,7 +12,7 @@ But AR remains a highly fragmented market, including a diverse selection of scre
 
 This investigation extends prior work [@havard2021case] to explore the relationship between a variety of AR technologies and their underlying affordances [@parsons2021curre] and learning outcomes for manufacturing assembly operations. By controlling for the task type and application design we hope to better understand the relative value of these systems, filling in important gaps that can lead to a cohesive framework for successful adoption.
 
-TODO: PROBLEM, PURPOSE, RQs
+TODO: add problem, purpose, research questions; summary of conclusions(?) to introduction
 
 The balance of this first chapter provides a thorough background of the historical, contextual, technological, theoretical, ergonomic, and biopsychosocial considerations related to augmented, mixed, and virtual reality. Chapter 2 provides a review of literature relevant to the applications of this technology, the readiness of each market, barriers to adoption and methods proposed to overcome them, and assessment tools. Based on the gaps identified in the literature, Chapter 3 identifies the central problem of this research and its three contributions. The experimental methods are detailed in Chapter 4, and results follow in Chapter 5. Finally, we conclude this work by summarizing the key findings, stating the limitations of this work, and identifying opportunities for future research.
 

@@ -3,6 +3,8 @@
 \hypertarget{abstract}{\chapter*{Abstract}\label{abstract}}
 \addcontentsline{toc}{chapter}{Abstract}
 
+TODO: update and finalize the abstract
+
 This research rigorously assesses the effectiveness of distinct augmented instructional techniques within the framework of contemporary manufacturing training methods. A cohort of 62 participants, with varying prior exposures to assembly tasks but no prior experience with augmented or mixed reality, engaged in a simulated car assembly task at the Tiger Motors Lean Education Lab. Participants were introduced to different instructional methods: traditional Paper Work Instructions (PWI), Projected Augmented Reality (PAR), head-mounted Augmented Reality (HMDAR), and head-mounted Mixed Reality (HMDMR). For the purposes of this study, HMDAR and HMDMR are differentiated by the participant's freedom to manipulate the workpiece while augmentations remain aligned. HMDMR adds model-based tracking methods that allow the participant to manipulate the workpiece, while all other treatments require it to remain in a fixture.
 
 Primary performance metrics were carefully documented, including task duration, error rates, and error classifications, providing insights into learning progression and task proficiency. In the recall phase, participants were tasked to replicate the assembly four times, relying solely on PWI. Through video analysis, the frequency and duration of their references to the PWI were recorded, shedding light on the learning efficacy of each instructional method. Several weeks post-intervention, participants' retention—how adeptly and promptly they could reproduce the assembly—was assessed among a volunteer subset.

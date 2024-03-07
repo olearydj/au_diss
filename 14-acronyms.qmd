@@ -1,0 +1,24 @@
+\newpage
+
+\hypertarget{List of Acronyms}{\chapter*{List of Acronyms}\label{acronyms}}
+\addcontentsline{toc}{chapter}{List of Acronyms}
+
+
+TODO: add list of acronyms using glossaries package
+
+```latex
+\usepackage{glossaries}
+
+define acronyms somewhere, e.g.:
+\newacronym{ar}{AR}{Augmented Reality}
+\newacronym{hmdmr}{HMDMR}{Head-Mounted Mixed Reality}
+
+use them in text, e.g.:
+The study focuses on \gls{ar} and \gls{hmdmr}.
+
+first use will show full name and acronym. thereafter, always the acronym, with all instances hyperlinked back to the list
+
+generate the list here:
+\printglossaries
+```
+
