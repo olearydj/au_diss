@@ -10,6 +10,22 @@
 If a pilot study was conducted prior to the main study, provide details on its purpose, design, and outcomes, and how it informed the main study.
 :::
 
+### Challenges and Modifications
+
+better suited to results?
+
+Discussion of any challenges encountered during the conduct of the protocol Modifications made to the protocol in response to these challenges
+
+demoing AR/MR: The challenge of this choreography was compounded by significant latency in streamed video, which lagged the live action by approximately 2 seconds. With practice
+
+> Technical Issues with Equipment: Discussion of any technical challenges encountered with the HL2 or other devices, and how these were addressed.
+>
+> Participant Scheduling and No-Shows: Challenges related to participant scheduling, no-shows, or last-minute cancellations, and the strategies developed to mitigate these issues.
+>
+> Data Collection Consistency: Any issues encountered in maintaining consistency in data collection across different trials and days, and how these were resolved.
+
+## Other
+
 noticed improvising - discourage as occurs
 
 sleeves, long hair problems for HL2
