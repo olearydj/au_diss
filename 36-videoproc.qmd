@@ -1,0 +1,93 @@
+# Video Processing {#app-videoproc}
+
+Step-by-step instructions for processing video. Starts with individual clips (left side and HL2) and ends with 3-view synced video and annotation data.
+
+## Combine Videos in Filmora
+
+1. Rename their raw video files using the format *part number - phase - camera*.
+    1. Usually, there will be only four files, named as follows.
+        1. `PART#-learn-hl`
+        2. `PART#-learn-side`
+        3. `PART#-recall-hl`
+        4. `PART#-recall-side`
+    2. If the trial had to be restarted due to a crash, etc., additional files may exist. In that case, append the affected files with `-p1`, `-p2`, etc.
+2. Move the raw video files to `Research Master\raw_videos\PART#` on TBM.
+3. Use Filmora to build and export a combined video for the learn and recall phases. For each learn / recall phase repeat the following steps:
+    1. Project settings: 16:9 widescreen, 1920 x 1080 (Full HD), 30fps, SDR 709
+    2. Add the relevant raw video files to the project media folder.
+    3. Drag the clips onto the timeline **one at a time** to create the following video tracks:
+        1. Side camera footage, rot -90deg, ≈140% scale, positioned so that the right edge of the video snaps to the centerline of the video window, and the fixture is centered in the lower left quadrant. Crop right edge as necessary. Audio un-muted with denoise activated (mid).
+        2. Side camera footage, rot -90deg, scale 90%, snap right edge to center. Crop as necessary and recheck snap to center. Mute the audio.
+        3. HoloLens footage, scale 50%, snapped to the top left corner. Audio muted.
+        4. Check that all panels are properly aligned with expected overlap.
+    4. Save the Filmora project as *part number - Phase*, e.g. `1001-Learn`, in the participant's `videos` folder.
+    5. Match the action between track 2 and 3 as follows:
+        1. Find an event in track 3 (HL) that can be used to match action. Something that will be in view on both recordings, e.g. the last car placed or stopping the timer.
+        2. With the HL clip in track 3 selected, add a marker at that moment (M).
+        3. Find the matching moment in track 2 (side) and mark it in the same fashion.
+        4. Zoom in and slide the HL clip so the markers align.
+    6. Set the export region as follows:
+        1. Deselect all clips / tracks.
+        2. Move to a good starting point for the video. Click the scissors on the play head to cut all clips at that point.
+        3. Repeat this process at the end point.
+        4. Select a continuous track in the middle and Select Clip Range (X).
+    7. Preview the result before exporting.
+    8. Save the Filmora project.
+    9. With the clip range still selected, export the video to working folder (`desktop-export`) with the following settings:
+        1. Preset = Match to Project Settings
+        2. Format = MP4
+        3. Quality = Recommend (this will change the Preset to Custom)
+        4. Frame Rate = 30 fps
+        5. Enable HW acceleration ON
+        6. Upload to Cloud and Add to Project Media OFF
+        7. Check *Use last export settings for local* option after initial setup and save these settings as a preset for other projects.
+    10. Scrub through the resulting video to quickly check the result.
+
+## Recompress Using Handbrake
+
+1. Load the video in Handbrake.
+2. Check that the size is 1920 x 1080.
+3. Choose the preset Fast 720p30.
+4. Append `-hb` to the output filename. (or change settings for output naming)
+5. Compress the file.
+6. Check the result.
+7. Rename it and move it to the participant's `videos` folder.
+
+## Use Kyno to Annotate Events and Export Data
+
+1. Add a title and general notes about the trial in the Metadata panel.
+2. Use Markers (M) to annotate instant events. Press M once to place a marker and again to edit its name and description.
+3. Use In (I) and Out (O) points to annotate events with a time duration. Press I to set the in point and O to set the out point. Then press S to define a sub-clip based on those points. Press S again to edit its name and description.
+4. when annotating video, the two streams may not be perfectly synced and/or may drift apart due to dropped frames on the HL recording - use side cam for car related logging and HL cam for PWI / HL UI related logging to limit effect of lag on times recorded
+5. Annotations should include:
+	1. Markers
+		1. Breakage - car breaks during assembly
+		2. Defect - something wrong with the pre-built car
+		3. Bin - wrong part found in bin
+		4. Correction - participant notices an error and corrects it
+		5. Removal - participant uses removal tool
+		6. Slip - car slips on surface (MR - no fixture)
+		7. System - HL or PAR system issue, e.g. inadvertent HL menu
+		8. Crash - system not responsive, reset required
+		9. Stop - stop timer to pause trial
+		10. Restart - restart timer
+		11. Drop - UI dropped - area tracking?
+		12. Tracking - loss of model tracking
+		13. PWI - for glances at paper work instructions during Recall
+		14. Lean - participant leans in to get a closer look at PWI
+		15. Instruction - participant asks for clarification
+		16. Intervention - observer intervenes on trial
+	2. Sub-Clips
+		1. Car build start (releases car on work surface) and stop (releases car in green or red tray), with names formatted as `Car 1`. Include anything of note for each car in its description.
+		2. For cars that are not completed, use the following names instead:
+			1. Breakage - car was placed in the red tray for breakage
+			2. Defect - car was placed on the red tray for defect in prebuilt
+			3. Incomplete - ran out of time
+		3. For the Recall phase, PWI reference start and stop, with names formatted as `PWI 1` and notes as appropriate.
+			1. **Note: do not mark PWIs during defective cars?** see 1014
+		4. For any interruption in video, use `Video 1` with details.
+		5. Mark any extended repair in the format `Repair 1` with details
+		6. Mark time lost to UI drops and Tracking reset as `Drop` (area) or `Tracking` (model)
+		7. Mark time lost to system issues as `System` (obstruction) or `Crash` (reset required)
+		8. Use `Reset` to indicate the segment during which the video documents the system stop and restart. For clarity only as the timer should be stopped.
+6. After annotation is completed, use File \> Export \> Kyno XML to export it into the participant's `videos` folder.

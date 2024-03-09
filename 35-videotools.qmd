@@ -1,0 +1,60 @@
+# Video Tool Selection {#app-videotool}
+
+These informal notes were taken during the search for tool(s) to process and annotate video efficiently and export machine-readable metadata for those annotations.
+
+Looking for tools to build a workflow to:
+- trim and combine videos (split-screen)
+- export a small, high quality version
+- mark up the combined video with observed events using markers and sub-clips
+- export annotations with timecode
+
+Based on the following notes I chose a combination of Filmora, Handbrake, and Kyno.
+
+## Specialty Tools
+I identified several candidates but ultimately tried only one from this list:
+
+- Observer XT <https://www.noldus.com/observer-xt> - seems spendy and probably more full featured than required
+- BORIS <https://www.boris.unito.it/pages/features.html> - looks pretty good, free and open-source, actively maintained
+- Transana <https://www.transana.com> - affordable and full featured, may lean more towards transcripts than we need?
+- ChronoViz <https://chronoviz.com> - free, Mac only
+- ELAN <https://archive.mpi.nl/tla/elan> - free, open source, mult-platform; seems focused on linguistics
+- Anvil <http://www.anvil-software.de> - not updated since 2017
+- VideoTagger <http://www.anvil-software.de> - not updated since 2017
+
+### BORIS
+Designed for this kind of thing but clunky and overkill for the needs of this project. Windows only (for now). Supports mult-cam playback but difficult to sync. Workspace not saved.
+
+## Traditional Video Editors
+
+### Adobe Premiere Pro
+Steep learning curve with many unnecessary features.
+
+### Camtasia
+Easy to set up and synchronize videos. Poor playback controls. Big / slow exports. No support for sub-clips and limited metadata. No export of markup? Project files include all video - loads of storage required.
+
+Aside: lots of cool EdTech features - clearly their market.
+
+### iMovie
+Too limited.
+
+### Filmora
+Good balance of complexity and capability. Playback controls could be better but ticks the other boxes:
+
+- easy to set up split screen and sync tracks
+- reasonable export size
+- fair price (but shady subscription up-charges and bad purchase UX)
+- bonus: effective background noise reduction
+
+## Video Preproduction Tools
+
+### Adobe Prelude
+
+No longer available.
+
+### Kyno
+
+Designed for prepping clips for production. Streamlined single-track toolset for tagging and export. A sort of Lightroom for video. Great playback controls and metadata support, including a variety of export options (XML flavors, XLS). Metadata is kept in SQLite database, which complicates sharing, but the program can import XML. Does not touch source files. Lightweight. More capabilities than I need but very well suited pro tool that is reasonably priced.
+
+### Handbrake
+
+Much more efficient compression than the built-in tools above.

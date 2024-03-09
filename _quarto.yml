@@ -33,6 +33,9 @@ book:
     - 32-contributions.qmd
     - 33-s1conduct.qmd
     - 34-s2conduct.qmd
+    - 35-videotools.qmd
+    - 36-videoproc.qmd
+    - 37-datadict.qmd
 
 bibliography: references.bib
 # csl: "csl/apa7-single-spaced.csl"  # no obvious difference in HTML output

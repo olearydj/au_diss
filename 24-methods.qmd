@@ -419,7 +419,7 @@ Participants were given three priorities: (1) deliver error-free results, (2) re
 
 #### First Session Data Collection {#sec-s1data}
 
-Manual data collection was limited during the learning and recall experiments. Each assembly was reviewed for correctness and the number and types of uncorrected errors were recorded on the appropriate data sheet. It is important to note that only the correct type, location, and orientation of each brick is confirmed, and not how securely it is attached. For incomplete (time expired) or retired (breakage requiring rework) assemblies, the final part count was also recorded.
+Manual data collection was limited during the learning and recall experiments. Each assembly was reviewed for correctness and the number and types of uncorrected errors were recorded on the appropriate data sheet. For incomplete (time expired) or retired (breakage requiring rework) assemblies, the final part count was also recorded.
 
 The majority of the data was collected from photographs and video recordings. For each participant, both experiments were recorded on a pair of cameras. One, integrated into the HL2, provided a clear view of the process from the participant's perspective. The other camera was positioned and oriented to record the entire work area from the operator's left, as seen in @fig-sidecam.
 
@@ -468,7 +468,7 @@ TODO: write intro for sysdev section
 Of the HMDAR systems commercially available in 2021, when the precursor to this study began, only the HL2 was well-suited for enterprise applications, including manufacturing. Originally released for that market in 2019, the HL2's distinguishing features are tabulated in @tbl-hl2, below.
 
 | Feature               | Description                                                                                                                                                                                                                                                                                                                                                         |
-|---------------------|---------------------------------------------------|
+|-----------------------|------------------------------------------------|
 | Natural Field of View | The HL2 is an optical-see-through system (OST) where its display is overlayed on the user's normal view of the world. Its optical design provides a wide and minimally obstructed field of view (FOV), giving a natural and safe user experience. The HL2 also can be used with glasses and features a unique, flip-up design that eliminates the device from view. |
 | Hands-free use        | The HL2 relies entirely on natural inputs - gestures and voice controls - rather than physical input devices like tablets or game-style controllers. This leaves operators free to use their hands for their required tasks.                                                                                                                                        |
 | Untethered            | The HL2 is a stand alone design with integrated power and compute. This eliminates the need for power or data connections that can encumber users, limit their motion, and introduce tripping hazards.                                                                                                                                                              |
@@ -920,7 +920,7 @@ Workstations seven through nine are configured for the first session as seen in 
 The flow of WIP is facilitated by the SI, who is responsible for collecting and inspecting finished assemblies, recording results, and related tasks. The PI is focused on interactions with the participant and recording observations about their performance. The TS manages the HL2 system and acts as a secondary observer. In addition to these primary duties, all team members collaborated effectively to ensure the successful conduct of this study. This division of labor is summarized in @tbl-resp.
 
 | Responsibility  | Description                                                                                                                                                                                               |  Role   |
-|------------------|------------------------------------|:----------------:|
+|-------------------|----------------------------------|:-----------------:|
 | Workflow        | Facilitate the flow of work into and out of ST-8. Ensure that an inventory is available on ST-7 and promptly collect completed or rework items from ST-8.                                                 |   SI    |
 | Data Collection | Review all completed, retired, and incomplete assemblies. Record the number and type of errors for each, along with the steps completed if incomplete.                                                    |   SI    |
 | Documentation   | Photograph the starting setup and the final output with the trial card in frame. Get additional photos were required to document unexpected results.                                                      |   SI    |
@@ -1075,7 +1075,7 @@ The IRB that this research was conducted under approved two related but separate
 As a result, the final IRB listed 13 key personnel, as summarized in @tbl-team.
 
 | Type                | Description                                                                                                                  | Count |
-|-----------------|--------------------------------------|:---------------:|
+|-------------------|------------------------------------|:-----------------:|
 | Study PIs           | The Principal Investigators for all collaborating studies.                                                                   |   3   |
 | Faculty Members     | Members of related committees, for oversight and institutional stewardship.                                                  |   3   |
 | Research Assistants | Graduate (3) and undergraduate (1) student volunteers assisting with the conduct of experiments.                             |   4   |
@@ -1127,11 +1127,203 @@ Results recorded by the SI were routinely double-checked by the PI before being 
 
 Together, these measures helped ensure the quality of the data collected, thereby elevating the integrity of our findings.
 
+## Data Extraction {#sec-extraction}
+
+This section will describe the methods used to extract the data collected in instruments, data sheets, photographs, and video. All extraction processes were performed by the author on a 16" 2019 MacBook Pro (model A2141) with 2.3 GHz 8-Core Intel i9, 32GB of RAM, and an AMD Radeon Pro 5500M with 8GB, running MacOS 13.x. Before being archived, all original paper documentation was digitized using a Fujitsu ScanSnap iX1300 scanner and the included software.
+
+When extracting raw data from PDF sources, the only changes made were to label categorical values as described in the following sections. Otherwise, except where specifically noted, no changes were made to the data during transcription. Where no value was provided, "N/A" was used.
+
+Any data issues encountered were noted and marked for correction during the subsequent cleaning process. This approach allowed us to explicitly document required corrections in the code that made them, improving transparency and reproducibility. Finally, anything more involved than simple labeling, such as more sophisticated encoding (e.g. one-hot encoding) was left to the analysis phase, where computational methods would be employed to reduce the chance of error.
+
+### Instruments and Data Collection Sheets
+
+The contents of all digitized results were manually transcribed from the PDFs and collected in a single Excel workbook. Each instrument was given a separate tab, with each row representing a participant record. The results from both Data Collection Sheets were combined into a single tab, where each row recorded the outcome of a single assembly task.
+
+This process was straightforward except as described below. Complete details, including all categorical labels, can be found in [Appendix G - Data Dictionary](#app-datadict).
+
+#### Personal Information Form
+
+Fields in the PIF were a mix of numeric (e.g. age, height), nominal and ordinal categorical (e.g. gender, education level), datetime (e.g. the date and time of scheduled trial), and text values (e.g. notes). One change was made to the raw data for this form. Where participants that were known to be degree-seeking AU students incorrectly marked “High school degree or equivalent,” their status was changed to “Some college but no degree”.
+
+#### NASA TLX
+
+For each of the TLX's Sources of Workload comparisons, the response was labeled `1` or `2` for top and bottom choice, respectively. Columns were labeled `S1` through `S15`, corresponding to each of the 15 pairs shown in @fig-tlxsow, numbered left to right and top to bottom. For example, a value of `2` (bottom choice) for `S2` (Temporal Demand vs Frustration), corresponds to a user response of Frustration.
+
+Workload Ratings were similarly tabulated in columns `R1` through `R6`, as designated in Appendix G. They were scored as marked on the 100-point scale, with 5-point graduations. Any mark between graduations was rounded up, per the TLX instructions.
+
+The first five participants were incorrectly given a Likert-style scale with values from 1 to 7 and bipolar descriptors "Very Low" and "Very High." These were scored as indicated with a note to correct the values during analysis. The form was corrected for subsequent participants.
+
+Finally, some participants may have mistakenly scored their Performance Rating. While other factors employ a scale progressing from left to right, with descriptors ranging from Very Low to Very High, the Performance scale is labeled with Perfect and Failure at its endpoints, reflecting the inverse correlation between performance and perceived workload. Despite the consistency of a rightward increase in perceived workload for all factors, participants might erroneously associate higher ratings with enhanced performance. This issue is noted in the TLX instructions and explicitly pointed out to participants, but suspicious values appeared during the transcription process. We will investigate potential issues during the data cleaning stage.
+
+#### System Usability Scale
+
+Numeric responses (1-5) for all ten questions were transcribed as--is in columns `Q1` through `Q10`. Participant \#1058 realized they had scored themselves using a reversed scale during the first administration of the SUS. This was noted in the data, which was corrected during transcription.
+
+#### Data Collection Sheets
+
+Each row of the "Outcomes" tab contained the manually-recorded results for each attempted assembly task, i.e. a unique combination of participant number, experiment number, and car number. The number of uncorrected errors (UCE) was determined by inspection of each final assembly, verifying that the brick for each step was correctly selected, placed, and oriented. The quality of attachment was not considered. For each UCE encountered, its type was recorded as a combination of selection, position, and rotation errors. Brief descriptions of the nature of each error, e.g. "front 59 swapped", were also included to aid interpretation.
+
+Results recorded by the research team during the experiments were naturally error-prone. During transcription, all were verified against the corresponding photographs and, if necessary, video recordings. Corrections were made as required. This approach differs from the handling of self-reported data, where the integrity of participants' personal perceptions must be preserved as provided.
+
+A final step transcribes the recorded results into a concise format that encodes a detailed, contextualized description of each error. For example, `F59LRP (2)` indicates that, at the front of the car (`F`), part `59` attached to the left and right (`LR`), were incorrectly positioned (`P`), accounting for `(2)` errors. This encoding scheme, detailed in [Appendix G](#app-datadict), was developed for the study to describe error types in a contextually rich manner that may better relate to the corresponding human error than the discrete elements it comprises. This approach is designed to facilitate pattern discovery and analysis, support predictive modeling and simulations, and inform more targeted interventions.
+
+TODO: make sure the data dictionary clearly defines columns for raw data (`i1_raw_data`) vs combined / ingested data. The current Car Outcomes section describes the later, which is different from the former.
+
+### Video
+
+The bulk of collected performance data was extracted from the video recordings, a tedious and time-consuming process. Given the estimated 12-18 hours of total footage, the need for efficient, accurate results demanded a strategy that allowed close inspection from multiple synchronized views along with rapid tagging and annotation. Careful consideration was given to the selection of tools used to achieve that.
+
+#### Tooling
+
+When considering tools for the video annotation workflow, priority was given to robust and reliable software with modest hardware requirements, user-friendly interfaces, and affordability. Specifically, the annotation workflow must be capable of exporting machine-readable outputs. Finally, it was essential to avoid altering the original videos. A non-destructive editing approach would dismiss any concerns regarding the veracity of the recordings, by ensuring a reliable and traceable data source.
+
+A search was conducted, and a variety of tools were tested. Some notes from that process are included in [Appendix E](#app-videotool). In the end, three complementary tools were selected that best fit the requirements identified:
+
+1.  Filmora[^24-methods-34] v12.x was selected to combine the raw video into a split screen presentation with synced action. This facilitated annotation by providing two angles of the action and a zoomed view. Filmora is an affordable, non-destructive editor that offers a good balance of capabilities and ease of use.
+
+2.  Handbrake[^24-methods-35] v1.7.x was selected to downsize and compress Filmora output, improving performance during annotation. Handbrake did this much faster and with better final quality than Filmora. This popular and highly-regarded tool is free and open-source.
+
+3.  Kyno[^24-methods-36] v1.8.x was selected to add markers for instantaneous events (e.g. breakage occurs) and sub-clips for events with duration (e.g. task completion times). Notes can be added to either as desired. The metadata is exported in eXtensible Markup Language [XML, @w3c2008xml], a flexible, text-based language that is used to structure, store, and transport data. Kyno is specifically designed to accelerate this task in a production environment and is generously priced for the market.
+
+[^24-methods-34]: Filmora: <https://filmora.wondershare.com/>
+
+[^24-methods-35]: Handbrake: <https://handbrake.fr/>
+
+[^24-methods-36]: Kyno: <https://lesspain.software/kyno/>
+
+#### Processing
+
+A general description of video processing follows. For a step-by-step treatment, see [Appendix F](#app-videoproc) for the original instructions.
+
+For each participant, two composite videos are created, one from footage of their learning experiment and another for recall. Raw video files are first renamed in a standardized format based on part number, phase, and camera angle, then organized into specific project folders.
+
+For each participant experiment, a single three-pane video was created in Filmora, as demonstrated by @fig-threepane. The two stacked views on the left provide the first-person view captured by the HL2 (top) and a zoomed-in view from the side camera, centered on the fixture (bottom). The right-hand pane provides a wider angle version of the same side camera footage. All three views are manually synchronized by tagging corresponding events and sliding the clips to align those markers, matching the observed action. Before exporting the result, the Filmora project is saved.
+
+![Frame of Composite Video from Learning Trial, PAR Treatment](images/24-ThreePane.png){#fig-threepane}
+
+The output was rendered by Filmora in the MP4 video format with full HD resolution (1920x1080) at 30 frames per second, using H.264 compression. This was then resized to 720p (1280x720) by Handbrake. The final file size is reduced to about 20mb / minute from multiple gigabytes of source material. This greatly increases the responsiveness the annotation experience without significantly degrading visual quality.
+
+The compressed 720p video is loaded in Kyno where two types of events were annotated. Instantaneous events (e.g. car breaks during assembly) are identified by placing a marker at the moment of occurrence. Events with a duration (e.g. the start and end of each assembly task) are assigned to sub-clips. Both markers and sub-clips are given standard names that denote the event type, and descriptions where additional detail is called for. The standard list of names is included in [Appendix F](#app-videoproc), along with other important details about this process. 
+
+Finally, the Kyno project file is saved and annotation data is exported in XML format. A sample of that output is provided in @fig-learnxmp, based on participant \#1051's learning experiment. This is confirmed by line (2), which shows the data is associated with the file `1051-Learn.mp4`. Lines (10) and (12) denote the start and end times of the "Car 1" sub-clip, each given in 1/90,000ths of a second.
+
+::: {#fig-learnxmp}
+```xml
+<context-info>
+  <url>file:/Volumes/.../1051-Learn.mp4</url>
+  <size>173341872</size>
+  ...
+</context-info>
+<title>1051-Learn</title>
+<description>side camera views are...</description>
+<marker>
+  <id>6436e1f6-b9a2-4a58-800a-12a13ed89ab7</id>
+  <timestamp time-base="1/90000">895175</timestamp>
+  <type>subclip</type>
+  <duration time-base="1/90000">17932825</duration>
+  <title>Car 1</title>
+  <description>First car duration</description>
+</marker>
+```
+
+XML Export of Annotation Data from Kyno
+
+:::
+
+### Result
+
+Summarize the output of the extraction effort.
+
+Discuss version control, data security, and traceability, especially as each relate to ethics and reproducability
+
+### Challenges
+
+Discuss related challenges
+
+sync is hard, dropped frames on HL2 made sync drift; use side camera for marker placement
+
+dropped video and crashes - multiple syncs required; multiple videos for each camera
+
+when annotating video, the two streams may not be perfectly synced and/or may drift apart due to dropped frames on the HL recording - use side cam for car related logging and HL cam for PWI / HL UI related logging to limit effect of lag on times recorded
+
+some experiments required a TON of annotation work
+
+- 2 phases x 2 videos x 62 = 248 videos
+
+- (10 min + 5 min) x 62 = 930 mins = 15 hours 30 mins of video
+
+- watched multiple times, at ≈2x speed avg
+
+- plus time to layout and synchronize videos = 10 mins
+
+- plus 10 mins processing time per output video = 2 x 62 x 10 mins = 20.7 hours
+
+- can be overlapped some
+
+- total time per participant ≈ 45mins min, 2.5hrs max, 1.25hrs avg
+
+- plus annotation
+
+- corrected errors impractical to record consistently
+
 ## Data Analysis {#sec-analysis}
 
+This section will first detail the procedures for data preparation, then summarize the intended analytical approach before discussing data security and other considerations. Analysis will be implemented and more thoroughly detailed in the [Results](#25-results) chapter to follow.
+
+TODO: mention emphasis on reproducability, traceability, etc.
+
+### Cleaning
+
 ::: content-hidden
-Describe the statistical or qualitative analysis methods to be used for examining the data. Mention any software or tools that will be utilized for data analysis.
+-   **Identification and Handling of Inconsistencies**: Explain how you identify and manage inconsistencies, missing data, or outliers.
+-   **Data Transformation**: Describe any transformations applied to the data (e.g., normalization, categorization).
+-   **Software Used**: Mention any specific software tools used for data cleaning.
+-   **Preparation for Analysis**: Discuss how the cleaned data is formatted or organized in preparation for analysis.
 :::
+
+discuss cleaning / processing the data for analysis
+
+### Analysis
+
+::: content-hidden
+-   **Summary of Analytical Techniques**: Provide a brief overview of the statistical methods or analytical techniques planned for the Results chapter.
+-   **Hypotheses or Research Questions**: Reiterate the hypotheses or research questions that the analysis will address.
+-   **Preliminary Considerations**: Discuss any preliminary analysis conducted to inform the detailed analysis in the Results chapter.
+-   **Software and Tools**: Briefly mention any specific statistical software or tools that will be used for the analysis.
+:::
+
+summarize plans for analysis to be executed in results chapter
+
+### Data Security
+
+#### File Locations
+
+-   `Research Master\data` on the TBM RAID has all the data for each participant. When appropriate, this folder is synced to the local BOX folder using a ChronoSync action.
+
+    -   `videos` subdirectory will hold the **finished videos**, along with Kyno project and XML files
+
+-   `Research Master\raw_videos`, also on the TBM RAID has the **raw** video files, which are moved here as each participant video directory is processed. In order to reclaim space on the internal drive, these files are removed from the local BOX folder during the sync described above.
+
+-   The `BOX Sync\...\trial-data` tree holds local copies of the data that get synced from each participant's `videos` folder and then mirrored to the cloud, where other members of the research team can access it.
+
+#### Related ChronoSync Jobs
+
+-   **trial-data** mirrors all the participant data to BOX:
+
+    -   `Research Master\data` → `BOX Sync\...\trial-data`
+
+-   **analysis** mirrors all the analysis to BOX
+
+    -   `...\au_diss\data` → `BOX Sync\...\analysis`
+
+### Other Considerations
+
+::: content-hidden
+-   **Ethical Handling of Data**: Include a note on how data privacy and ethical considerations are handled, especially if the data includes participant information.
+-   **Inter-rater Reliability**: If applicable, discuss how inter-rater reliability was ensured in the data extraction and annotation process.
+:::
+
+The same file can be used by other researchers interested in further annotating the video.
 
 ## Limitations of Study Design
 
