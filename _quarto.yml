@@ -29,13 +29,13 @@ book:
     - 27-colophon.qmd
     - 28-references.qmd
   appendices:
-    - 31-irb.qmd
-    - 32-contributions.qmd
-    - 33-s1conduct.qmd
-    - 34-s2conduct.qmd
-    - 35-videotools.qmd
-    - 36-videoproc.qmd
-    - 37-datadict.qmd
+    - 31a-irb.qmd
+    - 32b-contributions.qmd
+    - 33c-s1conduct.qmd
+    - 34d-s2conduct.qmd
+    - 35e-videotools.qmd
+    - 36f-videoproc.qmd
+    - 37g-datadict.qmd
 
 bibliography: references.bib
 # csl: "csl/apa7-single-spaced.csl"  # no obvious difference in HTML output
