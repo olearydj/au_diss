@@ -90,6 +90,14 @@ On `/Users/djo/Box Sync/Tiger Motors Research Team Collaboration Files...`:
 
 -   The `BOX Sync\...\trial-data` tree holds local copies of the data that get synced from each participant's `videos` folder and then mirrored to the cloud, where other members of the research team can access it.
 
+TODO: GitHub?
+
+### Local Data Backup
+
+Incremental hourly external backups with local snapshots.
+Nightly full external backups with local snapshots.
+Carbon Copy Cloner to NVMe
+
 ## Synchronization / Backup
 
 Related ChronoSync Jobs

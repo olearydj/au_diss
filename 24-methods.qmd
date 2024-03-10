@@ -592,7 +592,7 @@ Development was iterative with roughly two-week sprints. Except during the summe
 
 [^24-methods-15]: Trello: <https://trello.com/home>
 
-### Tactics
+### Tactics {#sec-devtactics}
 
 The HMDAR and HMDMR apps were developed in Unity version 2022.x with MRTK v2.7x and VE v10.7x. Development was done entirely on MSI GE76/66 Raider (11UH-053/227) laptops running the 64-bit version of Windows 10 with the latest updates. Both laptop models were equipped with an Intel Core i9-11980HK CPU, NVIDIA GeForce RTX3080 GPU, 32 or 64GB, and 2GB of M.2 NVMe storage.
 
@@ -1175,15 +1175,14 @@ TODO: make sure the data dictionary clearly defines columns for raw data (`i1_ra
 
 In addition to the quantitative data from surveys, observed results, and annotated performances, a number of qualitative observations were recorded by the research team during the conduct of each session and in debriefs that followed. These were manually transcribed from various sources, including the Data Collection Sheets, General Feedback Forms, and the PI's notes. When transcribing notes from the debriefing, which were often terse, care was taken to accurately represent the participant's original feedback.
 
-The results were collected in a separate Markdown[^24-methods-37] file (`md`) for each participant. Markdown is a lightweight plain-text formatting syntax proposed by John Gruber in 2004[^24-methods-38]. Originally intended as a tool for HTML generation, Markdown is now widely used to create text documents that have structure and are easily rendered in a variety of styles.
+The results were collected in a separate Markdown[^24-methods-34] file (`md`) for each participant. Markdown is a lightweight plain-text formatting syntax proposed by John Gruber in 2004[^24-methods-35]. Originally intended as a tool for HTML generation, Markdown is now widely used to create text documents that have structure and are easily rendered in a variety of styles.
 
-[^24-methods-37]: Markdown: <https://en.wikipedia.org/wiki/Markdown>
+[^24-methods-34]: Markdown: <https://en.wikipedia.org/wiki/Markdown>
 
-[^24-methods-38]: Original Markdown Project Home: <https://daringfireball.net/projects/markdown/>
+[^24-methods-35]: Original Markdown Project Home: <https://daringfireball.net/projects/markdown/>
 
 ::: {#fig-mdsample}
-
-```md
+``` md
 # 1048
 
 ## Script Notes
@@ -1201,7 +1200,7 @@ The results were collected in a separate Markdown[^24-methods-37] file (`md`) fo
 Sample of Collected Feedback, in Markdown Format
 :::
 
-@fig-mdsample exemplifies both collected feedback and Markdown formatting, using data from participant \#1048.
+@fig-mdsample exemplifies both collected feedback and Markdown formatting, using data from participant #1048.
 
 ### Video
 
@@ -1213,17 +1212,17 @@ When considering tools for the video annotation workflow, priority was given to 
 
 A search was conducted, and a variety of tools were tested. Some notes from that process are included in [Appendix E](#app-videotool). In the end, three complementary tools were selected that best fit the requirements identified:
 
-1.  Filmora[^24-methods-34] v12.x was selected to combine the raw video into a split screen presentation with synced action. This facilitated annotation by providing two angles of the action and a zoomed view. Filmora is an affordable, non-destructive editor that offers a good balance of capabilities and ease of use.
+1.  Filmora[^24-methods-36] v12.x was selected to combine the raw video into a split screen presentation with synced action. This facilitated annotation by providing two angles of the action and a zoomed view. Filmora is an affordable, non-destructive editor that offers a good balance of capabilities and ease of use.
 
-2.  Handbrake[^24-methods-35] v1.7.x was selected to downsize and compress Filmora output, improving performance during annotation. Handbrake did this much faster and with better final quality than Filmora. This popular and highly-regarded tool is free and open-source.
+2.  Handbrake[^24-methods-37] v1.7.x was selected to downsize and compress Filmora output, improving performance during annotation. Handbrake did this much faster and with better final quality than Filmora. This popular and highly-regarded tool is free and open-source.
 
-3.  Kyno[^24-methods-36] v1.8.x was selected to add markers for instantaneous events (e.g. breakage occurs) and sub-clips for events with duration (e.g. task completion times). Notes can be added to either as desired. The metadata is exported in eXtensible Markup Language [XML, @w3c2008xml], a flexible, text-based language that is used to structure, store, and transport data. Kyno is specifically designed to accelerate this task in a production environment and is generously priced for the market.
+3.  Kyno[^24-methods-38] v1.8.x was selected to add markers for instantaneous events (e.g. breakage occurs) and sub-clips for events with duration (e.g. task completion times). Notes can be added to either as desired. The metadata is exported in eXtensible Markup Language [XML, @w3c2008xml], a flexible, text-based language that is used to structure, store, and transport data. Kyno is specifically designed to accelerate this task in a production environment and is generously priced for the market.
 
-[^24-methods-34]: Filmora: <https://filmora.wondershare.com/>
+[^24-methods-36]: Filmora: <https://filmora.wondershare.com/>
 
-[^24-methods-35]: Handbrake: <https://handbrake.fr/>
+[^24-methods-37]: Handbrake: <https://handbrake.fr/>
 
-[^24-methods-36]: Kyno: <https://lesspain.software/kyno/>
+[^24-methods-38]: Kyno: <https://lesspain.software/kyno/>
 
 #### Processing
 
@@ -1265,48 +1264,42 @@ XML Export of Annotation Data from Kyno
 
 ### Data Management
 
->Data Storage and Backup: How and where the data was stored, including details of physical and digital security measures, backup frequencies, and storage formats.
->
->Version Control: How you managed different versions of your data, including any software or systems used for version tracking and control.
->
->Ethical Considerations: How your data handling practices align with ethical standards, particularly concerning participant confidentiality, data integrity, and reproducibility.
->
->Implications for Reproducibility: Explain how these practices support the reliability and reproducibility of your research.
+Like all academic work, the success of this study hinged on the credibility, transparency, and reproducibility of the research, data, and results. As such, data management was a critical consideration in the development of the data extraction and processing workflow. The plan carefully accounted for data storage, version management, and the file formats used. Those details aligned with an access plan balancing accessibility and portability with privacy and security.
 
-Discuss version control, data security, and traceability, especially as each relate to ethics and reproducability
+Anonymous data was stored locally in three separate locations, all on secure hardware accessible only to the PI: an internal laptop hard drive, an external RAID5 storage array, and an external NVMe backup drive. Additionally, GitHub[^24-methods-39] and BOX[^24-methods-40] cloud services were employed to provide more redundancy and secure access to select team members. A detailed account of this plan, including the hardware, software, folder structures, and naming conventions used, are provided in [Appendix H](#app-dataorg).
 
-portability - The same file can be used by other researchers interested in further annotating the video.
+[^24-methods-39]: GitHub: <https://github.com/>
+
+[^24-methods-40]: Box: <https://www.box.com/>
+
+TODO: diagram of data storage?
+
+Key criteria for software selection included multiplatform compatibility, open-source licensing, and the ability to generate files using open, preferably text-based, standards. These characteristics were crucial to ensuring data portability and the reproducibility of results.
+
+Wherever appropriate, working files, including all data analysis in R and Python, and manuscript development in Quarto[^24-methods-41], were placed under version control using Git[^24-methods-42], and synchronized to GitHub. HL2 source code was treated separately, as discussed in @sec-devtactics.
+
+[^24-methods-41]: Quarto: <https://quarto.org/>
+
+[^24-methods-42]: Git: <https://git-scm.com/>
+
+The entire process was designed to ensure traceability, allowing every result to be reliably linked back to its original source data, bolstering the integrity of our research findings. The priorities outlined here were carried on throughout the analysis process, described next.
 
 ### Challenges
 
-Discuss related challenges
+TODO: elaborate on list of data extraction challenges and/or convert into narrative
 
-sync is hard, dropped frames on HL2 made sync drift; use side camera for marker placement
-
-dropped video and crashes - multiple syncs required; multiple videos for each camera
-
-when annotating video, the two streams may not be perfectly synced and/or may drift apart due to dropped frames on the HL recording - use side cam for car related logging and HL cam for PWI / HL UI related logging to limit effect of lag on times recorded
-
-some experiments required a TON of annotation work
-
--   2 phases x 2 videos x 62 = 248 videos
-
--   (10 min + 5 min) x 62 = 930 mins = 15 hours 30 mins of video
-
--   watched multiple times, at ≈2x speed avg
-
--   plus time to layout and synchronize videos = 10 mins
-
--   plus 10 mins processing time per output video = 2 x 62 x 10 mins = 20.7 hours
-
--   can be overlapped some
-
--   total time per participant ≈ 45mins min, 2.5hrs max, 1.25hrs avg
-
--   plus annotation
-
+-   sync is hard, dropped frames on HL2 made sync drift; use side camera for car related logging and HL for PWI / HL UI related logging to ensure accuracy
+-   dropped video and crashes - multiple syncs required; multiple videos for each camera
+-   some experiments required a TON of annotation work
+-   time consuming!!
+    -   2 phases x 2 videos x 62 = 248 videos
+    -   (10 min + 5 min) x 62 = 930 mins = 15 hours 30 mins of video
+    -   watched multiple times, at ≈2x speed avg
+    -   plus time to layout and synchronize videos = 10 mins
+    -   plus 10 mins processing time per output video = 2 x 62 x 10 mins = 20.7 hours; some overlap
+    -   approx total time per participant ≈ 45mins min, 2.5hrs max, 1.25hrs avg
+    -   plus annotation
 -   corrected errors impractical to record consistently
-
 -   terse notes in debrief lossy, recording would be better
 
 ## Data Analysis {#sec-analysis}
@@ -1314,8 +1307,6 @@ some experiments required a TON of annotation work
 This section will first detail the procedures for data preparation, then summarize the intended analytical approach before discussing data security and other considerations. Analysis will be implemented and more thoroughly detailed in the [Results](#25-results) chapter to follow.
 
 Discuss strategy for pulling data from XLSX, etc. and generating CSV files for subsequent analysis. Separate ingestion and cleaning sections?
-
-TODO: mention emphasis on reproducability, traceability, etc.
 
 ### Strategy
 
