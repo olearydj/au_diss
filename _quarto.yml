@@ -64,6 +64,8 @@ format:
   # fenced code blocks
     highlight-style: dracula
     code-line-numbers: true
+  # custom css
+    css: "css/custom.css"
   
   pdf:
   ### PDF reference: https://quarto.org/docs/reference/formats/pdf.html

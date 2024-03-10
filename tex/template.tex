@@ -424,6 +424,19 @@ $endif$
   $endif$
     pdfcreator={LaTeX via pandoc}}
 
+% Save the old Shaded environment start and end commands
+\let\oldShaded\Shaded
+\let\endoldShaded\endShaded
+
+% Redefine the Shaded environment to include a \small font size
+\renewenvironment{Shaded}{
+  \small
+  \oldShaded
+}{
+  \endoldShaded
+}
+
+
 %%% Defines title, thanks, subtitle, authors, date, institute, titlegraphic, logo
 $title.tex()$
 

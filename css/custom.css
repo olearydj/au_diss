@@ -1,0 +1,3 @@
+pre > code {
+    font-size: 13px !important; /* code blocks only */
+}
