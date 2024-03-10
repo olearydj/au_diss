@@ -1262,25 +1262,99 @@ Finally, the Kyno project file is saved and annotation data is exported in XML f
 XML Export of Annotation Data from Kyno
 :::
 
-### Data Management
+### XML Processing
+
+A Python (v3.11) script was used to create a CSV comprised of performance data extracted data from all Kyno `XML` files. The process is outlined with pseudocode in @fig-xmlproc.
+
+::: {#fig-xmlproc}
+``` text
+For each xmlFile:
+    Extract file metadata (url, size, etc.)
+
+    For each marker in xmlFile:
+        Extract marker details (id, timestamp, type, title, descript.)
+        If duration element present, add duration to marker
+        Convert timestamp and duration to seconds
+        Add marker to markers list
+
+    Categorize markers into subclips and other
+    Add data to xmlData with key (participant, phase)
+
+For each participant, phase pair in xmlData:
+    Extract subclip markers for the participant and phase
+    For each subclip marker:
+        Format data (participant, phase, marker details) as row
+        Add row to csvData
+
+Write csvData to a CSV file
+```
+
+Pseudocode for XML Data Extraction (`process_data.py`)
+:::
+
+TODO: double check this pseudocode
+
+While the XML data includes annotations for both instantaneous events (e.g. breakage occurs or defect encountered) and those with duration (e.g. task completion time), only the later are included in the resulting CSV. While instant events can provide important context for understanding performance, the focus of our analysis will be on task outcomes, which involve a duration.
+
+The result includes columns for participant number, experiment number, and the event name, start time, duration, and description. For example, the data extracted for the first participant's learn experiment is summarized in @tbl-i1_times_csv.
+
+| **Part** | **Exp** | **Event** | **Start** | **Dur** | **Description**          |
+|:--------:|:-------:|-----------|-----------|---------|--------------------------|
+|   1001   |    1    | Car 1     | 6.28      | 97.933  | N/A                      |
+|   1001   |    1    | Car 2     | 108.367   | 66.7    | N/A                      |
+|   1001   |    1    | Break 3   | 178.367   | 76.033  | failed attempt to repair |
+|   1001   |    1    | Car 4     | 260.933   | 68.9    | N/A                      |
+|   1001   |    1    | Car 5     | 333.467   | 60.9    | N/A                      |
+|   1001   |    1    | Car 6     | 397.333   | 66.933  | N/A                      |
+|   1001   |    1    | Defect 7  | 467.867   | 27.333  | prebuilt missing piece   |
+|   1001   |    1    | Car 8     | 498.4     | 53.7    | corrected                |
+|   1001   |    1    | Car 9     | 556.067   | 47.833  | finishes at the buzzer   |
+
+: Learning Event Data Extracted for Participant #1001 {#tbl-i1_times_csv tbl-colwidths="\[7,7,16,15,15,40\]" .striped}
+
+This shows they attempted nine cars and completed seven. Breakage occurred during the third assembly and a repair was attempted, but the car was ultimately retired. Car 7 was also retired when a defect was noticed in the prebuilt. The last car was completed in only 47.8 seconds, just before the 10-minute time limit.
+
+The output of this script was carefully validated against the XML data, video recordings, and reports described next.
+
+TODO: where can the reader find code?
+
+### Report Generation
+
+To assist with data validation and better understand factors that contribute to individual performance, a detailed report was generated for each participant. This was done as part of the same XML extraction Python script described above.
+
+Each report aggregates participant demographics and car outcomes from observed and self-reported data, qualitative feedback from transcribed Markdown files, and quantitative event data from XML annotations. The result paints a comprehensive picture of the participant's experience in a single Markdown report. This is demonstrated by @fig-report, a screenshot of the recall portion of \#1001's report. Complete reports can be reviewed...
+
+TODO: include some / all reports in appendix or online?
+
+![Portion of Participant #1001's Report, Obsidian Screenshot](images/24-Report.png){#fig-report width="70%"}
+
+From the top, this report includes metadata (collapsed for brevity), clickable link to the video, list of PI's observations, and summaries of performance (subclip) and event (other) markers. The instantaneous event markers included here provide valuable added context. For example, we can see that a breakage was corrected during the third car, likely contributing to its increased duration.
+
+The formatting seen in this image was rendered by Obsidian[^24-methods-39], a powerful tool for making and organizing Markdown documentation. This approach greatly facilitated the review of participant outcomes.
+
+[^24-methods-39]: Obsidian: <https://obsidian.md/>
+
+### Data and Code Management
 
 Like all academic work, the success of this study hinged on the credibility, transparency, and reproducibility of the research, data, and results. As such, data management was a critical consideration in the development of the data extraction and processing workflow. The plan carefully accounted for data storage, version management, and the file formats used. Those details aligned with an access plan balancing accessibility and portability with privacy and security.
 
-Anonymous data was stored locally in three separate locations, all on secure hardware accessible only to the PI: an internal laptop hard drive, an external RAID5 storage array, and an external NVMe backup drive. Additionally, GitHub[^24-methods-39] and BOX[^24-methods-40] cloud services were employed to provide more redundancy and secure access to select team members. A detailed account of this plan, including the hardware, software, folder structures, and naming conventions used, are provided in [Appendix H](#app-dataorg).
+Anonymous data was stored locally in three separate locations, all on secure hardware accessible only to the PI: an internal laptop hard drive, an external RAID5 storage array, and an external NVMe backup drive. Additionally, GitHub[^24-methods-41] and BOX[^24-methods-42] cloud services were employed to provide more redundancy and secure access to select team members. A detailed account of this plan, including the hardware, software, folder structures, and naming conventions used, are provided in [Appendix H](#app-dataorg).
 
-[^24-methods-39]: GitHub: <https://github.com/>
+[^24-methods-41]: GitHub: <https://github.com/>
 
-[^24-methods-40]: Box: <https://www.box.com/>
+[^24-methods-42]: Box: <https://www.box.com/>
 
 TODO: diagram of data storage?
 
 Key criteria for software selection included multiplatform compatibility, open-source licensing, and the ability to generate files using open, preferably text-based, standards. These characteristics were crucial to ensuring data portability and the reproducibility of results.
 
-Wherever appropriate, working files, including all data analysis in R and Python, and manuscript development in Quarto[^24-methods-41], were placed under version control using Git[^24-methods-42], and synchronized to GitHub. HL2 source code was treated separately, as discussed in @sec-devtactics.
+Wherever appropriate, working files, including all data analysis in R and Python, and manuscript development in Quarto[^24-methods-43], were placed under version control using Git[^24-methods-44], and synchronized to GitHub. HL2 source code was treated separately, as discussed in @sec-devtactics.
 
-[^24-methods-41]: Quarto: <https://quarto.org/>
+[^24-methods-43]: Quarto: <https://quarto.org/>
 
-[^24-methods-42]: Git: <https://git-scm.com/>
+[^24-methods-44]: Git: <https://git-scm.com/>
+
+TODO: discuss use of virtual environments for Python and R library management
 
 The entire process was designed to ensure traceability, allowing every result to be reliably linked back to its original source data, bolstering the integrity of our research findings. The priorities outlined here were carried on throughout the analysis process, described next.
 
@@ -1304,18 +1378,19 @@ TODO: elaborate on list of data extraction challenges and/or convert into narrat
 
 ## Data Analysis {#sec-analysis}
 
-This section will first detail the procedures for data preparation, then summarize the intended analytical approach before discussing data security and other considerations. Analysis will be implemented and more thoroughly detailed in the [Results](#25-results) chapter to follow.
-
-Discuss strategy for pulling data from XLSX, etc. and generating CSV files for subsequent analysis. Separate ingestion and cleaning sections?
+This section will detail the procedures for data preparation, then summarize the intended analytical approach. Analysis will be implemented and more thoroughly detailed in the [Results](#25-results) chapter to follow.
 
 ### Strategy
 
 The primary outputs of the prior extraction effort were:
 
-1.  Composite videos in `mp4` format, for each participant performing the learning and recall experiments.
-2.  Performance data files exported in `xml` format, containing the annotations from each video.
+1.  An Excel file in `xlsx` format, comprised of all transcribed self-reported data and manually recorded results.
+2.  *Performance data files exported in `xml` format, containing the annotations from each video.*
 3.  Notes for each participant in `md` format, compiled from observations and feedback.
-4.  An Excel file in `xlsx` format, comprised of all transcribed self-reported data and manually recorded results.
+
+*The focus of the analysis work will involve data in the `xml` and `xlsx` files, but first the performance data (times and events) and results data (outcomes and errors) must be combined. This involves*
+
+TODO: add chart illustrating data processing workflow
 
 ### Cleaning
 
@@ -1328,6 +1403,10 @@ The primary outputs of the prior extraction effort were:
 
 discuss cleaning / processing the data for analysis
 
+### Validation
+
+Discuss the creation of participant reports for easy access of summarized findings.
+
 ### Analysis
 
 ::: content-hidden
@@ -1338,13 +1417,6 @@ discuss cleaning / processing the data for analysis
 :::
 
 summarize plans for analysis to be executed in results chapter
-
-### Other Considerations
-
-::: content-hidden
--   **Ethical Handling of Data**: Include a note on how data privacy and ethical considerations are handled, especially if the data includes participant information.
--   **Inter-rater Reliability**: If applicable, discuss how inter-rater reliability was ensured in the data extraction and annotation process.
-:::
 
 ## Limitations of Study Design
 
