@@ -36,6 +36,7 @@ book:
     - 35e-videotools.qmd
     - 36f-videoproc.qmd
     - 37g-datadict.qmd
+    - 38h-dataorg.qmd
 
 bibliography: references.bib
 # csl: "csl/apa7-single-spaced.csl"  # no obvious difference in HTML output

@@ -468,7 +468,7 @@ TODO: write intro for sysdev section
 Of the HMDAR systems commercially available in 2021, when the precursor to this study began, only the HL2 was well-suited for enterprise applications, including manufacturing. Originally released for that market in 2019, the HL2's distinguishing features are tabulated in @tbl-hl2, below.
 
 | Feature               | Description                                                                                                                                                                                                                                                                                                                                                         |
-|-----------------------|------------------------------------------------|
+|-------------------------|-----------------------------------------------|
 | Natural Field of View | The HL2 is an optical-see-through system (OST) where its display is overlayed on the user's normal view of the world. Its optical design provides a wide and minimally obstructed field of view (FOV), giving a natural and safe user experience. The HL2 also can be used with glasses and features a unique, flip-up design that eliminates the device from view. |
 | Hands-free use        | The HL2 relies entirely on natural inputs - gestures and voice controls - rather than physical input devices like tablets or game-style controllers. This leaves operators free to use their hands for their required tasks.                                                                                                                                        |
 | Untethered            | The HL2 is a stand alone design with integrated power and compute. This eliminates the need for power or data connections that can encumber users, limit their motion, and introduce tripping hazards.                                                                                                                                                              |
@@ -1075,7 +1075,7 @@ The IRB that this research was conducted under approved two related but separate
 As a result, the final IRB listed 13 key personnel, as summarized in @tbl-team.
 
 | Type                | Description                                                                                                                  | Count |
-|-------------------|------------------------------------|:-----------------:|
+|-------------------|----------------------------------|:-----------------:|
 | Study PIs           | The Principal Investigators for all collaborating studies.                                                                   |   3   |
 | Faculty Members     | Members of related committees, for oversight and institutional stewardship.                                                  |   3   |
 | Research Assistants | Graduate (3) and undergraduate (1) student volunteers assisting with the conduct of experiments.                             |   4   |
@@ -1137,7 +1137,9 @@ Any data issues encountered were noted and marked for correction during the subs
 
 ### Instruments and Data Collection Sheets
 
-The contents of all digitized results were manually transcribed from the PDFs and collected in a single Excel workbook. Each instrument was given a separate tab, with each row representing a participant record. The results from both Data Collection Sheets were combined into a single tab, where each row recorded the outcome of a single assembly task.
+The contents of all digitized results were manually transcribed from their PDF into spreadsheet format. Excel was used at this stage for its human-friendly interface, which facilitated data entry and consolidated all results into a single file. As detailed in the subsequent section, the `XLSX` file format is an open standard easily parsed by most programming languages. Together, these considerations made `XLSX` an ideal interim format for raw data.
+
+Each instrument was given a separate tab, with each row representing a participant record. The results from both Data Collection Sheets were combined into a single tab, where each row recorded the outcome of a single assembly task.
 
 This process was straightforward except as described below. Complete details, including all categorical labels, can be found in [Appendix G - Data Dictionary](#app-datadict).
 
@@ -1157,7 +1159,7 @@ Finally, some participants may have mistakenly scored their Performance Rating. 
 
 #### System Usability Scale
 
-Numeric responses (1-5) for all ten questions were transcribed as--is in columns `Q1` through `Q10`. Participant \#1058 realized they had scored themselves using a reversed scale during the first administration of the SUS. This was noted in the data, which was corrected during transcription.
+Numeric responses (1-5) for all ten questions were transcribed as--is in columns `Q1` through `Q10`. Participant #1058 realized they had scored themselves using a reversed scale during the first administration of the SUS. This was noted in the data, which was corrected during transcription.
 
 #### Data Collection Sheets
 
@@ -1168,6 +1170,38 @@ Results recorded by the research team during the experiments were naturally erro
 A final step transcribes the recorded results into a concise format that encodes a detailed, contextualized description of each error. For example, `F59LRP (2)` indicates that, at the front of the car (`F`), part `59` attached to the left and right (`LR`), were incorrectly positioned (`P`), accounting for `(2)` errors. This encoding scheme, detailed in [Appendix G](#app-datadict), was developed for the study to describe error types in a contextually rich manner that may better relate to the corresponding human error than the discrete elements it comprises. This approach is designed to facilitate pattern discovery and analysis, support predictive modeling and simulations, and inform more targeted interventions.
 
 TODO: make sure the data dictionary clearly defines columns for raw data (`i1_raw_data`) vs combined / ingested data. The current Car Outcomes section describes the later, which is different from the former.
+
+### Qualitative Feedback
+
+In addition to the quantitative data from surveys, observed results, and annotated performances, a number of qualitative observations were recorded by the research team during the conduct of each session and in debriefs that followed. These were manually transcribed from various sources, including the Data Collection Sheets, General Feedback Forms, and the PI's notes. When transcribing notes from the debriefing, which were often terse, care was taken to accurately represent the participant's original feedback.
+
+The results were collected in a separate Markdown[^24-methods-37] file (`md`) for each participant. Markdown is a lightweight plain-text formatting syntax proposed by John Gruber in 2004[^24-methods-38]. Originally intended as a tool for HTML generation, Markdown is now widely used to create text documents that have structure and are easily rendered in a variety of styles.
+
+[^24-methods-37]: Markdown: <https://en.wikipedia.org/wiki/Markdown>
+
+[^24-methods-38]: Original Markdown Project Home: <https://daringfireball.net/projects/markdown/>
+
+::: {#fig-mdsample}
+
+```md
+# 1048
+
+## Script Notes
+- Tall, head-looker
+- Area tracking drop tally: 3
+- Button issues - inconsistent, sometimes first tap, others 5-10
+
+## Participant Feedback
+- Next button inconsistent - sometimes didn't work, double-clicked
+- Memorized by c2-3 in Learn
+- Broke down assembly steps by section of car: front, back, middle
+- Going back to previous part (eg 59?) problematic
+```
+
+Sample of Collected Feedback, in Markdown Format
+:::
+
+@fig-mdsample exemplifies both collected feedback and Markdown formatting, using data from participant \#1048.
 
 ### Video
 
@@ -1203,12 +1237,12 @@ For each participant experiment, a single three-pane video was created in Filmor
 
 The output was rendered by Filmora in the MP4 video format with full HD resolution (1920x1080) at 30 frames per second, using H.264 compression. This was then resized to 720p (1280x720) by Handbrake. The final file size is reduced to about 20mb / minute from multiple gigabytes of source material. This greatly increases the responsiveness the annotation experience without significantly degrading visual quality.
 
-The compressed 720p video is loaded in Kyno where two types of events were annotated. Instantaneous events (e.g. car breaks during assembly) are identified by placing a marker at the moment of occurrence. Events with a duration (e.g. the start and end of each assembly task) are assigned to sub-clips. Both markers and sub-clips are given standard names that denote the event type, and descriptions where additional detail is called for. The standard list of names is included in [Appendix F](#app-videoproc), along with other important details about this process. 
+The compressed 720p video is loaded in Kyno where two types of events were annotated. Instantaneous events (e.g. car breaks during assembly) are identified by placing a marker at the moment of occurrence. Events with a duration (e.g. the start and end of each assembly task) are assigned to sub-clips. Both markers and sub-clips are given standard names that denote the event type, and descriptions where additional detail is called for. The standard list of names is included in [Appendix F](#app-videoproc), along with other important details about this process.
 
-Finally, the Kyno project file is saved and annotation data is exported in XML format. A sample of that output is provided in @fig-learnxmp, based on participant \#1051's learning experiment. This is confirmed by line (2), which shows the data is associated with the file `1051-Learn.mp4`. Lines (10) and (12) denote the start and end times of the "Car 1" sub-clip, each given in 1/90,000ths of a second.
+Finally, the Kyno project file is saved and annotation data is exported in XML format. A sample of that output is provided in @fig-learnxmp, based on participant #1051's learning experiment. This is confirmed by line (2), which shows the data is associated with the file `1051-Learn.mp4`. Lines (10) and (12) denote the start and end times of the "Car 1" sub-clip, each given in 1/90,000ths of a second.
 
 ::: {#fig-learnxmp}
-```xml
+``` xml
 <context-info>
   <url>file:/Volumes/.../1051-Learn.mp4</url>
   <size>173341872</size>
@@ -1227,14 +1261,21 @@ Finally, the Kyno project file is saved and annotation data is exported in XML f
 ```
 
 XML Export of Annotation Data from Kyno
-
 :::
 
-### Result
+### Data Management
 
-Summarize the output of the extraction effort.
+>Data Storage and Backup: How and where the data was stored, including details of physical and digital security measures, backup frequencies, and storage formats.
+>
+>Version Control: How you managed different versions of your data, including any software or systems used for version tracking and control.
+>
+>Ethical Considerations: How your data handling practices align with ethical standards, particularly concerning participant confidentiality, data integrity, and reproducibility.
+>
+>Implications for Reproducibility: Explain how these practices support the reliability and reproducibility of your research.
 
 Discuss version control, data security, and traceability, especially as each relate to ethics and reproducability
+
+portability - The same file can be used by other researchers interested in further annotating the video.
 
 ### Challenges
 
@@ -1248,29 +1289,42 @@ when annotating video, the two streams may not be perfectly synced and/or may dr
 
 some experiments required a TON of annotation work
 
-- 2 phases x 2 videos x 62 = 248 videos
+-   2 phases x 2 videos x 62 = 248 videos
 
-- (10 min + 5 min) x 62 = 930 mins = 15 hours 30 mins of video
+-   (10 min + 5 min) x 62 = 930 mins = 15 hours 30 mins of video
 
-- watched multiple times, at ≈2x speed avg
+-   watched multiple times, at ≈2x speed avg
 
-- plus time to layout and synchronize videos = 10 mins
+-   plus time to layout and synchronize videos = 10 mins
 
-- plus 10 mins processing time per output video = 2 x 62 x 10 mins = 20.7 hours
+-   plus 10 mins processing time per output video = 2 x 62 x 10 mins = 20.7 hours
 
-- can be overlapped some
+-   can be overlapped some
 
-- total time per participant ≈ 45mins min, 2.5hrs max, 1.25hrs avg
+-   total time per participant ≈ 45mins min, 2.5hrs max, 1.25hrs avg
 
-- plus annotation
+-   plus annotation
 
-- corrected errors impractical to record consistently
+-   corrected errors impractical to record consistently
+
+-   terse notes in debrief lossy, recording would be better
 
 ## Data Analysis {#sec-analysis}
 
 This section will first detail the procedures for data preparation, then summarize the intended analytical approach before discussing data security and other considerations. Analysis will be implemented and more thoroughly detailed in the [Results](#25-results) chapter to follow.
 
+Discuss strategy for pulling data from XLSX, etc. and generating CSV files for subsequent analysis. Separate ingestion and cleaning sections?
+
 TODO: mention emphasis on reproducability, traceability, etc.
+
+### Strategy
+
+The primary outputs of the prior extraction effort were:
+
+1.  Composite videos in `mp4` format, for each participant performing the learning and recall experiments.
+2.  Performance data files exported in `xml` format, containing the annotations from each video.
+3.  Notes for each participant in `md` format, compiled from observations and feedback.
+4.  An Excel file in `xlsx` format, comprised of all transcribed self-reported data and manually recorded results.
 
 ### Cleaning
 
@@ -1294,36 +1348,12 @@ discuss cleaning / processing the data for analysis
 
 summarize plans for analysis to be executed in results chapter
 
-### Data Security
-
-#### File Locations
-
--   `Research Master\data` on the TBM RAID has all the data for each participant. When appropriate, this folder is synced to the local BOX folder using a ChronoSync action.
-
-    -   `videos` subdirectory will hold the **finished videos**, along with Kyno project and XML files
-
--   `Research Master\raw_videos`, also on the TBM RAID has the **raw** video files, which are moved here as each participant video directory is processed. In order to reclaim space on the internal drive, these files are removed from the local BOX folder during the sync described above.
-
--   The `BOX Sync\...\trial-data` tree holds local copies of the data that get synced from each participant's `videos` folder and then mirrored to the cloud, where other members of the research team can access it.
-
-#### Related ChronoSync Jobs
-
--   **trial-data** mirrors all the participant data to BOX:
-
-    -   `Research Master\data` → `BOX Sync\...\trial-data`
-
--   **analysis** mirrors all the analysis to BOX
-
-    -   `...\au_diss\data` → `BOX Sync\...\analysis`
-
 ### Other Considerations
 
 ::: content-hidden
 -   **Ethical Handling of Data**: Include a note on how data privacy and ethical considerations are handled, especially if the data includes participant information.
 -   **Inter-rater Reliability**: If applicable, discuss how inter-rater reliability was ensured in the data extraction and annotation process.
 :::
-
-The same file can be used by other researchers interested in further annotating the video.
 
 ## Limitations of Study Design
 
