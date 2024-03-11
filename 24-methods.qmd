@@ -1141,13 +1141,13 @@ The contents of all digitized results were manually transcribed from their PDF i
 
 Each instrument was given a separate tab, with each row representing a participant record. The results from both Data Collection Sheets were combined into a single tab, where each row recorded the outcome of a single assembly task.
 
-This process was straightforward except as described below. Complete details, including all categorical labels, can be found in [Appendix G - Data Dictionary](#app-datadict).
+This process was straightforward except as described below. Complete details, including all categorical labels, can be found in [Appendix G - Data Dictionary](#app-datadict). The final output of this process was saved as `i1_raw_data.xlsx`.
 
 #### Personal Information Form
 
 Fields in the PIF were a mix of numeric (e.g. age, height), nominal and ordinal categorical (e.g. gender, education level), datetime (e.g. the date and time of scheduled trial), and text values (e.g. notes). One change was made to the raw data for this form. Where participants that were known to be degree-seeking AU students incorrectly marked “High school degree or equivalent,” their status was changed to “Some college but no degree”.
 
-#### NASA TLX
+#### NASA TLX {#sec-tlxextract}
 
 For each of the TLX's Sources of Workload comparisons, the response was labeled `1` or `2` for top and bottom choice, respectively. Columns were labeled `S1` through `S15`, corresponding to each of the 15 pairs shown in @fig-tlxsow, numbered left to right and top to bottom. For example, a value of `2` (bottom choice) for `S2` (Temporal Demand vs Frustration), corresponds to a user response of Frustration.
 
@@ -1175,7 +1175,7 @@ TODO: make sure the data dictionary clearly defines columns for raw data (`i1_ra
 
 In addition to the quantitative data from surveys, observed results, and annotated performances, a number of qualitative observations were recorded by the research team during the conduct of each session and in debriefs that followed. These were manually transcribed from various sources, including the Data Collection Sheets, General Feedback Forms, and the PI's notes. When transcribing notes from the debriefing, which were often terse, care was taken to accurately represent the participant's original feedback.
 
-The results were collected in a separate Markdown[^24-methods-34] file (`md`) for each participant. Markdown is a lightweight plain-text formatting syntax proposed by John Gruber in 2004[^24-methods-35]. Originally intended as a tool for HTML generation, Markdown is now widely used to create text documents that have structure and are easily rendered in a variety of styles.
+The results were collected in a separate Markdown[^24-methods-34] file (`MD`) for each participant, e.g. (`1001.md`). Markdown is a lightweight plain-text formatting syntax proposed by John Gruber in 2004[^24-methods-35]. Originally intended as a tool for HTML generation, Markdown is now widely used to create text documents that have structure and are easily rendered in a variety of styles.
 
 [^24-methods-34]: Markdown: <https://en.wikipedia.org/wiki/Markdown>
 
@@ -1314,15 +1314,27 @@ The result includes columns for participant number, experiment number, and the e
 
 This shows they attempted nine cars and completed seven. Breakage occurred during the third assembly and a repair was attempted, but the car was ultimately retired. Car 7 was also retired when a defect was noticed in the prebuilt. The last car was completed in only 47.8 seconds, just before the 10-minute time limit.
 
-The output of this script was carefully validated against the XML data, video recordings, and reports described next.
+The output of this script was saved as `i1_times.csv` and carefully validated against the XML data, video recordings, and reports described next.
 
 TODO: where can the reader find code?
+
+### System Availability
+
+TODO: elaborate on dropout logging?
+
+Due to challenges associated with area and model-based tracking, described elsewhere, participants using the HL2 would experience system down time that we referred to as "drop-outs." This was the result of a loss of tracking that caused the user interface to deactivate. All drop-outs were marked as subclips during video annotation process so the lost time could be accounted for.
+
+Each drop-out event was later reviewed to assess how much impact it had on the current task. In some cases the drop-out occurred between cars or was disregarded by the participant. In others it caused worked to stop until tracking was reacquired. For each drop-out a value between 0.0 and 1.0 was assigned, based on the assessed impact.
+
+The resulting times and weights could be used later to scale the drop-out duration accordingly, either for the overall analysis or to compare results with and without drop-out effect. Alternatively, they could be treated as system availability for OEE calculations.
+
+This process was done manually and based on the PI's best judgement after all other annotation work was complete. It was recorded in a separate Excel sheet, `adjusted_drop_events.xlsx`.
 
 ### Report Generation
 
 To assist with data validation and better understand factors that contribute to individual performance, a detailed report was generated for each participant. This was done as part of the same XML extraction Python script described above.
 
-Each report aggregates participant demographics and car outcomes from observed and self-reported data, qualitative feedback from transcribed Markdown files, and quantitative event data from XML annotations. The result paints a comprehensive picture of the participant's experience in a single Markdown report. This is demonstrated by @fig-report, a screenshot of the recall portion of \#1001's report. Complete reports can be reviewed...
+Each report aggregates participant demographics and car outcomes from observed and self-reported data, qualitative feedback from transcribed Markdown files, and quantitative event data from XML annotations. The result paints a comprehensive picture of the participant's experience in a single Markdown report. This is demonstrated by @fig-report, a screenshot of the recall portion of #1001's report. Complete reports can be reviewed...
 
 TODO: include some / all reports in appendix or online?
 
@@ -1338,21 +1350,21 @@ The formatting seen in this image was rendered by Obsidian[^24-methods-39], a po
 
 Like all academic work, the success of this study hinged on the credibility, transparency, and reproducibility of the research, data, and results. As such, data management was a critical consideration in the development of the data extraction and processing workflow. The plan carefully accounted for data storage, version management, and the file formats used. Those details aligned with an access plan balancing accessibility and portability with privacy and security.
 
-Anonymous data was stored locally in three separate locations, all on secure hardware accessible only to the PI: an internal laptop hard drive, an external RAID5 storage array, and an external NVMe backup drive. Additionally, GitHub[^24-methods-41] and BOX[^24-methods-42] cloud services were employed to provide more redundancy and secure access to select team members. A detailed account of this plan, including the hardware, software, folder structures, and naming conventions used, are provided in [Appendix H](#app-dataorg).
+Anonymous data was stored locally in three separate locations, all on secure hardware accessible only to the PI: an internal laptop hard drive, an external RAID5 storage array, and an external NVMe backup drive. Additionally, GitHub[^24-methods-40] and BOX[^24-methods-41] cloud services were employed to provide more redundancy and secure access to select team members. A detailed account of this plan, including the hardware, software, folder structures, and naming conventions used, are provided in [Appendix H](#app-dataorg).
 
-[^24-methods-41]: GitHub: <https://github.com/>
+[^24-methods-40]: GitHub: <https://github.com/>
 
-[^24-methods-42]: Box: <https://www.box.com/>
+[^24-methods-41]: Box: <https://www.box.com/>
 
 TODO: diagram of data storage?
 
 Key criteria for software selection included multiplatform compatibility, open-source licensing, and the ability to generate files using open, preferably text-based, standards. These characteristics were crucial to ensuring data portability and the reproducibility of results.
 
-Wherever appropriate, working files, including all data analysis in R and Python, and manuscript development in Quarto[^24-methods-43], were placed under version control using Git[^24-methods-44], and synchronized to GitHub. HL2 source code was treated separately, as discussed in @sec-devtactics.
+Wherever appropriate, working files, including all data analysis in R and Python, and manuscript development in Quarto[^24-methods-42], were placed under version control using Git[^24-methods-43], and synchronized to GitHub. HL2 source code was treated separately, as discussed in @sec-devtactics.
 
-[^24-methods-43]: Quarto: <https://quarto.org/>
+[^24-methods-42]: Quarto: <https://quarto.org/>
 
-[^24-methods-44]: Git: <https://git-scm.com/>
+[^24-methods-43]: Git: <https://git-scm.com/>
 
 TODO: discuss use of virtual environments for Python and R library management
 
@@ -1380,32 +1392,77 @@ TODO: elaborate on list of data extraction challenges and/or convert into narrat
 
 This section will detail the procedures for data preparation, then summarize the intended analytical approach. Analysis will be implemented and more thoroughly detailed in the [Results](#25-results) chapter to follow.
 
-### Strategy
+### Tools and Methodology
+
+R was used for all data cleaning and analysis. A mix of R Markdown (`RMD`) and Quarto (`QMD`) notebooks were created in the RStudio integrated development environment (IDE). The notebook format allows users to intermingle Markdown-formatted text, with code and output in a way that is very well suited to the exploratory nature of this work. This best approximates the idea of *Literate Programming* originally described by Donald Knuth as narrative approach that presents code and writing in a way that is understandable to the reader.
+
+TODO: cite and footnote Knuth!
+
+TODO: discuss "tidy" methods
+
+TODO: detail / cite / footnote packages used
+
+TODO: where to find code? appendix or web?
+
+### Cleaning and Transformation
 
 The primary outputs of the prior extraction effort were:
 
-1.  An Excel file in `xlsx` format, comprised of all transcribed self-reported data and manually recorded results.
-2.  *Performance data files exported in `xml` format, containing the annotations from each video.*
-3.  Notes for each participant in `md` format, compiled from observations and feedback.
+1.  `i1_raw_data.xlsx` containing the self-reported data and observed results, manually transcribed. Each tab contains a different data set.
+2.  `i1_times.csv` containing event times extracted from the video annotations. Each row corresponds to a participant, experiment, car number combination.
+3.  `adjusted_drop_times.xlsx` listing all drop out events and the assigned weights.
+4.  Notes for each participant in `MD` format, compiled from observations and feedback.
 
-*The focus of the analysis work will involve data in the `xml` and `xlsx` files, but first the performance data (times and events) and results data (outcomes and errors) must be combined. This involves*
+Prior to analysis, additional cleaning and transformation was required. This included identifying parent-child relationships among events, scoring the TLX and SUS, correcting errors in the data, enforcing standard naming conventions and data types, and collecting the results into a single `XLSX` file.
 
 TODO: add chart illustrating data processing workflow
 
-### Cleaning
+Data was cleaned and transformed by R code found in the notebook `forms_data.rmd`. The process was iterative, with each step detailed in the following sections.
 
-::: content-hidden
--   **Identification and Handling of Inconsistencies**: Explain how you identify and manage inconsistencies, missing data, or outliers.
--   **Data Transformation**: Describe any transformations applied to the data (e.g., normalization, categorization).
--   **Software Used**: Mention any specific software tools used for data cleaning.
--   **Preparation for Analysis**: Discuss how the cleaned data is formatted or organized in preparation for analysis.
-:::
+#### First Pass
 
-discuss cleaning / processing the data for analysis
+The initial pass of cleaning and transformation can be summarized as follows:
 
-### Validation
+1.  Process Demographics: Combine date and time into a single datetime column, cleans column names, and converts most columns to factors.
+2.  Process Car Outcomes: Replace flag values with meaningful categories and assign sequence numbers.
+3.  Process Car Times: Clean names, extract event types, assign sequence numbers, and categorize markers into parent and child events based on event types and times
+4.  Correct Errors: Implement various changes to correct for previously identified errors in the data. Each is documented and justified in the code.
+5.  Join and Save: Add unique IDs (UIDs) for events and outcomes, reorder essential columns, join table data, and save as CSV.
 
-Discuss the creation of participant reports for easy access of summarized findings.
+TODO: add details re: parent / child and error correction
+
+#### Second Pass
+
+The first pass output was carefully reviewed, during which an improved categorization scheme was defined for all events. The new scheme, which simplified and standardized the ad-hoc labels generated during annotation, is summarized in @tbl-eventcats.
+
+| Type   | Category   | Description                                      |
+|--------|------------|--------------------------------------------------|
+| Parent | Car        | Assembly completed during the time allowed.      |
+| Parent | Breakage   | Assembly retired due to breakage.                |
+| Parent | Defect     | Assembly retired due to defect in prebuild.      |
+| Parent | Incomplete | Assembly incomplete when time expired.           |
+| Child  | Drop       | Time lost due to HL2 drop-out.                   |
+| Child  | PWI        | Time lost to PWI reference (recall only).        |
+| Child  | Repair     | Time lost as repairs are made to assembly.       |
+| Child  | System     | Time lost due to other system related issues.    |
+
+: Event Categorization Scheme {#tbl-eventcats .striped}
+
+The second pass of changes started by applying the updated categories. Again, each change is explicitly stated in the code. Adjusted drop times were then joined with the resulting data, and two new columns were generated for each type of child event. These totaled the number of events of each type for each parent, and their durations. Finally, those results were verified with automated tests and the results were written to `CSV`.
+
+#### TLX and SUS Scoring
+
+These instruments were scored as described by their providers. As noted in @sec-tlxextract, TLX responses for the first five participants were corrected by rescaling to the standard 100-point system, rounding up. TLX and SUS results were written to separate `CSV` files and reviewed for correctness.
+
+#### Final Output
+
+Finally, the outputs described above were combined and saved as `combined_results.xlsx`, again with one tab for each: demographics, car outcomes, car times, car results, system usability scores, and tlx scores. For clarity, the car tabs differ as follows:
+
+- **Outcomes** is the final version of the observed result and errors for each car. 
+- **Times** is the final version of the data extracted from video annotations, including child events, with event type and category.
+- **Results** combines the outcomes and times tables, with one row per assembly and aggregating all time lost to child events.
+
+Most analysis will focus on the Results tab, but the others are retained for traceability.
 
 ### Analysis
 
@@ -1414,17 +1471,13 @@ Discuss the creation of participant reports for easy access of summarized findin
 -   **Hypotheses or Research Questions**: Reiterate the hypotheses or research questions that the analysis will address.
 -   **Preliminary Considerations**: Discuss any preliminary analysis conducted to inform the detailed analysis in the Results chapter.
 -   **Software and Tools**: Briefly mention any specific statistical software or tools that will be used for the analysis.
+-   **Identification and Handling of Inconsistencies**: Explain how you identify and manage inconsistencies, missing data, or outliers.
+-   **Data Transformation**: Describe any transformations applied to the data (e.g., normalization, categorization).
 :::
 
-summarize plans for analysis to be executed in results chapter
+TODO: summarize analysis methods used in results chapter
 
 ## Limitations of Study Design
-
-::: content-hidden
-Acknowledge any potential limitations or biases in your study design, participant selection, or data collection methods that could impact the interpretation of your results.
-
-Ensure that the limitations discussed are directly related to your methodology and how they might impact the interpretation of your results. Discuss any potential biases and the steps taken to minimize them.
-:::
 
 TODO: elaborate on list of study limitations and/or convert into narrative
 
@@ -1440,9 +1493,5 @@ TODO: elaborate on list of study limitations and/or convert into narrative
 -   orientation doesn't precisely control for learning across treatments, e.g. PAR, AR/MR all introduce the treatment using ST-8 instructions (in addition to ST-7), where PWI gets only ST-7 and no prior training with ST-8
 
 ## Summary
-
-::: content-hidden
-Conclude the methods section with a brief summary that encapsulates the key points of your research methodology, emphasizing its appropriateness and rigor in investigating the efficacy of AR/MR methods for manufacturing operator assembly training.
-:::
 
 TODO: write methods summary / transition to results
