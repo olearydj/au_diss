@@ -2,8 +2,6 @@
 
 TODO: write chapter intro
 
-TODO: funding? where and how?
-
 different in that it focuses on providing evidence of the theoretical benefits of the underlying affordances of different commercially available systems; most studies have fewer treatments and focus on with / without benefits. this doesn't tell us why
 
 *Your outline could benefit from a more detailed description of the methodological framework at the beginning. This includes the specific type of research methodology (qualitative, quantitative, mixed-methods) and the rationale behind choosing this methodology for studying AR in manufacturing assembly.*
@@ -202,8 +200,6 @@ These affordances were identified based on their direct applicability to the lea
 
 : Summary of Affordances by Treatment {#tbl-affords tbl-colwidths="\[40,15,15,15,15\]" .striped}
 
-TODO: should freedom of movement (untethered) be an affordance or requirement?
-
 @tbl-affords maps each treatment to its set of affordances. It demonstrates a progression of complexity and sophistication. "Task Instructions," "Hands-On Engagement," and "Direct View of Work" provide the baseline capabilities for all treatments. Additional affordances add layers of instructional complexity and interactivity.
 
 As discussed in @sec-theory, the theoretical benefits underpinning these affordances are rooted in educational theories that are particularly relevant to AR/MR learning environments. *Active learning theories*, including *experiential learning theory* support the idea that learning is enhanced through direct experience and reflection, which is fundamental to several of the identified affordances, including "Hands-On Engagement," "Step-Wise Guidance," and "Feedback Mechanisms."
@@ -391,9 +387,7 @@ where $R_i$ represents the response to each of the ten items. The SUS score, $S$
 
 #### Behavioral Control Survey {#sec-bcs}
 
-The final instrument completed during the intake process was the Adult ADHD Self-Report Scale (ASRSv1.1). Referred to simply as a *Behavioral Control Survey* (BCS) in order to avoid the possibility of biasing participant responses, the data collected are the focus of a separate study and not further discussed in this work.
-
-TODO: cite ADHD instrument and VB's poster
+The final instrument completed during the intake process was the Adult ADHD Self-Report Scale [ASRSv1.1, @green2019evide]. Referred to simply as a *Behavioral Control Survey* (BCS) in order to avoid the possibility of biasing participant responses, the data collected are the focus of a separate study [@ballard2024role], and not further discussed in this work.
 
 ### First Session - Learning and Recall
 
@@ -1435,16 +1429,16 @@ TODO: add details re: parent / child and error correction
 
 The first pass output was carefully reviewed, during which an improved categorization scheme was defined for all events. The new scheme, which simplified and standardized the ad-hoc labels generated during annotation, is summarized in @tbl-eventcats.
 
-| Type   | Category   | Description                                      |
-|--------|------------|--------------------------------------------------|
-| Parent | Car        | Assembly completed during the time allowed.      |
-| Parent | Breakage   | Assembly retired due to breakage.                |
-| Parent | Defect     | Assembly retired due to defect in prebuild.      |
-| Parent | Incomplete | Assembly incomplete when time expired.           |
-| Child  | Drop       | Time lost due to HL2 drop-out.                   |
-| Child  | PWI        | Time lost to PWI reference (recall only).        |
-| Child  | Repair     | Time lost as repairs are made to assembly.       |
-| Child  | System     | Time lost due to other system related issues.    |
+| Type   | Category   | Description                                   |
+|--------|------------|-----------------------------------------------|
+| Parent | Car        | Assembly completed during the time allowed.   |
+| Parent | Breakage   | Assembly retired due to breakage.             |
+| Parent | Defect     | Assembly retired due to defect in prebuild.   |
+| Parent | Incomplete | Assembly incomplete when time expired.        |
+| Child  | Drop       | Time lost due to HL2 drop-out.                |
+| Child  | PWI        | Time lost to PWI reference (recall only).     |
+| Child  | Repair     | Time lost as repairs are made to assembly.    |
+| Child  | System     | Time lost due to other system related issues. |
 
 : Event Categorization Scheme {#tbl-eventcats .striped}
 
@@ -1458,9 +1452,9 @@ These instruments were scored as described by their providers. As noted in @sec-
 
 Finally, the outputs described above were combined and saved as `combined_results.xlsx`, again with one tab for each: demographics, car outcomes, car times, car results, system usability scores, and tlx scores. For clarity, the car tabs differ as follows:
 
-- **Outcomes** is the final version of the observed result and errors for each car. 
-- **Times** is the final version of the data extracted from video annotations, including child events, with event type and category.
-- **Results** combines the outcomes and times tables, with one row per assembly and aggregating all time lost to child events.
+-   **Outcomes** is the final version of the observed result and errors for each car.
+-   **Times** is the final version of the data extracted from video annotations, including child events, with event type and category.
+-   **Results** combines the outcomes and times tables, with one row per assembly and aggregating all time lost to child events.
 
 Most analysis will focus on the Results tab, but the others are retained for traceability.
 

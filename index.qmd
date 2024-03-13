@@ -2,9 +2,15 @@
 
 ::: {.content-visible when-format="html"}
 
-# Welcome! {.unnumbered .unlisted}
+# Abstract {.unnumbered .unlisted}
 
-TODO: write index page for HTML version
+This research rigorously assesses the effectiveness of distinct augmented instructional techniques within the framework of contemporary manufacturing training methods. A cohort of 62 participants, with varying prior exposures to assembly tasks but no prior experience with augmented or mixed reality, engaged in a simulated car assembly task at the Tiger Motors Lean Education Lab. Participants were introduced to different instructional methods: traditional Paper Work Instructions (PWI), Projected Augmented Reality (PAR), head-mounted Augmented Reality (HMDAR), and head-mounted Mixed Reality (HMDMR). For the purposes of this study, HMDAR and HMDMR are differentiated by the participant's freedom to manipulate the workpiece while augmentations remain aligned. HMDMR adds model-based tracking methods that allow the participant to manipulate the workpiece, while all other treatments require it to remain in a fixture.
+
+Primary performance metrics were carefully documented, including task duration, error rates, and error classifications, providing insights into learning progression and task proficiency. In the recall phase, participants were tasked to replicate the assembly four times, relying solely on PWI. Through video analysis, the frequency and duration of their references to the PWI were recorded, shedding light on the learning efficacy of each instructional method. Several weeks post-intervention, participants' retention—how adeptly and promptly they could reproduce the assembly—was assessed among a volunteer subset.
+
+Following both phases of the initial experiment, the NASA-TLX and System Usability Scale instruments, chosen for their reputable assessment of perceived workload and user experience, were administered. That data, coupled with participant demographics and qualitative feedback elicited through open-ended exit interviews, contributes to a comprehensive expression of each participant's experience.
+
+Ultimately, this study explores the potential advantages and challenges of AR-based instructional methods. While the primary application lies in diverse manufacturing training and support, its implications extend to analogous tasks, including equipment installation, field repair, quality inspection, and safety training.
 
 TODO: eliminate blank page for pdf version
 
@@ -37,6 +43,6 @@ TODO: fix arabic / roman numbering of frontmatter pages
 
 \RedeclareSectionCommand[beforeskip=0pt, afterskip=24pt]{chapter}
 
-{{< include 14-acronyms.qmd >}}
+<!-- {{< include 14-acronyms.qmd >}} -->
 
 :::

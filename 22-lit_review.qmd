@@ -4,7 +4,7 @@ TODO: DISCUSS LR METHODOLOGY
 
 ## Theoretical Basis {#sec-theory}
 
-TODO: REVIEW CAREFULLY & UPDATE / REFINE AS REQUIRED
+TODO: REVIEW theoretical basis CAREFULLY & UPDATE / REFINE AS REQUIRED
 
 The perceptual, cognitive, and learning benefits of XR devices are generally attributed to theories related to experiential and constructivist learning theories, both of which are branches of active learning theory.
 
