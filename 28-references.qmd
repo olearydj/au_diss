@@ -5,9 +5,11 @@
 
 ::: {.content-visible when-format="pdf"}
 
+```{=latex}
 \begingroup
 \raggedright
 \printbibliography[heading=none]
 \endgroup
+```
 
 :::

@@ -1,10 +1,14 @@
 # Literature Review {#22-lit_review}
 
-TODO: DISCUSS LR METHODOLOGY
+::: content-hidden
+TODO: discuss lr methodology
+:::
 
 ## Theoretical Basis {#sec-theory}
 
-TODO: REVIEW theoretical basis CAREFULLY & UPDATE / REFINE AS REQUIRED
+::: content-hidden
+TODO: review theoretical basis carefully & update / refine as required
+:::
 
 The perceptual, cognitive, and learning benefits of XR devices are generally attributed to theories related to experiential and constructivist learning theories, both of which are branches of active learning theory.
 
@@ -12,7 +16,7 @@ The perceptual, cognitive, and learning benefits of XR devices are generally att
 
 Active learning theories (ALT), particularly constructivism and experiential learning theory (ELT), describe the relationship between situated experiences and educational outcomes, where the self-directed construction of new knowledge occurs through activity in a supportive environment [@clayton2017multi]. Fundamentally, these ideas have epistemological origins in empiricism, rationalism, and pragmatism, which consider the role of experience, reason, and action in knowledge.
 
-The idea of learning by doing is ancient, but the origins of modern ELT are usually attributed to John Dewey and his 1938 work, *Experience and Education* [@dewey1938exper]. Jean Piaget's theory of cognitive development later introduced the idea of constructivist learning theory (CONLT), wherein learners build new understanding through the interaction of prior knowledge and experience [@piaget1928judgm]. Russian psychologist Lev Vygotskii's "zone of proximal development" emphasized the learner's need for knowledgeable support, along with the social aspects of constructivist learning [@vygotskii1986thoug]. These ideas were expanded on by Jerome Bruner's theory of "instructional scaffolding." Bruner claimed that understanding is developed through carefully guided and supported learner experiences that build on their current knowledge [@bruner1960proce].
+The idea of learning by doing is ancient, but the origins of modern ELT are usually attributed to John Dewey and his 1938 work, *Experience and Education* [@dewey1938exper]. Jean Piaget's theory of cognitive development later introduced the idea of constructivist learning theory (CONLT), wherein learners build new understanding through the interaction of prior knowledge and experience [@piaget1928judgm]. Russian psychologist Lev Vygotskii's "Zone of Proximal Development" (ZPD) emphasized the learner's need for knowledgeable support, along with the social aspects of constructivist learning [@vygotskii1986thoug]. These ideas were expanded on by Jerome Bruner's theory of "instructional scaffolding." Bruner claimed that understanding is developed through carefully guided and supported learner experiences that build on their current knowledge [@bruner1960proce].
 
 In 1984 David A. Kolb, a protégé of Bruner's, published his cycle of experiential learning, which identified four stages: concrete experience, reflective evaluation, abstract conceptualization, and adaptive experimentation [@kolb1984exper]. Kolb's conceptual model incorporated elements from previous theories and is widely used to operationalize ELT concepts today. Later, Lave and Wegner's Situated Learning Theory emphasized the contextual aspects of ELT. They claimed that an environment relevant to the subject matter helped situate the learner's mind, strengthening the experience and thus the learning effect [@lave1991situa].
 
@@ -24,19 +28,15 @@ Focused activity can lead to a state of psychological absorption. This intuitive
 
 [^22-lit_review-1]: This Hungarian name is pronounced *me-high chick-sent-me-high*
 
-Csikszentmihályi's work claims that activities leading to flow must have structure and direction, provide clear and immediate feedback, and balance perceived challenges and skills. These interrelated requirements enhance the sense of competence and self-efficacy, in a way that is highly engaging without creating anxiety [@csikszentmihalyi2014flow]. The so-called "flow channel," in which challenge and skill are appropriately balanced for the individual, is similar in concept to the previously described ZPD by Vygotskii.
+Csikszentmihályi's work claims that activities leading to flow must have structure and direction, provide clear and immediate feedback, and balance perceived challenges and skills. These interrelated requirements enhance the sense of competence and self-efficacy, in a way that is highly engaging without creating anxiety [@csikszentmihalyi2014flow]. The so-called "flow channel," in which challenge and skill are appropriately balanced for the individual, is similar in concept to Vygotskii's ZPD, as previously described.
 
 ### Cognitive Load Theory
 
-TODO: introduce COGLT and describe its relationship to flow channel and ZPD
+Cognitive Load Theory (COGLT) is a framework for instructional design that aims to optimize learning by managing the cognitive load placed on learners. It is based on the assumption of a limited working memory and an unlimited long-term memory [@sweller1998cogni]. COGLT suggests that effective instructional material should direct cognitive resources towards relevant learning activities [@chandler1991cogni]. It identifies three types of cognitive load: intrinsic, extraneous, and germane. Intrinsic cognitive load is determined by the nature of the material, while extraneous cognitive load is caused by poorly designed instructional materials [@sweller1994cogni]. Germane cognitive load, on the other hand, is the cognitive load that contributes to learning by promoting the construction and automation of schemas[^22-lit_review-2].
 
-> Flow Theory, the Zone of Proximal Development (ZPD), and Cognitive Load Theory (COGLT) are indeed related in the sense that they all concern aspects of optimal learning conditions, but they address different dimensions of the learning process.
->
-> Developed by John Sweller, COGLT focuses on the cognitive capacity of learners and how instructional design can be optimized to prevent cognitive overload. It distinguishes between different types of cognitive load (intrinsic, extraneous, and germane) and suggests ways to design learning experiences so that they align with the learner's cognitive processing capabilities.
->
-> The common thread among these theories is their focus on optimizing learning experiences. Flow Theory and ZPD both deal with the challenge level of learning activities and how these can be aligned with the learner's current abilities to promote engagement and learning. Meanwhile, COGLT deals more directly with how information is presented and processed, ensuring that cognitive resources are not overburdened. Together, these theories provide a comprehensive framework for designing effective and engaging learning experiences.
->
-> Cognitive Load Theory is generally considered to be a framework that can inform both active learning theories and pedagogical practices. COGLT deals with how information is processed by learners and therefore has implications for how teaching should be structured—whether it's through active learning strategies, direct instruction, or other pedagogical methods. It provides guidelines to avoid overwhelming the learner's cognitive system and is relevant across different educational theories and practices.
+[^22-lit_review-2]: In learning theory, a schema is an organized pattern of thought or behavior that helps in processing, interpreting, and storing information in long-term memory. Schemas allow learners to categorize and assimilate new information efficiently by integrating it with existing knowledge.
+
+Like Flow Theory and the ZPD concept, COGLT can inform both active learning theories and pedagogical practices to optimize learning experiences. The former both deal with aligning the challenge level of learning activities with the learner's abilities to promote engagement and learning. Meanwhile, COGLT deals more directly with how the presentation of information affects memory and learning processes. Together, these theories provide a comprehensive framework for designing effective and engaging learning experiences.
 
 ### Embodied Cognition
 
@@ -56,15 +56,17 @@ Animate vision theory (AVT) proposes that "vision is not the transformation of l
 
 ## Affordances and Benefits
 
-TODO: ALIGN TERMINOLOGY WITH METHODS
+::: content-hidden
+TODO: align terminology with methods
+:::
 
 AR and VR devices are often confused with one another and/or mistaken as new means for the consumption of traditional content. Both are head-mounted devices that display believable sensory stimuli to augment or reproduce real-world interactions. Both do so in a manner that is contextually cohesive and responsive to a wide range of body-centered inputs. Despite their commonalities, AR and VR are fundamentally different from one another and other modern media. Where VR is designed to immerse the user in a synthetic world, AR is intended to strengthen the user's connections with reality. Failing to recognize and leverage their unique affordances severely limits the utility of these devices [@leonard2018holog].
 
 VR provides a form of interactive sensorimotor simulation that, when immersive enough to enable presence, the brain interprets as a lived experience. This enables situated learning experiences which, if designed to be appropriately challenging and/or visceral, can be enhanced by flow and may elicit an emotional response [@kwon2018verif; @kappes2016menta; @millican2017virtu]. The learning effect of a VR experience is thus largely grounded in the theoretical requirements and benefits of immersion & presence, experiential learning, and flow theory.
 
-As an active learning method, VR is best suited for the development of higher-order cognitive skills. The potential for emotional impact also makes VR a useful tool for affective learning. Because the experiences are simulated, VR enables training that is otherwise impractical or impossible. Finally, the digital nature of VR experiences makes them easy to repeat, instrument, scale, and distribute. These practical benefits are accurately summarized as offering "experience on demand" in Jeremy Bailenson's[^22-lit_review-2] popular book of the same name [@bailenson2018exper].
+As an active learning method, VR is best suited for the development of higher-order cognitive skills. The potential for emotional impact also makes VR a useful tool for affective learning. Because the experiences are simulated, VR enables training that is otherwise impractical or impossible. Finally, the digital nature of VR experiences makes them easy to repeat, instrument, scale, and distribute. These practical benefits are accurately summarized as offering "experience on demand" in Jeremy Bailenson's[^22-lit_review-3] popular book of the same name [@bailenson2018exper].
 
-[^22-lit_review-2]: Footnote about Jeremy Bailenson
+[^22-lit_review-3]: Footnote about Jeremy Bailenson
 
 AR allows augmentation of the real world with virtual objects that are informative and/or interactive, thus enhancing our understanding of and connection with the world. The essential affordance of AR is direct interaction with virtual objects in which visual and spatial queries take the form of natural object manipulation in everyday surroundings. Applying embodied cognition and animate vision theories in the context of learning suggests that, by retaining proprioception and sensorimotor function, AR experiences are more aligned with human cognitive architecture than metaphorical digital interfaces. AR interfaces provide a combination of procedural and configurational spatial knowledge via haptic and pictorial sources. Visual, spatial, and sensorimotor feedback provides multiple reference frames that enhance perception and cognition. By reducing the overall cognitive load or better distributing it across multiple sensory pathways, AR improves the uptake of sensorial-based knowledge [@shelton2003explo].
 
@@ -74,9 +76,9 @@ Neither AR nor VR have proved more effective than traditional classroom methods 
 
 ## Market Readiness and Applications
 
-While XR has yet to provide consumers with a value proposition that is broadly compelling and sustainable,[^22-lit_review-3] the industrial, healthcare, and military markets have embraced its potential for cost savings and competitive advantage.
+While XR has yet to provide consumers with a value proposition that is broadly compelling and sustainable,[^22-lit_review-4] the industrial, healthcare, and military markets have embraced its potential for cost savings and competitive advantage.
 
-[^22-lit_review-3]: This claim may well be tested in 2024, with the recent introduction of Apple's Vision Pro, a state of the art video pass-through device, and Meta's Quest 3, which is positioned primarily as a VR device, but also offers video-pass through.
+[^22-lit_review-4]: This claim may well be tested in 2024, with the recent introduction of Apple's Vision Pro, a state of the art video pass-through device, and Meta's Quest 3, which is positioned primarily as a VR device, but also offers video-pass through.
 
 Across industry, where the primary barrier to adoption is return on investment (ROI), it is generally accepted that AR's essential connection to reality (e.g. guiding a surgeon's hand) can reduce costs. AR has improved learning rates, reduced errors, increased yields, improved quality, and enhanced designs. By enabling collaborative design, remote expert guidance, and enhanced monitoring, it has also improved the end-user experience [@azuma2019road]. In industrial settings HMDs are typically designed to support operators in an unobtrusive fashion, allowing them to focus on a task in the physical world, e.g. inspection, maintenance, repair, and order picking. In doing so they can reduce cognitive and/or physical load thru supplemental hands-free displays [@starner2015weara]. Manufacturing and healthcare are two industries that have most benefited from early engagement of this technology.
 
@@ -152,13 +154,15 @@ The *Flow State Scale* by @jackson1996devel is a 36 item instrument used to meas
 
 Hart's *NASA Task Load Index* [TLX, -@hart2006tlx] has been used to estimate workload for almost 40 years. It assesses overall task workload based on the magnitude of mental, physical, and temporal demands imposed by the task, the operator's emotional response to those demands (effort, frustration), and their perceived ability to meet them (performance). These six factors are weighted based on the factors each subject feels best describe the workload associated with the task under study.
 
+The *System Usability Scale* (SUS) was designed by John Brooke [-@brooke1996susq] to provide a "quick and dirty" assessment of usability for industrial systems, where detailed analysis is often expensive and impractical. The design of SUS was partly informed by his work on ISO 9241-11 [@ISO9241-11], a standard for the definition and measurement of usability. It describes usability in terms of effectiveness, efficiency, and satisfaction in the context of use. Because the first two are difficult to compare across systems, SUS focuses on user satisfaction [@brooke2013sus]. The resulting score is only indicative in nature. The SUS is not diagnostic and can not pinpoint specific usability issues. Despite its limitations, multiple studies have shown the SUS is a valid and reliable high-level measure that is applicable to a wide range of technologies [@bangor2008empir; @sauro2011pract].
+
 ## XR in Manufacturing
 
 Here we focus on case studies that evaluate the effectiveness of XR assisted ("augmented") instruction for manufacturing operations.
 
+::: content-hidden
 TODO: INSERT NEW LIT REVIEW MATERIAL HERE FROM DISS/XRAssessmentMethods.XLS
-
-...
+:::
 
 ## Conclusions
 
@@ -168,7 +172,9 @@ In light of this comprehensive review of existing literature, it is evident that
 
 Though the need is established for strategic decision making guidelines as described above, few such frameworks were found in the literature. Of particular note is the questionnaire based approach proposed by @palmarini2017innov. Though innovative, it falls well short of the idealized requirements. It fails to account for economic considerations, is not validated, covers only AR devices, and its recommendations are general and out of date.
 
+::: content-hidden
 TODO: TIE BACK TO NEW LITERATURE - ABSENCE OF PROOF OF VALUE PROP
+:::
 
 *...in spite of all the promising indicators, we find insufficient evidence to clearly quantify the extent to which augmented training can accelerate learning, improve operator performance, or increase retention in manufacturing applications. Without such evidence, the ROI for these systems remains unclear.*
 
@@ -176,13 +182,12 @@ Consequently, there is a pressing need for additional research to quantify the e
 
 *magnitude of return will depend on alignment of the provided affordances, their theoretical benefits, which is determined by instructional design*
 
-
 ### Proposed Guidelines {#sec-guidelines}
 
-TODO: Finish and relocate?
+::: content-hidden
+TODO: Finish and relocate? implications?
+:::
 
 Based on this review the following guidelines are proposed for instructional design with AR/MR augmentation for industrial training applications.
 
 ![Instructional Design for Augmented Training Methods](images/22-IDforAR.png){#fig-idforar}
-
-TODO: what are the implications of these?

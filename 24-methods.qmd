@@ -1,5 +1,6 @@
 # Methods {#24-methods}
 
+::: content-hidden
 TODO: write chapter intro
 
 different in that it focuses on providing evidence of the theoretical benefits of the underlying affordances of different commercially available systems; most studies have fewer treatments and focus on with / without benefits. this doesn't tell us why
@@ -9,6 +10,7 @@ different in that it focuses on providing evidence of the theoretical benefits o
 *While you have a purpose section, it might be beneficial to explicitly state your hypotheses or research questions near the beginning of the Methods chapter. This will provide a clearer guide for readers on what the study aims to address.*
 
 *If not already done in previous chapters, briefly relate your chosen methods to existing literature. This can demonstrate how your approach addresses gaps or builds upon existing research.*
+:::
 
 The purpose of this study is to measure the effect of instructional media type (IMT) on learning rates and skills transfer for a simulated manufacturing assembly task. The first phase will help us understand how each IMT affects the operator’s learning rate (time or cycles to learn the process) and ultimate measures of performance (speed and accuracy). The second will help assess how learning transfer varies with each treatment. Finally, the exit surveys will help us understand the relationship between those results and perceived workload, system usability, and the participant’s self-reported behavioral control.
 
@@ -42,7 +44,9 @@ The remainder of this chapter will describe in detail all aspects of the study's
 
 ## Study Design {#study-design}
 
+::: content-hidden
 TODO: write intro for study design: This study design is a randomized controlled trial, consisting of three true experiments with human subjects, conducted in two sessions. between groups design...
+:::
 
 ### Task and Context
 
@@ -92,11 +96,15 @@ ST-8 is equipped with a PAR system by LightGuide[^24-methods-2] (LG), a Michigan
 
 Note that the Lean Lab's LightGuide system predates this study. Its specification, installation, setup, and configuration, along with the design and implementation of the instructional materials it uses at ST-8, were conducted by prior teams.
 
+::: content-hidden
 TODO: cite papers related to LEGO lab development
+:::
 
 ![LG System Architecture. Source: LightGuide website](images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
 
+::: content-hidden
 TODO: replace bold terms in LG system description
+:::
 
 The system at ST-8 uses a **PROJECTOR MODEL** and **CAMERA MODEL** mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide **VERSION NUMBER** is displayed on a **MONITOR MODEL**, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure of extruded aluminum components from 80/20[^24-methods-3] to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
 
@@ -238,7 +246,9 @@ The key measures of this study are learning, recall, and retention.
 
 *Retention* is the ability to maintain information, skills, or knowledge over time. For this study it is measured by re-testing recall some time after the initial training.
 
+::: content-hidden
 TODO: cite learning / recall / retention definitions? relate quality and performance to OEE? justify these choices?
+:::
 
 ### Independent Variables
 
@@ -363,9 +373,7 @@ The TLX is comprised of weighting and scoring processes that are repeated by par
 
 ![Sources of Workload Evaluation](images/24-TLXsow.png){#fig-tlxsow width="5.5in"}
 
-Next, participants complete the *Workload Rating Scales* form to assess the magnitude of each factor for the given task. This uses a Likert-like scale with 20 equal intervals and bipolar descriptors. No numeric values are given and participants are instructed to mark it freely. The mental demand rating scale shown in @fig-tlxwrs is representative.
-
-TODO: cite Likert?
+Next, participants complete the *Workload Rating Scales* form to assess the magnitude of each factor for the given task. This uses a Likert-like [@likert1932techn] scale with 20 equal intervals and bipolar descriptors. No numeric values are given and participants are instructed to mark it freely. The mental demand rating scale shown in @fig-tlxwrs is representative.
 
 ![Workload Rating Scale, Mental Demand](images/24-TLXwrs.png){#fig-tlxwrs width="5in"}
 
@@ -373,9 +381,7 @@ The results of the TLX are expected to provide insight into the overall user exp
 
 #### System Usability Scale (SUS) {#sec-sus}
 
-TODO: add SUS and citation to LR
-
-As discussed in @sec-lrinstruments, the *System Usability Scale* \[SUS, citeme\] is a widely used instrument designed to quickly and reliably assess the overall usability of a product or service. The SUS is composed of 10 questions that participants respond to according to their experience with the system. Each is ranked on a five point scale anchored by "Strongly Agree" and "Strongly Disagree" bipolar descriptors. Note that alternating items are reverse-scored to improve validity. A portion of the form used is shown in @fig-sus.
+As discussed in @sec-lrinstruments, the *System Usability Scale* is a widely used instrument designed to quickly and reliably assess the overall usability of a product or service. The SUS is composed of 10 questions that participants respond to according to their experience with the system. Each is ranked on a five point scale anchored by "Strongly Agree" and "Strongly Disagree" bipolar descriptors. Note that alternating items are reverse-scored to improve validity. A portion of the form used is shown in @fig-sus.
 
 ![System Usability Scale, Questions 1-3 of 10](images/24-SUS.png){#fig-sus width="5.5in"}
 
@@ -399,7 +405,9 @@ Phase one, Learning, compared the effects of the assigned treatment on the speed
 
 Participants were instructed to focus on three priorities during the first phase: (1) learn the steps of the assembly process, (2) complete each assembly correctly, and (3) finish as many assemblies as possible in the time allowed. This approach mirrors the principles of Overall Equipment Effectiveness (OEE) in manufacturing, which balances the need for accuracy and precision (reflecting the Quality aspect of OEE) with efficiency (mirroring the Performance aspect of OEE). In the context of this study, OEE's third component, Availability, is out of the participant's control, but, as discussed elsewhere, does manifest in some system related issues that were encountered.
 
+::: content-hidden
 TODO: add OEE and citation to LR, update above?
+:::
 
 The fixed duration of 10-minutes was deliberately chosen to align with various aspects of the learning process and the operational context of the task. In addition to the OEE considerations outlined above, using a fixed duration ensured that all participants have the same opportunity to learn the procedure. A fixed car count approach (e.g. "make 6 cars") was rejected due to concerns that the absence of a time constraint could lead to uneven learning opportunities and extend session lengths beyond practical limits.
 
@@ -455,7 +463,9 @@ This single photo approach streamlined data collection during the event without 
 
 ## HMD System Development {#sysdev}
 
+::: content-hidden
 TODO: write intro for sysdev section
+:::
 
 ### Hardware
 
@@ -598,7 +608,9 @@ All programming was done in C#, as required by Unity. C# is an object-oriented l
 
 ![Development Workflow](images/24-HL2DevWorkflow.png){#fig-devwkflow width="5in"}
 
+::: content-hidden
 TODO: create an accurate image of HL/Unity/MRTK workflow to replace this one
+:::
 
 Unity development for HoloLens2 generally proceeds as illustrated in @fig-devwkflow, and described below.
 
@@ -620,7 +632,9 @@ The inter-dependencies between Unity, MRTK, and VS, each with their own packagin
 
 ![Unity HoloLens2 Simulator](images/24-UnityHL2Sim.png){#fig-unityhl width="5in"}
 
+::: content-hidden
 TODO: get a better image of Unity HL2 simulator interface
+:::
 
 ### Design
 
@@ -638,7 +652,9 @@ A consistent approach was taken for the HMDMR treatment design, extending the ca
 
 ### Implementation
 
+::: content-hidden
 TODO: make project code and data available?
+:::
 
 The HMDAR treatment was developed first. Using the HMDAR version as a baseline, the HMDMR version extended it to incorporate model based tracking methods.
 
@@ -656,7 +672,9 @@ For HMDAR tracking, we relied on VE's *Area Targets*[^24-methods-19] feature, an
 
 ![HoloLens Spatial Mapping](images/24-HLSpatialMap.png){#fig-spatmap width="5in"}
 
+::: content-hidden
 TODO: replace with image of spatial mapping from study
+:::
 
 Area-based tracking was selected over image or marker-based methods to minimize tracking loss. Marker-based tracking will fail if there are no markers within view of the HMD's sensors. Area-based tracking provides a continuous map of registration points for the entire scene, greatly reducing drop-outs. It also tends to (re)acquire tracking more quickly than marker-based methods, again due to the number and distribution of features available.
 
@@ -672,7 +690,9 @@ The 3D model is created offline, first by scanning the area with the Vuforia Cre
 Vuforia Area Target Processing
 :::
 
+::: content-hidden
 TODO: replace with images from study: VE creator app and work area target
+:::
 
 Once imported into Unity and properly configured[^24-methods-21], the 3D model is used to align the placement of virtual objects in the real world scene. This allows the developer to design the experience in the context of the real world model, as seen in @fig-areatgt-b.
 
@@ -696,7 +716,9 @@ Model source data was constructed in LeoCAD[^24-methods-23], a tool for designin
 
 [^24-methods-24]: LDraw: <https://ldraw.org/>
 
+::: content-hidden
 TODO: cite LDraw standard?
+:::
 
 LeoCAD's design adheres to LEGO design principles, ensuring that the way parts attach in the software reflects the real-world equivalent. The combination of LDraw's precision and LeoCAD's tooling ensures that the resulting models are faithful representations of their physical counterparts.
 
@@ -722,13 +744,11 @@ The MTG process begins by checking for model suitability. Model targets must be 
 
 Next, the model geometry is analyzed and a set of Guide Views are automatically generated for a 360-degree recognition range. This step leverages deep learning methods trained to generate optimal views from arbitrary angles based on the geometric features and surface qualities of the model. The output of this process includes the trained recognition model, along with the associated dataset and guide views. This package is imported into Unity and used by VE to provide the desired model-tracking functionality.
 
-TODO: adjust / update model tracking implementation description per Carson's details below?
-
-> As for model tracking, if I recall correctly, since only a few pieces changed between the start and end of the training, I was able to just use one model of the car before any pieces were added. Another reason this approach worked was that once the model tracking system detects a match between the target model and a real-world object, it "expects" to keep finding the target object there, so small changes in the car don't really throw it off. It also helped a lot that we had a really high-quality model of the car, so the model tracking had a lot of points to pull from when comparing real-world objects to the target model. As for displaying the individual pieces as you build them, if I remember correctly, I just exported a finished version of the car's model as separate pieces and then enabled and disabled specific pieces as needed.
-
 ### Challenges
 
+::: content-hidden
 TODO: elaborate on list of development challenges and/or convert into narrative
+:::
 
 -   reflectance of aluminum fixture confused trackers
 -   complexity of MR, less reliable tracking, crashes
@@ -750,7 +770,9 @@ Potential participants in the first investigation were screened for exclusion ba
 
 [^24-methods-27]: This distinction had to be explained to several interested participants, which supports the notion that the differences between AR and VR are not yet well understood. Ultimately, no participants were eliminated by this requirement.
 
+::: content-hidden
 TODO: mention target sample size and justify based on power / practical limits
+:::
 
 ### Benefits and Compensation
 
@@ -871,9 +893,7 @@ For reasons detailed in the [study design](#study-design), two angles of each tr
 
 ### Risks and Discomforts
 
-Beyond the privacy and data concerns previously described, other potential risks and discomforts were identified. Prolonged used of HMD VSTs has been reported to cause mild neck strain, disorientation, and eye strain in some cases. The optical and physical design of these systems can also result in a limited or obscured field of view and degraded acuity, which could increase the participant's risk of trip or impact.
-
-TODO: cite risk of prolonged use using ISO paper?
+Beyond the privacy and data concerns previously described, other potential risks and discomforts were identified. Prolonged used of HMD VSTs has been reported to cause mild neck strain, disorientation, and eye strain in some cases. The optical and physical design of these systems can also result in a limited or obscured field of view and degraded acuity, which could increase the participant's risk of trip or impact \[ul2022xr8400\].
 
 The HL2's untethered design with wide, unobstructed field of view mitigates many of these concerns, but additional precautions were taken. All participants were screened for a tendency towards motion sickness. The study was intentionally designed to limit each participant's time wearing the HL2, and to ensure that they were generally stationary in an obstruction-free environment. Finally, the Lean Lab was selected in part because it is a organized, safe, and well-lit environment with no history of related hazards.
 
@@ -935,9 +955,9 @@ At the start of each day, ST-7 through 9 are cleared and configured as described
 Start and End Configurations for ST-8 Assemblies
 :::
 
+::: content-hidden
 TODO: replace ST8 start and end images with photos?
-
-TODO: fixture blue
+:::
 
 ### General Policies {#sec-genpol}
 
@@ -1163,7 +1183,9 @@ Results recorded by the research team during the experiments were naturally erro
 
 A final step transcribes the recorded results into a concise format that encodes a detailed, contextualized description of each error. For example, `F59LRP (2)` indicates that, at the front of the car (`F`), part `59` attached to the left and right (`LR`), were incorrectly positioned (`P`), accounting for `(2)` errors. This encoding scheme, detailed in [Appendix G](#app-datadict), was developed for the study to describe error types in a contextually rich manner that may better relate to the corresponding human error than the discrete elements it comprises. This approach is designed to facilitate pattern discovery and analysis, support predictive modeling and simulations, and inform more targeted interventions.
 
+::: content-hidden
 TODO: make sure the data dictionary clearly defines columns for raw data (`i1_raw_data`) vs combined / ingested data. The current Car Outcomes section describes the later, which is different from the former.
+:::
 
 ### Qualitative Feedback
 
@@ -1286,8 +1308,6 @@ Write csvData to a CSV file
 Pseudocode for XML Data Extraction (`process_data.py`)
 :::
 
-TODO: double check this pseudocode
-
 While the XML data includes annotations for both instantaneous events (e.g. breakage occurs or defect encountered) and those with duration (e.g. task completion time), only the later are included in the resulting CSV. While instant events can provide important context for understanding performance, the focus of our analysis will be on task outcomes, which involve a duration.
 
 The result includes columns for participant number, experiment number, and the event name, start time, duration, and description. For example, the data extracted for the first participant's learn experiment is summarized in @tbl-i1_times_csv.
@@ -1310,11 +1330,11 @@ This shows they attempted nine cars and completed seven. Breakage occurred durin
 
 The output of this script was saved as `i1_times.csv` and carefully validated against the XML data, video recordings, and reports described next.
 
-TODO: where can the reader find code?
-
 ### System Availability
 
+::: content-hidden
 TODO: elaborate on dropout logging?
+:::
 
 Due to challenges associated with area and model-based tracking, described elsewhere, participants using the HL2 would experience system down time that we referred to as "drop-outs." This was the result of a loss of tracking that caused the user interface to deactivate. All drop-outs were marked as subclips during video annotation process so the lost time could be accounted for.
 
@@ -1330,7 +1350,9 @@ To assist with data validation and better understand factors that contribute to 
 
 Each report aggregates participant demographics and car outcomes from observed and self-reported data, qualitative feedback from transcribed Markdown files, and quantitative event data from XML annotations. The result paints a comprehensive picture of the participant's experience in a single Markdown report. This is demonstrated by @fig-report, a screenshot of the recall portion of #1001's report. Complete reports can be reviewed...
 
+::: content-hidden
 TODO: include some / all reports in appendix or online?
+:::
 
 ![Portion of Participant #1001's Report, Obsidian Screenshot](images/24-Report.png){#fig-report width="70%"}
 
@@ -1350,7 +1372,9 @@ Anonymous data was stored locally in three separate locations, all on secure har
 
 [^24-methods-41]: Box: <https://www.box.com/>
 
+::: content-hidden
 TODO: diagram of data storage?
+:::
 
 Key criteria for software selection included multiplatform compatibility, open-source licensing, and the ability to generate files using open, preferably text-based, standards. These characteristics were crucial to ensuring data portability and the reproducibility of results.
 
@@ -1360,13 +1384,17 @@ Wherever appropriate, working files, including all data analysis in R and Python
 
 [^24-methods-43]: Git: <https://git-scm.com/>
 
+::: content-hidden
 TODO: discuss use of virtual environments for Python and R library management
+:::
 
 The entire process was designed to ensure traceability, allowing every result to be reliably linked back to its original source data, bolstering the integrity of our research findings. The priorities outlined here were carried on throughout the analysis process, described next.
 
 ### Challenges
 
+::: content-hidden
 TODO: elaborate on list of data extraction challenges and/or convert into narrative
+:::
 
 -   sync is hard, dropped frames on HL2 made sync drift; use side camera for car related logging and HL for PWI / HL UI related logging to ensure accuracy
 -   dropped video and crashes - multiple syncs required; multiple videos for each camera
@@ -1388,15 +1416,17 @@ This section will detail the procedures for data preparation, then summarize the
 
 ### Tools and Methodology
 
-R was used for all data cleaning and analysis. A mix of R Markdown (`RMD`) and Quarto (`QMD`) notebooks were created in the RStudio integrated development environment (IDE). The notebook format allows users to intermingle Markdown-formatted text, with code and output in a way that is very well suited to the exploratory nature of this work. This best approximates the idea of *Literate Programming* originally described by Donald Knuth as narrative approach that presents code and writing in a way that is understandable to the reader.
+R was used for all data cleaning and analysis. A mix of R Markdown (`RMD`) and Quarto (`QMD`) notebooks were created in the RStudio integrated development environment (IDE). The notebook format allows users to intermingle Markdown-formatted text, with code and output in a way that is very well suited to the exploratory nature of this work. This best approximates the idea of *Literate Programming* originally described by Donald Knuth[^24-methods-44] as a narrative approach that interleaves code and writing in a way that promotes reader understanding [@knuth1984liter].
 
-TODO: cite and footnote Knuth!
+[^24-methods-44]: Donald E. Knuth is an esteemed American computer scientist, best known for "The Art of Computer Programming," a multi-volume series widely regarded as one of the most comprehensive texts on algorithms. He also developed the TeX typesetting system, and made numerous other contributions that significantly shaped the landscape of computer science.
 
+::: content-hidden
 TODO: discuss "tidy" methods
+:::
 
+::: content-hidden
 TODO: detail / cite / footnote packages used
-
-TODO: where to find code? appendix or web?
+:::
 
 ### Cleaning and Transformation
 
@@ -1409,7 +1439,9 @@ The primary outputs of the prior extraction effort were:
 
 Prior to analysis, additional cleaning and transformation was required. This included identifying parent-child relationships among events, scoring the TLX and SUS, correcting errors in the data, enforcing standard naming conventions and data types, and collecting the results into a single `XLSX` file.
 
+::: content-hidden
 TODO: add chart illustrating data processing workflow
+:::
 
 Data was cleaned and transformed by R code found in the notebook `forms_data.rmd`. The process was iterative, with each step detailed in the following sections.
 
@@ -1423,7 +1455,9 @@ The initial pass of cleaning and transformation can be summarized as follows:
 4.  Correct Errors: Implement various changes to correct for previously identified errors in the data. Each is documented and justified in the code.
 5.  Join and Save: Add unique IDs (UIDs) for events and outcomes, reorder essential columns, join table data, and save as CSV.
 
+::: content-hidden
 TODO: add details re: parent / child and error correction
+:::
 
 #### Second Pass
 
@@ -1469,11 +1503,15 @@ Most analysis will focus on the Results tab, but the others are retained for tra
 -   **Data Transformation**: Describe any transformations applied to the data (e.g., normalization, categorization).
 :::
 
+::: content-hidden
 TODO: summarize analysis methods used in results chapter
+:::
 
 ## Limitations of Study Design
 
+::: content-hidden
 TODO: elaborate on list of study limitations and/or convert into narrative
+:::
 
 -   compensation added after IRB v3, approved April 10; 5 prior subjects plus some thereafter were recruited without knowledge of compensation
 -   convenience sample
@@ -1488,4 +1526,7 @@ TODO: elaborate on list of study limitations and/or convert into narrative
 
 ## Summary
 
+::: content-hidden
 TODO: write methods summary / transition to results
+:::
+

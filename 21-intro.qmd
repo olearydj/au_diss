@@ -12,21 +12,23 @@ But AR remains a highly fragmented market, including a diverse selection of scre
 
 This investigation extends prior work [@havard2021case] to explore the relationship between a variety of AR technologies and their underlying affordances [@parsons2021curre] and learning outcomes for manufacturing assembly operations. By controlling for the task type and application design we hope to better understand the relative value of these systems, filling in important gaps that can lead to a cohesive framework for successful adoption.
 
+::: content-hidden
 TODO: add problem, purpose, research questions; summary of conclusions(?) to introduction
+:::
 
 The balance of this first chapter provides a thorough background of the historical, contextual, technological, theoretical, ergonomic, and biopsychosocial considerations related to augmented, mixed, and virtual reality. Chapter 2 provides a review of literature relevant to the applications of this technology, the readiness of each market, barriers to adoption and methods proposed to overcome them, and assessment tools. Based on the gaps identified in the literature, Chapter 3 identifies the central problem of this research and its three contributions. The experimental methods are detailed in Chapter 4, and results follow in Chapter 5. Finally, we conclude this work by summarizing the key findings, stating the limitations of this work, and identifying opportunities for future research.
 
+::: content-hidden
+TODO: review and finalize above
+:::
+
 ## Background
+
+This section presents an overview of XR technologies, including their history, applications, and potential for training and support in the evolving landscape of manufacturing. It details the human and technical requirements of XR and the trade-offs required for its successful adoption in manufacturing settings. This knowledge provides a foundation for assessing the value of XR in manufacturing applications and designing the study that follows.
 
 ### Advanced Manufacturing
 
-Ongoing changes are expected to have profound impact on the people, businesses, and governments of the world. The so-called *Fourth Industrial Revolution* (4IR) follows prior revolutions of mechanization, mass production, and digitization, and is the first to be predicted in advance, not observed after the fact [@drath2014indus]. First described by Klaus Schwab[^21-intro-1] of the World Economic Forum [@schwab2015fourt], 4IR is driven by today's rapidly evolving and converging digital technologies. Brynjolfsson and McAfee note that these *Second Machine Age* advances uniquely exhibit sustained exponential rates of improvement while being easily combined and efficiently distributed [@brynjolfsson2014secon]. The innovative fusion of these cross-disciplinary technologies is transforming our physical, digital, and biological worlds in unprecedented ways.
-
-[^21-intro-1]: Footnote about Klaus Schwab
-
-::: content-hidden
-manufacturing is vital to the economy and security of the United States ICAMS goals and SMM needs
-:::
+Ongoing changes in manufacturing are expected to have profound impact on the people, businesses, and governments of the world. The so-called *Fourth Industrial Revolution* (4IR) follows prior revolutions of mechanization, mass production, and digitization, and is the first to be predicted in advance, not observed after the fact [@drath2014indus]. First described by German economist and founder of the World Economic Forum, Klaus Schwab [-@schwab2015fourt], 4IR is driven by today's rapidly evolving and converging digital technologies. Brynjolfsson and McAfee [-@brynjolfsson2014secon] note that these *Second Machine Age* advances uniquely exhibit sustained exponential rates of improvement while being easily combined and efficiently distributed. The innovative fusion of these cross-disciplinary technologies is transforming our physical, digital, and biological worlds in unprecedented ways.
 
 ### Industry 4.0
 
