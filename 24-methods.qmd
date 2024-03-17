@@ -10,9 +10,11 @@ different in that it focuses on providing evidence of the theoretical benefits o
 *While you have a purpose section, it might be beneficial to explicitly state your hypotheses or research questions near the beginning of the Methods chapter. This will provide a clearer guide for readers on what the study aims to address.*
 
 *If not already done in previous chapters, briefly relate your chosen methods to existing literature. This can demonstrate how your approach addresses gaps or builds upon existing research.*
-:::
 
 The purpose of this study is to measure the effect of instructional media type (IMT) on learning rates and skills transfer for a simulated manufacturing assembly task. The first phase will help us understand how each IMT affects the operator’s learning rate (time or cycles to learn the process) and ultimate measures of performance (speed and accuracy). The second will help assess how learning transfer varies with each treatment. Finally, the exit surveys will help us understand the relationship between those results and perceived workload, system usability, and the participant’s self-reported behavioral control.
+
+why learning, recall, and retention?
+:::
 
 ## Overview
 
@@ -22,7 +24,7 @@ The experiment included two phases, where learning and recall were tested for th
 
 Data related to the timing, errors, and ultimate outcome for each task was recorded, allowing for a detailed performance assessment at the task and participant level. Subsequent analysis of all performance data quantified the treatment effect. The addition of retention data allows the study to also compare the long-term effectiveness of each treatment. Demographics, perceived workload, and usability data were then used to identify other contributing factors and better understand the results.
 
-These experiments were conducted in the Tiger Motors Lean Education Center[^24-methods-1] (aka the Lean Lab). Designed to simulate modern automotive manufacturing and teach best practices in a real-world setting using LEGO^®^ vehicle assembly, this award-winning facility provided an ideal setting for the study. Pictured in @fig-tmlec-a, Tiger Motors is an integral research and education component of the Industrial and Systems Engineering Department in the Samuel Ginn College of Engineering at Auburn University.
+These experiments were conducted in the Tiger Motors Lean Education Center[^24-methods-1] (aka the Lean Lab). Designed to simulate modern automotive manufacturing and teach best practices in a real-world setting using LEGO^®^ vehicle assembly, this award-winning facility provided an ideal setting for the study. Pictured in @fig-tmlec-a, Tiger Motors is an integral research and education component of the Industrial and Systems Engineering Department in the Samuel Ginn College of Engineering at Auburn University. The facility and simulation design were primarily the work of graduate students [@moyo2013devel].
 
 [^24-methods-1]: Located in the basement of the Shelby Center for Engineering Technology, room 0317. Address: 345 W Magnolia Ave, Auburn, AL 36849.
 
@@ -82,7 +84,9 @@ The process at workstation eight (ST-8) is a three step sequence in which 16 pie
 
 The instructions consist of one top-down view of the workpiece for each step, plus an isometric view of the ST-8 assembly. In each step, the car's prior state is shown in grey and new parts have the correct color. A sequence of parts is shown for each step, with the unique part number and quantity required. It is up to the operator to discern the correct placement of those parts from the diagram. Additional detail views are incorporated to each PWI where more clarity or detail are required. At the bottom center of each PWI a map of the workstation's parts bins depicts which are used in the task.
 
-Manufacturing simulations in the Lean Lab are expected to run at a takt time of one minute. Therefore, the instructions for each of the 15 workstations have been carefully designed to include one minute of work content.
+Manufacturing simulations in the Lean Lab are expected to run at a takt time[^24-methods-2] of one minute. Therefore, the instructions for each of the 15 workstations have been carefully designed to include one minute of work content.
+
+[^24-methods-2]: Takt time is a critical measure of the overall efficiency and performance of manufacturing systems. It sets the pace of production to align with customer demand, thus dictating the maximum time allowed at each workstation. By balancing the production line in this way, waste due to overproduction or delays is reduced [@ali2014dynam]. Takt time is integral to the Toyota Production System (TPS) developed by Taiichi Ohno [-@ohno1988toyot].
 
 While it may seem trivial to complete the work at ST-8 correctly in one minute or less, experience shows that is not the case. The Lean Manufacturing Systems class at Auburn University (INSY 5800/6800), has validated these instructions through countless lab sessions in the administration of that course. They served as the basis for the design of all other IMTs, and as the control for this study.
 
@@ -90,15 +94,11 @@ While it may seem trivial to complete the work at ST-8 correctly in one minute o
 
 Projected AR (PAR) systems integrate work and instruction by projecting the later onto the work surface. Work steps are displayed sequentially, either under operator control or automatically triggered.
 
-ST-8 is equipped with a PAR system by LightGuide[^24-methods-2] (LG), a Michigan-based company focused on innovative, AR-based manufacturing solutions. As shown in @fig-lgs, Their system uses a Windows PC, industrial-grade projector, and 2D or 3D vision system, along with other optional input devices and tools. All components are commercially available and integrated by the LG software, where digital work instructions are both authored and played back.
+ST-8 is equipped with a PAR system by LightGuide[^24-methods-3] (LG), a Michigan-based company focused on innovative, AR-based manufacturing solutions. As shown in @fig-lgs, Their system uses a Windows PC, industrial-grade projector, and 2D or 3D vision system, along with other optional input devices and tools. All components are commercially available and integrated by the LG software, where digital work instructions are both authored and played back.
 
-[^24-methods-2]: Lightguide: <https://www.lightguidesys.com/>
+[^24-methods-3]: Lightguide: <https://www.lightguidesys.com/>
 
 Note that the Lean Lab's LightGuide system predates this study. Its specification, installation, setup, and configuration, along with the design and implementation of the instructional materials it uses at ST-8, were conducted by prior teams.
-
-::: content-hidden
-TODO: cite papers related to LEGO lab development
-:::
 
 ![LG System Architecture. Source: LightGuide website](images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
 
@@ -106,9 +106,9 @@ TODO: cite papers related to LEGO lab development
 TODO: replace bold terms in LG system description
 :::
 
-The system at ST-8 uses a **PROJECTOR MODEL** and **CAMERA MODEL** mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide **VERSION NUMBER** is displayed on a **MONITOR MODEL**, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure of extruded aluminum components from 80/20[^24-methods-3] to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
+The system at ST-8 uses a **PROJECTOR MODEL** and **CAMERA MODEL** mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide **VERSION NUMBER** is displayed on a **MONITOR MODEL**, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure of extruded aluminum components from 80/20[^24-methods-4] to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
 
-[^24-methods-3]: 80/20: <https://8020.net/>
+[^24-methods-4]: 80/20: <https://8020.net/>
 
 ![ST-8 LG Installation](images/24-ST8LightGuide.png){#fig-st8lgs width="4in"}
 
@@ -140,9 +140,9 @@ The PAR instructions were designed and implemented by students and graduate assi
 
 Like PAR, head-mounted AR (HMDAR) systems integrate dynamic instructions into the work area. Whereas PAR relies on traditional projectors and classical computer vision techniques, HMDAR employs sophisticated displays and fused sensor data to superimpose instructions and virtual controls directly into the operator's field of view, properly aligned with the work area.
 
-As detailed in the subsequent section on [System Development](#sysdev), Microsoft's HoloLens2[^24-methods-4] (HL2) was used for this treatment. The HL2's area-based tracking capabilities were used to align the virtual and physical coordinate systems, enabling the proper in-view placement of UI objects, independent of the position and orientation of the operator's head. As with the PAR treatment, user motion was the only input modality, implemented via the HL2's more sophisticated hand tracking and gesture recognition systems. @fig-arcap shows the side and operator view of this treatment at the same moment.
+As detailed in the subsequent section on [System Development](#sysdev), Microsoft's HoloLens2[^24-methods-5] (HL2) was used for this treatment. The HL2's area-based tracking capabilities were used to align the virtual and physical coordinate systems, enabling the proper in-view placement of UI objects, independent of the position and orientation of the operator's head. As with the PAR treatment, user motion was the only input modality, implemented via the HL2's more sophisticated hand tracking and gesture recognition systems. @fig-arcap shows the side and operator view of this treatment at the same moment.
 
-[^24-methods-4]: HoloLens2: <https://www.microsoft.com/en-us/hololens>
+[^24-methods-5]: HoloLens2: <https://www.microsoft.com/en-us/hololens>
 
 ::: {#fig-arcap layout-ncol="2"}
 ![HMDAR Side View](images/24-ARDemoSide.png){#fig-arcap-a}
@@ -238,17 +238,64 @@ In this study, we evaluate the efficacy of different instructional methods in ma
 
 ### Dependent Variables
 
-The key measures of this study are learning, recall, and retention.
+The phenomena of interest in this study are learning, recall, and retention. This section will define each before discussing how they are operationalized through observed and calculated measures.
 
-*Learning* is the process through which knowledge, skills, behaviors, or values are acquired or modified. For this study, it is measured by how quickly a participant progresses towards the level of proficiency expected of a qualified operator. Specifically, it is a function of the dependent variables quality (error rate) and performance (time efficiency).
+#### Constructs
 
-*Recall* refers to the ability to access information from memory without being re-exposed to it after initial training. Here, it is assessed by how well participants can perform the task after the learning phase, without ongoing instructional support.
+Learning, recall, and retention are psychological *constructs*; abstract concepts or ideas used to explain a phenomenon or behavior [@braun2001role]. They are fundamental to the research questions, but not directly observable, and must be inferred from behaviors, actions, or outcomes.
 
-*Retention* is the ability to maintain information, skills, or knowledge over time. For this study it is measured by re-testing recall some time after the initial training.
+*Learning* is the process through which knowledge, skills, behaviors, or values are acquired or modified *[@bloom1956taxon]*. In manufacturing assembly, learning encompasses not just understanding the theoretical aspects of an assembly process but also acquiring the practical skills to execute tasks efficiently and accurately.
 
-::: content-hidden
-TODO: cite learning / recall / retention definitions? relate quality and performance to OEE? justify these choices?
-:::
+*Recall* refers to the ability to access information from memory without being re-exposed to it after initial training. Recall is especially relevant in manufacturing settings where operators often need to perform tasks without step-by-step guidance, relying on their memory of the training.
+
+*Retention* is the ability to maintain information, skills, or knowledge over time. In manufacturing, where precision and consistency are vital, an operator's retention can significantly impact production quality and efficiency.
+
+Each of these constructs are a function of how effectively the instructional process encodes and stores knowledge and skills in long-term memory.
+
+> These claims are supported by established theories in cognitive psychology, including the Information Processing Theory, which explains how humans process, encode, and retrieve information, and the work of Ebbinghaus on memory and retention, demonstrating the decay of memory over time without reinforcement or repetition. Additionally, research in educational psychology, particularly studies on effective instructional strategies and their impact on long-term skill acquisition and knowledge retention, provide empirical backing to these concepts.
+
+
+The focus on learning is justified as it provides insights into how different instructional methods (traditional vs. augmented) influence the speed and depth with which participants master new tasks. This aligns with cognitive load theory, which posits that reducing extraneous cognitive load and optimizing intrinsic and germane loads can enhance learning efficiency.
+
+The emphasis on recall is supported by active learning theories, which suggest that engaging, hands-on experiences (as facilitated by augmented reality technologies) can lead to more durable learning.
+
+Retention ties back to the experiential and constructivist learning theories, which argue that knowledge constructed actively by the learner is more likely to be retained over time. Furthermore, retention data can inform training protocols, indicating when refreshers or additional training may be needed to maintain proficiency.
+
+
+*construct validity*
+
+#### Observed Measures
+
+Constructs are theoretical and cannot be directly measured. Instead, they must be inferred from observed variables.
+
+The primary measures of this study are...
+
+For this study, Learning is measured by how quickly a participant progresses towards the level of proficiency expected of a qualified operator. Specifically, it is a function of the dependent variables quality (error rate) and performance (time efficiency).
+
+Here, Recall is assessed by how well participants can perform the task after the learning phase, without additional instructional support.
+
+For this study, Retention is measured by re-testing recall some time after the initial training, without further exposure to the task or instructional materials. 
+
+Task completion time
+
+Uncorrected error count
+
+Other measures include...
+
+Time spent referencing the paper work instructions during recall
+
+#### Calculated Measures
+
+*Overall Equipment Effectiveness* (OEE) has emerged as a fundamental and widely accepted KPI in manufacturing [@ngcorrales2020overa]. Introduced by Seiichi Nakajima [-@nakajima1988intro] as part of Total Productive Maintenance (TPM), OEE evaluates manufacturing performance as the product of system availability, performance efficiency, and product quality. It is instrumental in pinpointing areas for improvement in equipment utilization and production processes.
+
+Learning rate
+
+First pass yield
+
+#### Integration
+
+Together, these constructs and measures...
+offer a holistic view of manufacturing efficiency, blending operational effectiveness with responsiveness to market needs, especially crucial in systems involving human-machine interaction.
 
 ### Independent Variables
 
@@ -283,7 +330,7 @@ The first group of hypotheses are designed to test the effect of each treatment 
 >
 > $$H_{1a}\textrm{: Average time per car varies with treatment}$$ $$H_{1b}\textrm{: Average error count per car varies with treatment}$$ $$H_{1c}\textrm{: Learning rates vary with treatment}$$
 
-To better understand those results, additional analysis will consider the treatment effect on error types, task completion rate, and first-task performance. Finally, we'll investigate which treatment group had the highest percentage of "qualified operators" at the end of the 10-min session. This will be assessed relative to expected performance metrics, including takt time and OEE.
+To better understand those results, additional analysis will consider the treatment effect on error types, task completion rate, and first-task performance. Finally, we'll investigate which treatment group had the highest percentage of "qualified operators" at the end of the 10-min session. This will be assessed relative to expected performance metrics, including OEE and takt time.
 
 This approach provides a robust assessment of the instructional treatments' effectiveness during the learning phase. It examines key performance metrics — efficiency, accuracy, and learning progression — to capture a comprehensive understanding of participant performance. The evaluation against real-world manufacturing standards further ensures the study's relevance to practical training contexts. This design allows for a nuanced interpretation of how each treatment influences learning outcomes in manufacturing assembly training.
 
@@ -478,13 +525,13 @@ Of the HMDAR systems commercially available in 2021, when the precursor to this 
 | Untethered            | The HL2 is a stand alone design with integrated power and compute. This eliminates the need for power or data connections that can encumber users, limit their motion, and introduce tripping hazards.                                                                                                                                                              |
 | General Purpose       | HL2 is a versatile XR device that supports open development across various industries. Its hardware supports image, model, and area tracking methods to allow for a wide range of augmentation. Unlike some devices, the HL2 is not limited to specific applications or development by authorized partners.                                                         |
 
-: HoloLens2's Distinguishing Features[^24-methods-5] {#tbl-hl2 tbl-colwidths="\[30,70\]" .striped}
+: HoloLens2's Distinguishing Features[^24-methods-6] {#tbl-hl2 tbl-colwidths="\[30,70\]" .striped}
 
-[^24-methods-5]: HoloLens2 Hardware Details: <https://learn.microsoft.com/en-us/hololens/hololens2-hardware>
+[^24-methods-6]: HoloLens2 Hardware Details: <https://learn.microsoft.com/en-us/hololens/hololens2-hardware>
 
-Only the Magic Leap 2[^24-methods-6] design is similar. However, despite being released nearly three years later, it has a more limited FOV, requires prescription inserts for vision correction, offers less extensive developer support, and has achieved less market adoption than the HL2. Both devices are pictured in @fig-hmdxrs, below.
+Only the Magic Leap 2[^24-methods-7] design is similar. However, despite being released nearly three years later, it has a more limited FOV, requires prescription inserts for vision correction, offers less extensive developer support, and has achieved less market adoption than the HL2. Both devices are pictured in @fig-hmdxrs, below.
 
-[^24-methods-6]: MagicLeap: <https://www.magicleap.com>
+[^24-methods-7]: MagicLeap: <https://www.magicleap.com>
 
 ::: {#fig-hmdxrs layout-ncol="2"}
 ![Microsoft HoloLens2. Source: Microsoft](images/24-HL2.png){#fig-hmdxrs-a}
@@ -502,11 +549,11 @@ Unlike the LG, the HL2 is entirely self-contained, processing data from an array
 
 ### Software
 
-Development options for XR systems are limited. For creating custom apps on HL2, Microsoft supports and endorses Unity[^24-methods-7] with the Mixed Reality Toolkit[^24-methods-8]. Ultimately, the need for model and area based tracking capabilities required further tooling. Each element is described below.
+Development options for XR systems are limited. For creating custom apps on HL2, Microsoft supports and endorses Unity[^24-methods-8] with the Mixed Reality Toolkit[^24-methods-9]. Ultimately, the need for model and area based tracking capabilities required further tooling. Each element is described below.
 
-[^24-methods-7]: Unity: <https://unity.com/>
+[^24-methods-8]: Unity: <https://unity.com/>
 
-[^24-methods-8]: Mixed Reality Toolkit (MRTK): <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity>
+[^24-methods-9]: Mixed Reality Toolkit (MRTK): <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity>
 
 #### Unity
 
@@ -514,11 +561,11 @@ Best known as a "game engine," Unity is a very capable tool, commonly used for i
 
 Despite its complexity, Unity is relatively easy to learn. High quality training, documentation, and support are widely available, both through official channels and from a large and enthusiastic development community. Like most tools of its type, Unity is extremely extensible via plugins, many of which are distributed through the official asset store.
 
-Unity is free for non-commercial and academic applications[^24-methods-9]. For research applications like this one, which won't be distributed or otherwise commercialized, its Terms of Service[^24-methods-10] did not pose major concerns. Crucially, Unity allows users to retain rights to content they create, and makes no ownership claims over it.
+Unity is free for non-commercial and academic applications[^24-methods-10]. For research applications like this one, which won't be distributed or otherwise commercialized, its Terms of Service[^24-methods-11] did not pose major concerns. Crucially, Unity allows users to retain rights to content they create, and makes no ownership claims over it.
 
-[^24-methods-9]: Unity Pricing: <https://unity.com/pricing#plans-student-and-hobbyist>
+[^24-methods-10]: Unity Pricing: <https://unity.com/pricing#plans-student-and-hobbyist>
 
-[^24-methods-10]: Unity's Terms of Service and other legal info: <https://unity.com/legal>
+[^24-methods-11]: Unity's Terms of Service and other legal info: <https://unity.com/legal>
 
 Other options, including Epic's Unreal and Vuforia Studio, were carefully considered but ultimately rejected due to a lack of support, functionality, flexibility, or some combination thereof.
 
@@ -526,21 +573,21 @@ Other options, including Epic's Unreal and Vuforia Studio, were carefully consid
 
 The MRTK is a software development kit (SDK) designed to simplify and accelerate the development for XR hardware, including the HL2. It provides developers access to essential HL2 capabilities, including spatial mapping, hand and eye tracking, natural input modalities, and more, all from within Unity.
 
-MRTK is a free, open-source project that was initiated by Microsoft and first released under the very permissive MIT License [@saltzer2020origi] in 2017[^24-methods-11].
+MRTK is a free, open-source project that was initiated by Microsoft and first released under the very permissive MIT License [@saltzer2020origi] in 2017[^24-methods-12].
 
-[^24-methods-11]: MRKT Github Repository and Licensing File: <https://github.com/microsoft/MixedRealityToolkit-Unity>
+[^24-methods-12]: MRKT Github Repository and Licensing File: <https://github.com/microsoft/MixedRealityToolkit-Unity>
 
 #### Vuforia Engine
 
-MRTK's built-in tracking support is limited to image-based solutions and spatial anchoring techniques that were insufficient for this project. After exploring available options, it was determined that the Vuforia Engine[^24-methods-12] (VE) by PTC could best address that limitation. This SDK works with Unity, MRTK, and the HL2 to add robust marker, model, and area based tracking capabilities that were necessary for this project.
+MRTK's built-in tracking support is limited to image-based solutions and spatial anchoring techniques that were insufficient for this project. After exploring available options, it was determined that the Vuforia Engine[^24-methods-13] (VE) by PTC could best address that limitation. This SDK works with Unity, MRTK, and the HL2 to add robust marker, model, and area based tracking capabilities that were necessary for this project.
 
-[^24-methods-12]: Vuforia Engine SDK: <https://www.ptc.com/en/products/vuforia/vuforia-engine/ar-app-development>
+[^24-methods-13]: Vuforia Engine SDK: <https://www.ptc.com/en/products/vuforia/vuforia-engine/ar-app-development>
 
-PTC's Vuforia product line is a commercial product designed for enterprise customers, but the Basic version of the Engine SDK is available at no cost. With that plan a limited number of model and area targets can be generated, so long as the resulting app is not published[^24-methods-13]. Within the constraints of this work, PTC's Terms of Use and Developer Licensing Agreement[^24-methods-14] posed no significant concerns.
+PTC's Vuforia product line is a commercial product designed for enterprise customers, but the Basic version of the Engine SDK is available at no cost. With that plan a limited number of model and area targets can be generated, so long as the resulting app is not published[^24-methods-14]. Within the constraints of this work, PTC's Terms of Use and Developer Licensing Agreement[^24-methods-15] posed no significant concerns.
 
-[^24-methods-13]: Vuforia Pricing and Licensing: <https://developer.vuforia.com/library/faqs/pricing-and-licensing-options>
+[^24-methods-14]: Vuforia Pricing and Licensing: <https://developer.vuforia.com/library/faqs/pricing-and-licensing-options>
 
-[^24-methods-14]: Vuforia Terms of Use and Developer Agreement: <br><https://developer.vuforia.com/legal/tos><br> <https://developer.vuforia.com/legal/vuforia-developer-agreement>
+[^24-methods-15]: Vuforia Terms of Use and Developer Agreement: <br><https://developer.vuforia.com/legal/tos><br> <https://developer.vuforia.com/legal/vuforia-developer-agreement>
 
 ### Timeline {#sec-timeline}
 
@@ -592,17 +639,17 @@ ggplot(tasks, aes(y = Section, x = Start, xend = End, yend = Section, group = De
 
 ### Strategy
 
-Development was iterative with roughly two-week sprints. Except during the summer, the developers were full-time students and were managed accordingly. Expectations had to reasonably balance their availability and inexperience with the project goals and timeline. Flexibility was critical to everyone's success. Atlassian's Trello[^24-methods-15], a lightweight, web-based project collaboration tool with kanban style task tracking, was used to manage the project.
+Development was iterative with roughly two-week sprints. Except during the summer, the developers were full-time students and were managed accordingly. Expectations had to reasonably balance their availability and inexperience with the project goals and timeline. Flexibility was critical to everyone's success. Atlassian's Trello[^24-methods-16], a lightweight, web-based project collaboration tool with kanban style task tracking, was used to manage the project.
 
-[^24-methods-15]: Trello: <https://trello.com/home>
+[^24-methods-16]: Trello: <https://trello.com/home>
 
 ### Tactics {#sec-devtactics}
 
 The HMDAR and HMDMR apps were developed in Unity version 2022.x with MRTK v2.7x and VE v10.7x. Development was done entirely on MSI GE76/66 Raider (11UH-053/227) laptops running the 64-bit version of Windows 10 with the latest updates. Both laptop models were equipped with an Intel Core i9-11980HK CPU, NVIDIA GeForce RTX3080 GPU, 32 or 64GB, and 2GB of M.2 NVMe storage.
 
-Systems were configured the Visual Studio 2019 integrated development environment (VS) as described in the MRTK setup instructions[^24-methods-16]. Unity Version Control (VCS, formerly Plastic) was used to manage all assets and source code, allowing the developers to track changes and collaborate effectively.
+Systems were configured the Visual Studio 2019 integrated development environment (VS) as described in the MRTK setup instructions[^24-methods-17]. Unity Version Control (VCS, formerly Plastic) was used to manage all assets and source code, allowing the developers to track changes and collaborate effectively.
 
-[^24-methods-16]: MRTK Setup Instructions: <https://learn.microsoft.com/en-us/windows/mixed-reality/develop/install-the-tools>
+[^24-methods-17]: MRTK Setup Instructions: <https://learn.microsoft.com/en-us/windows/mixed-reality/develop/install-the-tools>
 
 All programming was done in C#, as required by Unity. C# is an object-oriented language with strong typing and simplified memory management. It has a familiar syntax that is similar to Java and C++, both of which influenced its design. This enabled the developers, all new to C#, to adapt with relative ease.
 
@@ -624,11 +671,11 @@ Unity development for HoloLens2 generally proceeds as illustrated in @fig-devwkf
 
 5.  Finally, the UWP app is transferred to the HL2 via USB.
 
-The inter-dependencies between Unity, MRTK, and VS, each with their own packaging systems, dependencies, and versions, made this an intricate process. Our initial understanding was greatly accelerated by Microsoft's online resources[^24-methods-17] and tutorials[^24-methods-18], along with Ferrone's annually updated *Learning C# by Developing Games in Unity* [-@ferrone2021learn].
+The inter-dependencies between Unity, MRTK, and VS, each with their own packaging systems, dependencies, and versions, made this an intricate process. Our initial understanding was greatly accelerated by Microsoft's online resources[^24-methods-18] and tutorials[^24-methods-19], along with Ferrone's annually updated *Learning C# by Developing Games in Unity* [-@ferrone2021learn].
 
-[^24-methods-17]: MRTK Unity Documentation: <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/mrtk2>
+[^24-methods-18]: MRTK Unity Documentation: <https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/mrtk2>
 
-[^24-methods-18]: MRTK Tutorials: <https://learn.microsoft.com/en-us/training/modules/learn-mrtk-tutorials/>
+[^24-methods-19]: MRTK Tutorials: <https://learn.microsoft.com/en-us/training/modules/learn-mrtk-tutorials/>
 
 ![Unity HoloLens2 Simulator](images/24-UnityHL2Sim.png){#fig-unityhl width="5in"}
 
@@ -666,9 +713,9 @@ The first was relatively straightforward. Assets were modeled in Unity to resemb
 
 Our interaction implementation relied on HL2 input systems provided by MRTK's modular, component-based architecture. In this system, input actions like `select` or `activate` and the events they trigger act as the bridge between the user's physical actions and the software's response. Physical actions are captured via HL2 sensors and interpreted by MRTK's various modalities, including gesture and hand tracking. Different interaction styles are associated with available pointer types, e.g. ray pointers for distant interactions and poke pointers for nearby. With this approach a diverse range of interactions can be design through careful composition of components.
 
-For HMDAR tracking, we relied on VE's *Area Targets*[^24-methods-19] feature, an implementation of the area-based tracking methods described in @sec-tracking. The area-based tracking method compares a 3D model of the workspace with a real-time spatial map of the same to determine the current position and angle of the participant's head relative to it. The spatial map is a polygonal mesh generated by the HL2 at runtime. It is created with live scene data from the depth sensor, visible light cameras, and inertial measurement unit. A sample is shown in @fig-spatmap.
+For HMDAR tracking, we relied on VE's *Area Targets*[^24-methods-20] feature, an implementation of the area-based tracking methods described in @sec-tracking. The area-based tracking method compares a 3D model of the workspace with a real-time spatial map of the same to determine the current position and angle of the participant's head relative to it. The spatial map is a polygonal mesh generated by the HL2 at runtime. It is created with live scene data from the depth sensor, visible light cameras, and inertial measurement unit. A sample is shown in @fig-spatmap.
 
-[^24-methods-19]: Vuforia Area Targets: <https://developer.vuforia.com/library/environments/area-targets>
+[^24-methods-20]: Vuforia Area Targets: <https://developer.vuforia.com/library/environments/area-targets>
 
 ![HoloLens Spatial Mapping](images/24-HLSpatialMap.png){#fig-spatmap width="5in"}
 
@@ -678,9 +725,9 @@ TODO: replace with image of spatial mapping from study
 
 Area-based tracking was selected over image or marker-based methods to minimize tracking loss. Marker-based tracking will fail if there are no markers within view of the HMD's sensors. Area-based tracking provides a continuous map of registration points for the entire scene, greatly reducing drop-outs. It also tends to (re)acquire tracking more quickly than marker-based methods, again due to the number and distribution of features available.
 
-The 3D model is created offline, first by scanning the area with the Vuforia Creator App[^24-methods-20]. Pictured in @fig-areatgt-a, this tool uses a LiDAR equipped iPhone / iPad Pro to capture an accurate model of the area in E57 format, per ASTM E2807 [@astm2019stand]. The E57 data is then processed to generate an Area Target asset package for Unity, which includes all the required geometry, textures, and metadata.
+The 3D model is created offline, first by scanning the area with the Vuforia Creator App[^24-methods-21]. Pictured in @fig-areatgt-a, this tool uses a LiDAR equipped iPhone / iPad Pro to capture an accurate model of the area in E57 format, per ASTM E2807 [@astm2019stand]. The E57 data is then processed to generate an Area Target asset package for Unity, which includes all the required geometry, textures, and metadata.
 
-[^24-methods-20]: Vuforia Creator App: <https://developer.vuforia.com/library/tools/creator-app>
+[^24-methods-21]: Vuforia Creator App: <https://developer.vuforia.com/library/tools/creator-app>
 
 ::: {#fig-areatgt layout-ncol="2"}
 ![Vuforia Creator App](images/24-VEScan.png){#fig-areatgt-a}
@@ -694,27 +741,27 @@ Vuforia Area Target Processing
 TODO: replace with images from study: VE creator app and work area target
 :::
 
-Once imported into Unity and properly configured[^24-methods-21], the 3D model is used to align the placement of virtual objects in the real world scene. This allows the developer to design the experience in the context of the real world model, as seen in @fig-areatgt-b.
+Once imported into Unity and properly configured[^24-methods-22], the 3D model is used to align the placement of virtual objects in the real world scene. This allows the developer to design the experience in the context of the real world model, as seen in @fig-areatgt-b.
 
-[^24-methods-21]: Vuforia Area Targets in Unity: <https://developer.vuforia.com/library/develop-area-targets/area-targets-unity>
+[^24-methods-22]: Vuforia Area Targets in Unity: <https://developer.vuforia.com/library/develop-area-targets/area-targets-unity>
 
 Finally, at runtime, key points encoded from the Area Target mesh are compared with the real-time spatial map to estimate the operator's head position and angle relative to the workpiece, thus establishing a coordinate system for the spatially coherent placement of virtual objects.
 
 #### HMDMR Implementation
 
-In order to support freeform interaction, the system needed a way to properly place instructional cues on the workpiece, regardless of its position and orientation. This was accomplished with model-based tracking, using the Model Targets[^24-methods-22] feature from VE. Note that this treatment continues to use Area Targets for workspace pose estimation, but adds Model Targets for those involving the workpiece. Otherwise, the HMDMR implementation is unaltered.
+In order to support freeform interaction, the system needed a way to properly place instructional cues on the workpiece, regardless of its position and orientation. This was accomplished with model-based tracking, using the Model Targets[^24-methods-23] feature from VE. Note that this treatment continues to use Area Targets for workspace pose estimation, but adds Model Targets for those involving the workpiece. Otherwise, the HMDMR implementation is unaltered.
 
-[^24-methods-22]: Vuforia Model Targets: <https://developer.vuforia.com/library/objects/model-targets>
+[^24-methods-23]: Vuforia Model Targets: <https://developer.vuforia.com/library/objects/model-targets>
 
 The distinct technical requirements of model and area based tracking necessitate separate implementations. Where area-based tracking focuses on spatial orientation within a static environment, the prime challenge for model-based tracking is dynamic object recognition and pose estimation. While there might be some overlap in the fundamental computer vision and machine learning techniques used, the specific algorithms and their optimization differ significantly, catering to the unique challenges of each tracking type.
 
 Overall, the Model Target implementation process was similar to that for Area Targets. First, a 3D model of the object was constructed and converted into a Model Target using VE tools. These steps were completed offline. At runtime, the system again compares live sensor data with Model Target data to recognize and then track object(s) in the scene.
 
-Model source data was constructed in LeoCAD[^24-methods-23], a tool for designing models using LEGO bricks. LeoCAD uses the comprehensive LDraw[^24-methods-24] database of LEGO parts, most of which are modeled from actual pieces. This standard uses a proprietary unit of measure, the LDraw Unit (LDU), which is based on the smallest stud-to-stud spacing on a standard LEGO brick: 1 LDU = 0.4mm.
+Model source data was constructed in LeoCAD[^24-methods-24], a tool for designing models using LEGO bricks. LeoCAD uses the comprehensive LDraw[^24-methods-25] database of LEGO parts, most of which are modeled from actual pieces. This standard uses a proprietary unit of measure, the LDraw Unit (LDU), which is based on the smallest stud-to-stud spacing on a standard LEGO brick: 1 LDU = 0.4mm.
 
-[^24-methods-23]: LeoCAD: <https://www.leocad.org/>
+[^24-methods-24]: LeoCAD: <https://www.leocad.org/>
 
-[^24-methods-24]: LDraw: <https://ldraw.org/>
+[^24-methods-25]: LDraw: <https://ldraw.org/>
 
 ::: content-hidden
 TODO: cite LDraw standard?
@@ -732,11 +779,11 @@ LeoCAD's design adheres to LEGO design principles, ensuring that the way parts a
 LeoCAD UI and Model Target
 :::
 
-Our source model was constructed in LeoCAD based on the PWI, using LDraw models of the specified LEGO parts. The result, seen in @fig-leocad-b, was exported as a 3DS[^24-methods-25] file and imported into Unity as a part hierarchy. There, it was scaled from LDUs to conventional units and exported in the FBX[^24-methods-26] interchange format for VE's Model Target Generator (MTG).
+Our source model was constructed in LeoCAD based on the PWI, using LDraw models of the specified LEGO parts. The result, seen in @fig-leocad-b, was exported as a 3DS[^24-methods-26] file and imported into Unity as a part hierarchy. There, it was scaled from LDUs to conventional units and exported in the FBX[^24-methods-27] interchange format for VE's Model Target Generator (MTG).
 
-[^24-methods-25]: 3DS File Type: <https://en.wikipedia.org/wiki/.3ds>
+[^24-methods-26]: 3DS File Type: <https://en.wikipedia.org/wiki/.3ds>
 
-[^24-methods-26]: FBX File Type: <https://en.wikipedia.org/wiki/FBX>
+[^24-methods-27]: FBX File Type: <https://en.wikipedia.org/wiki/FBX>
 
 The MTG supports two Model Target types. *Advanced Model Targets* can be automatically recognized and tracked from any angle, without the manual alignment and recognition process required by *Standard Model Targets*. The requirement for the HMDMR treatment to provide freeform interactions in an otherwise equivalent experience mandated the use of Advanced Model Targets.
 
@@ -766,9 +813,9 @@ A convenience sample of participants were recruited from the Auburn University c
 
 ![Digital recruitment flyer distributed on campus monitors.](images/24-RecruitSlideV3.png){#fig-recruit width="5in"}
 
-Potential participants in the first investigation were screened for exclusion based on their age (under 19) or a tendency to motion sickness. Additionally, we screened for experience using head-mounted or projected AR devices with gesture based controls. This does not exclude those having experience with VR headsets like META's Occulus product line, which is relatively common among the target population, but utilize traditional input devices.[^24-methods-27] Finally, we excluded anyone that had previously participated in a manufacturing simulation in the Tiger Motors Lean Education Center as part of INSY 5800/6800 or otherwise. This ensured that none of our participants had experience with the assembly task.
+Potential participants in the first investigation were screened for exclusion based on their age (under 19) or a tendency to motion sickness. Additionally, we screened for experience using head-mounted or projected AR devices with gesture based controls. This does not exclude those having experience with VR headsets like META's Occulus product line, which is relatively common among the target population, but utilize traditional input devices.[^24-methods-28] Finally, we excluded anyone that had previously participated in a manufacturing simulation in the Tiger Motors Lean Education Center as part of INSY 5800/6800 or otherwise. This ensured that none of our participants had experience with the assembly task.
 
-[^24-methods-27]: This distinction had to be explained to several interested participants, which supports the notion that the differences between AR and VR are not yet well understood. Ultimately, no participants were eliminated by this requirement.
+[^24-methods-28]: This distinction had to be explained to several interested participants, which supports the notion that the differences between AR and VR are not yet well understood. Ultimately, no participants were eliminated by this requirement.
 
 ::: content-hidden
 TODO: mention target sample size and justify based on power / practical limits
@@ -810,9 +857,9 @@ The initial participant onboarding process was conducted manually by the PI. In 
 
 If the candidate indicated a willingness to proceed, their information was collected using the Subject Recruitment Data Sheet included in [Appendix A](#app-irb). A unique participant ID was logged on the code list and a date and time for data collection were then assigned. As [detailed below](#sec-privacy), the code list and consent form provided the only link between personally identifiable information and experimental data. Afterwards, a confirmation email was sent. A copy of the Informed Consent form was included for their review prior to the appointment.
 
-This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-28] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
+This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-29] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
 
-[^24-methods-28]: SignUpGenius: <https://signupgenius.com>
+[^24-methods-29]: SignUpGenius: <https://signupgenius.com>
 
 ### Random Assignment {#sec-random}
 
@@ -820,9 +867,9 @@ Random assignment of participants was accomplished through a combination of rand
 
 Treatment randomization was completed before the onboarding process began. To ensure that each treatment was tested at the start, a random sequence of all four treatments started the order. Next, a set of eight treatments, including two of each type, was shuffled to create a randomly ordered batch with an even distribution. This block-wise process was repeated as necessary to cover the maximum number of participants. The batches were combined, in the order generated, to create the final treatment sequence.
 
-The treatment randomization process was implemented with a simple Python function, `gen_treatment_order()`, as seen in @fig-rctpy, below. The `random.shuffle`[^24-methods-29] function from the base Python 3.x distribution was used to randomly reorder a group of values. Though this program was only run once (after validating and verifying its output), no random seed was set to ensure that a unique sequence was generated with each use.
+The treatment randomization process was implemented with a simple Python function, `gen_treatment_order()`, as seen in @fig-rctpy, below. The `random.shuffle`[^24-methods-30] function from the base Python 3.x distribution was used to randomly reorder a group of values. Though this program was only run once (after validating and verifying its output), no random seed was set to ensure that a unique sequence was generated with each use.
 
-[^24-methods-29]: `random.shuffle` Documentation: <https://docs.python.org/3/library/random.html#random.shuffle>
+[^24-methods-30]: `random.shuffle` Documentation: <https://docs.python.org/3/library/random.html#random.shuffle>
 
 ::: {#fig-rctpy}
 ``` python
@@ -858,9 +905,9 @@ As with any protocol that involves human participants, this study required Insti
 
 ### Institutional Review Board
 
-An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-30]
+An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-31]
 
-[^24-methods-30]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
+[^24-methods-31]: Per AU IRB Expedited Category Guidance: <https://cws.auburn.edu/shared/files?id=159&filename=AU%20Expedited%20Categories%20Guidance.doc>
 
 The IRB submission and expedited review process began in December of 2022, and final approval was granted on April 10, 2023. During that time four versions of the IRB were approved, and only two rejected. The approval dates and changes are summarized in @tbl-irbs.
 
@@ -911,9 +958,9 @@ The conduct of this study was designed to ensure participants felt comfortable a
 
 ### Division of Labor {#sec-dol}
 
-The approach detailed herein was designed for three roles, referred to as the primary, secondary, and tech. The role of the primary investigator (PI) was always played by the author.[^24-methods-31] The secondary investigator (SI) role was typically filled by his counterparts on collaborating studies. Finally, the tech support (TS) role was played by a member of the study's HL2 development team.
+The approach detailed herein was designed for three roles, referred to as the primary, secondary, and tech. The role of the primary investigator (PI) was always played by the author.[^24-methods-32] The secondary investigator (SI) role was typically filled by his counterparts on collaborating studies. Finally, the tech support (TS) role was played by a member of the study's HL2 development team.
 
-[^24-methods-31]: Except when he was quarantined for a week with COVID, during which PIs from collaborating studies generously substituted. The show must go on!
+[^24-methods-32]: Except when he was quarantined for a week with COVID, during which PIs from collaborating studies generously substituted. The show must go on!
 
 The responsibilities of each role vary throughout the session as described below. All three roles were usually filled for each session, allowing for the most comfortable division of labor, but some trials were run effectively with fewer.
 
@@ -1097,9 +1144,9 @@ As a result, the final IRB listed 13 key personnel, as summarized in @tbl-team.
 
 : Research Team Breakdown {#tbl-team .striped}
 
-All team members were certified by the Collaborative Institutional Training Initiative[^24-methods-32] (CITI), in accordance with university policy and the team's commitment to professional research. Through this program they received training on the ethical implications and compliance standards of their work.
+All team members were certified by the Collaborative Institutional Training Initiative[^24-methods-33] (CITI), in accordance with university policy and the team's commitment to professional research. Through this program they received training on the ethical implications and compliance standards of their work.
 
-[^24-methods-32]: Collaborative Institutional Training Initiative: <https://about.citiprogram.org/>
+[^24-methods-33]: Collaborative Institutional Training Initiative: <https://about.citiprogram.org/>
 
 Except for faculty members, members from all groups were directly involved in the various aspects of the conduct of this study, as detailed throughout this document. Volunteers signed up for shifts on SignUpGenius, using a form separate from the participants.
 
@@ -1119,9 +1166,9 @@ All team members were aware of the study's COVID-related precautions and emergen
 
 Additionally, team members were trained to observe all participant activities for dizziness, related vestibular issues, or any other significant but unexpected side-effect. In that event, the experiment would be suspended, HL2 removed, and the participant seated for assessment. In the event assistance was required, the emergency plan would be consulted.
 
-General safety procedures included routine sanitation and work area maintenance. All work surfaces were wiped down before each participant and the HL2 was sanitized between wearers. In keeping with the Lab's 5S[^24-methods-33] plan, all team members worked to ensure the work area remained free of obstructions and trip hazards.
+General safety procedures included routine sanitation and work area maintenance. All work surfaces were wiped down before each participant and the HL2 was sanitized between wearers. In keeping with the Lab's 5S[^24-methods-34] plan, all team members worked to ensure the work area remained free of obstructions and trip hazards.
 
-[^24-methods-33]: 5S is a methodology and mindset for maintaining a work space organized for efficiency and effectiveness. <https://en.wikipedia.org/wiki/5S_(methodology)>
+[^24-methods-34]: 5S is a methodology and mindset for maintaining a work space organized for efficiency and effectiveness. <https://en.wikipedia.org/wiki/5S_(methodology)>
 
 ### Test Runs
 
@@ -1191,11 +1238,11 @@ TODO: make sure the data dictionary clearly defines columns for raw data (`i1_ra
 
 In addition to the quantitative data from surveys, observed results, and annotated performances, a number of qualitative observations were recorded by the research team during the conduct of each session and in debriefs that followed. These were manually transcribed from various sources, including the Data Collection Sheets, General Feedback Forms, and the PI's notes. When transcribing notes from the debriefing, which were often terse, care was taken to accurately represent the participant's original feedback.
 
-The results were collected in a separate Markdown[^24-methods-34] file (`MD`) for each participant, e.g. (`1001.md`). Markdown is a lightweight plain-text formatting syntax proposed by John Gruber in 2004[^24-methods-35]. Originally intended as a tool for HTML generation, Markdown is now widely used to create text documents that have structure and are easily rendered in a variety of styles.
+The results were collected in a separate Markdown[^24-methods-35] file (`MD`) for each participant, e.g. (`1001.md`). Markdown is a lightweight plain-text formatting syntax proposed by John Gruber in 2004[^24-methods-36]. Originally intended as a tool for HTML generation, Markdown is now widely used to create text documents that have structure and are easily rendered in a variety of styles.
 
-[^24-methods-34]: Markdown: <https://en.wikipedia.org/wiki/Markdown>
+[^24-methods-35]: Markdown: <https://en.wikipedia.org/wiki/Markdown>
 
-[^24-methods-35]: Original Markdown Project Home: <https://daringfireball.net/projects/markdown/>
+[^24-methods-36]: Original Markdown Project Home: <https://daringfireball.net/projects/markdown/>
 
 ::: {#fig-mdsample}
 ``` md
@@ -1228,17 +1275,17 @@ When considering tools for the video annotation workflow, priority was given to 
 
 A search was conducted, and a variety of tools were tested. Some notes from that process are included in [Appendix E](#app-videotool). In the end, three complementary tools were selected that best fit the requirements identified:
 
-1.  Filmora[^24-methods-36] v12.x was selected to combine the raw video into a split screen presentation with synced action. This facilitated annotation by providing two angles of the action and a zoomed view. Filmora is an affordable, non-destructive editor that offers a good balance of capabilities and ease of use.
+1.  Filmora[^24-methods-37] v12.x was selected to combine the raw video into a split screen presentation with synced action. This facilitated annotation by providing two angles of the action and a zoomed view. Filmora is an affordable, non-destructive editor that offers a good balance of capabilities and ease of use.
 
-2.  Handbrake[^24-methods-37] v1.7.x was selected to downsize and compress Filmora output, improving performance during annotation. Handbrake did this much faster and with better final quality than Filmora. This popular and highly-regarded tool is free and open-source.
+2.  Handbrake[^24-methods-38] v1.7.x was selected to downsize and compress Filmora output, improving performance during annotation. Handbrake did this much faster and with better final quality than Filmora. This popular and highly-regarded tool is free and open-source.
 
-3.  Kyno[^24-methods-38] v1.8.x was selected to add markers for instantaneous events (e.g. breakage occurs) and sub-clips for events with duration (e.g. task completion times). Notes can be added to either as desired. The metadata is exported in eXtensible Markup Language [XML, @w3c2008xml], a flexible, text-based language that is used to structure, store, and transport data. Kyno is specifically designed to accelerate this task in a production environment and is generously priced for the market.
+3.  Kyno[^24-methods-39] v1.8.x was selected to add markers for instantaneous events (e.g. breakage occurs) and sub-clips for events with duration (e.g. task completion times). Notes can be added to either as desired. The metadata is exported in eXtensible Markup Language [XML, @w3c2008xml], a flexible, text-based language that is used to structure, store, and transport data. Kyno is specifically designed to accelerate this task in a production environment and is generously priced for the market.
 
-[^24-methods-36]: Filmora: <https://filmora.wondershare.com/>
+[^24-methods-37]: Filmora: <https://filmora.wondershare.com/>
 
-[^24-methods-37]: Handbrake: <https://handbrake.fr/>
+[^24-methods-38]: Handbrake: <https://handbrake.fr/>
 
-[^24-methods-38]: Kyno: <https://lesspain.software/kyno/>
+[^24-methods-39]: Kyno: <https://lesspain.software/kyno/>
 
 #### Processing
 
@@ -1358,19 +1405,19 @@ TODO: include some / all reports in appendix or online?
 
 From the top, this report includes metadata (collapsed for brevity), clickable link to the video, list of PI's observations, and summaries of performance (subclip) and event (other) markers. The instantaneous event markers included here provide valuable added context. For example, we can see that a breakage was corrected during the third car, likely contributing to its increased duration.
 
-The formatting seen in this image was rendered by Obsidian[^24-methods-39], a powerful tool for making and organizing Markdown documentation. This approach greatly facilitated the review of participant outcomes.
+The formatting seen in this image was rendered by Obsidian[^24-methods-40], a powerful tool for making and organizing Markdown documentation. This approach greatly facilitated the review of participant outcomes.
 
-[^24-methods-39]: Obsidian: <https://obsidian.md/>
+[^24-methods-40]: Obsidian: <https://obsidian.md/>
 
 ### Data and Code Management
 
 Like all academic work, the success of this study hinged on the credibility, transparency, and reproducibility of the research, data, and results. As such, data management was a critical consideration in the development of the data extraction and processing workflow. The plan carefully accounted for data storage, version management, and the file formats used. Those details aligned with an access plan balancing accessibility and portability with privacy and security.
 
-Anonymous data was stored locally in three separate locations, all on secure hardware accessible only to the PI: an internal laptop hard drive, an external RAID5 storage array, and an external NVMe backup drive. Additionally, GitHub[^24-methods-40] and BOX[^24-methods-41] cloud services were employed to provide more redundancy and secure access to select team members. A detailed account of this plan, including the hardware, software, folder structures, and naming conventions used, are provided in [Appendix H](#app-dataorg).
+Anonymous data was stored locally in three separate locations, all on secure hardware accessible only to the PI: an internal laptop hard drive, an external RAID5 storage array, and an external NVMe backup drive. Additionally, GitHub[^24-methods-41] and BOX[^24-methods-42] cloud services were employed to provide more redundancy and secure access to select team members. A detailed account of this plan, including the hardware, software, folder structures, and naming conventions used, are provided in [Appendix H](#app-dataorg).
 
-[^24-methods-40]: GitHub: <https://github.com/>
+[^24-methods-41]: GitHub: <https://github.com/>
 
-[^24-methods-41]: Box: <https://www.box.com/>
+[^24-methods-42]: Box: <https://www.box.com/>
 
 ::: content-hidden
 TODO: diagram of data storage?
@@ -1378,11 +1425,11 @@ TODO: diagram of data storage?
 
 Key criteria for software selection included multiplatform compatibility, open-source licensing, and the ability to generate files using open, preferably text-based, standards. These characteristics were crucial to ensuring data portability and the reproducibility of results.
 
-Wherever appropriate, working files, including all data analysis in R and Python, and manuscript development in Quarto[^24-methods-42], were placed under version control using Git[^24-methods-43], and synchronized to GitHub. HL2 source code was treated separately, as discussed in @sec-devtactics.
+Wherever appropriate, working files, including all data analysis in R and Python, and manuscript development in Quarto[^24-methods-43], were placed under version control using Git[^24-methods-44], and synchronized to GitHub. HL2 source code was treated separately, as discussed in @sec-devtactics.
 
-[^24-methods-42]: Quarto: <https://quarto.org/>
+[^24-methods-43]: Quarto: <https://quarto.org/>
 
-[^24-methods-43]: Git: <https://git-scm.com/>
+[^24-methods-44]: Git: <https://git-scm.com/>
 
 ::: content-hidden
 TODO: discuss use of virtual environments for Python and R library management
@@ -1416,9 +1463,9 @@ This section will detail the procedures for data preparation, then summarize the
 
 ### Tools and Methodology
 
-R was used for all data cleaning and analysis. A mix of R Markdown (`RMD`) and Quarto (`QMD`) notebooks were created in the RStudio integrated development environment (IDE). The notebook format allows users to intermingle Markdown-formatted text, with code and output in a way that is very well suited to the exploratory nature of this work. This best approximates the idea of *Literate Programming* originally described by Donald Knuth[^24-methods-44] as a narrative approach that interleaves code and writing in a way that promotes reader understanding [@knuth1984liter].
+R was used for all data cleaning and analysis. A mix of R Markdown (`RMD`) and Quarto (`QMD`) notebooks were created in the RStudio integrated development environment (IDE). The notebook format allows users to intermingle Markdown-formatted text, with code and output in a way that is very well suited to the exploratory nature of this work. This best approximates the idea of *Literate Programming* originally described by Donald Knuth[^24-methods-45] as a narrative approach that interleaves code and writing in a way that promotes reader understanding [@knuth1984liter].
 
-[^24-methods-44]: Donald E. Knuth is an esteemed American computer scientist, best known for "The Art of Computer Programming," a multi-volume series widely regarded as one of the most comprehensive texts on algorithms. He also developed the TeX typesetting system, and made numerous other contributions that significantly shaped the landscape of computer science.
+[^24-methods-45]: Donald E. Knuth is an esteemed American computer scientist, best known for "The Art of Computer Programming," a multi-volume series widely regarded as one of the most comprehensive texts on algorithms. He also developed the TeX typesetting system, and made numerous other contributions that significantly shaped the landscape of computer science.
 
 ::: content-hidden
 TODO: discuss "tidy" methods
@@ -1529,4 +1576,3 @@ TODO: elaborate on list of study limitations and/or convert into narrative
 ::: content-hidden
 TODO: write methods summary / transition to results
 :::
-

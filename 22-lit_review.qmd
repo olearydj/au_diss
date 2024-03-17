@@ -1,10 +1,46 @@
 # Literature Review {#22-lit_review}
 
+This chapter explores the most relevant literature reviewed and provide a synthesis of the findings as they relate to this study. Due to the nature of this study, the review was quite broad, spanning the theoretical bases of support for augmented learning, the affordances and theoretical benefits of XR-based learning, and the readiness of the market including barriers to adoption. Furthermore, it investigates methods to address key barriers, including frameworks for specification, design, implementation, and assessment. Finally, it addresses the state of assessment methods in or relevant to manufacturing.
+
+This review concludes with a summary of findings that motivate this study, as described in the [Problem Statement](#23-prob_statement).
+
 ::: content-hidden
-TODO: discuss lr methodology
+TODO: discuss gaps / novelty identified
 :::
 
-## Theoretical Basis {#sec-theory}
+## Methodology
+
+This review employs a hybrid methodology, combining traditional systematic approaches [@kitchenham2004proce] with an emerging class of modern tools. Systematic methods were used to identify interesting references for each search, based on relevance, prominence (citation count), and debate (supporting and contrasting citations). This phase of the search primarily leveraged meta-databases including Web of Science,[^22-lit_review-1] Scopus,[^22-lit_review-2] Semantic Scholar,[^22-lit_review-3] and Google Scholar.[^22-lit_review-4] The specific search parameters and criteria for inclusion varied with each use.
+
+[^22-lit_review-1]: Web of Science: <https://www.webofscience.com/>
+
+[^22-lit_review-2]: Scopus: <https://www.scopus.com/>
+
+[^22-lit_review-3]: Semantic Scholar: <https://www.semanticscholar.org/>
+
+[^22-lit_review-4]: Google Scholar: <https://scholar.google.com/>
+
+The resulting set of publications was used to seed a secondary search using a combination of graph and AI-based tools, including scite\_,[^22-lit_review-5] Inciteful,[^22-lit_review-6] ResearchRabbit,[^22-lit_review-7] Connected Papers,[^22-lit_review-8] and Litmaps.[^22-lit_review-9] At the time of this writing, this category of tools was experiencing rapid growth and change. No single "best" tool or approach had yet emerged, but their collective benefits provided a valuable complement to the systematic approach. The tools and methodology described here were influenced by the work of Mushtaq Bilal [-@bilal2023overv] and Ilya Shabanov [-@shabanov2024effor].
+
+[^22-lit_review-5]: scite\_: <https://scite.ai/>
+
+[^22-lit_review-6]: Inciteful: <https://inciteful.xyz/>
+
+[^22-lit_review-7]: ResearchRabbit: <https://www.researchrabbit.ai/>
+
+[^22-lit_review-8]: Connected Papers: <https://www.connectedpapers.com/>
+
+[^22-lit_review-9]: Litmaps: <https://www.litmaps.com/>
+
+Broadly speaking, these tools link papers based on citation trees, bibliographic coupling, analysis of the citation statement, and other sophisticated methods. From their original findings, users can interactively traverse connected papers in graph and/or timeline view, focus on specific authors or collaborators, and otherwise refine the search. Abstracts and links to the papers are available throughout the process to guide exploration.
+
+Integrating traditional and modern approaches in this iterative and exploratory fashion teased out unexpected connections, incorporated a wider range of sources, and facilitated the author's understanding of relevant discourse across multiple dimensions, including time, application context, and research domain. This iterative process was repeated for each question and topic area. The resulting reference collections were imported into Zotero, which managed the bibliographic data and related PDFs. Notes made while reading these sources were imported to Obsidian for review and synthesis.
+
+This approach involves several sources and tools, the implementation of which creates technical challenges that may dissuade many researchers. Over time, as the benefits are better understood and more integrated workflows emerge, it seems likely that it will become widely adopted.
+
+## Findings
+
+### Theoretical Basis {#sec-theory}
 
 ::: content-hidden
 TODO: review theoretical basis carefully & update / refine as required
@@ -12,7 +48,7 @@ TODO: review theoretical basis carefully & update / refine as required
 
 The perceptual, cognitive, and learning benefits of XR devices are generally attributed to theories related to experiential and constructivist learning theories, both of which are branches of active learning theory.
 
-### Active Learning Theories
+#### Active Learning Theories
 
 Active learning theories (ALT), particularly constructivism and experiential learning theory (ELT), describe the relationship between situated experiences and educational outcomes, where the self-directed construction of new knowledge occurs through activity in a supportive environment [@clayton2017multi]. Fundamentally, these ideas have epistemological origins in empiricism, rationalism, and pragmatism, which consider the role of experience, reason, and action in knowledge.
 
@@ -22,39 +58,39 @@ In 1984 David A. Kolb, a protégé of Bruner's, published his cycle of experient
 
 Active learning theories are grounded in andragogy and its methods, as espoused by Malcolm Knowles [@knowles1970moder]. Where andragogy emphasizes the self-directed methods described above, pedagogy is primarily concerned with the delivery of knowledge and skills by an instructor. Modern educational systems are commonly designed to maximize the uptake of content knowledge using the later approach [@leonard2018holog]. Pedagogy is well suited to the developmental and intellectual needs of young learners focused on the cognitive domain of Bloom's *Taxonomy of Educational Objectives* [@bloom1956taxon]. The objectives in this domain, as revised in 2001, are: remember, understand, apply, analyze, evaluate, and create. The extended taxonomy also describes the domain of affective (emotional) development [@simpson1966class]. Where pedagogy excels at delivering content knowledge, andragogical methods better support "higher order" cognitive and affective learning. For example, andragogy is commonly employed in the development of 21st Century Skills, including critical thinking, innovation, collaboration, and problem solving [@millican2017virtu].
 
-### Flow Theory
+#### Flow Theory
 
-Focused activity can lead to a state of psychological absorption. This intuitive phenomena is known as flow, a term coined by Mihály Csikszentmihályi[^22-lit_review-1] who described it as the "optimal experience" [@csikszentmihalyi1990flow]. Flow is a cognitive and affective state in which individual attention and motivation feel in harmony with the situation. This leads to a period of absorbed productivity wherein the normal concern for our immediate needs abates. Most of us recognize this highly gratifying experience, which is colloquially known as being in the zone or groove. Many previous studies have established flow's positive influence on learning effects [@kwon2018verif].
+Focused activity can lead to a state of psychological absorption. This intuitive phenomena is known as 'flow,' a term coined by Mihály Csikszentmihályi[^22-lit_review-10] who described it as the "optimal experience" [@csikszentmihalyi1990flow]. Flow is a cognitive and affective state in which individual attention and motivation feel in harmony with the situation. This leads to a period of absorbed productivity wherein the normal concern for our immediate needs abates. Most of us recognize this highly gratifying experience, which is colloquially known as being in the zone or groove. Many previous studies have established flow's positive influence on learning effects [@kwon2018verif].
 
-[^22-lit_review-1]: This Hungarian name is pronounced *me-high chick-sent-me-high*
+[^22-lit_review-10]: Mihály Csikszentmihályi was a renowned Hungarian-American psychologist and researcher whose work has been influential in various fields, including psychology, education, and business. His last name is pronounced *me-high chick-sent-me-high*.
 
 Csikszentmihályi's work claims that activities leading to flow must have structure and direction, provide clear and immediate feedback, and balance perceived challenges and skills. These interrelated requirements enhance the sense of competence and self-efficacy, in a way that is highly engaging without creating anxiety [@csikszentmihalyi2014flow]. The so-called "flow channel," in which challenge and skill are appropriately balanced for the individual, is similar in concept to Vygotskii's ZPD, as previously described.
 
-### Cognitive Load Theory
+#### Cognitive Load Theory
 
-Cognitive Load Theory (COGLT) is a framework for instructional design that aims to optimize learning by managing the cognitive load placed on learners. It is based on the assumption of a limited working memory and an unlimited long-term memory [@sweller1998cogni]. COGLT suggests that effective instructional material should direct cognitive resources towards relevant learning activities [@chandler1991cogni]. It identifies three types of cognitive load: intrinsic, extraneous, and germane. Intrinsic cognitive load is determined by the nature of the material, while extraneous cognitive load is caused by poorly designed instructional materials [@sweller1994cogni]. Germane cognitive load, on the other hand, is the cognitive load that contributes to learning by promoting the construction and automation of schemas[^22-lit_review-2].
+Cognitive Load Theory (COGLT) is a framework for instructional design that aims to optimize learning by managing the cognitive load placed on learners. It is based on the assumption of a limited working memory and an unlimited long-term memory [@sweller1998cogni]. COGLT suggests that effective instructional material should direct cognitive resources towards relevant learning activities [@chandler1991cogni]. It identifies three types of cognitive load: intrinsic, extraneous, and germane. Intrinsic cognitive load is determined by the nature of the material, while extraneous cognitive load is caused by poorly designed instructional materials [@sweller1994cogni]. Germane cognitive load, on the other hand, is the cognitive load that contributes to learning by promoting the construction and automation of schemas[^22-lit_review-11].
 
-[^22-lit_review-2]: In learning theory, a schema is an organized pattern of thought or behavior that helps in processing, interpreting, and storing information in long-term memory. Schemas allow learners to categorize and assimilate new information efficiently by integrating it with existing knowledge.
+[^22-lit_review-11]: In learning theory, a schema is an organized pattern of thought or behavior that helps in processing, interpreting, and storing information in long-term memory. Schemas allow learners to categorize and assimilate new information efficiently by integrating it with existing knowledge.
 
 Like Flow Theory and the ZPD concept, COGLT can inform both active learning theories and pedagogical practices to optimize learning experiences. The former both deal with aligning the challenge level of learning activities with the learner's abilities to promote engagement and learning. Meanwhile, COGLT deals more directly with how the presentation of information affects memory and learning processes. Together, these theories provide a comprehensive framework for designing effective and engaging learning experiences.
 
-### Embodied Cognition
+#### Embodied Cognition
 
 Theories related to embodied cognition (EC) are concerned with the role of mind-body relationship in cognitive processes, and how those processes are influenced by interaction with the environment. EC makes diverse claims, some of which are controversial. Fundamentally, it asserts that cognition and sensorimotor processing are deeply intertwined. "On-line" cognition, which occurs in the context of the real world, involves perception. In that case, the purpose of the mind is to guide responses in real-time, and interactive experimentation with the environment is often used to aid cognition. But much of human cognitive activity occurs "off-line," separate from the environment (e.g. planning, analysis). In those times, cognitive processes are often informed by simulations of sensorimotor activity, including mental imagery, spatially-oriented mental models, and procedural memory. Thus, EC ultimately claims that perceptual and motor systems are not merely peripheral input and output services; they are essential components of an integrated mind-body process which is highly reliant on real or simulated interaction with the world [@wilson2002views].
 
 Mental practice is an instructive example of off-line cognition, defined as mentally rehearsing or "visualizing" a motor task in the absence of physical movement. These sensorimotor simulations typically entail detailed mental representations of a specific real or hypothetical event. Compared to the corresponding physical experiences, they are shown to engage similar neural and conceptual systems and have corresponding effects on perception, cognition, motivation, and action. This form of mental simulation is known to be effective in a range of cognitive and physical skill-based tasks, including golf putting, rock climbing, piano playing, and surgery. The effects of mental practice appear to come from improved connections between action planning, movement, and proprioception, demonstrating that the brain responds similarly to imagined and real experiences [@kappes2016menta].
 
-### Spatial Cognition Theory
+#### Spatial Cognition Theory
 
 EC is related to spatial cognition theory (SCT), which describes the forms and sources of spatial concepts. Spatial knowledge, it claims, comes in three forms: procedural, declarative, and configurational. Procedural knowledge relates to navigating spaces or things. Simple facts about a space and the entities therein are the basis of declarative knowledge. Configurational knowledge concerns the relative positions and orientations between spatial entities, as well as their relationships. Likewise, three sources of spatial knowledge have been identified: haptic, pictorial, and transperceptual. Haptic knowledge is formed by touch or body movement. Visual information is the source of pictorial knowledge. Transperceptual knowledge is synthesized over time from multiple sources [@shelton2003explo].
 
-### Animate Vision Theory
+#### Animate Vision Theory
 
 Though our language of human vision shares terms and ideas with cameras and photographs, the relationship is only analogous. A photo may resemble the mental image of what we perceive, but it is a shallow, incomplete representation of the experience [@greenwold2003spati]. The operation of human vision is less like a camera than it is a computational imaging system with multiple sensory inputs and a brain-based CPU.
 
 Animate vision theory (AVT) proposes that "vision is not the transformation of light signals into a representation of the enveloping 3D world, but ... a tool used for sensory exploration of the environment," in which humans "sample a scene from the world in ways suited to their immediate needs" [@shelton2003explo]. Human vision involves physical and visually-related behaviors that iteratively construct a cognitive map of the environment. With each cycle, those mental representations guide movements and actions that redirect perception. New information acquired in each iteration is used to refine the cognitive map. In this visuo-motor model, motor movement is essential to vision as it provides valuable information about the relative location of objects in the environment and the movement of the perceiver in relation to them [@clark1997being].
 
-## Affordances and Benefits
+### Affordances and Benefits
 
 ::: content-hidden
 TODO: align terminology with methods
@@ -64,9 +100,9 @@ AR and VR devices are often confused with one another and/or mistaken as new mea
 
 VR provides a form of interactive sensorimotor simulation that, when immersive enough to enable presence, the brain interprets as a lived experience. This enables situated learning experiences which, if designed to be appropriately challenging and/or visceral, can be enhanced by flow and may elicit an emotional response [@kwon2018verif; @kappes2016menta; @millican2017virtu]. The learning effect of a VR experience is thus largely grounded in the theoretical requirements and benefits of immersion & presence, experiential learning, and flow theory.
 
-As an active learning method, VR is best suited for the development of higher-order cognitive skills. The potential for emotional impact also makes VR a useful tool for affective learning. Because the experiences are simulated, VR enables training that is otherwise impractical or impossible. Finally, the digital nature of VR experiences makes them easy to repeat, instrument, scale, and distribute. These practical benefits are accurately summarized as offering "experience on demand" in Jeremy Bailenson's[^22-lit_review-3] popular book of the same name [@bailenson2018exper].
+As an active learning method, VR is best suited for the development of higher-order cognitive skills. The potential for emotional impact also makes VR a useful tool for affective learning. Because the experiences are simulated, VR enables training that is otherwise impractical or impossible. Finally, the digital nature of VR experiences makes them easy to repeat, instrument, scale, and distribute. These practical benefits are accurately summarized as offering "experience on demand" in Jeremy Bailenson's[^22-lit_review-12] popular book of the same name [@bailenson2018exper].
 
-[^22-lit_review-3]: Footnote about Jeremy Bailenson
+[^22-lit_review-12]: Jeremy Bailenson is a prominent figure in the field of VR and its applications, particularly in education and behavioral change. As the founding director of Stanford University's Virtual Human Interaction Lab, his work focuses on how VR can affect users' cognition, behavior, and social interactions.
 
 AR allows augmentation of the real world with virtual objects that are informative and/or interactive, thus enhancing our understanding of and connection with the world. The essential affordance of AR is direct interaction with virtual objects in which visual and spatial queries take the form of natural object manipulation in everyday surroundings. Applying embodied cognition and animate vision theories in the context of learning suggests that, by retaining proprioception and sensorimotor function, AR experiences are more aligned with human cognitive architecture than metaphorical digital interfaces. AR interfaces provide a combination of procedural and configurational spatial knowledge via haptic and pictorial sources. Visual, spatial, and sensorimotor feedback provides multiple reference frames that enhance perception and cognition. By reducing the overall cognitive load or better distributing it across multiple sensory pathways, AR improves the uptake of sensorial-based knowledge [@shelton2003explo].
 
@@ -74,11 +110,11 @@ AR is also an active learning method best suited for higher-order cognitive deve
 
 Neither AR nor VR have proved more effective than traditional classroom methods for the recall-oriented learning outcomes found low in Bloom's cognitive domain, including remembering, understanding, or applying. However, both demonstrated other benefits in line with theory. VR users perform better on high-order questions related to analyzing, evaluating, and creating. It is also known to improve student attitudes, including engagement and self-efficacy [@cook2019chall; @kwon2018verif]. AR users demonstrate improved perception, performance, and understanding of spatial concepts, with student outcomes correlated to physical engagement with the content. The psychological benefits of AR include reduced test anxiety and increased self-efficacy [@chen2019using; @shelton2003explo]. These benefits have broad industrial and military applications.
 
-## Market Readiness and Applications
+### Market Readiness and Applications
 
-While XR has yet to provide consumers with a value proposition that is broadly compelling and sustainable,[^22-lit_review-4] the industrial, healthcare, and military markets have embraced its potential for cost savings and competitive advantage.
+While XR has yet to provide consumers with a value proposition that is broadly compelling and sustainable,[^22-lit_review-13] the industrial, healthcare, and military markets have embraced its potential for cost savings and competitive advantage.
 
-[^22-lit_review-4]: This claim may well be tested in 2024, with the recent introduction of Apple's Vision Pro, a state of the art video pass-through device, and Meta's Quest 3, which is positioned primarily as a VR device, but also offers video-pass through.
+[^22-lit_review-13]: This claim may well be tested in 2024, with the recent introduction of Apple's Vision Pro, a state of the art video pass-through device, and Meta's Quest 3, which is positioned primarily as a VR device, but also offers video-pass through.
 
 Across industry, where the primary barrier to adoption is return on investment (ROI), it is generally accepted that AR's essential connection to reality (e.g. guiding a surgeon's hand) can reduce costs. AR has improved learning rates, reduced errors, increased yields, improved quality, and enhanced designs. By enabling collaborative design, remote expert guidance, and enhanced monitoring, it has also improved the end-user experience [@azuma2019road]. In industrial settings HMDs are typically designed to support operators in an unobtrusive fashion, allowing them to focus on a task in the physical world, e.g. inspection, maintenance, repair, and order picking. In doing so they can reduce cognitive and/or physical load thru supplemental hands-free displays [@starner2015weara]. Manufacturing and healthcare are two industries that have most benefited from early engagement of this technology.
 
@@ -90,7 +126,7 @@ In healthcare, XR has therapeutic and educational applications ranging from pain
 
 In the military market, where many of these technologies were first proven, there remains a strong and growing demand for custom XR hardware solutions. In addition to the traditional HMD / HUD systems common in fixed and rotary wing aircraft, there are efforts underway to outfit service members with AR devices that support their mission [@kress2020optic]. The US Army's IVAS (Integrated Visual Augmentation System) is the most ambitious current example. Originally awarded in March of 2021, IVAS is a \$22b partnership with Microsoft to improve "Soldier sensing, decision making, target acquisition, and target engagement" [@army2022ivas]. While these custom hardware solutions provide further evidence of XR's adoption and future, educational applications for XR in the military are more relevant to this work. The wide range of applications include training and briefing support for pilots [@alexander2019trans], maintainers, leaders [@clayton2020virtu], and officers [@millican2017virtu].
 
-## Barriers to Adoption
+### Barriers to Adoption
 
 XR, particularly AR/MR, is still relatively immature. Despite great potential, adoption is slowed by technical, market, and other important social and legal obstacles [@azuma2019road].
 
@@ -106,21 +142,21 @@ Validation and metrics both relate to demonstrating the claimed benefit of these
 
 Important other social and legal barriers to XR adoption exist, most related to social comfort. Issues related to privacy and wearer's rights, censorship / disinformation / propaganda, driving with headsets, medical regulations, and related liabilities is a partial list of potential impediments [@barfield2015weara]. While important to consider in the context of XR adoption, this category is outside the scope of this work.
 
-## Development Frameworks
+### Development Frameworks
 
 In order to address many of the barriers identified above, a number of frameworks have been proposed to guide the specification, design, and implementation of XR solutions. Relevant works are summarized below, listed in order of publication date by category.
 
-### Specification
+#### Specification
 
 @palmarini2017innov proposes a questionnaire based strategic decision making tool to guide the selection of AR systems for maintenance applications. The authors noted that these selections are challenging, with many considerations and a fragmented market of hardware and software solutions. Developed 30 questions, grouped into four questionnaires, based on the analysis of AR system characteristics described in related papers. Each questionnaire is designed to address the main hardware, software, and content choices involved, along with the overall suitability of an AR based solution. The author notes that the approach is not validated, does not address economic or ergonomic considerations, and does not generalize to other applications. Additionally, the resulting recommendations are general in nature and exclude VR and MR options.
 
-### Design
+#### Design
 
 @borsci2015empir describes the importance of alignment between training objectives, contents, method, and expected outcomes, along with the criteria used to evaluate those outcomes, in program design. This alignment is considered essential in the field of training assessment but usually overlooked in VR/AR studies. The authors found that experimental methods ignored important factors, did not employ standardized instruments, and failed to consider organizational or environmental needs. As a result, most studies are not reliable or generalizable. They concluded that a common framework is needed to address these issues in the design and assessment of XR training systems.
 
 @taylor2021form proposes a framework for adapting live training events to distance learning via immersive environments. Flow Driven Learning Experience Design (FLXD) integrates flow and transactional distance theories into Kolb's experiential learning model. FLXD describes how the designer can combine traditional and immersive learning methods in a way that best meets the unique needs in each of ELT's four stages. Taylor's work was designed to meet the needs of the large, diverse population of learners typical in military training programs.
 
-### Implementation
+#### Implementation
 
 @longo2017smart details SOPHOS-MS, a methodological framework and reference implementation for augmented operators in I4.0 based on Lee's 5C architecture. Their framework adopts a human-centered approach wherein the operator is essential to the optimal integration of real and virtual assets. By providing real time feedback, support, and access to the IT knowledge-base, SOPHOS-MS extends operator capabilities. This is accomplished via a verbal natural language interface using a variety of XR hardware. Their approach is suitable for a both on-line and off-line purposes, including training, collaboration, and support. Tests of this versatile implementation showed that operators trained with it outperform traditionally-trained counterparts throughout a two week period of use.
 
@@ -128,11 +164,11 @@ In order to address many of the barriers identified above, a number of framework
 
 @enricoandrea2021minim identified a lack of standards for the design of AR work instructions, without which choices are based on personal preference. This can lead to unnecessarily complex visuals that negatively impact cost and performance without improving the user experience. The authors proposed a standard process for AR work instruction design that conveys only the information required to accomplish a task, considering real objects involved, end-user needs, and task complexity. Experiments confirmed this "minimal AR" approach did not degrade any measured variable of user performance for various levels of task complexity.
 
-## Assessment
+### Assessment
 
 Here, we review literature related to the assessment of XR systems, including well-known frameworks and popular instruments.
 
-### Frameworks
+#### Frameworks
 
 @kersten-oertel2015augme described their DVV Taxonomy for describing AR image-guided surgical (IGS) systems, and proposed a framework for AR IGS assessment. DVV is an acronym of the three components identified in the taxonomy: data, visualization processing, and view. Those components, their classes and subclasses, and the relationships between them are considered at each step of the surgical scenario. The framework assesses AR IGS systems based on technical parameters, reliability, surgical performance, patient outcomes, economics, and social / legal / ethical aspects of use. Each component is evaluated in terms of the primary components of the operating room environment - surgeon, patient, and IGS system - and the relationships between them.
 
@@ -144,7 +180,7 @@ The following year @masood2020adopt extended their prior research with 22 experi
 
 @danielsson2020augme developed and applied a framework to assess the state of AR for industrial assembly applications. From a manufacturing engineering perspective, the authors considered authoring, infrastructure, and validation. Technical maturity concerns focused on the readiness levels (TRLs) of available devices. Key requirements and enabling technologies were described. From both perspectives, AR is rapidly improving but still only suitable for limited usage. The authors identified a need for strategic decision-making guidelines for the integration of these systems. Such guidelines should need to be validated and account for economic considerations.
 
-### Instruments {#sec-lrinstruments}
+#### Instruments {#sec-lrinstruments}
 
 Witmer and Singer's [-@witmer1998measu] *Presence Questionnaire* consists of 32 items and measures the degree of presence experienced in a virtual environment. The same publication describes the Immersive Tendencies Questionnaire which measures the tendency of an individual towards immersion with 29 items. Both instruments use a seven-point scale where the endpoints are anchored by opposing descriptors (e.g. not compelling / very compelling).
 
@@ -156,12 +192,12 @@ Hart's *NASA Task Load Index* [TLX, -@hart2006tlx] has been used to estimate wor
 
 The *System Usability Scale* (SUS) was designed by John Brooke [-@brooke1996susq] to provide a "quick and dirty" assessment of usability for industrial systems, where detailed analysis is often expensive and impractical. The design of SUS was partly informed by his work on ISO 9241-11 [@ISO9241-11], a standard for the definition and measurement of usability. It describes usability in terms of effectiveness, efficiency, and satisfaction in the context of use. Because the first two are difficult to compare across systems, SUS focuses on user satisfaction [@brooke2013sus]. The resulting score is only indicative in nature. The SUS is not diagnostic and can not pinpoint specific usability issues. Despite its limitations, multiple studies have shown the SUS is a valid and reliable high-level measure that is applicable to a wide range of technologies [@bangor2008empir; @sauro2011pract].
 
-## XR in Manufacturing
+### XR in Manufacturing
 
 Here we focus on case studies that evaluate the effectiveness of XR assisted ("augmented") instruction for manufacturing operations.
 
 ::: content-hidden
-TODO: INSERT NEW LIT REVIEW MATERIAL HERE FROM DISS/XRAssessmentMethods.XLS
+TODO: INSERT NEW LIT REVIEW MATERIAL HERE FROM `DISS/XRAssessmentMethods.XLS`
 :::
 
 ## Conclusions
