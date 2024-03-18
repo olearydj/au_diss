@@ -1,3 +1,8 @@
+```{=latex}
+\setcounter{page}{1}
+\pagenumbering{arabic}
+```
+
 # Introduction {#21-intro}
 
 Challenged to meet the demands of reduced cost, global competition, sustainability, shorter product life cycles, and product complexity, the manufacturing industry is in the midst of a digital transformation. Industry 4.0 and the underlying shift from mass production to mass customization places new demands on the workforce. Today's manufacturing operators must manage a wider range of responsibilities and increased information flow amidst decreasing margins for error, changing methods, and new technologies. These trends show no signs of abatement [@danielsson2020augme]. Extended Reality (XR) devices, in their various forms, are expected to aid this problem through operator training and support.

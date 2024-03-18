@@ -123,7 +123,7 @@ format:
       - bindingoffset=0.5in
       - heightrounded
       - footskip=0.475in
-      - showframe
+#     - showframe
     # footer only, with centered page number
     pagestyle: plain
     fig-align: "center"

@@ -1,5 +1,7 @@
+```{=latex}
 \begin{titlepage}
 \setcounter{page}{1}
+\pagenumbering{roman}
 \begin{singlespace}
 \center
 \vspace*{48pt}
@@ -24,23 +26,25 @@ Doctor of Philosophy \\
 \vspace{12pt}
 
 Auburn, Alabama \\
-***GRADUATION DATE*** %TODO
+April 3, 2024
 \vspace{48pt}
 
-Keywords: ***Insert up to six key words or phrases*** \\ %TODO
-***on no more than two lines*** %TODO
+Keywords: \\
+Augmented Reality, Mixed Reality, Augmented Instruction, Learning \& Retention Metrics \\
+Augmented \& Mixed Reality Assessment Methods, Manufacturing Assembly Training \\
 \vspace{24pt}
 
 Copyright 2024 by Danny J. O'Leary
 \vspace{24pt}
 
-***Approved by*** %TODO
+Approved by
 \vspace{12pt}
 
-Dr. Gregory Harris, Co-chair, Assoc. Professor \& Chair, Industrial \& Systems Engineering \\
+Dr. Gregory Harris, Co-chair, Professor \& Chair, Industrial \& Systems Engineering \\
 Dr. John Evans, Co-chair, Professor, Industrial \& Systems Engineering \\
 Dr. Richard Sesek, Professor, Industrial \& Systems Engineering \\
 Dr. Konstantinos Mykoniatis, Assistant Professor, Industrial \& Systems Engineering
 
 \end{singlespace}
 \end{titlepage}
+```

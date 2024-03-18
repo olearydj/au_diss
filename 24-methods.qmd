@@ -1570,6 +1570,7 @@ TODO: elaborate on list of study limitations and/or convert into narrative
 -   does not account for interactions between affordances
 -   learning effect (training, etc.)
 -   orientation doesn't precisely control for learning across treatments, e.g. PAR, AR/MR all introduce the treatment using ST-8 instructions (in addition to ST-7), where PWI gets only ST-7 and no prior training with ST-8
+- did not assess or balance on cog or spatial skills
 
 ## Summary
 

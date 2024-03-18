@@ -1,7 +1,9 @@
+```{=latex}
 \newpage
 
 \hypertarget{abstract}{\chapter*{Abstract}\label{abstract}}
 \addcontentsline{toc}{chapter}{Abstract}
+```
 
 ::: content-hidden
 TODO: update and finalize the abstract
