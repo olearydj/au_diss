@@ -1,3 +1,8 @@
+```{=latex}
+% Only include chapters (or sections) in ToC within appendix
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+```
+
 # Institutional Review Board Approval {#app-irb}
 
 Import the final approved IRB packet PDF here.

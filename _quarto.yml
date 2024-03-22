@@ -77,7 +77,7 @@ format:
     output-ext: "pdf"
   # Table of Contents
     toc: true
-    toc-depth: 2
+    toc-depth: 3
     toc-title: "Table of Contents"
     lof: true
     lot: true
@@ -86,7 +86,7 @@ format:
       - "linktoc=all"
   # Numbering
     number-sections: true
-    # number-depth: 1
+    number-depth: 2
   # Fonts
     # main: body, sans: headings, mono: codeblocks
     mainfont: Georgia

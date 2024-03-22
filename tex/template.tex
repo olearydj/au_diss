@@ -26,9 +26,13 @@ $doc-class.tex()$
 
 % set KOMA ToC options
 \KOMAoptions{%
-  toc=flat,
+% toc=flat,
   chapterentrydots=true,
   listof=flat}
+
+% Adjusting the indentation for subsections in the ToC
+\RedeclareSectionCommands[tocindent=0em]{section}
+\RedeclareSectionCommands[tocindent=2.5em]{subsection}
 
 $if(beamer)$
   $if(background-image)$

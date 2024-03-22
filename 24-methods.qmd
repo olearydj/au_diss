@@ -290,6 +290,8 @@ Time spent referencing the paper work instructions during recall
 
 Learning rate
 
+transfer effectiveness ratio (TER) see @roscoe1971incre via @kaplan2021effec
+
 First pass yield
 
 #### Integration
@@ -1127,7 +1129,7 @@ Participants were asked to complete the ST-8 task for one car, from memory, with
 
 ## Administration of Protocol
 
-This section will describe the manner in which the study was run, with a focus on administrative details like the team, scheduling, location, safety measures, quality assurance, and challenge.
+This section will describe the manner in which the study was run, with a focus on administrative details like the team, scheduling, location, safety measures, quality assurance, and challenges.
 
 ### Personnel and Certifications
 

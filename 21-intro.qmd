@@ -421,3 +421,13 @@ Due to directly conflicting requirements common in XR systems, there is no "one 
 ![Requirements from various HMD market segments. Number of '+/-' markers indicates magnitude of positive/negative criticality. @kress2015optic](images/21-HMDRequirements.png){width="5in"}
 
 Tradeoffs should be informed by requirements specific to the context, manner, and goals of intended use, prioritizing human factors related to perception. Aligning the desired outcomes with the primary affordance of the chosen device is essential. These choices are aided by an understanding the theoretical underpinnings of those affordances.
+
+::: content-hidden
+## Conventions TODO
+
+footnotes vs citations vs weblinks
+
+## Summary TODO
+
+wrap up and transition
+:::
