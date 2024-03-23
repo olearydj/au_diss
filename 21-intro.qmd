@@ -27,6 +27,14 @@ The balance of this first chapter provides a thorough background of the historic
 TODO: review and finalize above
 :::
 
+## Conventions
+
+Throughout this work several conventions are utilized...
+
+::: content-hidden
+footnotes vs citations vs weblinks
+:::
+
 ## Background
 
 This section presents an overview of XR technologies, including their history, applications, and potential for training and support in the evolving landscape of manufacturing. It details the human and technical requirements of XR and the trade-offs required for its successful adoption in manufacturing settings. This knowledge provides a foundation for assessing the value of XR in manufacturing applications and designing the study that follows.
@@ -35,7 +43,7 @@ This section presents an overview of XR technologies, including their history, a
 
 Ongoing changes in manufacturing are expected to have profound impact on the people, businesses, and governments of the world. The so-called *Fourth Industrial Revolution* (4IR) follows prior revolutions of mechanization, mass production, and digitization, and is the first to be predicted in advance, not observed after the fact [@drath2014indus]. First described by German economist and founder of the World Economic Forum, Klaus Schwab [-@schwab2015fourt], 4IR is driven by today's rapidly evolving and converging digital technologies. Brynjolfsson and McAfee [-@brynjolfsson2014secon] note that these *Second Machine Age* advances uniquely exhibit sustained exponential rates of improvement while being easily combined and efficiently distributed. The innovative fusion of these cross-disciplinary technologies is transforming our physical, digital, and biological worlds in unprecedented ways.
 
-### Industry 4.0
+#### Industry 4.0
 
 Four years before Schwab's 4IR keynote, European manufacturing leaders had already imagined the potential benefits of digital convergence. In January of 2011 Germany's BMBF (the Federal Ministry of Education and Research) announced a new initiative. "Industrie 4.0" (I4.0) was introduced as the digital transformation of manufacturing, a paradigm shift intended to protect and expand Germany's influence as a world leader in the sector [@kagermann2011indus]. Since then, I4.0 has become a prominent trend in Advanced Manufacturing. Its adoption is driven by a combination of application-pull (social, economic, and political change) and technology-push (automation, digitalization, communication, and miniaturization) market factors [@lasi2014indus].
 
@@ -55,7 +63,7 @@ Four technology quadrants emerge in this figure: (a) physical-digital interfaces
 
 As described in the next section, the specific technologies and the manner in which they are integrated and applied define an I4.0 system. The permutation of possible outcomes, each a different embodiment of the I4.0 concept, is the ultimate source of definitional ambiguity in this field.
 
-### Cyber-Physical Systems
+#### Cyber-Physical Systems
 
 Cyber-Physical Systems (CPSs) is an emerging cross-disciplinary field engaged in the design of new models and methods for problems at the intersection of physical and digital engineering traditions [@lee2015past]. It was simply defined in E. Lee's seminal paper [@lee2006cyber] as the "integrations of computation with physical processes." CPS promotes the novel evolution of classic embedded systems through their interconnection and integration with computation and control mechanisms. This enables the real-time autonomous control of large engineering systems [@lee2006cyber; @pascual2019handb]. Though commonly associated with I4.0, CPS is independent of specific applications or implementations, e.g. I4.0 and IoT.
 
@@ -84,11 +92,7 @@ In the following section we focus on the heart of Lee's 5C architecture, the Dig
 
 The Digital Twin is the mechanism by which I4.0 synchronizes the virtual and physical system states. It consists of a virtual replication of the system that is coupled to its physical counterpart via a bi-directional flow of sensor and control data. DTs enable a data-driven approach to life-cycle management that can employ optimal methods and practices for each environment. The continuous, bi-directional data flow and synchronization of an idealized DT differentiates it from traditional modeling and simulation methods which typically operate as off-line, asynchronous processes [@jones2020chara].
 
-The DT concept was introduced by Michael Grieves[^21-intro-2] in late 2002, partly inspired by dynamic CAD modeling methods that were then emerging. He originally promoted it as a tool for distributed, collaborative problem solving in product life-cycle management (PLM) [@grieves2017digit]. Grieves developed the idea under different names until 2011, when he first used the phrase Digital Twin to describe it [@grieves2011virtu]. Therein he credits collaborator John Vickers[^21-intro-3] of NASA with coining the term, which also appeared in NASA's draft strategy for Simulation-Based Systems Engineering in 2010 [@shafto2012model].
-
-[^21-intro-2]: Footnote about Michael Grieves
-
-[^21-intro-3]: Footnote about John Vickers
+The DT concept was introduced by Michael Grieves in late 2002, partly inspired by dynamic CAD modeling methods that were then emerging. He originally promoted it as a tool for distributed, collaborative problem solving in product life-cycle management (PLM) [@grieves2017digit]. Grieves developed the idea under different names until 2011, when he first used the phrase Digital Twin to describe it [@grieves2011virtu]. Therein he credits collaborator John Vickers of NASA with coining the term, which also appeared in NASA's draft strategy for Simulation-Based Systems Engineering in 2010 [@shafto2012model].
 
 Following similar growth in adjacent fields, interest in the DT concept has accelerated rapidly since 2016. While most research activity remains focused on Industry 4.0 applications, progress in academia and industry has led to some divergence in both interpretation and application of the concept [@ante2021digit]. A 2017 survey of manufacturing literature found that no less than 16 unique definitions had been proposed for Digital Twin since 2011 [@negri2017revie]. Despite the literature offering no common understanding of the term, the DT concept is recognized as a key enabler for I4.0 [@kritzinger2018digit].
 
@@ -150,23 +154,19 @@ This continuum spans the complete range of real to synthetic experiences. Though
 
 #### Origins of XR
 
-Many precursors to XR can be identified in the 1800s and early 1900s, culminating in Morton Heilig's[^21-intro-4] patented head-mounted display (HMD) in 1960, which boasted 140° field of view, stereo earphones, and air / scent discharge nozzles [@heilig1960stere]. As seen in @fig-heilig, images from the 60 year old filing are surprising in their familiarity. Soon thereafter, engineers at the Philco Corporation created the first such device that tracked the wearer's head motion and updated the display accordingly [@jerald2016book].
-
-[^21-intro-4]: Footnote about Morton Heilig
+Many precursors to XR can be identified in the 1800s and early 1900s, culminating in Morton Heilig's patented head-mounted display (HMD) in 1960, which boasted 140° field of view, stereo earphones, and air / scent discharge nozzles [@heilig1960stere]. As seen in @fig-heilig, images from the 60 year old filing are surprising in their familiarity. Soon thereafter, engineers at the Philco Corporation created the first such device that tracked the wearer's head motion and updated the display accordingly [@jerald2016book].
 
 ![Heilig's Stereoscopic Television Apparatus. @heilig1960stere](images/21-HeiligStereoscopicTV.png){#fig-heilig width="5in"}
 
 In 1965 Ivan Sutherland[^21-intro-5] published *The Ultimate Display*, which described his vision for a "kinesthetic display" at a time when "the ability to draw simple curves would be useful" [@sutherland1965ultim]. In it, he commented:
 
-[^21-intro-5]: Footnote about Ivan Sutherland
+[^21-intro-5]: Ivan Sutherland is a distinguished computer scientist, known for pioneering work in computer graphics and interactive computing. During his tenure at the University of Utah, he co-founded real-time graphics pioneer Evans & Sutherland, and fostered a generation of computer graphics experts. Sutherland is credited with creating the first graphical user interface and fundamentally changing computer-aided design. He has received several prestigious awards for his lifelong contributions, including the ACM Turing Award (1988) and the Kyoto Prize (2012).
 
 > *A display connected to a digital computer gives us a chance to gain familiarity with concepts not realizable in the physical world. It is a looking glass into a mathematical wonderland.*
 
 Three years later, Sutherland and his students at the University of Utah were first to demonstrate a HMD that combined tracking and computer generated imagery. The device, known as the Sword of Damocles, is the original prototype for all modern VR technology. Its name was in reference to the story of King Damocles, owing to the precarious position the device maintained over a user's head [@kiyokawa2015head]. It took nearly 30 years for its AR equivalent to emerge.
 
-In 1994 Ronald Azuma[^21-intro-6] presented the first AR system capable of accurately maintaining the spatial registration of real and virtual objects based on changes to the user's viewpoint. Key contributions of that open-loop system included custom hardware, calibration, and head pose prediction methods [@azuma1994impro].
-
-[^21-intro-6]: Footnote about Ronald Azuma
+In 1994 Ronald Azuma presented the first AR system capable of accurately maintaining the spatial registration of real and virtual objects based on changes to the user's viewpoint. Key contributions of that open-loop system included custom hardware, calibration, and head pose prediction methods [@azuma1994impro].
 
 Commercial interest in XR has since experienced alternating periods of boom and bust, fueled by promises that exceeded the technologies of the time. Through it all, research in the corporate, government, academic, and military sectors continued. Capitalizing on the runaway success of the smartphone industry following the 2007 iPhone launch, the current wave of XR began to emerge in 2012. This generation of hardware leveraged newly available components, including displays,[^21-intro-7] processors, batteries, cameras, and sensors, along with the maturing software infrastructure, to offer products that were more sophisticated and compelling in all sectors [@kress2020optic].
 
@@ -374,9 +374,7 @@ The graphics pipeline and depth sensors of a modern XR HMD can provide the infor
 
 OST devices rely on optical compositing techniques, with little control over the scene's natural dynamic range and displays unable to match its brightness. As a result, virtual objects on OST AR/MR devices have a ghostly, semi-transparent look. This may be suitable for overlays and other augmentations, but falls short of enabling a cohesive mix of real and virtual objects. Currently, few optical methods are capable of addressing this problem. Pixel dimming is often suggested as a compromise in OST HMDs. This method, also known as soft-edge occlusion, selectively dims areas of the real world to help virtual objects stand out [@kress2020optic].
 
-Despite significant research and development efforts, occlusion remains an unsolved problem in OST devices. Few implementations of soft-edge occlusion exist in the market, and hard-edge solutions remain entirely absent. The details of the challenges involved are beyond the scope of this work, but are well summarized by Karl Guttag.[^21-intro-12] Guttag identifies technical and physical roadblocks for both approaches and declares a general solution to hard-edge occlusion "infinitely complex" for current optical architectures [@guttag2021magic].
-
-[^21-intro-12]: Footnote about Karl Guttag
+Despite significant research and development efforts, occlusion remains an unsolved problem in OST devices. Few implementations of soft-edge occlusion exist in the market, and hard-edge solutions remain entirely absent. The details of the challenges involved are beyond the scope of this work, but are well summarized by Karl Guttag, a recognized expert in graphics processors and display systems. Guttag identifies technical and physical roadblocks for both approaches and declares a general solution to hard-edge occlusion "infinitely complex" for current optical architectures [@guttag2021magic].
 
 ### Ensuring Comfort
 
@@ -422,12 +420,8 @@ Due to directly conflicting requirements common in XR systems, there is no "one 
 
 Tradeoffs should be informed by requirements specific to the context, manner, and goals of intended use, prioritizing human factors related to perception. Aligning the desired outcomes with the primary affordance of the chosen device is essential. These choices are aided by an understanding the theoretical underpinnings of those affordances.
 
+## Summary
+
 ::: content-hidden
-## Conventions TODO
-
-footnotes vs citations vs weblinks
-
-## Summary TODO
-
 wrap up and transition
 :::

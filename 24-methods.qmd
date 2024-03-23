@@ -1232,10 +1232,6 @@ Results recorded by the research team during the experiments were naturally erro
 
 A final step transcribes the recorded results into a concise format that encodes a detailed, contextualized description of each error. For example, `F59LRP (2)` indicates that, at the front of the car (`F`), part `59` attached to the left and right (`LR`), were incorrectly positioned (`P`), accounting for `(2)` errors. This encoding scheme, detailed in [Appendix G](#app-datadict), was developed for the study to describe error types in a contextually rich manner that may better relate to the corresponding human error than the discrete elements it comprises. This approach is designed to facilitate pattern discovery and analysis, support predictive modeling and simulations, and inform more targeted interventions.
 
-::: content-hidden
-TODO: make sure the data dictionary clearly defines columns for raw data (`i1_raw_data`) vs combined / ingested data. The current Car Outcomes section describes the later, which is different from the former.
-:::
-
 ### Qualitative Feedback
 
 In addition to the quantitative data from surveys, observed results, and annotated performances, a number of qualitative observations were recorded by the research team during the conduct of each session and in debriefs that followed. These were manually transcribed from various sources, including the Data Collection Sheets, General Feedback Forms, and the PI's notes. When transcribing notes from the debriefing, which were often terse, care was taken to accurately represent the participant's original feedback.
@@ -1573,6 +1569,7 @@ TODO: elaborate on list of study limitations and/or convert into narrative
 -   learning effect (training, etc.)
 -   orientation doesn't precisely control for learning across treatments, e.g. PAR, AR/MR all introduce the treatment using ST-8 instructions (in addition to ST-7), where PWI gets only ST-7 and no prior training with ST-8
 - did not assess or balance on cog or spatial skills
+- between-groups design limits learning effect but limits effectiveness of treatment comparisons for usability and workload
 
 ## Summary
 

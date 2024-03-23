@@ -7,6 +7,13 @@
 
 ::: content-hidden
 TODO: update and finalize the abstract
+
+use this structure:
+1. Background: overview of what is being studied and in what context
+2. Justification: why the researchers conducted this study
+3. Major finding: the main finding of the study
+4. Key results: more details about the results of the study
+5. Conclusion: significance of the findings and what they mean for future research
 :::
 
 This research rigorously assesses the effectiveness of distinct augmented instructional techniques within the framework of contemporary manufacturing training methods. A cohort of 62 participants, with varying prior exposures to assembly tasks but no prior experience with augmented or mixed reality, engaged in a simulated car assembly task at the Tiger Motors Lean Education Lab. Participants were introduced to different instructional methods: traditional Paper Work Instructions, Projected Augmented Reality, head-mounted Augmented Reality, and head-mounted Mixed Reality. For the purposes of this study, Mixed Reality is differentiated from Augmented by the participant's freedom to manipulate the workpiece while augmentations remain aligned.
