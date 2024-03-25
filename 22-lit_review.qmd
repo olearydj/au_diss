@@ -1,6 +1,6 @@
 # Literature Review {#22-lit_review}
 
-This chapter explores the most relevant literature reviewed and provide a synthesis of the findings as they relate to this study. Due to the nature of this study, the review was quite broad, spanning the theoretical bases of support for augmented learning, the affordances and theoretical benefits of XR-based learning, and the readiness of the market including barriers to adoption. Furthermore, it investigates methods to address key barriers, including frameworks for specification, design, implementation, and assessment. Finally, it addresses the state of assessment methods in or relevant to manufacturing.
+This chapter explores the most relevant literature reviewed and provides a synthesis of the findings as they relate to this study. Due to the nature of this study, the scope of this review was quite broad, spanning the theoretical bases of support for augmented learning, the affordances and theoretical benefits of XR-based learning, and the readiness of the market including barriers to adoption. Furthermore, it investigates methods to address key barriers, including frameworks for specification, design, implementation, and assessment. Finally, it addresses the state of assessment methods in or relevant to manufacturing.
 
 This review concludes with a summary of findings that motivate this study, as described in the [Problem Statement](#23-prob_statement).
 
@@ -22,6 +22,7 @@ This review employs a hybrid methodology, combining traditional systematic appro
 
 The resulting set of publications was used to seed a secondary search using a combination of graph and AI-based tools, including scite\_,[^22-lit_review-5] Inciteful,[^22-lit_review-6] ResearchRabbit,[^22-lit_review-7] Connected Papers,[^22-lit_review-8] and Litmaps.[^22-lit_review-9] At the time of this writing, this category of tools was experiencing rapid growth and change. No single "best" tool or approach had yet emerged, but their collective benefits provided a valuable complement to the systematic approach. The tools and methodology described here were influenced by the work of Mushtaq Bilal [-@bilal2023overv] and Ilya Shabanov [-@shabanov2024effor].
 
+
 [^22-lit_review-5]: scite\_: <https://scite.ai/>
 
 [^22-lit_review-6]: Inciteful: <https://inciteful.xyz/>
@@ -32,13 +33,73 @@ The resulting set of publications was used to seed a secondary search using a co
 
 [^22-lit_review-9]: Litmaps: <https://www.litmaps.com/>
 
+![Discovering Relevant Sources in Litmaps](images/22-LitMaps.png){#fig-litmaps width="6in"}
+
 Broadly speaking, these tools link papers based on citation trees, bibliographic coupling, analysis of the citation statement, and other sophisticated methods. From their original findings, users can interactively traverse connected papers in graph and/or timeline view, focus on specific authors or collaborators, and otherwise refine the search. Abstracts and links to the papers are available throughout the process to guide exploration.
 
 Integrating traditional and modern approaches in this iterative and exploratory fashion teased out unexpected connections, incorporated a wider range of sources, and facilitated the author's understanding of relevant discourse across multiple dimensions, including time, application context, and research domain. This iterative process was repeated for each question and topic area. The resulting reference collections were imported into Zotero, which managed the bibliographic data and related PDFs. Notes made while reading these sources were imported to Obsidian for review and synthesis.
 
 This approach involves several sources and tools, the implementation of which creates technical challenges that may dissuade many researchers. Over time, as the benefits are better understood and more integrated workflows emerge, it seems likely that it will become widely adopted.
 
-## Findings
+## Claims / Argument / Logic? Name???
+
+This section will lay out the argument that
+
+Recent advancements in XR, particularly AR and MR, have emerged as promising tools to meet these demands by offering real-time, contextually relevant instruction. Initial research and development efforts into AR for manufacturing assembly training have shown its potential, but widespread industry adoption is contingent upon measurable real-world benefits and a clear return on investment. Additional barriers to AR adoption include technical challenges, lack of standardization, and interoperability issues.
+
+Despite ongoing efforts to develop standards and evaluation frameworks to mitigate these barriers, the evidence base for the efficacy of AR in enhancing manufacturing training remains fragmented.
+
+This fragmentation, often focusing on the technology rather than its affordances, limits the comparability of research findings. Addressing this gap requires a novel approach to research that prioritizes the evaluation of AR's unique affordances over device-centric metrics. This approach aims to provide a clearer understanding of how AR can be effectively implemented in manufacturing training protocols, ultimately supporting the industry's need for efficient and effective operator training solutions.
+
+### Manufacturing Has a Need
+
+As discussed in the [Introduction](#21-intro), the manufacturing industry is undergoing a profound digital transformation, I4.0 [@kagermann2011indus]. This shift is driven by a combination of market needs and technological capabilities [@lasi2014indus]. Connected, autonomous components allow product-driven control over manufacturing operations [@negri2017revie], providing increased decentralization, flexibility, and resilience [@tao2017digit]. This enables the shift from mass production to mass customization, in line with current market demands [@culot2020behin].
+
+This transformation is placing new demands on its operators, who must manage a widening range of responsibilities, process an increasing volume of information, and adapt to ever-changing methods, all while maintaining increasing expectations for accuracy and efficiency [@danielsson2020augme; @longo2017smart; @vanneste2020cogni].
+
+Moreover, the manufacturing industry is grappling with a widening skills gap, as the demand for skilled labor continues to outpace supply. Several factors contribute to this skills gap, including high retirement rates among experienced workers, global expansion of manufacturing operations, and increasing specialization of roles [@kress2020optic]. As a result, there is a pressing need for effective and efficient training methods to upskill the existing workforce and onboard new employees quickly. This situation demands innovative solutions to enhance operator support and training.
+
+::: content-hidden
+TODO: previous paragraph about workforce skills gap would benefit from additional citations
+:::
+
+### AR is a Potential Solution
+
+3. Advances in XR technologies, particularly Augmented Reality (AR), offer novel opportunities for interactive and immersive training in manufacturing.
+4. Preliminary research and development (R&D) efforts indicate that AR can enhance manufacturing assembly training by providing real-time, contextually relevant information.
+
+### Barriers to Widespread Industry Adoption
+
+5. Despite promising results from pilot studies, widespread industry adoption of AR for training requires clear justification in terms of return on investment (ROI) and demonstrable improvements in training outcomes.
+6. Several barriers hinder the adoption of AR for manufacturing training, including technical limitations, lack of interoperability, and the absence of standardized evaluation frameworks.
+
+### Frameworks
+
+7. Existing efforts to develop standards, frameworks, and assessment methods aim to address operational barriers
+
+### Case Studies
+
+8. Case studies aim to address need for empirical evidence of benefits
+9. Current studies on the efficacy of AR in manufacturing training are fragmented, often device-centric, and lack a consistent approach to evaluating AR’s unique affordances.
+
+## Conclusions
+
+9. There is a critical need for research methodologies that holistically evaluate the impact of AR's affordances on learning outcomes in manufacturing training.
+10. Closing the gap in evidence regarding the effectiveness of AR for manufacturing training requires focusing on affordances and conducting comparative analyses across different AR implementations.
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
 
 ### Theoretical Basis {#sec-theory}
 
@@ -248,9 +309,19 @@ Experimental Setup from @wang2021role
 
 #### Meta-Analyses and Systematic Reviews
 
-@kaplan2021effec conducted a meta-analysis comparing XR training's efficacy with traditional methods. Stringent selection criteria were employed to ensure a controlled, valid, and comprehensive analysis. Twenty-five studies were identified that quantified performance among adults after XR training for cognitive, physical, or mixed tasks. The authors focused on learning transfer as a critical measure of the direct effect of training on real-world performance, and relied on a random-effects model to allow direct comparison of results. Despite the diversity of XR platforms, task types, and context involved, XR training was deemed as effective as traditional strategies, with a noted advantage in physical tasks that require spatial interaction. The study suggested that XR's secondary benefits (e.g. safety, cost-efficiency, scalability) may therefore be its most important differentiators. An important observation underpins this study: the heterogeneity of study designs and the current scarcity of research complicates the quest for standardized efficacy metrics in XR training. The authors state the need for a more unified methodological approach in future explorations.
+@kaplan2021effec conducted a meta-analysis comparing XR training's efficacy with traditional methods. Specific inclusion criteria were employed to ensure the validity and relevance of the included studies. Twenty-five studies were identified that quantified performance among adults after XR training for cognitive, physical, or mixed tasks. The authors focused on learning transfer as a critical measure of the direct effect of training on real-world performance, and relied on a random-effects model due to the heterogeneity of the included studies. Despite the diversity of XR platforms, task types, and context involved, XR training was deemed as effective as traditional strategies, with a noted advantage in physical tasks that require spatial interaction. Given the similar performance outcomes, the study suggested that XR's secondary benefits (e.g. safety, cost-efficiency, scalability) make it a potentially superior option. The authors also highlighted the need for more research on individual differences, the importance of considering XR technology quality and fidelity, and XR's potential for training in situations where traditional methods are not feasible or safe. An important observation underpins this study: the heterogeneity of study designs and the current scarcity of research complicates the quest for standardized efficacy metrics in XR training. The authors state the need for a more unified methodological approach in future explorations.
 
-@doolani2020revie finds that...
+DJO: XR as effective with an advantage in physical / spatial tasks (validates educational theoretical underpinnings); secondary benefits may be source of value differentiation; need more research on effects of user differences and tech quality and fidelity; diverse study designs and lack of research, lack of standard efficacy metrics require more unified methodological approach
+
+@doolani2020revie conducted a comprehensive review of the current state-of-the-art in the use of XR technologies for manufacturing training. The review included 52 peer-reviewed articles published between 2001 and 2020, covering applications of VR, AR, and MR in various manufacturing training domains, such as maintenance, assembly, and human-robot collaboration. The authors found that XR technologies are effective in improving performance, reducing errors, and increasing engagement compared to traditional training methods. They also identified key benefits of using XR in manufacturing training, including enhanced safety, cost-efficiency, and scalability. However, the review highlights current barriers to XR adoption, such as hardware limitations and the need for further research on the application of AR in later phases of the manufacturing process. The authors conclude that XR technologies are powerful tools for manufacturing training, with each technology having unique capabilities and applications. They emphasize the need for future research to focus on developing interactive training interfaces and addressing the limitations of current XR systems to facilitate wider adoption in the manufacturing industry.
+
+DJO: sys review; summarizes general pros and cons - better suited to the benefits section?
+
+@parsons2021curre advocate for an affordance-based approach when analyzing AR applications for learning, emphasizing the benefits of this approach over a feature-based perspective. They claim affordances are more generalizable than specific implementations and enable comparison across contexts, while still being highly contextualized to the domain of interest. Their systematic review of 21 empirical studies found that "studies that did not address any of the key affordances identified as relevant ... showed relatively poor learning outcomes" [-@parsons2021curre, pp. 89-90]. This suggests paying close attention to relevant affordances when designing AR systems may lead to better results. 
+
+Through their review, the authors synthesized five key affordances of AR that can enhance learning in medical education: (1) reducing negative impacts like risk and cost, (2) visualizing the invisible, (3) developing practical skills in a spatial context, (4) enabling device portability across locations, and (5) facilitating situated learning grounded in the professional context. 
+
+By highlighting the rationale for an affordance-based approach and the specific affordances identified as relevant for training in this hands-on domain, the authors provide a strong framework for adopting a similar approach.
 
 #### Interpretation
 
@@ -262,6 +333,7 @@ Meta studies / sys reviews offer broad conclusions about the efficacy of XR devi
 
 similar incremental affordance approach, careful paper design from chu
 
+The substantial unexplained heterogeneity (I^2=72%) across studies in Moro et al.'s [-@moro2021virtu] meta-analysis of VR/AR for anatomy and physiology education was likely due to the heterogeneity of study designs, such as variation in XR hardware, augmentation methods, task types and domains - issues also noted by *Kaplan et al.* and others.
 
 ## Conclusions
 

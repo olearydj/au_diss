@@ -144,7 +144,7 @@ Visualization is an essential outcome of the Digital Twin concept. High fidelity
 
 Today, the tools and technologies best suited to deliver on this promise are found in the area of Extended Reality.
 
-### Extended Reality
+### Extended Reality {#sec-xr}
 
 Extended Reality (XR) is the umbrella term for a range of technologies where human-machine interactions occur in environments that blend real and simulated stimulus [@ul2022xr8400]. XR covers the entire Virtuality Continuum (VC), as famously described by @milgram1994taxon, and pictured in @fig-vc.
 
@@ -274,7 +274,13 @@ Optical components of the eye, including cornea, iris, pupil, and lens, coordina
 
 Visual acuity refers to a group of measures for human visual performance, including separation and recognition acuity. Separation acuity is the ability to resolve fine details at a distance. Specifically, it is the smallest angular separation that can be resolved between neighboring black stripes on a white background. One arc minute (1/60th of a degree) is the lower limit for "normal" separation acuity, corresponding to a gap of just over 1/16" (1.75mm) when viewed from 20' (6m). This attribute of human vision is rarely measured directly. Instead, recognition acuity tests like the Snellen eye chart are designed to assess separation acuity via the discernment of shapes or symbols. The results are given as a ratio expressing the acuity of the subject relative to someone with "normal" (20/20) vision. For example, "20/40" indicates half the normal acuity. Visual acuity is influenced by the entire optical-neural path, but is primarily a function of the cones and varies with their distribution in the field of view. These concepts are illustrated in @fig-acuity.
 
-![(a) Rod and cone cell density on the retina, and (b) optical axis and line of sight. @kress2020optic](images/21-RodAndConeDensity.png){#fig-acuity width="5in"}
+::: {#fig-acuity layout-ncol="2"}
+![Code and Cone Cell Density on the Retina](images/21-RodAndConeDensityA.png){#fig-acuity-a}
+
+![Optical Axis and Line of Sight](images/21-RodAndConeDensityB.png){#fig-acuity-b}
+
+Visual Acuity Varies with Rod and Cone Density in the Field of View
+:::
 
 ##### Field of View
 
