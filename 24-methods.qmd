@@ -180,19 +180,7 @@ HMDMR in Operation
 
 ### Affordances and Theoretical Benefits
 
-In order to better understand the underlying factors that contribute to any significant measured differences in treatment outcomes, a set of nine affordances were defined, as described below.
-
-1.  Task Instructions: A description of how to complete the task.
-2.  Hands-On Engagement: The learning method involves physical interaction with the subject matter.
-3.  Direct View of Work: The work area is viewed without mediating devices like screens or displays.
-4.  Step-Wise Guidance: Instructions are presented sequentially, adapting to user needs and pace.
-5.  Feedback Mechanisms: The system provides real-time feedback on user actions.
-6.  Workspace Integration: Instructional materials are integrated with the workspace.
-7.  Sensor-Based Interaction: The system is controlled with sensor-based input devices, eliminating the need for physical controllers.
-8.  User-Centric Display: Instructions are displayed in the user's view, rendered from their perspective.
-9.  Freeform Interaction: The system allows for natural manipulation of the workpiece.
-
-These affordances were identified based on their direct applicability to the learning tasks within an AR/MR environment, their alignment with a carefully chosen set of instructional treatments, and their foundation in educational theories known to influence learning outcomes positively. Each affordance serves to operationalize these theories within the context of the experimental design, with the expectation that their integration into the instructional treatments will lead to measurable improvements in learning and performance.
+apply framework from the LR to the study
 
 | **Affordance**           | **PWI** | **PAR** | **HMDAR** | **HMDMR** |
 |--------------------------|:-------:|:-------:|:---------:|:---------:|
@@ -209,18 +197,6 @@ These affordances were identified based on their direct applicability to the lea
 : Summary of Affordances by Treatment {#tbl-affords tbl-colwidths="\[40,15,15,15,15\]" .striped}
 
 @tbl-affords maps each treatment to its set of affordances. It demonstrates a progression of complexity and sophistication. "Task Instructions," "Hands-On Engagement," and "Direct View of Work" provide the baseline capabilities for all treatments. Additional affordances add layers of instructional complexity and interactivity.
-
-As discussed in @sec-theory, the theoretical benefits underpinning these affordances are rooted in educational theories that are particularly relevant to AR/MR learning environments. *Active learning theories*, including *experiential learning theory* support the idea that learning is enhanced through direct experience and reflection, which is fundamental to several of the identified affordances, including "Hands-On Engagement," "Step-Wise Guidance," and "Feedback Mechanisms."
-
-*Flow theory* emphasizes the importance of a state of heightened focus and immersion for optimal learning, which is fostered by affordances that engage users in a compelling and intuitive way, such as "Egocentric Display" that ensures the instructional content is seamlessly integrated into the user’s field of view.
-
-The theory of *embodied cognition* posits that cognitive processes are deeply intertwined with the physical actions of the body. In an AR/MR setting, affordances that align with this theory, such as "Freeform Interaction," allow for a more natural and intuitive learning process by leveraging the body's movement and spatial orientation. Other *constructivist* theories, including *animate vision* and *spatial cognition theory* are similarly represented by "User-Centric Display," and "Workspace Integration."
-
-*Cognitive load theory* provides a framework for understanding how information is processed and suggests that well-designed instructional materials can reduce unnecessary cognitive load, making learning more efficient. This directly relates to affordances like "Sensor-Based Interaction" which simplifies the user interface, and "Workspace Integration," which eliminates context switching associated with referencing instructions away from the work surface.
-
-Lastly, the affordances have been selected with *educational best practices* in mind, ensuring that they not only align with theoretical perspectives but also adhere to the principles of effective instruction design, such as clarity, engagement, and scaffolding.
-
-This design links the chosen affordances with the framework for instructional design with AR/MR augmentation for industrial training applications that was proposed in @sec-guidelines and illustrated by @fig-idforar.
 
 While it may be tempting to make a-priori claims about the most influential affordances or theories in this context, the relationships are not so clear-cut. Each identified affordance can claim some benefit from most identified theories; all are interrelated and contribute to the overall learning experience.
 
@@ -244,7 +220,7 @@ The phenomena of interest in this study are learning, recall, and retention. Thi
 
 Learning, recall, and retention are psychological *constructs*; abstract concepts or ideas used to explain a phenomenon or behavior [@braun2001role]. They are fundamental to the research questions, but not directly observable, and must be inferred from behaviors, actions, or outcomes.
 
-*Learning* is the process through which knowledge, skills, behaviors, or values are acquired or modified *[@bloom1956taxon]*. In manufacturing assembly, learning encompasses not just understanding the theoretical aspects of an assembly process but also acquiring the practical skills to execute tasks efficiently and accurately.
+*Learning* is the process through which knowledge, skills, behaviors, or values are acquired or modified [@bloom1956taxon]. In manufacturing assembly, learning encompasses not just understanding the theoretical aspects of an assembly process but also acquiring the practical skills to execute tasks efficiently and accurately.
 
 *Recall* refers to the ability to access information from memory without being re-exposed to it after initial training. Recall is especially relevant in manufacturing settings where operators often need to perform tasks without step-by-step guidance, relying on their memory of the training.
 
@@ -254,13 +230,11 @@ Each of these constructs are a function of how effectively the instructional pro
 
 > These claims are supported by established theories in cognitive psychology, including the Information Processing Theory, which explains how humans process, encode, and retrieve information, and the work of Ebbinghaus on memory and retention, demonstrating the decay of memory over time without reinforcement or repetition. Additionally, research in educational psychology, particularly studies on effective instructional strategies and their impact on long-term skill acquisition and knowledge retention, provide empirical backing to these concepts.
 
-
 The focus on learning is justified as it provides insights into how different instructional methods (traditional vs. augmented) influence the speed and depth with which participants master new tasks. This aligns with cognitive load theory, which posits that reducing extraneous cognitive load and optimizing intrinsic and germane loads can enhance learning efficiency.
 
 The emphasis on recall is supported by active learning theories, which suggest that engaging, hands-on experiences (as facilitated by augmented reality technologies) can lead to more durable learning.
 
 Retention ties back to the experiential and constructivist learning theories, which argue that knowledge constructed actively by the learner is more likely to be retained over time. Furthermore, retention data can inform training protocols, indicating when refreshers or additional training may be needed to maintain proficiency.
-
 
 *construct validity*
 
@@ -274,7 +248,7 @@ For this study, Learning is measured by how quickly a participant progresses tow
 
 Here, Recall is assessed by how well participants can perform the task after the learning phase, without additional instructional support.
 
-For this study, Retention is measured by re-testing recall some time after the initial training, without further exposure to the task or instructional materials. 
+For this study, Retention is measured by re-testing recall some time after the initial training, without further exposure to the task or instructional materials.
 
 Task completion time
 
@@ -296,8 +270,7 @@ First pass yield
 
 #### Integration
 
-Together, these constructs and measures...
-offer a holistic view of manufacturing efficiency, blending operational effectiveness with responsiveness to market needs, especially crucial in systems involving human-machine interaction.
+Together, these constructs and measures... offer a holistic view of manufacturing efficiency, blending operational effectiveness with responsiveness to market needs, especially crucial in systems involving human-machine interaction.
 
 ### Independent Variables
 
@@ -1568,8 +1541,8 @@ TODO: elaborate on list of study limitations and/or convert into narrative
 -   does not account for interactions between affordances
 -   learning effect (training, etc.)
 -   orientation doesn't precisely control for learning across treatments, e.g. PAR, AR/MR all introduce the treatment using ST-8 instructions (in addition to ST-7), where PWI gets only ST-7 and no prior training with ST-8
-- did not assess or balance on cog or spatial skills
-- between-groups design limits learning effect but limits effectiveness of treatment comparisons for usability and workload
+-   did not assess or balance on cog or spatial skills
+-   between-groups design limits learning effect but limits effectiveness of treatment comparisons for usability and workload
 
 ## Summary
 
