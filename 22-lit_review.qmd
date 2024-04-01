@@ -466,7 +466,7 @@ Lastly, the affordances have been selected with *educational best practices* in 
 
 This design links the chosen affordances with the framework for instructional design with AR/MR augmentation for industrial training applications that was proposed in @sec-idframework and illustrated by @fig-idforar.
 
-### Advancing the Research
+### Advancing the Research {#sec-gaps}
 
 The findings of this literature review underscore the need for further research to address the gaps and limitations in the current understanding of AR/MR technologies in manufacturing training. To advance the field, future studies should prioritize the following nine considerations, listed in no particular order:
 
@@ -478,7 +478,7 @@ The findings of this literature review underscore the need for further research 
 
 4.  **Compare Multiple AR/MR Technologies**: Comparing Mobile, HMD, Projected, and Indirect methods to provide insights into their relative effectiveness and suitability for different manufacturing training scenarios.
 
-5.  **Study Learning Outcomes Hollistically**: Providing a more comprehensive understanding of the impact of these technologies on skill acquisition and maintenance over time by assessing training outcomes not just in terms of immediat learning effects but also longer term recall and retention
+5.  **Study Learning Outcomes Hollistically**: Providing a more comprehensive understanding of the impact of these technologies on skill acquisition and maintenance over time by assessing training outcomes not just in terms of immediate learning effects but also longer term recall and retention
 
 6.  **Collect User Feedback**: Including data and analysis on user satisfaction, usability, and workload to inform iterative improvement and user-centered design, and help ensure that the resulting systems are effective, engaging, and intuitive for the target audience.
 

@@ -299,7 +299,7 @@ The primary outcomes of this study are the results of the hypotheses tests for e
 
 The first group of hypotheses are designed to test the effect of each treatment on training outcomes.
 
-> **Research Question 1**
+> **H1: Learning**
 >
 > *How does each IMT affect performance during the learning phase?*
 >
@@ -313,7 +313,7 @@ This approach provides a robust assessment of the instructional treatments' effe
 
 The second group of hypotheses aim to evaluate the residual impact of each treatment on recall — specifically, participants' ability to correctly replicate the task without further training.
 
-> **Research Question 2**
+> **H2: Recall**
 >
 > *How does each IMT affect performance during the recall phase?*
 >
@@ -327,7 +327,7 @@ Subsequent analyses will investigate the primary drivers of OEE (efficiency vs. 
 
 Phase three of the study is designed to assess the residual impact of each treatment on retention. This describes the "stickiness" of the learning and is measured by testing recall several weeks post-intervention. No additional training is provided in the meantime.
 
-> **Research Question 3**
+> **H3: Retention**
 >
 > *How does each IMT affect performance during the retention phase?*
 >
@@ -1519,6 +1519,19 @@ Most analysis will focus on the Results tab, but the others are retained for tra
 -   **Software and Tools**: Briefly mention any specific statistical software or tools that will be used for the analysis.
 -   **Identification and Handling of Inconsistencies**: Explain how you identify and manage inconsistencies, missing data, or outliers.
 -   **Data Transformation**: Describe any transformations applied to the data (e.g., normalization, categorization).
+
+
+sub-questions of the prq:
+
+What are the relative effects of PAR, HMDAR, and HMDMR technologies on immediate learning outcomes, such as task completion time and error rates, compared to traditional paper-based instructions?
+
+How do these AR/MR technologies influence long-term recall and retention of assembly skills, as measured by performance on the same task after a designated period without further training?
+
+To what extent do the specific affordances of each AR/MR technology, such as hands-free interaction, spatial registration, and user-centric displays, contribute to the observed learning, recall, and retention outcomes?
+
+How do operator characteristics, such as prior experience with assembly tasks or AR/MR technologies, influence the effectiveness of each instructional method?
+
+What are the perceived workload, usability, and user satisfaction associated with each AR/MR technology, and how do these factors relate to learning, recall, and retention outcomes?
 :::
 
 ::: content-hidden
