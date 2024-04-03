@@ -7,19 +7,18 @@
 
 ::: content-hidden
 TODO: update and finalize the abstract
-
-use this structure:
-1. Background: overview of what is being studied and in what context
-2. Justification: why the researchers conducted this study
-3. Major finding: the main finding of the study
-4. Key results: more details about the results of the study
-5. Conclusion: significance of the findings and what they mean for future research
 :::
 
-This research rigorously assesses the effectiveness of distinct augmented instructional techniques within the framework of contemporary manufacturing training methods. A cohort of 62 participants, with varying prior exposures to assembly tasks but no prior experience with augmented or mixed reality, engaged in a simulated car assembly task at the Tiger Motors Lean Education Lab. Participants were introduced to different instructional methods: traditional Paper Work Instructions, Projected Augmented Reality, head-mounted Augmented Reality, and head-mounted Mixed Reality. For the purposes of this study, Mixed Reality is differentiated from Augmented by the participant's freedom to manipulate the workpiece while augmentations remain aligned.
+This research rigorously assesses the effectiveness of distinct augmented reality (AR) and mixed reality (MR) instructional techniques within the context of contemporary manufacturing training methods. Addressing critical gaps in understanding the relative efficacy of these technologies, the study investigates how different AR/MR instructional methods, designed to leverage specific affordances, impact operator learning, recall, and retention in an authentic manufacturing assembly context.
 
-Primary performance metrics were carefully documented, including task duration, error rates, and error classifications, providing insights into learning progression and task proficiency. In the recall phase, participants were tasked to replicate the assembly four times, relying solely on paper work instructions. Through video analysis, the frequency and duration of their references to those instructions were recorded, shedding light on the learning efficacy of each instructional method. Several weeks post-intervention, retention---how adeptly and promptly a participant could reproduce the assembly without additional instruction---was assessed among a volunteer subset.
+A cohort of 62 participants, with no prior exposure to relevant assembly tasks or AR/MR technology, engaged in a simulated car assembly task at the Tiger Motors Lean Education Lab. Employing an innovative affordance-based framework, participants in this between-groups study were systematically introduced to one of four instructional methods: traditional Paper Work Instructions (PWI), Projected AR, head-mounted AR, and head-mounted MR. The same task was employed across all treatments, and changes to the instructional design were minimized. For this study, MR is differentiated from AR by affording participants the freedom to manipulate the workpiece while augmentations remain aligned.
 
-Following both phases of the initial experiment, the NASA Task Load Index and System Usability Scale instruments, chosen for their reputable assessment of perceived workload and user experience, were administered. That data, coupled with participant demographics and qualitative feedback elicited through open-ended exit interviews, contributes to a comprehensive expression of each participant's experience.
+Primary performance metrics, including task duration, error rates, and error classifications, were carefully documented, providing insights into learning progression and task proficiency. In the recall phase, video analysis also captured the frequency and duration of participants' PWI consultations, better informing the learning efficacy of each method. Several weeks later, a volunteer subset was assessed on retention---their ability to reproduce the assembly without additional instruction---evaluating the durability of each instructional treatment.
 
-Ultimately, this study explores the potential advantages and challenges of AR-based instructional methods. While the primary application lies in diverse manufacturing training and support, its implications extend to analogous tasks, including equipment installation, field repair, quality inspection, and safety training.
+Following both phases of the initial experiment, the NASA Task Load Index and System Usability Scale instruments, were administered to assess perceived workload and user experience. That data, coupled with participant demographics and qualitative feedback elicited through open-ended exit interviews, contributes to a comprehensive expression of each participant's experience.
+
+::: content-hidden
+TODO: Summarize main findings.
+:::
+
+While focused on manufacturing training and support, this study's implications extend to analogous tasks involving equipment installation, field repair, quality inspection, and safety training. Through its rigorous experimental design, ecological validity, and systematic operationalization of affordances, this research provides actionable insights to optimize AR/MR technology implementation and learning outcomes in industrial settings.

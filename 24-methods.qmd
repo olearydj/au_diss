@@ -1,20 +1,10 @@
 # Methods {#24-methods}
 
-::: content-hidden
-TODO: write chapter intro
+This chapter provides a detailed account of the study's methodological approach, including the experimental design, data collection procedures, and analysis strategies. It begins with an overview of the key components of the research methodology, followed by a comprehensive description of the measures and variables used to assess learning, recall, and retention outcomes. The experimental procedures are then outlined, including participant recruitment, random assignment to treatment conditions, and the conduct of the training sessions.
 
-different in that it focuses on providing evidence of the theoretical benefits of the underlying affordances of different commercially available systems; most studies have fewer treatments and focus on with / without benefits. this doesn't tell us why
+The chapter also discusses the study's compliance with ethical guidelines and the steps taken to ensure participant safety and confidentiality. Data extraction and analysis procedures are described in detail, highlighting the use of both quantitative and qualitative methods to gain a holistic understanding of the impact of different IMTs on operator performance and learning outcomes.
 
-*Your outline could benefit from a more detailed description of the methodological framework at the beginning. This includes the specific type of research methodology (qualitative, quantitative, mixed-methods) and the rationale behind choosing this methodology for studying AR in manufacturing assembly.*
-
-*While you have a purpose section, it might be beneficial to explicitly state your hypotheses or research questions near the beginning of the Methods chapter. This will provide a clearer guide for readers on what the study aims to address.*
-
-*If not already done in previous chapters, briefly relate your chosen methods to existing literature. This can demonstrate how your approach addresses gaps or builds upon existing research.*
-
-The purpose of this study is to measure the effect of instructional media type (IMT) on learning rates and skills transfer for a simulated manufacturing assembly task. The first phase will help us understand how each IMT affects the operator’s learning rate (time or cycles to learn the process) and ultimate measures of performance (speed and accuracy). The second will help assess how learning transfer varies with each treatment. Finally, the exit surveys will help us understand the relationship between those results and perceived workload, system usability, and the participant’s self-reported behavioral control.
-
-why learning, recall, and retention?
-:::
+By providing a transparent and rigorous account of the research methods employed, this chapter lays the foundation for the subsequent presentation and interpretation of the study's findings. The insights gained from this research have the potential to advance our theoretical understanding of how AR/MR technologies support learning and skill acquisition, while also informing the practical application of these tools in manufacturing training contexts.
 
 ## Overview
 
@@ -46,9 +36,7 @@ The remainder of this chapter will describe in detail all aspects of the study's
 
 ## Study Design {#study-design}
 
-::: content-hidden
-TODO: write intro for study design: This study design is a randomized controlled trial, consisting of three true experiments with human subjects, conducted in two sessions. between groups design...
-:::
+In this section, we will provide a detailed description of the study design. We will begin by discussing the task and the authentic manufacturing environment in which the experiments are situated. Next, each of the four treatment levels will be described. Finally, the affordance-based nature of this design will be detailed, wherein the underlying affordances will be identified for each treatment and inherent tradeoffs are described.
 
 ### Task and Context
 
@@ -70,7 +58,7 @@ Workstation Eight
 
 The green and red trays pictured on the right of the work surface are for finished goods and rework, respectively. The central fixture provides for standard placement and secure retention of the workpiece. All of these are removable to allow the lab to operate with varying levels of Lean practice in effect.
 
-### Treatment Levels
+### Treatment Levels {#sec-treats}
 
 As described in @sec-random, each participant in this between-groups design is randomly assigned to a single level of the Instructional Media Type (IMT) treatment. There are four levels of this treatment, each with increasingly augmented work instructions: (1) traditional paper work instructions, (2) projected augmented reality, (3) head-mounted optical see-through augmented reality, and (4) head-mounted optical see-through mixed reality. All are detailed in the sections that follow.
 
@@ -103,7 +91,7 @@ Note that the Lean Lab's LightGuide system predates this study. Its specificatio
 ![LG System Architecture. Source: LightGuide website](images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
 
 ::: content-hidden
-TODO: replace bold terms in LG system description
+LATER: replace bold terms in LG system description
 :::
 
 The system at ST-8 uses a **PROJECTOR MODEL** and **CAMERA MODEL** mounted above the paper work instructions. The output of a PC MODEL running Windows 10 and LightGuide **VERSION NUMBER** is displayed on a **MONITOR MODEL**, which is conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure of extruded aluminum components from 80/20[^24-methods-4] to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
@@ -178,7 +166,7 @@ Using model-based tracking, part placement indicators remain properly aligned wi
 HMDMR in Operation
 :::
 
-### Affordances and Theoretical Benefits
+### Affordances and Theoretical Benefits {#sec-afford-fw}
 
 apply framework from the LR to the study
 
@@ -218,7 +206,7 @@ The phenomena of interest in this study are learning, recall, and retention. Thi
 
 #### Constructs
 
-Learning, recall, and retention are psychological *constructs*; abstract concepts or ideas used to explain a phenomenon or behavior [@braun2001role]. They are fundamental to the research questions, but not directly observable, and must be inferred from behaviors, actions, or outcomes.
+Learning, recall, and retention are the outcomes of interest in this study. They were chosen for two reasons: (1) they are commonly used in related studies, and (2) they are supported by research in cognitive and educational psychology. But learning, recall, and retention are all psychological *constructs*; abstract concepts or ideas used to explain a phenomenon or behavior [@braun2001role]. They are fundamental to the research questions, but not directly observable, and therefore must be inferred from behaviors, actions, or outcomes.
 
 *Learning* is the process through which knowledge, skills, behaviors, or values are acquired or modified [@bloom1956taxon]. In manufacturing assembly, learning encompasses not just understanding the theoretical aspects of an assembly process but also acquiring the practical skills to execute tasks efficiently and accurately.
 
@@ -226,51 +214,53 @@ Learning, recall, and retention are psychological *constructs*; abstract concept
 
 *Retention* is the ability to maintain information, skills, or knowledge over time. In manufacturing, where precision and consistency are vital, an operator's retention can significantly impact production quality and efficiency.
 
-Each of these constructs are a function of how effectively the instructional process encodes and stores knowledge and skills in long-term memory.
+Each of these constructs are a function of how effectively the instructional process encodes and stores knowledge and skills in long-term memory. These claims are supported by established theories in cognitive psychology, including the Information Processing Theory, which seeks to explain how humans process, encode, and retrieve information [@atkinson1968human]. It is also supported by Ebbinghaus [@ebbinghaus2013memor] and works that followed. Originally published in 1885, Ebbinghaus first demonstrated that memories decay over time without reinforcement or repetition. Additionally, research in educational psychology, particularly studies on effective instructional strategies and their impact on long-term skill acquisition and knowledge retention, provide empirical backing to these concepts.
 
-> These claims are supported by established theories in cognitive psychology, including the Information Processing Theory, which explains how humans process, encode, and retrieve information, and the work of Ebbinghaus on memory and retention, demonstrating the decay of memory over time without reinforcement or repetition. Additionally, research in educational psychology, particularly studies on effective instructional strategies and their impact on long-term skill acquisition and knowledge retention, provide empirical backing to these concepts.
+::: content-hidden
+MAYBE: expand, add citations and probably move this to LR
+:::
 
-The focus on learning is justified as it provides insights into how different instructional methods (traditional vs. augmented) influence the speed and depth with which participants master new tasks. This aligns with cognitive load theory, which posits that reducing extraneous cognitive load and optimizing intrinsic and germane loads can enhance learning efficiency.
+The focus on learning is justified as it provides insights into how different instructional methods (traditional vs. augmented) influence the speed and depth with which participants master new tasks. This aligns with cognitive load theory, which posits that reducing extraneous cognitive load and optimizing intrinsic and germane loads can enhance learning efficiency. The emphasis on recall is supported by active learning theories, which suggest that engaging, hands-on experiences (as facilitated by augmented reality technologies) can lead to more durable learning. Retention ties back to the experiential and constructivist learning theories, which argue that knowledge constructed actively by the learner is more likely to be retained over time. Furthermore, retention data can inform training protocols, indicating when refreshers or additional training may be needed to maintain proficiency.
 
-The emphasis on recall is supported by active learning theories, which suggest that engaging, hands-on experiences (as facilitated by augmented reality technologies) can lead to more durable learning.
-
-Retention ties back to the experiential and constructivist learning theories, which argue that knowledge constructed actively by the learner is more likely to be retained over time. Furthermore, retention data can inform training protocols, indicating when refreshers or additional training may be needed to maintain proficiency.
-
-*construct validity*
+::: content-hidden
+MAYBE: discuss construct validity, claim these are
+:::
 
 #### Observed Measures
 
-Constructs are theoretical and cannot be directly measured. Instead, they must be inferred from observed variables.
-
-The primary measures of this study are...
-
-For this study, Learning is measured by how quickly a participant progresses towards the level of proficiency expected of a qualified operator. Specifically, it is a function of the dependent variables quality (error rate) and performance (time efficiency).
-
-Here, Recall is assessed by how well participants can perform the task after the learning phase, without additional instructional support.
-
-For this study, Retention is measured by re-testing recall some time after the initial training, without further exposure to the task or instructional materials.
-
-Task completion time
-
-Uncorrected error count
-
-Other measures include...
-
-Time spent referencing the paper work instructions during recall
+As constructs, learning, recall, and retention cannot be directly measured. For this study, they are operationalized through a variety of commonly-used measures. Learning is measured by how quickly a participant progresses towards the level of proficiency expected of a qualified operator. Specifically, it is a function of the dependent variables quality (uncorrected error count and type) and performance (task completion time). It can also be measured by the participant's reliance on PWI consultation (PWI count and duration) during the second experiment. Recall is assessed by how well participants can perform the task after the learning phase, without additional instructional support. This can be observed through the same quality and performance measures as learning. Finally, retention is measured by re-testing recall some time after the initial training, without further exposure to the task or instructional materials.
 
 #### Calculated Measures
 
-*Overall Equipment Effectiveness* (OEE) has emerged as a fundamental and widely accepted KPI in manufacturing [@ngcorrales2020overa]. Introduced by Seiichi Nakajima [-@nakajima1988intro] as part of Total Productive Maintenance (TPM), OEE evaluates manufacturing performance as the product of system availability, performance efficiency, and product quality. It is instrumental in pinpointing areas for improvement in equipment utilization and production processes.
+Each of the identified constructs can also be assessed using a variety of calculated measures, including Learning Rate (LR), Transfer Effectiveness Ratio (TER), and Overall Equipment Effectiveness (OEE). LR is a measure of the rate of change of learning and can be calculated in a number of ways. TER quantifies the value of time spent training [@roscoe1971incre; @kaplan2021effec], based on the amount of time required to reach certain training outcomes with ($Y_c$) and without ($Y_x$) augmentation, as seen in @eq-ter.
 
-Learning rate
+$$\textstyle{TER = \frac{Y_c - Y_x}{Y_c} \times 100}$$ {#eq-ter}
 
-transfer effectiveness ratio (TER) see @roscoe1971incre via @kaplan2021effec
+::: content-hidden
+MAYBE: describe calculation of LR
+:::
 
-First pass yield
+OEE has emerged as a fundamental and widely accepted KPI in manufacturing [@ngcorrales2020overa]. Introduced by Seiichi Nakajima [-@nakajima1988intro] as part of Total Productive Maintenance (TPM), OEE evaluates overall manufacturing performance as the product of system availability, productivity, and quality, as shown in @eq-oee. It is instrumental in pinpointing areas for improvement in equipment utilization and production processes.
+
+$$\textstyle{OEE = Availability \times Productivity \times Quality}$$ {#eq-oee}
+
+These three values are the percentage of measured vs expected speed, yield, and up-time, respectively. As seen in @eq-oee-prod, productivity is simply the number of units produced multiplied by the takt time, divided by the operating time. Completed units includes those with errors, but not those retired by the operator.
+
+$$\textstyle{Productivity = \frac{UnitsProduced \times TaktTime}{OperatingTime}}$$ {#eq-oee-prod}
+
+Quality is the number of units produced less the number with errors, divided by number produced. This intuitive calculation is shown in @eq-oee-qual. Once again, retired units are not included in these counts.
+
+$$\textstyle{Quality = \frac{UnitsProduced - DefectiveUnits}{UnitsProdcued}}$$ {#eq-oee-qual}
+
+OEE's third and final component, availability, is commonly calculated by dividing the amount of time that the system was operational (aka measured up-time) by the scheduled time. This is shown in @eq-oee-avail.
+
+$$\textstyle{Availability = \frac{UpTime}{ScheduledTime}}$$ {#eq-oee-avail}
+
+In the context of this study, availability is out of the participant's control, but, as discussed elsewhere, can manifest in some system related issues that were encountered. Where appropriate, we will calculate availability by deducting time lost to system issues from the available time.
 
 #### Integration
 
-Together, these constructs and measures... offer a holistic view of manufacturing efficiency, blending operational effectiveness with responsiveness to market needs, especially crucial in systems involving human-machine interaction.
+Together, these constructs and measures support the comprehensive analysis of the effects of augmented instruction in manufacturing assembly training. Together with workload and usability data, and qualitative feedback collected, we aim to provide a more complete picture of the roles that human factors, instructional design, and system performance have in achieving optimal results for skill acquisition, knowledge retention, and long-term performance.
 
 ### Independent Variables
 
@@ -278,7 +268,7 @@ The primary independent variable in this study is the treatment level assigned t
 
 Post-hoc analysis will be conducted to determine if any of the participant demographics should be considered secondary independent variables. Those of particular interest include age and prior experience with LEGO or manufacturing. The results of this analysis may have implications for the generalizability of the study.
 
-### Controlled Factors
+### Controlled Factors {#sec-controls}
 
 To ensure the validity of the outcomes, the study design carefully controlled for various factors, isolating the impact of the treatments.
 
@@ -307,7 +297,7 @@ The first group of hypotheses are designed to test the effect of each treatment 
 
 To better understand those results, additional analysis will consider the treatment effect on error types, task completion rate, and first-task performance. Finally, we'll investigate which treatment group had the highest percentage of "qualified operators" at the end of the 10-min session. This will be assessed relative to expected performance metrics, including OEE and takt time.
 
-This approach provides a robust assessment of the instructional treatments' effectiveness during the learning phase. It examines key performance metrics — efficiency, accuracy, and learning progression — to capture a comprehensive understanding of participant performance. The evaluation against real-world manufacturing standards further ensures the study's relevance to practical training contexts. This design allows for a nuanced interpretation of how each treatment influences learning outcomes in manufacturing assembly training.
+This approach provides a robust assessment of the instructional treatments' effectiveness during the learning phase. It examines key performance metrics---efficiency, accuracy, and learning progression---to capture a comprehensive understanding of participant performance. The evaluation against real-world manufacturing standards further ensures the study's relevance to practical training contexts. This design allows for a nuanced interpretation of how each treatment influences learning outcomes in manufacturing assembly training.
 
 #### Recall Phase Hypotheses
 
@@ -423,13 +413,9 @@ The first session of the study tested its primary research questions in two phas
 
 #### Learning Phase {#sec-learning}
 
-Phase one, Learning, compared the effects of the assigned treatment on the speed (task completion time) and accuracy (number and type of corrected and uncorrected errors) with which participants performed each repetition of the task. These measures, tracked for each assembly during the 10-minute session, were later used to assess both the learning rate and depth of skill acquisition. This approach offers insights into how efficiently and effectively each treatment imparts necessary skills and knowledge for the task.
+Phase one, Learning, compared the effects of the assigned treatment on the speed and accuracy with which participants performed each repetition of the task. Speed was measured as task completion time, while the number and type of uncorrected errors were used to represent accuracy. These measures, tracked for each assembly during the 10-minute session, were later used to assess both the learning rate and depth of skill acquisition. This approach offers insights into how efficiently and effectively each treatment imparts necessary skills and knowledge for the task.
 
-Participants were instructed to focus on three priorities during the first phase: (1) learn the steps of the assembly process, (2) complete each assembly correctly, and (3) finish as many assemblies as possible in the time allowed. This approach mirrors the principles of Overall Equipment Effectiveness (OEE) in manufacturing, which balances the need for accuracy and precision (reflecting the Quality aspect of OEE) with efficiency (mirroring the Performance aspect of OEE). In the context of this study, OEE's third component, Availability, is out of the participant's control, but, as discussed elsewhere, does manifest in some system related issues that were encountered.
-
-::: content-hidden
-TODO: add OEE and citation to LR, update above?
-:::
+Participants were instructed to focus on three priorities during the first phase: (1) learn the steps of the assembly process, (2) complete each assembly correctly, and (3) finish as many assemblies as possible in the time allowed. This approach of prioritizing correct and efficient work is in line with measures observed and the principles of OEE, which is used in the second and third phases of this study.
 
 The fixed duration of 10-minutes was deliberately chosen to align with various aspects of the learning process and the operational context of the task. In addition to the OEE considerations outlined above, using a fixed duration ensured that all participants have the same opportunity to learn the procedure. A fixed car count approach (e.g. "make 6 cars") was rejected due to concerns that the absence of a time constraint could lead to uneven learning opportunities and extend session lengths beyond practical limits.
 
@@ -485,9 +471,7 @@ This single photo approach streamlined data collection during the event without 
 
 ## HMD System Development {#sysdev}
 
-::: content-hidden
-TODO: write intro for sysdev section
-:::
+In this section, we will explore the key aspects of the system development process. We will discuss the hardware and software considerations and provide an overview of the development timeline, strategies, and tactics employed. Finally, we will highlight the various challenges encountered during the development process, along with the lessons learned and strategies used to overcome these obstacles.
 
 ### Hardware
 
@@ -631,7 +615,7 @@ All programming was done in C#, as required by Unity. C# is an object-oriented l
 ![Development Workflow](images/24-HL2DevWorkflow.png){#fig-devwkflow width="5in"}
 
 ::: content-hidden
-TODO: create an accurate image of HL/Unity/MRTK workflow to replace this one
+MAYBE: create an accurate image of HL/Unity/MRTK workflow to replace this one
 :::
 
 Unity development for HoloLens2 generally proceeds as illustrated in @fig-devwkflow, and described below.
@@ -655,7 +639,7 @@ The inter-dependencies between Unity, MRTK, and VS, each with their own packagin
 ![Unity HoloLens2 Simulator](images/24-UnityHL2Sim.png){#fig-unityhl width="5in"}
 
 ::: content-hidden
-TODO: get a better image of Unity HL2 simulator interface
+MAYBE: get a better image of Unity HL2 simulator interface
 :::
 
 ### Design
@@ -670,12 +654,12 @@ The HMDAR system used the HL2 to project virtual instructions into the operator'
 
 #### HMDMR Treatment
 
-A consistent approach was taken for the HMDMR treatment design, extending the capabilities of the HMDAR treatment. HMDMR used more sophisticated tracking methods to enable freeform interaction with the workpiece. This
+A consistent approach was taken for the HMDMR treatment design, extending the capabilities of the HMDAR treatment. HMDMR used more sophisticated tracking methods to enable freeform interaction with the workpiece, as described in @sec-afford-fw.
 
 ### Implementation
 
 ::: content-hidden
-TODO: make project code and data available?
+MAYBE: make project code and data available?
 :::
 
 The HMDAR treatment was developed first. Using the HMDAR version as a baseline, the HMDMR version extended it to incorporate model based tracking methods.
@@ -695,7 +679,7 @@ For HMDAR tracking, we relied on VE's *Area Targets*[^24-methods-20] feature, an
 ![HoloLens Spatial Mapping](images/24-HLSpatialMap.png){#fig-spatmap width="5in"}
 
 ::: content-hidden
-TODO: replace with image of spatial mapping from study
+MAYBE: replace with image of spatial mapping from study
 :::
 
 Area-based tracking was selected over image or marker-based methods to minimize tracking loss. Marker-based tracking will fail if there are no markers within view of the HMD's sensors. Area-based tracking provides a continuous map of registration points for the entire scene, greatly reducing drop-outs. It also tends to (re)acquire tracking more quickly than marker-based methods, again due to the number and distribution of features available.
@@ -713,7 +697,7 @@ Vuforia Area Target Processing
 :::
 
 ::: content-hidden
-TODO: replace with images from study: VE creator app and work area target
+MAYBE: replace with images from study: VE creator app and work area target
 :::
 
 Once imported into Unity and properly configured[^24-methods-22], the 3D model is used to align the placement of virtual objects in the real world scene. This allows the developer to design the experience in the context of the real world model, as seen in @fig-areatgt-b.
@@ -737,10 +721,6 @@ Model source data was constructed in LeoCAD[^24-methods-24], a tool for designin
 [^24-methods-24]: LeoCAD: <https://www.leocad.org/>
 
 [^24-methods-25]: LDraw: <https://ldraw.org/>
-
-::: content-hidden
-TODO: cite LDraw standard?
-:::
 
 LeoCAD's design adheres to LEGO design principles, ensuring that the way parts attach in the software reflects the real-world equivalent. The combination of LDraw's precision and LeoCAD's tooling ensures that the resulting models are faithful representations of their physical counterparts.
 
@@ -766,21 +746,29 @@ The MTG process begins by checking for model suitability. Model targets must be 
 
 Next, the model geometry is analyzed and a set of Guide Views are automatically generated for a 360-degree recognition range. This step leverages deep learning methods trained to generate optimal views from arbitrary angles based on the geometric features and surface qualities of the model. The output of this process includes the trained recognition model, along with the associated dataset and guide views. This package is imported into Unity and used by VE to provide the desired model-tracking functionality.
 
-### Challenges
+### Development Challenges
 
-::: content-hidden
-TODO: elaborate on list of development challenges and/or convert into narrative
-:::
+Software system development is always challenging and this work was no exception. The system requirements and complexity, hardware and software issues, and resource constraints all contributed to a variety of challenges that the team overcame.
 
--   reflectance of aluminum fixture confused trackers
--   complexity of MR, less reliable tracking, crashes
--   complexity of software dev environment; inexperience of developers; part time development
--   The build times for step four can be quite disruptive; donning / doffing
--   Managing and optimizing for the computational constraints of the HL2.
--   Balancing fidelity and performance in the model and area-based tracking.
--   area tracking sensitive to changes in the configuration of the workstation
+A fundamental consideration in the success of any collaborative development effort is a reliable software environment. The integration of Unity, MRTK, and Vuforia, along with their requisite packages and settings, was intricate and fragile. This made it difficult to ensure a reliable baseline and consistent results for all developers. Even with version control, too much time was spent chasing bugs and deployment issues rooted in these issues.
+
+Implementing accurate and robust tracking for the AR/MR applications posed additional challenges beyond the selection and integration of another third-party framework (Vuforia Engine). Area-based tracking was mildly sensitive to the surface properties of some materials and workstation configuration changes, requiring some additional care in setup. In particular, the exterior of the fixture had to be masked with painter's tape to limit the reflectance of its milled aluminum surfaces. These detractions were more than offset by the overall robustness of the method, which all but guaranteed nearly instant acquisition of tracking from the rich set of provided features.
+
+![Fixture Masked to Reduce Reflectance](images/24-FixtureMask.png){#fig-fixture width="5in"}
+
+The inherent complexity of MR also led to less reliable tracking and increased instability in that treatment. When tracking is interrupted the system is unable to place virtual objects in the scene. The user experiences this as a "drop-out," where everything disappears from their field of view. Once tracking is reacquired, the virtual objects return. In rare cases of extreme instability, this cycle could cause the system to crash or require a reset. As described in @sec-dropouts, the frequency, duration, and impact of these events varied, and was accounted for.
+
+Working with expensive, body-worn hardware created additional complications. Final testing could only be done on the HL2, which requires physical access to the device. The time required to build and deploy an update to the HL2 significantly slows iteration, adding to the disruptive nature of regularly donning/doffing a shared headset. These factors created friction that naturally led developers to prefer testing via simulation or emulation, neither of which provides a complete or accurate view of user experience or system performance.
+
+Developing AR/MR applications for the HL2 requires careful design and optimization. In order to avoid related discomfort concerns, smooth performance and minimal latency must take priority. Considering the device's computational constraints and the complexity of the required tracking and rendering tasks, this may require tradeoffs in the instructional design. Thankfully, the design of the PWI and "low fidelity" nature of LEGO bricks helped mitigate these challenges.
+
+Finally, reliance on a student-led development effort demanded a flexible and supportive management approach from recruitment to completion. None of the primary contributors had previous experience with the software, hardware, methods, or tools involved. Despite that, they built a successful instrument from scratch. Beyond hard work, skill, and determination, their success owes something to a careful management of project requirements, system capabilities, and resource constraints in the academic context.
+
+A number of other challenges commonly associated with software development projects were largely avoided through careful process planning, iterative development, and ample time allocated to training early in the project.
 
 ## Participants
+
+This section will outline all participant recruitment, selection, benefits, and assignment considerations. The onboarding process is also described.
 
 ### Recruitment and Selection
 
@@ -792,9 +780,7 @@ Potential participants in the first investigation were screened for exclusion ba
 
 [^24-methods-28]: This distinction had to be explained to several interested participants, which supports the notion that the differences between AR and VR are not yet well understood. Ultimately, no participants were eliminated by this requirement.
 
-::: content-hidden
-TODO: mention target sample size and justify based on power / practical limits
-:::
+Due to practical constraints described in @sec-sched, the study could accommodate maximum of 100 participants. Realistically, 70-90 were expected based on early response. For the results to exceed the minimum desired statistical power, at least 60 participants were required. Based on these considerations, our recruitment goal was 70+ participants.
 
 ### Benefits and Compensation
 
@@ -978,7 +964,7 @@ Start and End Configurations for ST-8 Assemblies
 :::
 
 ::: content-hidden
-TODO: replace ST8 start and end images with photos?
+MAYBE: replace ST8 start and end images with photos?
 :::
 
 ### General Policies {#sec-genpol}
@@ -1028,7 +1014,7 @@ The HMDAR and HMDMR treatments, whose output is invisible to observers, requires
 
 #### HoloLens
 
-Participants are reminded that, for observation and recording purposes, they are required to wear the HL2 during the practice session and all subsequent experiments. Additionally, they are notified of a second camera, positioned to the left of ST-8 and adjusted to only capture the work area.
+All participants are reminded that, for observation and recording purposes, they are required to wear the HL2 during the practice session and all subsequent experiments. Additionally, they are notified of a second camera, positioned to the left of ST-8 and adjusted to only capture the work area.
 
 Streaming is initiated on the HL2 before the participant is advised to don the device. Assistance is provided as necessary to ensure proper fit, after which the participant is asked to look at a reference point. If the streamed video centers on that target, it confirms that the wearer's line of sight aligns with the HL2's field of view.
 
@@ -1125,7 +1111,7 @@ All team members were certified by the Collaborative Institutional Training Init
 
 Except for faculty members, members from all groups were directly involved in the various aspects of the conduct of this study, as detailed throughout this document. Volunteers signed up for shifts on SignUpGenius, using a form separate from the participants.
 
-### First Session Scheduling
+### First Session Scheduling {#sec-sched}
 
 As discussed in @sec-timeline, the first session experiments were conducted in the Spring of 2023. Specifically, trials were run for 10 weeks, from February 10th to April 27th. A routine schedule of weekly trials was established based on the availability of the Lean Lab and members of the research team.
 
@@ -1258,7 +1244,7 @@ A search was conducted, and a variety of tools were tested. Some notes from that
 
 [^24-methods-39]: Kyno: <https://lesspain.software/kyno/>
 
-#### Processing
+#### Processing {#sec-videoproc}
 
 A general description of video processing follows. For a step-by-step treatment, see [Appendix F](#app-videoproc) for the original instructions.
 
@@ -1348,11 +1334,7 @@ This shows they attempted nine cars and completed seven. Breakage occurred durin
 
 The output of this script was saved as `i1_times.csv` and carefully validated against the XML data, video recordings, and reports described next.
 
-### System Availability
-
-::: content-hidden
-TODO: elaborate on dropout logging?
-:::
+### System Availability {#sec-dropouts}
 
 Due to challenges associated with area and model-based tracking, described elsewhere, participants using the HL2 would experience system down time that we referred to as "drop-outs." This was the result of a loss of tracking that caused the user interface to deactivate. All drop-outs were marked as subclips during video annotation process so the lost time could be accounted for.
 
@@ -1369,7 +1351,7 @@ To assist with data validation and better understand factors that contribute to 
 Each report aggregates participant demographics and car outcomes from observed and self-reported data, qualitative feedback from transcribed Markdown files, and quantitative event data from XML annotations. The result paints a comprehensive picture of the participant's experience in a single Markdown report. This is demonstrated by @fig-report, a screenshot of the recall portion of #1001's report. Complete reports can be reviewed...
 
 ::: content-hidden
-TODO: include some / all reports in appendix or online?
+MAYBE: include some / all reports in appendix or online?
 :::
 
 ![Portion of Participant #1001's Report, Obsidian Screenshot](images/24-Report.png){#fig-report width="70%"}
@@ -1391,7 +1373,7 @@ Anonymous data was stored locally in three separate locations, all on secure har
 [^24-methods-42]: Box: <https://www.box.com/>
 
 ::: content-hidden
-TODO: diagram of data storage?
+MAYBE: diagram of data storage?
 :::
 
 Key criteria for software selection included multiplatform compatibility, open-source licensing, and the ability to generate files using open, preferably text-based, standards. These characteristics were crucial to ensuring data portability and the reproducibility of results.
@@ -1402,33 +1384,25 @@ Wherever appropriate, working files, including all data analysis in R and Python
 
 [^24-methods-44]: Git: <https://git-scm.com/>
 
-::: content-hidden
-TODO: discuss use of virtual environments for Python and R library management
-:::
+Isolated virtual environments were used with both Python and R projects to manage package dependencies. This setup guards against software conflicts and maintains consistent computational environments that are crucial for reliable and reproducible research outcomes.
 
 The entire process was designed to ensure traceability, allowing every result to be reliably linked back to its original source data, bolstering the integrity of our research findings. The priorities outlined here were carried on throughout the analysis process, described next.
 
-### Challenges
+### Data Extraction Challenges
 
-::: content-hidden
-TODO: elaborate on list of data extraction challenges and/or convert into narrative
-:::
+Data extraction was a significant effort that required the bulk of the author's time over the summer of 2023. A number of challenges were encountered along the way, predominantly related to the collection of data from recorded videos.
 
--   sync is hard, dropped frames on HL2 made sync drift; use side camera for car related logging and HL for PWI / HL UI related logging to ensure accuracy
--   dropped video and crashes - multiple syncs required; multiple videos for each camera
--   some experiments required a TON of annotation work
--   time consuming!!
-    -   2 phases x 2 videos x 62 = 248 videos
-    -   (10 min + 5 min) x 62 = 930 mins = 15 hours 30 mins of video
-    -   watched multiple times, at ≈2x speed avg
-    -   plus time to layout and synchronize videos = 10 mins
-    -   plus 10 mins processing time per output video = 2 x 62 x 10 mins = 20.7 hours; some overlap
-    -   approx total time per participant ≈ 45mins min, 2.5hrs max, 1.25hrs avg
-    -   plus annotation
--   corrected errors impractical to record consistently
--   terse notes in debrief lossy, recording would be better
+Four videos were recorded for each participant, two each from the learning recall phases. Each pair of videos were manually synchronized, composited, edited, and compressed, and annotated into a single output for each participant-phase. This process took approximately 1.5 hours per participant, but ranged between 45 minutes and over 4 hours, based on rough notes of progress. Of this, the video synchronization and annotation processes described in @sec-videoproc took the most time.
 
-## Data Analysis {#sec-analysis}
+Manually synchronizing videos was done by offsetting them to match movements and align the timelines. Tricky in the best of circumstances, occasional HL2 issues, including dropped video, crashes, and unsteady frame rates significantly elevated the challenge. Dropped video, a crash, or reset required piece-by-piece reconstruction of the session, with additional synchronizations. Variable frame rates, on the other hand, resulted in HL2 recordings with dropped frames and slightly non-linear playback. Over time, this leads to drift in the sync between sources, which cannot be corrected without destructive edits that would alter the timing data. In most cases the drift was insignificant, but in others it required a workaround. To address it we adopted the convention of using the side camera view for all annotations related to the workpiece, and the first-person view for any related to PWI consultations and HL2 issues. Consistently annotating events in this manner helped avoid including sync offset in a measured duration.
+
+The time required to annotate each video varied with participant performance and behavior. Uneventful trials mostly involved marking the start and end time for each workpiece. In most cases occasional additions were made for various other events. In situations where the HMDMR tracking was problematic, or where PWI consultations were extensive, the required time and effort increased substantially. One trial included over 100 PWI consultations during the Recall phase, each with manually located start and end points. This alone took several hours to do accurately.
+
+Otherwise, data extraction was relatively straightforward, with only two other noteworthy issues. While we had originally intended to count corrected errors, it proved impractical to consistently differentiate corrected errors from other participant behaviors. In many cases this required too much interpretation on the part of the scorer. Finally, we relied on handwritten notes taken by the PI for the final debrief and participant feedback. Some were terse and difficult to interpret, suggesting that important details may have been lost. In the future it would be better to record and digitally transcribe these sessions if acceptable.
+
+Overall this process was tedious and time consuming but well planned and carefully executed for the given inputs. Future studies of this sort would greatly benefit from a synchronized multi-camera recording setup capable of directly rendering the desired screen layout, saving hours of editing time and eliminating the drift issues.
+
+## Data Cleaning and Analysis {#sec-analysis}
 
 This section will detail the procedures for data preparation, then summarize the intended analytical approach. Analysis will be implemented and more thoroughly detailed in the [Results](#25-results) chapter to follow.
 
@@ -1439,11 +1413,11 @@ R was used for all data cleaning and analysis. A mix of R Markdown (`RMD`) and Q
 [^24-methods-45]: Donald E. Knuth is an esteemed American computer scientist, best known for "The Art of Computer Programming," a multi-volume series widely regarded as one of the most comprehensive texts on algorithms. He also developed the TeX typesetting system, and made numerous other contributions that significantly shaped the landscape of computer science.
 
 ::: content-hidden
-TODO: discuss "tidy" methods
+MAYBE: discuss "tidy" methods
 :::
 
 ::: content-hidden
-TODO: detail / cite / footnote packages used
+MAYBE: detail / cite / footnote packages used
 :::
 
 ### Cleaning and Transformation
@@ -1458,7 +1432,7 @@ The primary outputs of the prior extraction effort were:
 Prior to analysis, additional cleaning and transformation was required. This included identifying parent-child relationships among events, scoring the TLX and SUS, correcting errors in the data, enforcing standard naming conventions and data types, and collecting the results into a single `XLSX` file.
 
 ::: content-hidden
-TODO: add chart illustrating data processing workflow
+MAYBE: add chart illustrating data processing workflow
 :::
 
 Data was cleaned and transformed by R code found in the notebook `forms_data.rmd`. The process was iterative, with each step detailed in the following sections.
@@ -1474,7 +1448,7 @@ The initial pass of cleaning and transformation can be summarized as follows:
 5.  Join and Save: Add unique IDs (UIDs) for events and outcomes, reorder essential columns, join table data, and save as CSV.
 
 ::: content-hidden
-TODO: add details re: parent / child and error correction
+MAYBE: add details re: parent / child and error correction
 :::
 
 #### Second Pass
@@ -1514,12 +1488,10 @@ Most analysis will focus on the Results tab, but the others are retained for tra
 
 ::: content-hidden
 -   **Summary of Analytical Techniques**: Provide a brief overview of the statistical methods or analytical techniques planned for the Results chapter.
--   **Hypotheses or Research Questions**: Reiterate the hypotheses or research questions that the analysis will address.
 -   **Preliminary Considerations**: Discuss any preliminary analysis conducted to inform the detailed analysis in the Results chapter.
 -   **Software and Tools**: Briefly mention any specific statistical software or tools that will be used for the analysis.
 -   **Identification and Handling of Inconsistencies**: Explain how you identify and manage inconsistencies, missing data, or outliers.
 -   **Data Transformation**: Describe any transformations applied to the data (e.g., normalization, categorization).
-
 
 sub-questions of the prq:
 
@@ -1534,31 +1506,72 @@ How do operator characteristics, such as prior experience with assembly tasks or
 What are the perceived workload, usability, and user satisfaction associated with each AR/MR technology, and how do these factors relate to learning, recall, and retention outcomes?
 :::
 
-::: content-hidden
-TODO: summarize analysis methods used in results chapter
-:::
+Based on the primary and secondary research questions identified herein, several types of analysis will be required. Essential methods are summarized in the following list.
+
+1.  Descriptive Statistics
+
+    -   Calculate means, standard deviations, and other descriptive measures for the dependent variables (e.g., task completion time, error rates, OEE) across different treatment groups.
+
+    -   Present summary statistics for participant demographics and prior experience.
+
+2.  Hypothesis Testing
+
+    -   One-way ANOVA: Use to compare means of dependent variables (e.g., average time per car, average error count per car, OEE) across the four instructional methods (PWI, PAR, HMDAR, HMDMR).
+
+    -   Repeated measures ANOVA: Calculate to analyze changes in performance over time (e.g., learning rates, change in OEE) within and between treatment groups.
+
+    -   Post-hoc tests (e.g., Tukey's HSD, Bonferroni correction): Apply these to determine which specific treatment groups differ significantly from each other, if the ANOVA results are significant.
+
+3.  Effect Size Estimation
+
+    -   Partial eta-squared (η²) or omega-squared (ω²): Calculate these to assess the magnitude of the treatment effect on the dependent variables.
+
+    -   Cohen's d: Used to compare the effect sizes between specific treatment groups, if post-hoc tests reveal significant differences.
+
+4.  Regression Analysis
+
+    -   Multiple regression: Examine the relationship between operator characteristics (e.g., prior experience) and performance outcomes, while controlling for other relevant variables.
+
+5.  Correlation Analysis
+
+    -   Pearson's or Spearman's correlation: Use these to investigate the relationships between perceived workload, usability, user satisfaction, and performance outcomes.
+
+6.  Qualitative Analysis and Visualization
+
+    -   Thematic analysis: Apply to the open-ended exit interviews to identify common themes and patterns in participants' experiences and perceptions of the different instructional methods.
+
+    -   Data visualization: Create graphs, charts, and tables to present the results of the above analyses effectively, such as bar charts for comparing means, line graphs for displaying learning curves, and scatterplots for showing correlations.
 
 ## Limitations of Study Design
 
-::: content-hidden
-TODO: elaborate on list of study limitations and/or convert into narrative
-:::
+Despite the careful design of this study it has its limitations. Those identified before the first trial are described below. Except as described therein, we consider each of these unlikely to influence the results and then only limited in their effect, making them very low risk overall.
 
--   compensation added after IRB v3, approved April 10; 5 prior subjects plus some thereafter were recruited without knowledge of compensation
--   convenience sample
--   pseudo-random selection
--   legos are not real cars
--   difficulty / complexity of the task insufficient?
--   the HMDAR and MR treatments are not exact replications of the PAR instructions but no material difference
--   few participants assigned HMDMR took advantage of the affordance
--   does not account for interactions between affordances
--   learning effect (training, etc.)
--   orientation doesn't precisely control for learning across treatments, e.g. PAR, AR/MR all introduce the treatment using ST-8 instructions (in addition to ST-7), where PWI gets only ST-7 and no prior training with ST-8
--   did not assess or balance on cog or spatial skills
--   between-groups design limits learning effect but limits effectiveness of treatment comparisons for usability and workload
+The participant recruitment, sampling, and selection processs had a number of practical limitations. As is often the case with graduate research, participants were recruited from the university community and the sample was dominated by undergraduate engineering students. This "convenience sampling" approach limits our ability to infer from it the expected performance of manufacturing assembly operators, or the factors that influence it. That said, the ecological validity of this study is deliberately higher than most similar studies due to its realistic surroundings and validated task instructions.
+
+Also, this study employs a method for assigning treatments that is as random as possible given the constraints. Strictly speaking, the method described in @sec-random may only be considered pseudo-random by some. In that case, the validity of statistical tests that assume random assignment may be compromised.
+
+Additionally, the decision to offer the possibility of compensation as described in @sec-comp was approved shortly after the trials commenced. The first five trials had been run and other participants had been recruited without knowledge of these perks. Due to the timing of this change and a delay between the pilot study and subsequent participants, the impact of this change is considered negligible but could potentially change the type and motivations of participants recruited and their results.
+
+From a task design point of view, we must accept that LEGO cars are not, in fact, real cars. This does reduce task validity, but is again offset by the surroundings and validated instructions. Furthermore, the complexity of the task itself may be insufficient to fully assess learning, recall, and retention. On the other hand, one could argue that LEGO assembly is, in fact, more error prone than many automotive manufacturing tasks which are designed to prevent the possibility of errors. This error-proofing process is known as Poka-Yoke. It is a key component of Lean manufacturing principles and considered superior to any error checking methods, especially those done by humans. Regardless, these limitations are reported in other studies and are likely the most impactful identified. We will use analytical methods to look for signs of insufficient difficulty in the [Results chapter](#25-results).
+
+As detailed in @sec-treats, treatments were carefully designed to control for most recognized confounders, but some limitations have been identified. First, the HMDAR and HMDMR treatments are not exact replications of the PAR instructions. Even allowing for the inherent differences of these treatments, the user experience in each deviates in minor ways from the PAR implementation. We believe these deviations are small and have no material difference, but recognize that they may introduce uncontrolled differences.
+
+Learning effect is another source of concern. The study's between-groups design controls for it by preventing participants from carrying learning from one treatment to the next. However, the participant orientation process may create a minor dissimilarities in baseline task knowledge across treatment groups. It is introduced by an additional training step given only to the PAR, HMDAR, and HMDMR groups. This training introduces each participant to the operation of their assigned device so that the learning experiment that follows measures how they learned to perform the task, not how to operate the device. This is also a tradeoff, seeking to put all participants on equal footing for the first experiment, without any advantage in either task or treatment understanding. We can look for evidence of an effect during the analysis to follow.
+
+Finally, this study did not assess the general cognitive or spatial skills of participants and therefore cannot balance the groups accordingly or use the results as independent variables during analysis. These measures were deliberately excluded to limit the overall time required for each trial. The instruments typically used would nearly double the expected duration, which would severely limit data collection. This aspect of the design is left as future work.
 
 ## Summary
 
-::: content-hidden
-TODO: write methods summary / transition to results
-:::
+This chapter provided a comprehensive overview of the research methodology employed in this study, which aims to investigate the impact of different AR/MR instructional methods on operator learning, recall, and retention in a manufacturing assembly training context. The study's design is grounded in an innovative, affordance-based framework that systematically compares the effects of specific AR/MR features, such as hands-free interaction, spatial registration, and user-centric displays, on training outcomes.
+
+A key strength of this research lies in its rigorous and ecologically valid approach. The study is situated within an authentic manufacturing training environment, utilizing validated assembly tasks and instructional materials that closely resemble real-world conditions. This enhances the generalizability of the findings to industry settings and ensures their relevance for informing the practical implementation of AR/MR technologies in manufacturing training.
+
+The study employs a multi-phase, mixed-methods design that combines quantitative performance measures with qualitative user feedback to provide a comprehensive assessment of the effectiveness of different instructional media types (IMTs). The inclusion of a traditional paper-based control group allows for a direct comparison of AR/MR interventions against standard training methods, while the multiple AR/MR treatment groups enable a nuanced examination of the relative benefits of specific technological affordances.
+
+Another distinguishing feature of this research is its emphasis on both immediate learning outcomes and long-term retention. By assessing operator performance at multiple time points, including a delayed retention test several weeks after the initial training, the study provides valuable insights into the durability of the learning effects associated with different IMTs. This longitudinal perspective is crucial for understanding the practical value of AR/MR technologies in supporting sustained improvements in operator performance.
+
+The chapter also highlighted the study's meticulous attention to data collection and analysis procedures. The use of video recordings, photographs, and standardized performance metrics ensures a rich and reliable dataset for evaluating the impact of different IMTs on learning, recall, and retention outcomes. The application of appropriate statistical techniques, such as ANOVAs, effect size estimates, and regression analyses, enables a robust and nuanced examination of the research questions.
+
+Furthermore, the study's compliance with ethical guidelines and the steps taken to ensure participant safety and confidentiality demonstrate a strong commitment to research integrity. The transparent reporting of the study's limitations, such as the convenience sampling approach and the potential influence of participant compensation, enhances the trustworthiness of the findings and provides important context for their interpretation.
+
+In conclusion, the methods described in this chapter provide a solid foundation for the execution of this study and the subsequent presentation and interpretation of its results. The affordance-based framework, ecological validity, comprehensive assessment strategy, and rigorous data collection and analysis procedures set this research apart from previous work in the field. By addressing key gaps in the existing literature and employing a robust methodological approach, this study is well-positioned to make significant contributions to our understanding of how AR/MR technologies can be effectively leveraged to enhance manufacturing assembly training outcomes.

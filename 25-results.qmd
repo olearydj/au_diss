@@ -24,6 +24,15 @@ demoing AR/MR: The challenge of this choreography was compounded by significant 
 >
 > Data Collection Consistency: Any issues encountered in maintaining consistency in data collection across different trials and days, and how these were resolved.
 
+limitations
+
+- participant behavior
+  -   few participants assigned HMDMR took advantage of the affordance
+- analysis
+  -   does not account for interactions between affordances
+
+
+
 ## Other
 
 noticed improvising - discourage as occurs
