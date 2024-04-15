@@ -17,25 +17,24 @@ But AR remains a highly fragmented market, including a diverse selection of scre
 
 This investigation extends prior work [@havard2021case] to explore the relationship between a variety of AR technologies and their underlying affordances [@parsons2021curre] and learning outcomes for manufacturing assembly operations. By controlling for the task type and application design we hope to better understand the relative value of these systems, filling in important gaps that can eventually lead to a cohesive framework for successful implementation.
 
-Here is a concise summary that you could incorporate into your introduction after the paragraph ending "filling in important gaps that can lead to a cohesive framework for successful adoption":
-
 This research aims to address a critical gap in understanding the relative effectiveness of different AR/MR technologies for enhancing learning outcomes in manufacturing assembly training. The central problem explored is how diverse AR instructional methods, designed to leverage specific affordances, impact operator learning, recall, and retention in an authentic manufacturing context. By employing a rigorous experimental design that systematically compares traditional paper instructions against projected AR, head-mounted AR, and head-mounted MR treatments, this study seeks to elucidate the differential effects of these technologies on immediate skill acquisition, knowledge retention over time, and associated factors such as cognitive load and usability. 
 
-Our primary research question is this: How do different AR/MR instructional methods, designed to leverage specific affordances, impact operator learning, recall, and retention in a real-world manufacturing assembly training context? Supporting questions investigate the relative strengths of each method, the role of affordances, individual differences among operators, and the relationships between perceived workload, usability, and performance outcomes.
+This research answers the question as to how do different AR/MR instructional methods, designed to leverage specific affordances, impact operator learning, recall, and retention in a real-world manufacturing assembly training context? Supporting questions investigate the relative strengths of each method, the role of affordances, individual differences among operators, and the relationships between perceived workload, usability, and performance outcomes.
 
 Through its innovative affordance-based framework, ecological validity, and comprehensive assessment approach, this research aims to provide actionable insights to inform the effective implementation of AR/MR technologies in manufacturing training programs, optimizing learning outcomes and return on investment.
 
 The balance of this first chapter provides a thorough background of the historical, contextual, technological, theoretical, ergonomic, and biopsychosocial considerations related to augmented, mixed, and virtual reality. Chapter 2 provides a review of literature relevant to the applications of this technology, the readiness of each market, barriers to adoption and methods proposed to overcome them, and assessment tools. Based on the gaps identified in the literature, Chapter 3 identifies the central problem of this research and its three contributions. The experimental methods are detailed in Chapter 4, and results follow in Chapter 5. Finally, we conclude this work by summarizing the key findings, stating the limitations of this work, and identifying opportunities for future research.
 
 ::: content-hidden
-TODO: review and finalize above
+TODO: review and finalize introduction to introduction once resuts and conclusions are complete
 :::
 
+::: content-hidden
+MAYBE:
 ## Conventions
 
 Throughout this work several conventions are utilized...
 
-::: content-hidden
 footnotes vs citations vs weblinks
 :::
 
@@ -62,6 +61,10 @@ In fact, the literature suggests that I4.0 is best understood as a general conce
 I4.0 has been linked to over 1200 technological components, from 30 disciplines [@chiarello2018extra]. To provide a useful definition of I4.0 in terms of the technologies involved, some abstraction is essential. In their review of over 100 relevant and credible sources, Culot, et al. [@culot2020behin] identified 13 categories of technology. Each was assessed along two continua: software-hardware technology and local-global connectivity, as seen in @fig-tech.
 
 ![Enabling technology categories of Industry 4.0. @culot2020behin](images/21-EnablingTechCategories.png){#fig-tech width="5in"}
+
+::: content-hidden
+TODO: improve image clarity
+:::
 
 Four technology quadrants emerge in this figure: (a) physical-digital interfaces, (b) networking, (c) data-processing, and (d) physical-digital processes. The sensing, connecting, and analyzing activities of the first three quadrants are what differentiate I4.0 from advanced manufacturing.
 
@@ -144,15 +147,17 @@ Though DTs are widely embraced as the synchronizing mechanism in an I4.0 CPS, an
 
 A Digital Twin improves problem solving and innovation by aiding the human processes of conceptualization, comparison, and collaboration. Effective visualization simplifies the cognitive steps involved in translating symbolic information, facilitating conceptualization. Overlaying the physical and virtual allows for direct comparison, which is ideal for human perception and analysis. Collaboration is enabled by digitally replicating and distributing the experience to an audience of stakeholders [@grieves2015digit].
 
-Visualization is an essential outcome of the Digital Twin concept. High fidelity interactive visualizations of virtual systems can be shared globally in real-time using modern technology, allowing the direct, side-by-side visual comparison of the physical and virtual product.
-
-Today, the tools and technologies best suited to deliver on this promise are found in the area of Extended Reality.
+Visualization is an essential outcome of the Digital Twin concept. High fidelity interactive visualizations of virtual systems can be shared globally in real-time using modern technology, allowing the direct, side-by-side visual comparison of the physical and virtual product. Today, the tools and technologies best suited to deliver on this promise are found in the area of Extended Reality.
 
 ### Extended Reality {#sec-xr}
 
 Extended Reality (XR) is the umbrella term for a range of technologies where human-machine interactions occur in environments that blend real and simulated stimulus [@ul2022xr8400]. XR covers the entire Virtuality Continuum (VC), as famously described by @milgram1994taxon, and pictured in @fig-vc.
 
 ![The Virtuality Continuum. @milgram1994taxon](/images/21-VirtualityContinuum.png){#fig-vc width="5in"}
+
+::: content-hidden
+TODO: improve image clarity
+:::
 
 This continuum spans the complete range of real to synthetic experiences. Though typically associated with adding or replacing visual stimulus, the VC also includes technologies that are subtractive in nature and/or affect other senses. For example, noise cancellation headphones can be considered a form of "diminished reality" audio AR device [@kress2020optic].
 
@@ -180,6 +185,10 @@ Emblematic of that shift is Field of View To Go (FOV2GO), an experimental, untet
 
 ![FOV2GO, IEEE VR Conference 2012 Poster. @olson2011desig](images/21-FOV2GoPoster.png){#fig-fov2go width="5in"}
 
+::: content-hidden
+TODO: improve image clarity - shrink?
+:::
+
 FOV2GO team members founded Oculus VR soon thereafter and demonstrated a prototype of their Rift VR HMD in June of that year. The Rift Kickstarter campaign launched in August, meeting its \$250,000 funding target in less than four hours and securing over \$2.4m in total. Oculus subsequently raised over \$90m in venture capital before being acquired by Facebook for \$2b in March of 2014 [@jerald2016book].
 
 XR has experienced tremendous growth and development in the last 10 years. Many declinations of XR have been identified, including Virtual, Augmented, Mixed, Blended, and Merged Reality. The literature identifies significant overlap and some disagreement in their interpretation. Of those, virtual and augmented reality are the most agreed upon terms.
@@ -188,7 +197,7 @@ XR has experienced tremendous growth and development in the last 10 years. Many 
 
 Virtual Reality (VR) is a synthetic, multi-sensory experience that imitates real-world interactions. VR is a very concrete concept in which purely synthetic environments are experienced through opaque HMDs, via interactions that are primarily controller-based. This combination of familiar features has been experienced by many, thanks to the availability and maturity of consumer devices like the Meta Quest. VR is widely understood as a way to provide immersive experiences that lead to the sensation of presence.
 
-Immersion is the degree to which an XR experience provides consistent, believable inputs with corresponding outputs. It is a function of the range and congruence of the sensory modalities involved, the quality and spatial cohesion of the displays used, and the simulation's responsiveness to user interaction [@slater1997frame]. Vividness and interactivity are often cited as the functional mechanisms underlying the efficacy of XR [@steuer1992defin; @jiang2007resea]. A study by @yim2017augme, involving over 800 US college students found that immersion plays a mediating role in that relationship. That is, vividness and interactivity lead promote immersion, which promotes presence.
+Immersion is the degree to which an XR experience provides consistent, believable inputs with corresponding outputs. It is a function of the range and congruence of the sensory modalities involved, the quality and spatial cohesion of the displays used, and the simulation's responsiveness to user interaction [@slater1997frame]. Vividness and interactivity are often cited as the functional mechanisms underlying the efficacy of XR [@steuer1992defin; @jiang2007resea]. A study by @yim2017augme, involving over 800 US college students found that immersion plays a mediating role in that relationship. That is, vividness and interactivity promote immersion, which promotes presence.
 
 Yim's study defined vividness as the ability of the technology to display high fidelity stimuli over multiple sensory channels. Interactivity was described as a function of both the underlying technology, including responsiveness, interface, and overall level of interaction supported, and the quality of the experience's design and implementation. Together, technology and design enable and engender interaction [@yim2017augme]. The depth of immersion is a characteristic of the hardware and software involved, and its effects are subjective. The way different users experience immersion is known as presence.
 
@@ -424,14 +433,14 @@ Current hardware continues the trend of exploiting the latest advances in compon
 
 ### Tradeoffs
 
-Due to directly conflicting requirements common in XR systems, there is no "one size fits all" solution. Amidst the hype surrounding this promising but immature technology, it is important to have an accurate understanding and realistic expectations. Numerous considerations important to the design, selection, and implementation of XR solutions are detailed above. @fig-requirements assesses the importance of selected optical requirements in HMD devices across common market segments.
+Due to directly conflicting requirements common in XR systems, there is no "one size fits all" solution. Amidst the hype surrounding this promising but immature technology, it is important to have an accurate understanding and realistic expectations. Numerous considerations important to the design, selection, and implementation of XR solutions are detailed above. @fig-segments assesses the importance of selected optical requirements in HMD devices across common market segments.
 
-![Requirements from various HMD market segments. Number of '+/-' markers indicates magnitude of positive/negative criticality. @kress2015optic](images/21-HMDRequirements.png){width="5in"}
+![Requirements from various HMD market segments. Number of '+/-' markers indicates magnitude of positive/negative criticality. @kress2015optic](images/21-HMDRequirements.png){#fig-segments width="5in"}
 
 Tradeoffs should be informed by requirements specific to the context, manner, and goals of intended use, prioritizing human factors related to perception. Aligning the desired outcomes with the primary affordance of the chosen device is essential. These choices are aided by an understanding the theoretical underpinnings of those affordances.
 
 ## Summary
 
 ::: content-hidden
-wrap up and transition
+TODO: add Summary to wrap up and transition to LR
 :::
