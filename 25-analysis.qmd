@@ -10,7 +10,7 @@ format:
     toc-expand: 2
     number-sections: true
     number-depth: 3
-    css: custom.css
+    css: css/custom.css
 execute: 
   echo: true          # include code (folded by default, see above)
   results: 'markup'   # code output included as markup (default)

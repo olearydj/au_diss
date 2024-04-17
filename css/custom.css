@@ -7,3 +7,7 @@ pre > code {
 span.math.inline {
   font-size: 85%;
 }
+
+.hide {
+  display: none;
+}
