@@ -519,6 +519,7 @@ This proposed affordances framework serves as a foundation for the current study
 This comprehensive review has synthesized the current state of research on applying AR/MR technologies to enhance manufacturing assembly training. While preliminary findings underscore the potential benefits of augmented instructional methods, significant gaps and limitations persist. Inconsistent study designs, a lack of ecological validity, and insufficient investigation into long-term learning outcomes hinder our ability to draw definitive conclusions. To address these shortcomings, this research proposes an affordance-based framework that conceptualizes AR/MR not as transient technologies, but as bundles of theoretically-grounded affordances designed to optimize learning processes. By systematically operationalizing these affordances through carefully designed instructional treatments, we aim to provide empirical insights into the factors that most influence the efficacy of AR/MR-augmented training. Grounded in the literature and tailored to real-world manufacturing contexts, the proposed study will yield actionable recommendations to accelerate the adoption of these innovative technologies where their benefits can be maximized. The following chapter will articulate the specific problem statement, research questions, and hypotheses that guide this endeavor.
 
 ::: content-hidden
-TODO: move to problem statement pending GH feedback on chapter 3?
+TODO: GH: not necessary; move to PS?
+"much of this should be in the lead in to your PS
 :::
 

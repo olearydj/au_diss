@@ -17,6 +17,10 @@ But AR remains a highly fragmented market, including a diverse selection of scre
 
 This investigation extends prior work [@havard2021case] to explore the relationship between a variety of AR technologies and their underlying affordances [@parsons2021curre] and learning outcomes for manufacturing assembly operations. By controlling for the task type and application design we hope to better understand the relative value of these systems, filling in important gaps that can eventually lead to a cohesive framework for successful implementation.
 
+::: content-hidden
+TODO: check claims about extending work of havard and parsons
+:::
+
 This research aims to address a critical gap in understanding the relative effectiveness of different AR/MR technologies for enhancing learning outcomes in manufacturing assembly training. The central problem explored is how diverse AR instructional methods, designed to leverage specific affordances, impact operator learning, recall, and retention in an authentic manufacturing context. By employing a rigorous experimental design that systematically compares traditional paper instructions against projected AR, head-mounted AR, and head-mounted MR treatments, this study seeks to elucidate the differential effects of these technologies on immediate skill acquisition, knowledge retention over time, and associated factors such as cognitive load and usability. 
 
 This research answers the question as to how do different AR/MR instructional methods, designed to leverage specific affordances, impact operator learning, recall, and retention in a real-world manufacturing assembly training context? Supporting questions investigate the relative strengths of each method, the role of affordances, individual differences among operators, and the relationships between perceived workload, usability, and performance outcomes.

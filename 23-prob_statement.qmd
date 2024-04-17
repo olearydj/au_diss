@@ -36,11 +36,13 @@ The current study aims to address these gaps by employing a novel, affordance-ba
 
 This work systematically compares distinct AR/MR technologies against each other and a traditional paper-based control. By designing treatments that isolate the effects of specific AR/MR affordances, we aim to provide much-needed clarity on their differential impact. The study also employs a comprehensive assessment strategy that examines learning, recall, and retention. Together with workload and usability instruments and qualitative user feedback, it provides a holistic understanding of how AR/MR technologies can support both short-term learning and sustained performance improvement. To maximize ecological validity this research is situated within an authentic manufacturing training context, using methods that mimic actual assembly processes and training methods validated over years of use. Finally, this work adopts a rigorous and standardized methodology that prioritizes comparability and replicability. By employing a consistent experimental design, carefully controlling for potential confounding variables, and following best practices collected from the literature, this research aims to generate findings that can be more readily compared and integrated with existing knowledge in the field.
 
-By addressing key gaps in the existing literature, this research will contribute to the development of evidence-based guidelines and best practices, ultimately advancing the field and informing future efforts to optimize AR/MR-assisted training programs for improved learning outcomes and return on investment.
+::: content-hidden
+TODO: move approach section into the intro of methods
+:::
 
 ## Key Contributions
 
-The three key contributions of this work are:
+By addressing key gaps in the existing literature, this research will contribute to the development of evidence-based guidelines and best practices, ultimately advancing the field and informing future efforts to optimize AR/MR-assisted training programs for improved learning outcomes and return on investment. Three key contributions of this work are:
 
 1.  An innovative, affordance-based study design for comparing the impact of multiple AR/MR technologies on learning, recall, and retention in a real-world manufacturing training context. A pilot study is incorporated to assess the ability of this design to address limitations identified in the literature while also incorporating its best practices.
 
@@ -58,6 +60,8 @@ The study also holds significant practical implications. Its findings can be app
 
 Finally, it is our hope that this work can contribute to the established field of AR/MR training by promoting a theory-driven and systematic approach. The affordance-based framework, grounded in established theories of learning and cognition, provides a robust theoretical foundation for guiding the design, implementation, and evaluation of AR/MR training interventions. By systematically operationalizing these affordances through carefully designed instructional treatments, this research demonstrates the value of a principled, theory-informed approach to leveraging AR/MR technologies for enhanced learning outcomes. The consistent experimental design, meticulous control of confounding variables, and adherence to best practices from the literature ensure the reliability and generalizability of the findings. By integrating theoretical principles and rigorous methods, it exemplifies a pathway for future inquiries to build upon the strong foundations established by the broader research community.
 
-## Conclusion
+::: content-hidden
+TODO: move significance section to end of methods
+show that methods align with PS
+:::
 
-In conclusion, this study aims to shed light on the effects of AR/MR instructional methods in manufacturing assembly training, particularly focusing on learning outcomes, recall, and retention. By addressing the gaps identified from the literature through an affordance-based framework, we strive to bring academic depth and practical insight into the use of AR/MR in training. The [Methods chapter](#24-methods) that follows will detail our study’s structured approach, including our experimental design and data analysis strategies. This will describe how we plan to turn our research questions into meaningful results that aim to enrich both theory and practice in the realm of AR/MR-assisted training.
