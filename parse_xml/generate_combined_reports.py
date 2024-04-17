@@ -141,8 +141,8 @@ def extract_comments(md_file_path):
 
 
 if __name__ == "__main__":
-    REPORT_DIR = "/Users/djo/dev/au/au_diss/reports/"
-    CSV_PATH = "/Users/djo/dev/au/au_diss/data/i1_times.csv"
+    REPORT_DIR = "/Users/djo/dev/au/dissertation/reports/"
+    CSV_PATH = "/Users/djo/dev/au/dissertation/data/i1_times.csv"
     DATA_ROOT_DIR = "/Volumes/ThunderBay mini/Research Master/data/"
     csv_data = []
 

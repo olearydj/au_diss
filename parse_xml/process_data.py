@@ -49,7 +49,7 @@ console = Console()  # rich console
 progress = Progress(console=console)  # rich progress bar
 
 
-DATA_ROOT = "/Users/djo/dev/au/au_diss/data/"
+DATA_ROOT = "/Users/djo/dev/au/dissertation/data/"
 XML_ROOT = "/Volumes/ThunderBay mini/Research Master/data/"
 BOX_ROOT = "/Users/djo/Box%20Sync/Tiger%20Motors%20Research%20Team%20Collaboration%20Files/Investigation%201%20Data%20Files/trial-data/"
 
@@ -293,7 +293,7 @@ def compile_handwritten_feedback(notes: list[Path]):
     # for each trial report, extract script comments and feedback from hand-transcribed notes
     trial_notes = {}
     for note in notes:
-        # e.g. if report = /Users/djo/dev/au/au_diss/reports/1001.md
+        # e.g. if report = /Users/djo/dev/au/dissertation/reports/1001.md
         report_num = note.stem  # '1001'
 
         trial_notes[report_num] = extract_comments(note)

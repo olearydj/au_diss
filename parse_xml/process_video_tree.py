@@ -47,7 +47,7 @@ def traverse_and_generate_reports(root_dir, output_dir, test=True):
 
 
 if __name__ == "__main__":
-    dev_root = "/Users/djo/dev/au/au_diss/parse_xml"
+    dev_root = "/Users/djo/dev/au/dissertation/parse_xml"
     prod_root = "/Volumes/ThunderBay mini/Research Master/"
-    out_dir = "/Users/djo/dev/au/au_diss/reports/"
+    out_dir = "/Users/djo/dev/au/dissertation/reports/"
     traverse_and_generate_reports(prod_root, out_dir, test=False)

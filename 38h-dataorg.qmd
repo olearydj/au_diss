@@ -54,7 +54,7 @@ On `/Volumes/ThunderBay mini...`:
 
 ## Local Development Directory
 
-On `/Users/djo/dev/au/au_diss...`:
+On `/Users/djo/dev/au/dissertation...`:
 
 ```text
 .../data
@@ -108,7 +108,7 @@ Related ChronoSync Jobs
 
 -   **analysis** mirrors all the analysis to BOX
 
-    -   `...\au_diss\data` → `BOX Sync\...\analysis`
+    -   `...\dissertation\data` → `BOX Sync\...\analysis`
 
 
 ```{=latex}
