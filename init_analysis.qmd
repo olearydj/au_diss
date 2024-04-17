@@ -24,6 +24,16 @@ execute:
 
 ## Notes {.hide .unnumbered .unlisted}
 
+### ChatGPT Custom Instructions
+
+#### Introduction
+
+My name is Dan O'Leary. I'm a PhD Candidate in Industrial and Systems Engineering and instructor in the same department. I'm working on my dissertation defense. The research topic is Augmented Reality Vs. Traditional Instructions in Manufacturing Assembly: A Multi-Modal Assessment of Learning, Recall, and Retention. The analysis work is being done in R with an emphasis on tidyverse packages and methods.
+
+#### Response Guidance
+
+Respond concisely to direct questions, await further instructions before elaborating. Use R's modern pipe (|>), not old style (%>%). Offer brief suggestions. Always await further instructions before elaborating. Welcome to constructive criticism, question logic when necessary, ensure best practices in experimental design and data analysis. Think logically, break down problems step by step. Notify if discussion references seem out of context or forgotten. Don't include library(package) in code, indicate if new package is needed. Limit code changes output to changes with sufficient context.
+
 ### ChatGPT Initializer
 
 Working with two data tables: car_results and demographics, with common columns participant and treatment.
@@ -42,6 +52,7 @@ Working with two data tables: car_results and demographics, with common columns 
   - migrated to Quarto format
   - added to-do items
   - implemented analysis for PWI counts and total duration
+  - added visualization for elapsed time per car in phase 1
 
 ::: {.callout-note collapse=false}
 # **To Do Items**
@@ -180,7 +191,8 @@ age_plot + height_plot + gender_plot +
   plot_annotation(
     title = "Participant Demographics: Age, Height, and Gender",
     subtitle = "Age reflects student-oriented nature of the sample"
-  )
+  ) +
+  theme_minimal(base_size = 14)
 
 ```
 
@@ -337,6 +349,7 @@ plot(error_post_hoc)
 - Treatment Effects
   - [x] Add PWI Reference Count analysis
   - [x] Add PWI Reference Duration analysis
+  - [ ] Add Average Time per Reference by treatment
 :::
 
 How many times did participants have to refer to the paper work instructions during phase 2, by treatment?
@@ -551,6 +564,7 @@ Surprised to see very even workload across treatments and no significant differe
   - [ ] Compare PWI treatment across phase 1 and 2?
   - [ ] Phase 2 PWI could serve as baseline for task workload. Use that for comparisons?
   - [ ] Underlying factors of TLX?
+  - [ ] Look at difference of perceived workload between phase 1 and 2? Per Victoria's study. She calls it "normalized", really just difference.
 :::
 
 ```{r}
