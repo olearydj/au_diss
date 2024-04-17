@@ -1,0 +1,18 @@
+```{=latex}
+\newpage
+
+\hypertarget{acknowledgements}{\chapter*{Acknowledgements}\label{acknowledgements}}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+```
+
+I would like to thank...
+
+::: content-hidden
+
+parents - for developing me into the overwhelmingly curious and reasonably skeptical person I am
+
+scott - for modeling strength of character
+
+A portion of this research was funded by ICAMS Oshkosh project.
+:::
+

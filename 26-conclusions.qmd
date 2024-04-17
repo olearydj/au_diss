@@ -1,0 +1,29 @@
+# Conclusions {#26-conclusions}
+
+## Future Work
+In addition to the participants described above, Investigation 1 will recruit 20-30 participants from local manufacturing companies. The same requirements, recruiting, consent, and onboarding procedures will apply, and the experimental protocol is unchanged, except that those participants will be compensated.
+
+
+Additionally, the industry recruitment will allow us to compare the results between our initial convenience sample and a more representative population to see how well the results generalize. IRB approved - one participant from first recruitment effort. All subjects recruited from the local manufacturing industry will be offered gift cards in exchange for their participation. This is considered important to the success of that recruitment. All industry volunteers will be given $40 in cash / gift card at the completion of their participation.
+
+AR better than paper because it provides a kind of error correction, but falls short of error prevention. Avoid learning wrong like PWI. Corrects for poor PWI designs.
+
+AR better for more complex tasks, e.g. in-field repair. Operator support. For low takt time processes, where the individual assembly steps are relatively small and simple, it is not terribly helpful. Gets in the way after initial training. It could be helpful to refresh operators, especially if they are required to move between stations.
+
+Discrete physical inputs are generally preferrable to gesture based. Slow response and error-prone. PAR foot control.
+
+HL2 was way before its time
+Challenges and limitations of OST designs have encouraged more recent devices to adopt a VST approach (not well suited for manufacturing?)
+
+see ROI calculators at:
+- lightguide: https://www.lightguidesys.com/why-lightguide/lightguide-value-calculator/
+  - claimed increases: >90% quality, >50% throughput, >30% learning rate ("accelerate training")
+- microsoft: ?
+
+ MS support for HL2 and MRTK (wiki layoffs)
+ 
+ future adaptability / scalability; custom application development
+ 
+ from scratch apps not directly comparable to other findings. implementation details matter in performance, experience, etc. need standard platforms that implement mid-level features and allow researchers to build higher level functionality with them to allow directly comparable results
+ 
+ future: incorporate cog / spatial assessment

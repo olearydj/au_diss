@@ -1,0 +1,117 @@
+# Data Organization {#app-dataorg}
+
+TODO: clean this up and eliminate any sensitive folder names / directory structures, etc.
+
+## File Locations
+
+Data and analysis kept in:
+
+- *RAID array - extracted data for each participant and original raw videos
+- Local diss dir - manuscript files
+- Local dev dir - local analysis files
+  - *Local data dir - ingested and processed files, support files, raw notes
+- *BOX folder - local sync source for BOX, duplicated from elsewhere, for team member access (ensures changes they make don't affect my own files)
+
+*Detailed below
+
+### RAID
+
+On `/Volumes/ThunderBay mini...`:
+
+```text
+.../Research Master
+├── data
+│   ├── 1001-PWI-2023-02-10-1200
+│   │   ├── 1001-Forms.pdf
+│   │   ├── 1001-Script.pdf
+│   │   ├── images
+│   │   │   ├── 2023-02-10T1500-IMG_4829.jpg
+│   │   │   └── ...
+│   │   └── videos
+│   │       ├── 1001-Learn.mp4
+│   │       ├── 1001-Learn.wfp
+│   │       ├── 1001-Learn.xml
+│   │       ├── 1001-Recall.mp4
+│   │       ├── 1001-Recall.wfp
+│   │       └── 1001-Recall.xml
+│   ├── 1003-PAR-2023-02-17-1330
+│   └── ...
+└── raw_videos
+    ├── 1001
+    │   ├── 1001-learn-hl.mp4
+    │   ├── 1001-learn-side.mov
+    │   ├── 1001-recall-hl.mp4
+    │   └── 1001-recall-side.mov
+    ├── 1003
+    └── ...
+```
+
+-   `Research Master\data` on the TBM RAID has all the data for each participant. When appropriate, this folder is synced to the local BOX folder using a ChronoSync action.
+
+    -   `videos` subdirectory will hold the **finished videos**, along with Kyno project and XML files
+
+-   `Research Master\raw_videos`, also on the TBM RAID has the **raw** video files, which are moved here as each participant video directory is processed. In order to reclaim space on the internal drive, these files are removed from the local BOX folder during the sync described above.
+
+## Local Development Directory
+
+On `/Users/djo/dev/au/au_diss...`:
+
+```text
+.../data
+├── DataDictionary.docx
+├── combined_results.xlsx
+├── csv
+│   ├── i1_times_v1.csv
+│   └── i1_times_v2.csv
+├── reports
+│   ├── 1001-combined.md
+│   └── ...
+└── source
+    ├── adjusted_drop_events.xlsx
+    ├── i1_raw_data.xlsx
+    └── notes
+        ├── 1001.md
+        └── ...
+```
+
+TODO: consolidate diss folders and rename root above (careful with chronosync jobs)
+
+### Box Sync Folder
+
+On `/Users/djo/Box Sync/Tiger Motors Research Team Collaboration Files...`:
+
+```text
+.../Investigation 1 Data Files
+├── analysis (sync of Local dev)
+│   └── ...
+└── trial-data (sync of RAID / data)
+    └── ...
+```
+
+-   The `BOX Sync\...\trial-data` tree holds local copies of the data that get synced from each participant's `videos` folder and then mirrored to the cloud, where other members of the research team can access it.
+
+TODO: GitHub?
+
+### Local Data Backup
+
+Incremental hourly external backups with local snapshots.
+Nightly full external backups with local snapshots.
+Carbon Copy Cloner to NVMe
+
+## Synchronization / Backup
+
+Related ChronoSync Jobs
+
+-   **trial-data** mirrors all the participant data to BOX:
+
+    -   `Research Master\data` → `BOX Sync\...\trial-data`
+
+-   **analysis** mirrors all the analysis to BOX
+
+    -   `...\au_diss\data` → `BOX Sync\...\analysis`
+
+
+```{=latex}
+% Reset ToC depth after end of final appendix
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+```

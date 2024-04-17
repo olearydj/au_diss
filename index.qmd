@@ -1,0 +1,55 @@
+<!-- Work-around for hard-coded preface in Quarto -->
+
+::: {.content-visible when-format="html"}
+
+# Abstract {.unnumbered .unlisted}
+
+This research rigorously assesses the effectiveness of distinct augmented reality (AR) and mixed reality (MR) instructional techniques within the context of contemporary manufacturing training methods. Addressing critical gaps in understanding the relative efficacy of these technologies, the study investigates how different AR/MR instructional methods, designed to leverage specific affordances, impact operator learning, recall, and retention in an authentic manufacturing assembly context.
+
+A cohort of 62 participants, with no prior exposure to relevant assembly tasks or AR/MR technology, engaged in a simulated car assembly task at the Tiger Motors Lean Education Lab. Employing an innovative affordance-based framework, participants in this between-groups study were systematically introduced to one of four instructional methods: traditional Paper Work Instructions (PWI), Projected AR, head-mounted AR, and head-mounted MR. The same task was employed across all treatments, and changes to the instructional design were minimized. For this study, MR is differentiated from AR by affording participants the freedom to manipulate the workpiece while augmentations remain aligned.
+
+Primary performance metrics, including task duration, error rates, and error classifications, were carefully documented, providing insights into learning progression and task proficiency. In the recall phase, video analysis also captured the frequency and duration of participants' PWI consultations, better informing the learning efficacy of each method. Several weeks later, a volunteer subset was assessed on retention---their ability to reproduce the assembly without additional instruction---evaluating the durability of each instructional treatment.
+
+Following both phases of the initial experiment, the NASA Task Load Index and System Usability Scale instruments, were administered to assess perceived workload and user experience. That data, coupled with participant demographics and qualitative feedback elicited through open-ended exit interviews, contributes to a comprehensive expression of each participant's experience.
+
+TODO: Summarize main findings.
+
+While focused on manufacturing training and support, this study's implications extend to analogous tasks involving equipment installation, field repair, quality inspection, and safety training. Through its rigorous experimental design, ecological validity, and systematic operationalization of affordances, this research provides actionable insights to optimize AR/MR technology implementation and learning outcomes in industrial settings.
+
+TODO: eliminate blank page for pdf version
+
+:::
+
+::: {.content-visible when-format="pdf"}
+
+<!-- Redefine KOMA Chapter styling in prelim material -->
+```{=latex}
+\RedeclareSectionCommand[beforeskip=0pt, afterskip=24pt]{chapter}
+\setkomafont{chapter}{\large\sffamily}
+\renewcommand\raggedchapter{\centering}
+```
+
+{{< include 11-titlepage.qmd >}}
+{{< include 12-abstract.qmd >}}
+{{< include 13-acknowledgements.qmd >}}
+
+
+<!-- Moved here from toc.tex -->
+```{=latex}
+\RedeclareSectionCommand[beforeskip=0pt, afterskip=48pt]{chapter}
+
+\tableofcontents
+\addcontentsline{toc}{chapter}{Table of Contents}
+
+\listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
+
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
+
+\RedeclareSectionCommand[beforeskip=0pt, afterskip=24pt]{chapter}
+```
+
+<!-- {{< include 14-acronyms.qmd >}} -->
+
+:::

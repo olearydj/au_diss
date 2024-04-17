@@ -1,0 +1,33 @@
+# Team Contribution Matrix {#app-contribs}
+
+- IRB
+  - Admin
+  - Strategy
+  - Writing
+  - Review / Edit
+- Experiments
+  - Design
+  - Administration
+  - Conduct
+  - Recruitment
+- Data
+  - Collection
+  - Analysis
+- SW
+  - Direction
+  - Development
+
+Sesek
+Harris
+Evans
+Mykoniatis
+Victoria Ballard
+Md Monir Hossain
+Diego Roberto Caputo Rodriguez
+Alex Barras
+David “Brown” Teague
+Carson Tillery
+Kralyn Thomas
+
+
+This dissertation was developed with assistance from generative AI systems and tools, including the GPT-3.5 and GPT-4 models of OpenAI's ChatGPT. These resources provided valuable support during various stages of the research and development process. However, the final composition of this work, including its content, structure, and findings, is principally and fundamentally the result of the author's own effort and expertise, except for other contributions as specifically noted herein. The author thus assumes full responsibility for the originality and academic contributions of this work.
