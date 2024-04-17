@@ -1,0 +1,7 @@
+# Data Dictionary {#app-datadict}
+
+::: content-hidden
+TODO: attach data dictionary document
+
+TODO: make sure the data dictionary clearly defines columns for raw data (`i1_raw_data`) vs combined / ingested data. The current Car Outcomes section describes the later, which is different from the former.
+:::

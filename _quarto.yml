@@ -1,0 +1,140 @@
+# Quarto project - AU dissertation template
+# initially based on new Quarto Book project
+# uses titlepages v1 academic-static templates
+
+project:
+### Project reference: https://quarto.org/docs/reference/projects/options.html
+# Main
+  ## not used for filename:
+  title: "Project Title"
+  type: book
+  output-dir: manuscript
+# Other: Preview, Serve
+
+book:
+### Book reference: https://quarto.org/docs/reference/projects/books.html
+# Book-specific project options
+  title: "Augmented vs. Traditional Instruction in Manufacturing Assembly"
+  subtitle: "An Affordance-Based, Multi-Modal Assessment of Learning, Recall, and Retention"
+  author: "Danny J. O'Leary"
+  date: today
+  chapters:
+    - index.qmd
+    - 21-intro.qmd
+    - 22-lit_review.qmd
+    - 23-prob_statement.qmd
+    - 24-methods.qmd
+    - 25-results.qmd
+    - 26-conclusions.qmd
+    - 27-colophon.qmd
+    - 28-references.qmd
+  appendices:
+    - 31a-irb.qmd
+    - 32b-contributions.qmd
+    - 33c-s1conduct.qmd
+    - 34d-s2conduct.qmd
+    - 35e-videotools.qmd
+    - 36f-videoproc.qmd
+    - 37g-datadict.qmd
+    - 38h-dataorg.qmd
+
+bibliography: references.bib
+# csl: "csl/apa7-single-spaced.csl"  # no obvious difference in HTML output
+csl: "csl/apa7.csl"
+editor: source
+
+# all fenced code blocks
+code-link: true
+code-copy: true
+
+format:
+  html:
+    theme: simplex
+    fontsize: 1.2em
+    linestretch: 1.35
+    mainfont: Helvetica Neue, Helvetica, Arial, sans
+    monofont: Cascadia Mono, Menlo, Consolas, Courier New, Courier
+    backgroundcolor: "white"
+    fontcolor: "black"
+    fig-align: "center"
+    fig-dpi: 300
+    knitr:
+      opts_chunk:
+        dev: "ragg_png"
+  # fenced code blocks
+    highlight-style: dracula
+    code-line-numbers: true
+  # custom css
+    css: "css/custom.css"
+  
+  pdf:
+  ### PDF reference: https://quarto.org/docs/reference/formats/pdf.html
+  # Title & Author - see book options
+  # Format Options
+    ## results in build error, missing packages:
+    # pdf-engine-opt: -output-directory=work
+    output-file: "dissertation"
+    output-ext: "pdf"
+  # Table of Contents
+    toc: true
+    toc-depth: 3
+    toc-title: "Table of Contents"
+    lof: true
+    lot: true
+  # Hypperref
+    hyperrefoptions: 
+      - "linktoc=all"
+  # Numbering
+    number-sections: true
+    number-depth: 2
+  # Fonts
+    # main: body, sans: headings, mono: codeblocks
+    mainfont: Georgia
+    sansfont: Verdana
+    monofont: Source Code Pro
+    fontsize: 11pt
+    # so that draft overfill indicators match final results:
+    microtypeoptions: ["final"]
+    ## stretches all lines, not just body paragraphs:
+    linestretch: 1.35
+  # Fenced code blocks
+    highlight-style: arrow
+  # Colors
+    colorlinks: true
+    urlcolor: "DarkOrange2"
+    linkcolor: "DodgerBlue4"
+    filecolor: "Turquoise3"
+    citecolor: "DarkOliveGreen4"
+  # Citations
+    link-citations: true
+    cite-method: "biblatex"
+    biblio-style: "apa"
+    biblatexoptions: 
+      - "backend=biber"
+      - "backref=true"
+  # Layout
+    documentclass: scrbook
+    classoption: 
+      - oneside
+      - open=any
+      - numbers=noenddot
+    geometry:
+      - margin=1in
+      - bindingoffset=0.5in
+      - heightrounded
+      - footskip=0.475in
+#     - showframe
+    # footer only, with centered page number
+    pagestyle: plain
+    fig-align: "center"
+    fig-dpi: 300
+
+  # Includes
+    # include-before-body: removed from template, unused
+    # include-in-header:
+  # Metadata
+  # Rendering
+    template: tex/template.tex
+    # template-partials: 
+    keep-tex: true
+

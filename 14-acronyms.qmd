@@ -1,0 +1,30 @@
+```{=latex}
+\newpage
+
+\hypertarget{acronyms}{\section*{List of Acronyms}\label{acronyms}}
+\addcontentsline{toc}{chapter}{List of Acronyms}
+
+% define acronyms
+
+\newacronym{ar}{AR}{Augmented Reality}
+\newacronym{cps}{CPS}{Cyber-Physical Systems}
+\newacronym{dt}{DT}{Digital Twin}
+\newacronym{fov}{FOV}{Field of View}
+\newacronym{gps}{GPS}{Global Positioning System}
+\newacronym{hmdar}{HMDAR}{Head-Mounted Augmented Reality Display}
+\newacronym{hmdmr}{HMDMR}{Head-Mounted Mixed Reality Display}
+\newacronym{hmd}{HMD}{Head-Mounted Display}
+\newacronym{i40}{I4.0}{Industry 4.0}
+\newacronym{iot}{IOT}{Internet of Things}
+\newacronym{mr}{MR}{Mixed Reality}
+\newacronym{ost}{OST}{Optical See-Through}
+\newacronym{qr}{QR}{Quick Response}
+\newacronym{vac}{VAC}{Vergence-Accommodation Conflict}
+\newacronym{vr}{VR}{Virtual Reality}
+\newacronym{vst}{VST}{Video See-Through}
+\newacronym{xr}{XR}{Extended Reality}
+
+\printglossaries
+```
+
+TODO: add list of acronyms using glossaries package

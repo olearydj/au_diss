@@ -1,0 +1,9 @@
+/* make codeblock font size a bit smaller */
+pre > code {
+    font-size: 13px !important; /* code blocks only */
+}
+
+/* make inline latex font a bit smaller */
+span.math.inline {
+  font-size: 85%;
+}

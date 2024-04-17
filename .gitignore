@@ -1,9 +1,3 @@
-.Rproj.user
-.Rhistory
-.RData
-.Ruserdata
-*.
-
 # R project temp files
 .Rproj.user
 .Rhistory
@@ -28,10 +22,11 @@
 *.lot
 *.toc
 *.pdf
-Book-Title.tex
+/*.tex
 
 # Output directory
 _book/
+/html
 
 # Test directories
 test_input/

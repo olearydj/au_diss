@@ -1,0 +1,19 @@
+# Session 2 Conduct Details {#app-s2conduct}
+
+The second session retention experiment was conducted using the following script.
+
+1.  Take the appropriate trial card and place it on the work surface.
+2.  Don the head mounted camera and start recording.
+3.  Adjust the view angle by having them look at the trial card.
+4.  “In this mini-experiment you will build one car from the AR / Lean study. No instructions are provided so you will have to rely only on your memory. Do the best you can to build it correctly in one minute or less. If you do so we’ll add your name to another drawing for a \$50 gift card.”
+5.  “Any questions?”
+6.  Replace the trial card with the car.
+7.  Tell the participant to start and begin the timer in stopwatch mode (counting up). Set the timer in their FOV.
+8.  When the participant finishes, stop the timer.
+9.  If the timer hits two minutes, stop the trial.
+10. Stop the recording and remove the camera.
+11. Take a photo of the trial card with the completed car and timer.
+12. Note the completion time and number of errors (not type) on the trial card.
+13. If the car was completed in 60s or less and there were no errors, put the trial card in the performance drawing box.
+14. Otherwise, put the trial card in the participant box.
+15. Place the car in the back box and reset the workstation for the next participant.
