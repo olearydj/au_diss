@@ -3,6 +3,8 @@ title: "Initial Analysis"
 output:
   html_notebook:
     code_folding: hide
+  html_document:
+    df_print: paged
 ---
 
 ## Notes

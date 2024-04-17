@@ -24,6 +24,8 @@ execute:
 
 ## Notes {.hide .unnumbered .unlisted}
 
+This is the main file to use for initial analysis!
+
 ### ChatGPT Custom Instructions
 
 #### Introduction
