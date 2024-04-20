@@ -1,8 +1,46 @@
 # Results {#25-results}
 
-- 62 participants recruited...
-- sample size calculation / justification - power analysis, practical considerations, precedent
-- timeline of study
+```{r}
+#| label: load-libs
+#| output: false
+
+library(tidyverse)
+library(readxl)
+library(gt)
+library(gtsummary)
+library(patchwork)
+library(xtable)
+library(broom)
+# library(glue) now included with tidyverse as str_glue
+# library(gridExtra)
+# library(ggtext)
+
+# currently unused:
+# library(skimr)
+# library(gtExtras)
+# library(grid)
+```
+
+```{r}
+#| label: load-data
+#| echo: false
+
+car_results <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "car results")
+
+demographics <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "demographics")
+```
+
+```{r}
+#| label: define-functions
+
+
+```
 
 ## Pilot Study
 
@@ -10,11 +48,280 @@
 If a pilot study was conducted prior to the main study, provide details on its purpose, design, and outcomes, and how it informed the main study.
 :::
 
+
 ### Challenges and Modifications
 
-better suited to results?
+### Key Findings and Implications
 
-Discussion of any challenges encountered during the conduct of the protocol Modifications made to the protocol in response to these challenges
+
+## Participant Demographics and Sample Characteristics
+
+```{r study-metadata}
+
+participant_count <- demographics |>
+  pull(participant) |>
+  n_distinct()
+
+# result 62 matches table row count and number of appointments
+
+# Convert the trial_datetime to Date type
+demographics <- demographics |>
+  mutate(trial_date = as.Date(as.POSIXct(trial_datetime, format = "%Y-%m-%d %H:%M:%S")))
+
+# Get the first and last date
+first_trial_date <- demographics |> 
+  summarize(first_date = min(trial_date)) |>
+  pull(first_date)
+
+last_trial_date <- demographics |>
+  summarize(last_date = max(trial_date)) |>
+  pull(last_date)
+
+```
+
+- Experiments conducted between `r first_trial_date` and `r last_trial_date`
+- Number of participants: `r participant_count`
+
+As seen in @fig-sess1-progress.
+
+```{r fig-sess1-progress}
+#| fig-cap: "Daily Trial Administration and Completion Percentage"
+
+# Count experiments per day
+daily_counts <- demographics |>
+  group_by(trial_date) |>
+  summarize(daily_count = n()) |>
+  arrange(trial_date)
+
+# Calculate the cumulative count of experiments
+daily_counts <- daily_counts |>
+  mutate(cumulative_count = cumsum(daily_count))
+
+# Calculate remaining experiments
+total_experiments <- nrow(demographics)
+daily_counts <- daily_counts |>
+  mutate(remaining = total_experiments - cumulative_count, 
+         percentage_remaining = (remaining / total_experiments) * 100)
+
+trial_start_str <- str_glue("{month(first_trial_date)}/{day(first_trial_date)}")
+trial_end_str <- str_glue("{month(last_trial_date)}/{day(last_trial_date)}")
+trial_year_str <- str_glue("{year(last_trial_date)}")
+
+subtitle <- str_glue("{participant_count} Learning and Recall Experiments Conducted between {trial_start_str} and {trial_end_str} of {trial_year_str}")
+
+# Plotting
+ggplot(daily_counts, aes(x = trial_date)) +
+  geom_line(aes(y = daily_count, group = 1), color = "blue") +
+  geom_line(aes(y = remaining, group = 1), color = "red") +
+  labs(title = "First Session Progress",
+       subtitle = subtitle,
+       x = "Date",
+       y = "Trials Administered each Day") +
+  scale_y_continuous(
+    sec.axis = sec_axis(~ (1 - . / total_experiments) * 100, name = "Percentage Complete")
+  ) +
+  theme_minimal(
+    base_size = 12,
+  ) +
+  theme(
+    plot.title.position = 'plot',
+  )
+```
+
+
+### Overall Sample Characteristics
+
+```{r fig-demographics}
+#| fig-cap: "Participant Demographics"
+#| warning: false
+
+base_color <- "#69b3a2"
+
+# Creating box plots for 'age'
+age_plot <- demographics |> 
+  ggplot(aes(x = "Age (years)", y = age)) +
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
+  labs(
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_minimal(
+    base_size = 14,
+  )
+
+# Creating box plots for 'height'
+height_plot <- demographics |> 
+  ggplot(aes(x = "Height (feet)", y = height)) +
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
+  labs(
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_minimal(
+    base_size = 14,
+    )
+
+# Bar chart for 'gender'
+gender_plot <- demographics |>
+  ggplot(aes(x = gender, fill = gender, alpha = gender)) +
+  geom_bar(width = 0.4) +
+  labs(
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  scale_fill_manual(values = c("F" = base_color, "M" = base_color, "O" = base_color)) +
+  scale_alpha_manual(values = c("F" = 0.3, "M" = 0.6, "O" = 1.0)) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+
+### combine using patchwork
+age_plot + height_plot + gender_plot +
+  plot_annotation(
+    title = "Age, Height, and Gender of Participants",
+    subtitle = "Age reflects student-oriented nature of the sample"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+- Present descriptive statistics and visualizations for the entire sample (N=62)
+- Discuss key demographic variables, such as age, gender, education, and prior experience
+
+### Treatment Group Equivalence
+
+```{r}
+#| label: tbl-demo-by-treatment
+
+# Compute summary statistics
+demographics |>
+  select(age:gender, treatment) |>
+  tbl_summary(
+    by = "treatment",
+    missing = "no",
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})",
+      all_categorical() ~ "{n} / {N} ({p}%)"
+    ),
+    label = "age" ~ "Age"
+  ) |>
+  modify_header(all_stat_cols() ~ "**{level}**<br>N = {n} ({style_percent(p)}%)") |>
+  add_n() |>
+  bold_labels() |>
+  as_gt()
+# tab_source_note("Data updated September 19, 2023")
+
+```
+
+
+- Compare the demographic characteristics across the four treatment groups
+- Use statistical tests (e.g., chi-square, ANOVA) to assess the equivalence of the groups
+- Discuss any notable differences or similarities between the groups
+
+### Pilot Study Comparison
+
+- Compare the key measures (e.g., performance, workload, usability) between the pilot study (n=8) and main study (n=54) participants
+- Use descriptive statistics and visualizations to present these comparisons
+- Discuss any notable similarities or differences between the two groups
+
+### Statistical Power and Sample Size Considerations
+
+- Present the results of statistical power analyses based on the observed effect sizes and the planned statistical tests
+- Discuss the adequacy of the sample size for detecting meaningful effects
+- Consider the potential impact of including or excluding the pilot study data on the statistical power and precision of the estimates
+- sample size calculation / justification: power analysis, practical considerations, precedent
+
+### Decision on Pilot Study Inclusion
+
+- Based on the findings from 5.2.3 and 5.2.4, make a decision on whether to include the pilot study data in the main analysis
+- Clearly report your decision and rationale, considering factors such as data comparability, study design modifications, and statistical power
+
+
+## Learning Phase Results
+
+### Descriptive Statistics
+
+### Hypothesis Testing
+
+#### Average Time per Car (H1a)
+
+#### Average Error Count per Car (H1b)
+
+#### Learning Rates (H1c)
+
+### Additional Analyses
+
+- what treatment group had the highest percentage of "qualified operators" at the end of the 10-min session?
+
+#### Error Types
+
+#### Task Completion Rate
+
+#### First-Task Performance
+
+#### Qualified Operators
+
+## Recall Phase Results
+
+### Descriptive Statistics
+
+### Hypothesis Testing
+
+#### Overall Equipment Effectiveness (H2a)
+
+#### Paper Work Instruction References (H2b)
+
+### Additional Analyses
+
+- what treatment group had the highest OEE during recall?
+
+#### Efficiency vs. Quality
+
+#### PWI Reference Frequency and Length
+
+#### Error Types and Task Completion Rate
+
+#### Ongoing Learning
+
+## Retention Phase Results
+
+### Descriptive Statistics
+
+### Hypothesis Testing
+
+#### Change in OEE (H3a)
+
+### Additional Analyses
+
+#### Absolute and Percentage Change in OEE
+
+#### Primary Driver of OEE Change
+
+## Workload, Usability, and User Experience
+
+### NASA Task Load Index Results
+
+### System Usability Scale Results
+
+### Qualitative Feedback Analysis
+
+## Exploratory Analyses
+
+### Relationship between TLX, SUS, and Performance
+
+- first task performance in learning as a measure of initial comprehension, intuitiveness of each treatment, effectiveness of instructional design, etc.; may correlate with SUS / TLX
+
+### Impact of Participant Demographics on Performance
+
+### Within-Group Performance Variance
+
+### TLX Components and Performance
+
+### Interactions between Workload, Usability, and Treatment
+
+## Challenges and Unexpected Observations
+
+Discussion of any challenges encountered during the conduct of the protocol  Modifications made to the protocol in response to these challenges
 
 demoing AR/MR: The challenge of this choreography was compounded by significant latency in streamed video, which lagged the live action by approximately 2 seconds. With practice
 
@@ -31,23 +338,15 @@ limitations
 - analysis
   -   does not account for interactions between affordances
 
-
-
-## Other
-
 noticed improvising - discourage as occurs
 
 sleeves, long hair problems for HL2
-
-down-lookers
-
-exploratory:
-- what treatment group had the highest percentage of "qualified operators" at the end of the 10-min session?
-- what treatment group had the highest OEE during recall?
-- first task performance in learning as a measure of initial comprehension, intuitiveness of each treatment, effectiveness of instructional design, etc.; may correlate with SUS / TLX
 
 height and "down-lookers"; tracking dropouts;
 
 battery life and performance; brightness and accuracy; 
 
-- complexity of MR, less reliable tracking, crashes
+complexity of MR, less reliable tracking, crashes
+
+
+## Summary of Key Findings

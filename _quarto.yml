@@ -39,9 +39,19 @@ book:
     - 38h-dataorg.qmd
 
 bibliography: references.bib
-# csl: "csl/apa7-single-spaced.csl"  # no obvious difference in HTML output
 csl: "csl/apa7.csl"
 editor: source
+
+# code execution default settings
+execute:
+  echo: true          # include code (folded by default, see above)
+  results: 'markup'   # code output included as markup (default)
+  message: false      # hide messages
+  warning: true       # do not hide warnings
+  fig.width: 7
+  fig.height: 5
+  # include: not used, controls inclusion of both code and output (T/F);
+  # combination of echo and results settings
 
 # all fenced code blocks
 code-link: true
@@ -64,6 +74,7 @@ format:
   # fenced code blocks
     highlight-style: dracula
     code-line-numbers: true
+    code-fold: true
   # custom css
     css: "css/custom.css"
   
@@ -128,6 +139,9 @@ format:
     pagestyle: plain
     fig-align: "center"
     fig-dpi: 300
+  # Executable code block options
+    execute:
+      echo: true          # include code (folded by default, see above)
 
   # Includes
     # include-before-body: removed from template, unused
