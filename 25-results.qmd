@@ -1,7 +1,6 @@
 # Results {#25-results}
 
-```{r}
-#| label: load-libs
+```{r load-libs}
 #| output: false
 
 library(tidyverse)
@@ -21,25 +20,43 @@ library(broom)
 # library(grid)
 ```
 
-```{r}
-#| label: load-data
+```{r load-data}
 #| echo: false
 
 car_results <- read_xlsx(
   "./data/combined_results.xlsx",
   na = c("", "N/A"),
-  sheet = "car results")
+  sheet = "car results"
+)
 
 demographics <- read_xlsx(
   "./data/combined_results.xlsx",
   na = c("", "N/A"),
-  sheet = "demographics")
+  sheet = "demographics"
+)
 ```
 
-```{r}
-#| label: define-functions
+```{r def-functions}
+# Define a custom theme for ggplot
+custom_theme <- function() {
+  theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = 'plot',
+      plot.title = element_text(face = "bold"),
+      # plot.subtitle = element_text(face = "italic"),
+      # plot.caption = element_text(color = "grey50"),
+      # axis.title.x = element_text(face = "bold"),
+      # axis.title.y = element_text(face = "bold"),
+      # axis.text = element_text(color = "black"),
+      # axis.line = element_line(color = "grey80"),
+      # legend.position = "bottom",
+      # legend.background = element_rect(fill = "white", colour = "grey50"),
+      # legend.key = element_rect(fill = "white", colour = "grey50"),
+    )
+}
 
-
+# Set the custom theme as the default theme
+theme_set(custom_theme())
 ```
 
 ## Pilot Study
@@ -57,7 +74,6 @@ If a pilot study was conducted prior to the main study, provide details on its p
 ## Participant Demographics and Sample Characteristics
 
 ```{r study-metadata}
-
 participant_count <- demographics |>
   pull(participant) |>
   n_distinct()
@@ -66,17 +82,20 @@ participant_count <- demographics |>
 
 # Convert the trial_datetime to Date type
 demographics <- demographics |>
-  mutate(trial_date = as.Date(as.POSIXct(trial_datetime, format = "%Y-%m-%d %H:%M:%S")))
+  mutate(
+    trial_date = as.Date(
+      as.POSIXct(trial_datetime, format = "%Y-%m-%d %H:%M:%S")
+    )
+  )
 
 # Get the first and last date
-first_trial_date <- demographics |> 
+first_trial_date <- demographics |>
   summarize(first_date = min(trial_date)) |>
   pull(first_date)
 
 last_trial_date <- demographics |>
   summarize(last_date = max(trial_date)) |>
   pull(last_date)
-
 ```
 
 - Experiments conducted between `r first_trial_date` and `r last_trial_date`
@@ -100,8 +119,10 @@ daily_counts <- daily_counts |>
 # Calculate remaining experiments
 total_experiments <- nrow(demographics)
 daily_counts <- daily_counts |>
-  mutate(remaining = total_experiments - cumulative_count, 
-         percentage_remaining = (remaining / total_experiments) * 100)
+  mutate(
+    remaining = total_experiments - cumulative_count,
+    percentage_remaining = (remaining / total_experiments) * 100
+  )
 
 trial_start_str <- str_glue("{month(first_trial_date)}/{day(first_trial_date)}")
 trial_end_str <- str_glue("{month(last_trial_date)}/{day(last_trial_date)}")
@@ -113,32 +134,31 @@ subtitle <- str_glue("{participant_count} Learning and Recall Experiments Conduc
 ggplot(daily_counts, aes(x = trial_date)) +
   geom_line(aes(y = daily_count, group = 1), color = "blue") +
   geom_line(aes(y = remaining, group = 1), color = "red") +
-  labs(title = "First Session Progress",
-       subtitle = subtitle,
-       x = "Date",
-       y = "Trials Administered each Day") +
+  labs(
+    title = "First Session Progress",
+    subtitle = subtitle,
+    x = element_blank(),
+    y = "Trials Administered Each Day"
+  ) +
   scale_y_continuous(
-    sec.axis = sec_axis(~ (1 - . / total_experiments) * 100, name = "Percentage Complete")
+    sec.axis = sec_axis(
+      transform = ~ (1 - . / total_experiments) * 100,
+      name = "Percentage Complete",
+    )
   ) +
-  theme_minimal(
-    base_size = 12,
-  ) +
-  theme(
-    plot.title.position = 'plot',
-  )
+  custom_theme()
 ```
-
 
 ### Overall Sample Characteristics
 
 ```{r fig-demographics}
-#| fig-cap: "Participant Demographics"
+#| fig-cap: "Age, Height, and Gender of Participants"
 #| warning: false
 
 base_color <- "#69b3a2"
 
 # Creating box plots for 'age'
-age_plot <- demographics |> 
+age_plot <- demographics |>
   ggplot(aes(x = "Age (years)", y = age)) +
   geom_boxplot(width = 0.5) +
   geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
@@ -146,12 +166,10 @@ age_plot <- demographics |>
     x = element_blank(),
     y = element_blank()
   ) +
-  theme_minimal(
-    base_size = 14,
-  )
+  custom_theme()
 
 # Creating box plots for 'height'
-height_plot <- demographics |> 
+height_plot <- demographics |>
   ggplot(aes(x = "Height (feet)", y = height)) +
   geom_boxplot(width = 0.5) +
   geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
@@ -159,9 +177,7 @@ height_plot <- demographics |>
     x = element_blank(),
     y = element_blank()
   ) +
-  theme_minimal(
-    base_size = 14,
-    )
+  custom_theme()
 
 # Bar chart for 'gender'
 gender_plot <- demographics |>
@@ -171,18 +187,19 @@ gender_plot <- demographics |>
     x = element_blank(),
     y = element_blank()
   ) +
-  scale_fill_manual(values = c("F" = base_color, "M" = base_color, "O" = base_color)) +
+  scale_fill_manual(
+    values = c("F" = base_color, "M" = base_color, "O" = base_color)
+  ) +
   scale_alpha_manual(values = c("F" = 0.3, "M" = 0.6, "O" = 1.0)) +
-  theme_minimal(base_size = 14) +
   theme(legend.position = "none")
 
 ### combine using patchwork
 age_plot + height_plot + gender_plot +
   plot_annotation(
-    title = "Age, Height, and Gender of Participants",
+    title = "Participant Demographics",
     subtitle = "Age reflects student-oriented nature of the sample"
   ) +
-  theme_minimal(base_size = 14)
+  custom_theme()
 ```
 
 - Present descriptive statistics and visualizations for the entire sample (N=62)
@@ -190,8 +207,8 @@ age_plot + height_plot + gender_plot +
 
 ### Treatment Group Equivalence
 
-```{r}
-#| label: tbl-demo-by-treatment
+```{r tbl-demo-by-treatment}
+#| tbl-cap: Participant Demographics by Treatment Group
 
 # Compute summary statistics
 demographics |>
@@ -203,16 +220,23 @@ demographics |>
       all_continuous() ~ "{mean} ({sd})",
       all_categorical() ~ "{n} / {N} ({p}%)"
     ),
-    label = "age" ~ "Age"
+    label = list("age" ~ "Age", "height" ~ "Height", "gender" ~ "Gender")
   ) |>
-  modify_header(all_stat_cols() ~ "**{level}**<br>N = {n} ({style_percent(p)}%)") |>
+  modify_header(
+    all_stat_cols() ~ "**{level}** \nN = {n} ({style_percent(p)}%)"
+  ) |>
   add_n() |>
-  bold_labels() |>
-  as_gt()
-# tab_source_note("Data updated September 19, 2023")
-
+#  bold_labels() |>
+  as_kable_extra(
+    booktabs = TRUE,
+    escape = FALSE,
+    linesep = "\\addlinespace",
+  ) |>
+  kableExtra::kable_styling(
+    latex_options = c("scale_down"),
+    font_size = 11
+  )
 ```
-
 
 - Compare the demographic characteristics across the four treatment groups
 - Use statistical tests (e.g., chi-square, ANOVA) to assess the equivalence of the groups

@@ -41,15 +41,17 @@ book:
 bibliography: references.bib
 csl: "csl/apa7.csl"
 editor: source
+fig-width: 7
+fig-height: 5
+fig-align: "center"
+fig-dpi: 300
 
 # code execution default settings
 execute:
   echo: true          # include code (folded by default, see above)
   results: 'markup'   # code output included as markup (default)
-  message: false      # hide messages
-  warning: true       # do not hide warnings
-  fig.width: 7
-  fig.height: 5
+  message: true       # show messages
+  warning: true       # show warnings
   # include: not used, controls inclusion of both code and output (T/F);
   # combination of echo and results settings
 
@@ -66,8 +68,6 @@ format:
     monofont: Cascadia Mono, Menlo, Consolas, Courier New, Courier
     backgroundcolor: "white"
     fontcolor: "black"
-    fig-align: "center"
-    fig-dpi: 300
     knitr:
       opts_chunk:
         dev: "ragg_png"
@@ -137,11 +137,11 @@ format:
 #     - showframe
     # footer only, with centered page number
     pagestyle: plain
-    fig-align: "center"
-    fig-dpi: 300
   # Executable code block options
     execute:
-      echo: true          # include code (folded by default, see above)
+      echo: false     # do not include code
+      message: false  # hide messages
+      warning: false  # hide warnings
 
   # Includes
     # include-before-body: removed from template, unused
