@@ -48,10 +48,10 @@ fig-dpi: 300
 
 # code execution default settings
 execute:
-  echo: true          # include code (folded by default, see above)
-  results: 'markup'   # code output included as markup (default)
-  message: true       # show messages
-  warning: true       # show warnings
+  echo: false       # do not include code (folded by default, see above)
+  results: 'hide'   # hide all output except plots and explicitly printed
+  message: false    # hide messages from library loading, other functions
+  warning: true     # show warnings
   # include: not used, controls inclusion of both code and output (T/F);
   # combination of echo and results settings
 
@@ -139,8 +139,6 @@ format:
     pagestyle: plain
   # Executable code block options
     execute:
-      echo: false     # do not include code
-      message: false  # hide messages
       warning: false  # hide warnings
 
   # Includes

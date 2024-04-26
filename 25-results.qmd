@@ -1,7 +1,12 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Results {#25-results}
 
 ```{r load-libs}
-#| output: false
+#| message: false
 
 library(tidyverse)
 library(readxl)
@@ -10,6 +15,8 @@ library(gtsummary)
 library(patchwork)
 library(xtable)
 library(broom)
+library(report)
+library(tools)
 # library(glue) now included with tidyverse as str_glue
 # library(gridExtra)
 # library(ggtext)
@@ -21,7 +28,6 @@ library(broom)
 ```
 
 ```{r load-data}
-#| echo: false
 
 car_results <- read_xlsx(
   "./data/combined_results.xlsx",
@@ -36,7 +42,8 @@ demographics <- read_xlsx(
 )
 ```
 
-```{r def-functions}
+```{r def-cust-theme}
+
 # Define a custom theme for ggplot
 custom_theme <- function() {
   theme_minimal(base_size = 10) +
@@ -59,26 +66,11 @@ custom_theme <- function() {
 theme_set(custom_theme())
 ```
 
-## Pilot Study
-
-::: content-hidden
-If a pilot study was conducted prior to the main study, provide details on its purpose, design, and outcomes, and how it informed the main study.
-:::
-
-
-### Challenges and Modifications
-
-### Key Findings and Implications
-
-
-## Participant Demographics and Sample Characteristics
-
 ```{r study-metadata}
+
 participant_count <- demographics |>
   pull(participant) |>
   n_distinct()
-
-# result 62 matches table row count and number of appointments
 
 # Convert the trial_datetime to Date type
 demographics <- demographics |>
@@ -96,15 +88,20 @@ first_trial_date <- demographics |>
 last_trial_date <- demographics |>
   summarize(last_date = max(trial_date)) |>
   pull(last_date)
+
+trial_start_str <- str_glue("{month(first_trial_date)}/{day(first_trial_date)}")
+trial_end_str <- str_glue("{month(last_trial_date)}/{day(last_trial_date)}")
+trial_year_str <- str_glue("{year(last_trial_date)}")
+# start, end = Feb 10, Apr 27 2023
 ```
 
-- Experiments conducted between `r first_trial_date` and `r last_trial_date`
-- Number of participants: `r participant_count`
+## Study Administration and Participation
 
-As seen in @fig-sess1-progress.
+This study was administered during the Spring of 2023. Ultimately, `r participant_count` eligible participants were recruited. All completed the Learning and Recall experiments of the first session beginning February 10th. Progress of the conduct of these trials is illustrated by @fig-s1-progress.
 
-```{r fig-sess1-progress}
+```{r fig-s1-progress}
 #| fig-cap: "Daily Trial Administration and Completion Percentage"
+#| fig-height: 4
 
 # Count experiments per day
 daily_counts <- demographics |>
@@ -123,10 +120,6 @@ daily_counts <- daily_counts |>
     remaining = total_experiments - cumulative_count,
     percentage_remaining = (remaining / total_experiments) * 100
   )
-
-trial_start_str <- str_glue("{month(first_trial_date)}/{day(first_trial_date)}")
-trial_end_str <- str_glue("{month(last_trial_date)}/{day(last_trial_date)}")
-trial_year_str <- str_glue("{year(last_trial_date)}")
 
 subtitle <- str_glue("{participant_count} Learning and Recall Experiments Conducted between {trial_start_str} and {trial_end_str} of {trial_year_str}")
 
@@ -149,18 +142,253 @@ ggplot(daily_counts, aes(x = trial_date)) +
   custom_theme()
 ```
 
-### Overall Sample Characteristics
+Only eight trials were run before March 16th. That period was treated as a pilot study, during which the research team was trained, administration methods were refined, the self-service onboarding system was deployed, and version 2.1 of our IRB application was approved. Most significantly, the intake process was adjusted to collect more demographic data, increase the role of the TLX and SUS instruments, and gather BCS data for a companion study.
 
-```{r fig-demographics}
-#| fig-cap: "Age, Height, and Gender of Participants"
+Otherwise, only minor tweaks were made during the pilot to streamline the experiment's administration. Although the changes outlined above were not believed to have a material effect on the results, the data collected during the pilot were omitted from further analysis. Following the pilot, steady progress was made until the completion of the study's first session on April 27th.
+
+The second session was conducted during the end of study event on *XXX*. *YYY* of the study's original participants volunteered to attend and complete the Retention experiment.
+
+::: content-hidden
+TODO: complete above paragraph about second session.
+:::
+
+::: content-hidden
+MAYBE: perform analysis to evaluate differences between pilot and main group
+
+Pilot Study Comparison
+- Compare the key measures (e.g., performance, workload, usability) between the pilot study (n=8) and main study (n=54) participants
+- Use descriptive statistics and visualizations to present these comparisons
+- Discuss any notable similarities or differences between the two groups
+
+Statistical Power and Sample Size Considerations
+- Present the results of statistical power analyses based on the observed effect sizes and the planned statistical tests
+- Discuss the adequacy of the sample size for detecting meaningful effects
+- Consider the potential impact of including or excluding the pilot study data on the statistical power and precision of the estimates
+- sample size calculation / justification: power analysis, practical considerations, precedent
+
+Decision on Pilot Study Inclusion
+- Based on the findings from 5.2.3 and 5.2.4, make a decision on whether to include the pilot study data in the main analysis
+- Clearly report your decision and rationale, considering factors such as data comparability, study design modifications, and statistical power
+:::
+
+## Descriptive Statistics
+
+### Univariate Participant Characteristics
+
+```{r drop-pilot-data}
+# drop participants in pilot study (first eight)
+demographics <- demographics |>
+  filter(!(participant >= 1001 & participant <= 1010))
+
+# drop event data from the pilot study
+car_results <- car_results |>
+  filter(!(participant >= 1001 & participant <= 1010))
+```
+
+```{r def-to-factors}
+
+# safely convert data to ord / cat factors
+# create levels / labels as required and identify / warn about mismatches
+
+to_factors <- function(
+    column, 
+    levels = NULL, 
+    labels = NULL,
+    ordered = FALSE
+    ) {
+
+  if (is.null(levels)) {
+    levels <- unique(na.omit(column))
+  }
+  
+  if (is.null(labels)) {
+    labels <- levels
+  }
+  
+  mismatched <- setdiff(unique(na.omit(column)), levels)
+  
+  if (length(mismatched) > 0) {
+    # Append mismatched values to levels and labels with a specific prefix
+    bad_levels <- paste("Bad -", mismatched)
+    levels <- c(levels, mismatched)
+    labels <- c(labels, bad_levels)
+    warning(
+      "Mismatched or unexpected values incorporated: ", 
+      paste(bad_levels, collapse = ", ")
+    )
+  }
+
+  # Proceed to convert to factor using cleaned-up data
+  factor_column <- factor(column, levels = levels, labels = labels, 
+                          ordered = ordered)
+
+  return(factor_column)
+}
+```
+
+```{r factor-demographics}
+
+# convert all categorical / ordinal data to factors
+
+demo_f <- demographics |>
+  mutate(
+    # categorical, levels != labels
+    # unordered with predefined levels
+    gender = to_factors(
+      gender,
+      levels = c("F", "M", "O"),
+      labels = c("Female", "Male", "Non-Binary")),
+    race = to_factors(
+      race,
+      levels = c("1", "2", "3", "4", "5", "6", "7"),
+      labels = c(
+        "American Indian or Alaska Native",
+        "Asian",
+        "Black or African American",
+        "Native Hawaiian or Other Pacific Islander",
+        "White",
+        "More than one race",
+        "Unknown or not reported"
+      )
+    ),
+    ethnicity = to_factors(
+      ethnicity,
+      levels = c("1", "2", "3"),
+      labels = c(
+        "Hispanic or Latino",
+        "Not Hispanic or Latino",
+        "Unknown or not reported"
+      )
+    ),
+    lenses = to_factors(
+      lenses,
+      levels = c("G", "C", "N", "Y"),
+      labels = c(
+        "Glasses",
+        "Contacts",
+        "No",
+        "Yes"
+      )
+    ),
+    
+    # categorical, levels == labels
+    # unordered with predefined levels
+    language = to_factors(
+      language,
+      levels = c("English", "Other"),
+    ),
+    worn = to_factors(
+      worn,
+      levels = c("Y", "N")
+    ),
+    color_blind = to_factors(
+      color_blind,
+      levels = c("Y", "N")
+    ),
+    condition = to_factors(
+      condition,
+      levels = c("Y", "N")
+    ),
+
+    # ad-hoc
+    # categorized in transcription, no predefined levels
+    country = to_factors(country),
+    college = to_factors(college),
+    program = to_factors(program),
+    referral = to_factors(referral),
+    treatment = to_factors(treatment),
+    
+    # ordinal, levels != labels
+    # ordered with predefined levels
+    education = to_factors(
+      education,
+      levels = c("1", "2", "3", "4", "5", "6", "7"),
+      labels = c(
+        "Pre-HS", # No HS diploma
+        "HS", # High school diploma or equivalent
+        "CND", # Some college but no degree
+        "AS",
+        "BS",
+        "MS",
+        "PhD"
+      ),
+      ordered = TRUE
+    ),
+    lego = to_factors(
+      lego,
+      levels = c("1", "2", "3", "4"),
+      labels = c(
+        "Little to no experience",
+        "Some experience",
+        "Lots of experience",
+        "Expert builder"
+      ),
+      ordered = TRUE
+    ),
+    manuf = to_factors(
+      manuf,
+      levels = c("1", "2", "3", "4"),
+      labels = c(
+        "No experience",
+        "Taken one or more classes",
+        "Held a part time or temporary position",
+        "One or more year’s experience"
+      ),
+      ordered = TRUE
+    ),
+    runner = to_factors(
+      runner,
+      levels = c("N", "Y", "5", "10", "H", "M", "T"),
+      labels = c(
+        "None",
+        "Yes - Unspecified",
+        "5K",
+        "10K",
+        "Half-Marathon",
+        "Marathon",
+        "Triathalon"
+      ),
+    )
+  )
+```
+
+#### Numeric Data
+
+```{r numeric-data}
+nums <- demo_f |>
+  select(where(is.numeric))
+
+height_stats <- nums |>
+  summarize(
+    mean = mean(height, na.rm = TRUE),
+    sd = sd(height, na.rm = TRUE),
+    min = min(height, na.rm = TRUE),
+    max = max(height, na.rm = TRUE),
+    pct_missing = sum(is.na(height)) / n() * 100
+  )
+
+height_summary <- str_glue(
+  "Mean height = {round(height_stats$mean, 1)}, SD = {round(height_stats$sd, 1)}, range: [{height_stats$min}, {height_stats$max}], {round(height_stats$pct_missing, 1)}% missing"
+)
+```
+
+After excluding data from the pilot study, `r report_participants(nums, age = "age", participants = "participant")` were included in this analysis. Other than age, height (`r height_summary`) was the only numeric data collected. As discussed in *XXX*, height was first recorded following the pilot study, when its impact on user behavior and results was first observed. Both numeric characteristics are visualized with a combined box and scatter plot in @fig-numeric.
+
+::: content-hidden
+TODO: reference height observation above
+:::
+
+```{r fig-numeric}
+#| fig-cap: "Distribution of Participant Age and Height"
+#| fig-height: 4
 #| warning: false
 
 base_color <- "#69b3a2"
 
-# Creating box plots for 'age'
+# Creating box plot for 'age'
 age_plot <- demographics |>
-  ggplot(aes(x = "Age (years)", y = age)) +
-  geom_boxplot(width = 0.5) +
+  ggplot(aes(x = age, y = "Age (years)")) +
+  geom_boxplot(width = 0.5, outlier.shape = NA) +
   geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
   labs(
     x = element_blank(),
@@ -168,9 +396,9 @@ age_plot <- demographics |>
   ) +
   custom_theme()
 
-# Creating box plots for 'height'
+# Creating box plot for 'height'
 height_plot <- demographics |>
-  ggplot(aes(x = "Height (feet)", y = height)) +
+  ggplot(aes(x = height, y = "Height (feet)")) +
   geom_boxplot(width = 0.5) +
   geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
   labs(
@@ -179,33 +407,157 @@ height_plot <- demographics |>
   ) +
   custom_theme()
 
-# Bar chart for 'gender'
-gender_plot <- demographics |>
-  ggplot(aes(x = gender, fill = gender, alpha = gender)) +
-  geom_bar(width = 0.4) +
-  labs(
-    x = element_blank(),
-    y = element_blank()
-  ) +
-  scale_fill_manual(
-    values = c("F" = base_color, "M" = base_color, "O" = base_color)
-  ) +
-  scale_alpha_manual(values = c("F" = 0.3, "M" = 0.6, "O" = 1.0)) +
-  theme(legend.position = "none")
-
-### combine using patchwork
-age_plot + height_plot + gender_plot +
+# combine using patchwork
+age_plot / height_plot +
   plot_annotation(
-    title = "Participant Demographics",
-    subtitle = "Age reflects student-oriented nature of the sample"
+    title = "Numeric Sample Characteristics",
+    subtitle = "Age reflects the student-oriented nature of the sample"
   ) +
   custom_theme()
 ```
 
-- Present descriptive statistics and visualizations for the entire sample (N=62)
-- Discuss key demographic variables, such as age, gender, education, and prior experience
+#### Categorical Data
 
-### Treatment Group Equivalence
+```{r categorical-data}
+cats <- demo_f |>
+  select(where(~is.factor(.) && !is.ordered(.))) |>
+  select(-c("referral", "runner")) |>
+  mutate(across(everything(), \(x) fct_lump(x, prop = 0.1)))
+
+# Summary table
+cat_tbl <- cats |>
+  select(gender:language) |>
+  tbl_summary(
+    label = setNames(str_to_title(names(cats)), names(cats)),
+    sort = list(everything() ~ "frequency")
+  ) |>
+  add_stat_label()
+
+cat_names <- cats |>
+  select(gender:country) |>
+  names()
+
+cats_long <- cats |>
+  select(gender:country) |>
+  pivot_longer(
+    cols = everything(), 
+    names_to = "Category", 
+    values_to = "Value"
+  ) |>
+  drop_na() |>
+  group_by(Category, Value) |>
+  summarize(Count = n(), .groups = 'drop') |>
+  group_by(Category) |>
+  mutate(Freq = Count / sum(Count))
+
+country_levels <- demo_f |>
+  filter(country != "USA") |>
+  count(country) |>
+  arrange(desc(n))
+```
+
+Of the sample's `r inline_text(cat_tbl, language, level = "English", pattern = "{N} participants, {p}% (n={n})")` reported that they mainly speak English at home. As shown in @fig-categorical, the gender composition was relatively balanced, with slightly more males `r inline_text(cat_tbl, gender, level = "Male", pattern = "(n={n}, {p}%)")` than females `r inline_text(cat_tbl, gender, level = "Female", pattern = "(n={n}, {p}%)")`. The racial makeup of the sample was predominantly White `r inline_text(cat_tbl, race, level = "White", pattern = "(n={n}, {p}%)")` and Asian `r inline_text(cat_tbl, race, level = "Asian", pattern = "(n={n}, {p}%)")`, with smaller representations from `r as.character(english::english(n_distinct(demo_f$race) - 2))` other groups. Fully `r inline_text(cat_tbl, ethnicity, level="Not Hispanic or Latino", pattern = "{p}% of participants (n={n})")` reported a non-Hispanic or Latino ethnicity. The majority of participants `r inline_text(cat_tbl, country, level = "USA", pattern = "(n={n}, {p}%)")` were from the United States, though `r as.character(english::english(n_distinct(demo_f$country, na.rm = TRUE) - 1))` other countries were represented, including `r paste(country_levels[1, ]$country, " (n=", country_levels[1, ]$n, ")", sep = "")` and `r paste(country_levels[2, ]$country, " (n=", country_levels[2, ]$n, ")", sep = "")`. `r paste(country_levels$country[3:(nrow(country_levels) - 1)], collapse = ", ")`, and `r tail(country_levels$country, 1)` were also listed as countries of origin by one participant each (n=1). All of this aligns with the study's recruitment focus.
+
+```{r fig-categorical}
+#| fig-cap: "Distribution of Participant Characteristics"
+#| fig-height: 4
+#| results: hide
+
+create_cat_plot <- function(data, category, base_color) {
+  # specify alpha ramp end points
+  min_alpha <- 0.3
+  max_alpha <- 0.8
+  
+  # Filter and reorder data
+  plot_data <- data |>
+    filter(Category == category) |>
+    mutate(
+      Value = if_else(Value == "Not Hispanic or Latino", 
+                      "Not Hispanic\nor Latino", Value),
+      Value = reorder(Value, Count, FUN = sum, decreasing = TRUE)
+    )
+
+  # Calculate alpha values based on Count linearly between min_alpha and max_alpha
+  alpha_values <- plot_data |>
+    mutate(alpha = scales::rescale(Count, to = c(min_alpha, max_alpha))) |>
+    pull(alpha)
+  
+  # Set unique Value groups for setting colors and alphas
+  unique_values <- unique(plot_data$Value)
+  
+  # Create the plot
+  ggplot(
+    plot_data, 
+    aes(x = Value, y = Count, fill = I(base_color), alpha = Value)
+  ) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+  scale_x_discrete(labels = function(x) tools::toTitleCase(x)) +
+  labs(x = tools::toTitleCase(category), y = element_blank()) +
+  scale_alpha_manual(values = setNames(alpha_values, unique_values)) +
+  guides(fill = "none", alpha = "none") +
+  ylim(0, max_count) +
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold"),
+    legend.position = "none",
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
+  )
+}
+
+# Calculate the maximum count to standardize the y-axis
+max_count <- max(cats_long$Count)
+
+# Create all plots
+cat_plots <- map(
+  cat_names, 
+  ~create_cat_plot(cats_long, .x, base_color)
+)
+
+# Add y-axis text and ticks to first plot
+first_plot <- cat_plots[[1]] +
+  theme(axis.text.y = element_text(),
+        axis.ticks.y = element_line())
+
+# Other plots without y-axis text and ticks, drop first
+other_plots <- cat_plots[-1]
+
+# combine!
+all_plots <- c(list(first_plot), other_plots)
+
+# Combine all plots
+combined_plot <- reduce(all_plots, `+`) +
+  plot_layout(ncol = length(all_plots), widths = c(1,1,0.667,0.667)) + 
+  plot_annotation(
+    title = "Categorical Sample Characteristics",
+    subtitle = "Value Count for Gender, Race, Ethnicity, and Country"
+  )
+
+# Print the combined plot
+print(combined_plot)
+```
+
+Following the primary hypothesis testing, additional analyses may explore the differences in key outcomes across these demographic subgroups. That effort will aim to provide additional context and insights into potential underlying factors influencing the findings.
+
+#### Ordinal Data
+
+  - ordinal data (median, mode, and ICQ - box plot of cats)
+    - education
+    - lego
+    - manuf
+  - binary data (prop / percent)
+    - lenses, worn, colorblind, condition
+
+### Univariate Analysis
+
+- Multivariate
+  - above by treatment?
+
+@fig-demographics shows the
+
+
 
 ```{r tbl-demo-by-treatment}
 #| tbl-cap: Participant Demographics by Treatment Group
@@ -238,27 +590,16 @@ demographics |>
   )
 ```
 
+
+
+::: content-hidden
+### Treatment Group Equivalence
+
 - Compare the demographic characteristics across the four treatment groups
 - Use statistical tests (e.g., chi-square, ANOVA) to assess the equivalence of the groups
 - Discuss any notable differences or similarities between the groups
+::: 
 
-### Pilot Study Comparison
-
-- Compare the key measures (e.g., performance, workload, usability) between the pilot study (n=8) and main study (n=54) participants
-- Use descriptive statistics and visualizations to present these comparisons
-- Discuss any notable similarities or differences between the two groups
-
-### Statistical Power and Sample Size Considerations
-
-- Present the results of statistical power analyses based on the observed effect sizes and the planned statistical tests
-- Discuss the adequacy of the sample size for detecting meaningful effects
-- Consider the potential impact of including or excluding the pilot study data on the statistical power and precision of the estimates
-- sample size calculation / justification: power analysis, practical considerations, precedent
-
-### Decision on Pilot Study Inclusion
-
-- Based on the findings from 5.2.3 and 5.2.4, make a decision on whether to include the pilot study data in the main analysis
-- Clearly report your decision and rationale, considering factors such as data comparability, study design modifications, and statistical power
 
 
 ## Learning Phase Results
