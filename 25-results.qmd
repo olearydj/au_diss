@@ -1,8 +1,3 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 # Results {#25-results}
 
 ```{r load-libs}
@@ -43,6 +38,7 @@ demographics <- read_xlsx(
 ```
 
 ```{r def-cust-theme}
+base_color <- "#69b3a2"
 
 # Define a custom theme for ggplot
 custom_theme <- function() {
@@ -114,30 +110,40 @@ daily_counts <- daily_counts |>
   mutate(cumulative_count = cumsum(daily_count))
 
 # Calculate remaining experiments
-total_experiments <- nrow(demographics)
 daily_counts <- daily_counts |>
   mutate(
-    remaining = total_experiments - cumulative_count,
-    percentage_remaining = (remaining / total_experiments) * 100
+    percentage_complete = (cumulative_count / participant_count) * 100
   )
 
-subtitle <- str_glue("{participant_count} Learning and Recall Experiments Conducted between {trial_start_str} and {trial_end_str} of {trial_year_str}")
+pc_eng <- as.character(english::english(participant_count))
+pc_eng <- str_replace(pc_eng, "^.", str_to_upper)
+subtitle <- str_glue("{pc_eng} Learning and Recall Experiments Conducted between {trial_start_str} and {trial_end_str} of {trial_year_str}")
 
 # Plotting
 ggplot(daily_counts, aes(x = trial_date)) +
-  geom_line(aes(y = daily_count, group = 1), color = "blue") +
-  geom_line(aes(y = remaining, group = 1), color = "red") +
+  geom_line(
+    aes(y = daily_count, group = 1), 
+    color = base_color,
+    linewidth = 1,
+    alpha = 0.5
+  ) +
+  geom_line(
+    aes(y = percentage_complete, group = 1), 
+    color = base_color,
+    linewidth = 1.25,
+    alpha = 1
+  ) +
+  scale_y_continuous(
+    name = "Trials Administered",
+    sec.axis = sec_axis(~ ., name = "Percentage Complete"),
+    position = "right",
+    limits = c(0,100)
+  ) +
   labs(
     title = "First Session Progress",
     subtitle = subtitle,
     x = element_blank(),
-    y = "Trials Administered Each Day"
-  ) +
-  scale_y_continuous(
-    sec.axis = sec_axis(
-      transform = ~ (1 - . / total_experiments) * 100,
-      name = "Percentage Complete",
-    )
+    y = element_blank()
   ) +
   custom_theme()
 ```
@@ -171,9 +177,9 @@ Decision on Pilot Study Inclusion
 - Clearly report your decision and rationale, considering factors such as data comparability, study design modifications, and statistical power
 :::
 
-## Descriptive Statistics
+## Analysis of Participant Demographics
 
-### Univariate Participant Characteristics
+### Univariate Analysis
 
 ```{r drop-pilot-data}
 # drop participants in pilot study (first eight)
@@ -383,38 +389,70 @@ TODO: reference height observation above
 #| fig-height: 4
 #| warning: false
 
-base_color <- "#69b3a2"
-
-# Creating box plot for 'age'
+# Plotting age
 age_plot <- demographics |>
-  ggplot(aes(x = age, y = "Age (years)")) +
-  geom_boxplot(width = 0.5, outlier.shape = NA) +
-  geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
+  filter(!is.na(age)) |>
+  ggplot(aes(x = age)) +
+  geom_bar(
+    aes(y = ..count../max(..count..)),
+    fill = I(base_color),
+    alpha = 0.75
+  ) + 
+  geom_boxplot(
+    width = 0.075,
+    position = position_nudge(y = -0.07)
+  ) +
   labs(
-    x = element_blank(),
+    x = "Age (yr)",
     y = element_blank()
   ) +
-  custom_theme()
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold"),
+    legend.position = "none",
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
+  )
 
-# Creating box plot for 'height'
+# Plotting height
 height_plot <- demographics |>
-  ggplot(aes(x = height, y = "Height (feet)")) +
-  geom_boxplot(width = 0.5) +
-  geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
+  filter(!is.na(height)) |>
+  ggplot(aes(x = height)) +
+  geom_bar(
+    aes(y = ..count../max(..count..)),
+    fill = I(base_color),
+    alpha = 0.75,
+    width = 0.55
+  ) + 
+  geom_boxplot(
+    width = 0.075,
+    position = position_nudge(y = -0.07)
+  ) +
   labs(
-    x = element_blank(),
+    x = "Height (in)",
     y = element_blank()
   ) +
-  custom_theme()
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold"),
+    legend.position = "none",
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
+  )
 
 # combine using patchwork
-age_plot / height_plot +
+age_plot + height_plot +
+  # plot_layout(ncol = 2, widths = c(1,0.8)) +
   plot_annotation(
     title = "Numeric Sample Characteristics",
     subtitle = "Age reflects the student-oriented nature of the sample"
-  ) +
-  custom_theme()
+  )
 ```
+
 
 #### Categorical Data
 
@@ -550,7 +588,7 @@ Following the primary hypothesis testing, additional analyses may explore the di
   - binary data (prop / percent)
     - lenses, worn, colorblind, condition
 
-### Univariate Analysis
+### Multivariate Analysis
 
 - Multivariate
   - above by treatment?
