@@ -378,11 +378,7 @@ height_summary <- str_glue(
 )
 ```
 
-After excluding data from the pilot study, `r report_participants(nums, age = "age", participants = "participant")` were included in this analysis. Other than age, height (`r height_summary`) was the only numeric data collected. As discussed in *XXX*, height was first recorded following the pilot study, when its impact on user behavior and results was first observed. Both numeric characteristics are visualized with a combined box and scatter plot in @fig-numeric.
-
-::: content-hidden
-TODO: reference height observation above
-:::
+After excluding data from the pilot study, `r report_participants(nums, age = "age", participants = "participant")` were included in this analysis. Other than age, height (`r height_summary`) was the only numeric data collected. As discussed in @sec-res-challenges, height was first recorded following the pilot study, when its impact on user behavior and results was first observed. Both numeric characteristics are visualized with a combined box and scatter plot in @fig-numeric.
 
 ```{r fig-numeric}
 #| fig-cap: "Distribution of Participant Age and Height"
@@ -497,7 +493,7 @@ country_levels <- demo_f |>
 Of the sample's `r inline_text(cat_tbl, language, level = "English", pattern = "{N} participants, {p}% (n={n})")` reported that they mainly speak English at home. As shown in @fig-categorical, the gender composition was relatively balanced, with slightly more males `r inline_text(cat_tbl, gender, level = "Male", pattern = "(n={n}, {p}%)")` than females `r inline_text(cat_tbl, gender, level = "Female", pattern = "(n={n}, {p}%)")`. The racial makeup of the sample was predominantly White `r inline_text(cat_tbl, race, level = "White", pattern = "(n={n}, {p}%)")` and Asian `r inline_text(cat_tbl, race, level = "Asian", pattern = "(n={n}, {p}%)")`, with smaller representations from `r as.character(english::english(n_distinct(demo_f$race) - 2))` other groups. Fully `r inline_text(cat_tbl, ethnicity, level="Not Hispanic or Latino", pattern = "{p}% of participants (n={n})")` reported a non-Hispanic or Latino ethnicity. The majority of participants `r inline_text(cat_tbl, country, level = "USA", pattern = "(n={n}, {p}%)")` were from the United States, though `r as.character(english::english(n_distinct(demo_f$country, na.rm = TRUE) - 1))` other countries were represented, including `r paste(country_levels[1, ]$country, " (n=", country_levels[1, ]$n, ")", sep = "")` and `r paste(country_levels[2, ]$country, " (n=", country_levels[2, ]$n, ")", sep = "")`. `r paste(country_levels$country[3:(nrow(country_levels) - 1)], collapse = ", ")`, and `r tail(country_levels$country, 1)` were also listed as countries of origin by one participant each (n=1). All of this aligns with the study's recruitment focus.
 
 ```{r fig-categorical}
-#| fig-cap: "Distribution of Participant Characteristics"
+#| fig-cap: "Distribution of Categorical Characteristics"
 #| fig-height: 4
 #| results: hide
 
@@ -577,23 +573,184 @@ combined_plot <- reduce(all_plots, `+`) +
 print(combined_plot)
 ```
 
+```{r make-vc-table}
+
+vc_tbl <- cats |>
+  select(lenses:worn) |>
+  filter(!lenses %in% c("No", "Other", "Unknown")) |>
+  filter(!(is.na(lenses) & is.na(worn))) |>
+  droplevels() |>
+  mutate(worn = recode(worn, 'Y' = 'Yes', 'N' = 'No')) |>
+  tbl_cross(
+    row = lenses,
+    col = worn,
+    label = list(lenses = "Lenses", worn = "Worn During Session"),
+    percent = "row",
+    missing_text = "NA"
+  ) |>
+  add_stat_label() |>
+  bold_labels()
+
+```
+
+Of the 54 participants, 52% (n=28) reported having a vision prescription. Of those, `r inline_text(vc_tbl, row_level = "Contacts", col_level = "Total")` were for contact lenses , but `r inline_text(vc_tbl, row_level = "Glasses", col_level = "Total")` had glasses. Whereas all contact wearers reported they would wear them during the session, among glasses wearers only seven (47%) planned to the same. Five (33%) did not intend to do so, and three (20%) gave no indication. This breakdown is summarized by @tbl-vc. Two participants also reported color-blindness (n=1) or other vision conditions (n=1). No participants indicated any other condition that might affect their performance.
+
+::: content-hidden
+MAYBE: make this all inline code; rethink percent by row, col, or cell? format n= etc. as markdown?
+:::
+
+```{r tbl-vc}
+#| tbl-cap: Vision Correction Table
+
+vc_tbl |>
+  as_kable_extra(
+    booktabs = TRUE,
+    escape = FALSE,
+    linesep = "\\addlinespace",
+  ) |>
+  kableExtra::kable_styling(
+    latex_options = c("scale_down"),
+    font_size = 11
+  )
+
+```
+
 Following the primary hypothesis testing, additional analyses may explore the differences in key outcomes across these demographic subgroups. That effort will aim to provide additional context and insights into potential underlying factors influencing the findings.
 
 #### Ordinal Data
 
-  - ordinal data (median, mode, and ICQ - box plot of cats)
-    - education
-    - lego
-    - manuf
-  - binary data (prop / percent)
-    - lenses, worn, colorblind, condition
+```{r ord-data}
+ords <- demo_f |>
+  select(where(~is.factor(.) && is.ordered(.)))
+
+# Summary table
+ords_tbl <- ords |>
+  tbl_summary(
+    label = setNames(str_to_title(names(ords)), names(ords)),
+    sort = list(everything() ~ "frequency")
+  ) |>
+  add_stat_label()
+
+# ords_tbl
+
+# Helper function to calculate mode
+calculate_mode <- function(data, var_name) {
+  count_table <- table(data[[var_name]])
+  max_freq <- max(count_table)
+  # pick first if more than one value has max count
+  mode_value <- names(count_table[count_table == max_freq])[1]
+  
+  # Convert to an output that includes the level's name (mode_value) and its index
+  mode_index <- which(levels(data[[var_name]]) == mode_value)
+  return(list(value = mode_value, index = mode_index))
+}
+
+# Main function to calculate statistics and return formatted string
+calculate_ord_summary_stats <- function(data, var_name) {
+  # Ensure the variable is an ordered factor
+  if (!is.ordered(data[[var_name]])) {
+    stop("The variable must be an ordered factor.")
+  }
+  
+  # Convert factor to integer codes
+  factor_int <- as.integer(data[[var_name]])
+  
+  # Calculate median, mode, and IQR
+  median_value <- median(factor_int, na.rm = TRUE)
+  mode_results <- calculate_mode(data, var_name)
+  iqr_value <- IQR(factor_int, na.rm = TRUE)
+  
+  # Format and return the result as a string
+  result_string <- sprintf("(Median = %.1f; Mode = %d, %s; IQR = %.1f)", 
+                           median_value, mode_results$index, mode_results$value, 
+                           iqr_value)
+  return(result_string)
+}
+```
+
+Unlike the data above, the categories analyzed in this section are inherently ordered. Responses for each participant's current Education level `r calculate_ord_summary_stats(ords, "education")` and their experience with Lego `r calculate_ord_summary_stats(ords, "lego")` and Manufacturing `r calculate_ord_summary_stats(ords, "manuf")` are visualized in increasing order by @fig-ordinal. The results are mostly in line with expectations based on the recruitment, though it is disappointing to see that `r inline_text(ords_tbl, lego, level = "Little to no experience", pattern = "{p}% of participants (n={n})")` claimed to have little to no experience with Lego. The great majority were undergraduate students working towards a degree `r inline_text(ords_tbl, education, level = "CND", pattern = "(n={n}, {p}%)")`, with no experience in manufacturing `r inline_text(ords_tbl, manuf, level = "No experience", pattern = "(n={n}, {p}%)")`.
+
+```{r fig-ordinal}
+#| fig-cap: "Distribution of Ordinal Characteristics"
+#| fig-height: 4
+#| results: hide
+
+plot_ords <- function(data, var, title) {
+  norm_data <- data |>
+    count(var_name = {{ var }}) |>
+    mutate(percent = n / sum(n) * 100)
+  
+  p <- norm_data |>
+    ggplot(aes(y = var_name, x = percent)) +
+    geom_bar(
+      aes(alpha = percent / 100),
+      fill = base_color,
+      stat = "identity", 
+      width = 0.75
+    ) +
+    scale_alpha_continuous(trans = "log10", range = c(0.2, 0.8), guide = "none") +
+    labs(
+      title = title,
+      x = element_blank(),
+      y = element_blank()
+    ) +
+    theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(size = 9, face = "bold"),
+      legend.position = "none",
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank(),
+      # axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
+    )
+  return(p)
+}
+
+
+educ_plot <- ords |>
+  mutate(education = fct_recode(education, 
+                                College = "CND",
+                                Associate = "AS",
+                                Bachelor = "BS",
+                                Master = "MS",
+                                Doctorate = "PhD")
+  ) |>
+  plot_ords(var = education, title = "Current Education Level")
+
+lego_plot <- ords |>
+  mutate(lego = fct_recode(lego,
+                           Little = "Little to no experience",
+                           Some = "Some experience",
+                           Lots = "Lots of experience",
+                           Expert = "Expert builder")
+  ) |>
+  plot_ords(lego, title = "Lego Experience")
+
+manuf_plot <- ords |>
+  mutate(manuf = fct_recode(manuf,
+                           None = "No experience",
+                           Training = "Taken one or more classes",
+                           PartTime = "Held a part time or temporary position",
+                           Some = "One or more year’s experience")
+  ) |>
+  plot_ords(manuf, title = "Manufacturing Experience")
+
+# combine using patchwork
+educ_plot / (lego_plot + manuf_plot) +
+  # plot_layout(ncol = 2) +
+  plot_annotation(
+    title = "Ordinal Sample Characteristics",
+    subtitle = "Reflects the Focus of Recruiting Efforts"
+  )
+
+```
 
 ### Multivariate Analysis
 
 - Multivariate
   - above by treatment?
 
-@fig-demographics shows the
+@tbl-demo-by-treatment shows the
 
 
 
@@ -722,7 +879,7 @@ demographics |>
 
 ### Interactions between Workload, Usability, and Treatment
 
-## Challenges and Unexpected Observations
+## Challenges and Unexpected Observations {sec-res-challenges}
 
 Discussion of any challenges encountered during the conduct of the protocol  Modifications made to the protocol in response to these challenges
 
