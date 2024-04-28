@@ -85,9 +85,12 @@ last_trial_date <- demographics |>
   summarize(last_date = max(trial_date)) |>
   pull(last_date)
 
-trial_start_str <- str_glue("{month(first_trial_date)}/{day(first_trial_date)}")
-trial_end_str <- str_glue("{month(last_trial_date)}/{day(last_trial_date)}")
+trial_start_str <- str_glue(
+  "{month(first_trial_date)}/{day(first_trial_date)}")
+trial_end_str <- str_glue(
+  "{month(last_trial_date)}/{day(last_trial_date)}")
 trial_year_str <- str_glue("{year(last_trial_date)}")
+
 # start, end = Feb 10, Apr 27 2023
 ```
 
@@ -386,7 +389,7 @@ After excluding data from the pilot study, `r report_participants(nums, age = "a
 #| warning: false
 
 # Plotting age
-age_plot <- demographics |>
+age_plot <- demo_f |>
   filter(!is.na(age)) |>
   ggplot(aes(x = age)) +
   geom_bar(
@@ -413,7 +416,7 @@ age_plot <- demographics |>
   )
 
 # Plotting height
-height_plot <- demographics |>
+height_plot <- demo_f |>
   filter(!is.na(height)) |>
   ggplot(aes(x = height)) +
   geom_bar(
@@ -758,7 +761,7 @@ educ_plot / (lego_plot + manuf_plot) +
 #| tbl-cap: Participant Demographics by Treatment Group
 
 # Compute summary statistics
-demographics |>
+demo_f |>
   select(age:gender, treatment) |>
   tbl_summary(
     by = "treatment",
