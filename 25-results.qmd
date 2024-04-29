@@ -750,34 +750,68 @@ educ_plot / (lego_plot + manuf_plot) +
 
 ### Multivariate Analysis
 
-- Multivariate
-  - above by treatment?
+In order to assess the equivalence of treatment groups and validate the random assignment that is assumed by most analysis to follow, 
+Age, Gender, Lego experience, and Education were compared across treatment groups. These variables were selected for their meaningful variation and potential relevance to the outcomes of interest. Other notable variables, including Ethnicity and Country of Origin were considered less critical due to their skewed distributions and small subgroup sizes.
 
-@tbl-demo-by-treatment shows the
+```{r make-mv-table}
 
+num_cols <- demographics |>
+  select(age)
 
+cat_cols <- demo_f |>
+  select(c("gender", "lego", "education", "treatment"))
 
-```{r tbl-demo-by-treatment}
-#| tbl-cap: Participant Demographics by Treatment Group
+mv_data <- bind_cols(num_cols, cat_cols)
 
-# Compute summary statistics
-demo_f |>
-  select(age:gender, treatment) |>
+mv_tbl <- mv_data |>
+  mutate(across(where(is.factor), ~fct_drop(.))) |>
+  mutate(
+    lego = fct_recode(lego,
+                      "Little" = "Little to no experience",
+                      "Some" = "Some experience",
+                      "Lots" = "Lots of experience",
+                      "Expert" = "Expert builder"
+    ),
+    education = fct_recode(education,
+                           "College" = "CND",
+                           "Associate" = "AS",
+                           "Bachelor" = "BS",
+                           "Master" = "MS",
+                           "Doctorate" = "PhD"
+    )
+  ) |>
   tbl_summary(
     by = "treatment",
     missing = "no",
     statistic = list(
-      all_continuous() ~ "{mean} ({sd})",
-      all_categorical() ~ "{n} / {N} ({p}%)"
+      all_continuous() ~ "{mean} ({sd})"
     ),
-    label = list("age" ~ "Age", "height" ~ "Height", "gender" ~ "Gender")
+    label = list(
+      "age" ~ "Age", 
+      "gender" ~ "Gender", 
+      "lego" ~ "Lego", 
+      "education" ~ "Education"
+    )
   ) |>
+  add_p() |>
+  separate_p_footnotes() |>
+  # add_stat_label() |>
+  bold_labels()  |>
   modify_header(
-    all_stat_cols() ~ "**{level}** \nN = {n} ({style_percent(p)}%)"
-  ) |>
-  add_n() |>
-#  bold_labels() |>
-  as_kable_extra(
+    all_stat_cols() ~ "**{level}**\nN = {n} ({style_percent(p)}%)",
+    p.value ~ "**p-val**"
+  )
+
+```
+
+@tbl-demo-by-treatment shows the result of this analysis. The Kruskal-Wallis rank sum test was utilized for the numeric variable (Age) to compare distributions across groups, while Fisher's exact test was applied to the categorical and ordinal variables (Gender, Education, and Lego experience) to assess the independence of distributions from treatment assignments. The p-values from these tests evaluate whether there are statistically significant differences in these variables across the groups, which might suggest imbalances that could affect the validity of the randomization process.
+
+```{r tbl-demo-by-treatment}
+#| tbl-cap: Participant Demographics by Treatment Group
+
+mv_tbl |>
+  modify_footnote(update = everything() ~ NA) |>
+    as_kable_extra(
     booktabs = TRUE,
     escape = FALSE,
     linesep = "\\addlinespace",
@@ -786,21 +820,46 @@ demo_f |>
     latex_options = c("scale_down"),
     font_size = 11
   )
+
 ```
 
-
+The high p-values for all observed characteristics--Age, `r inline_text(mv_tbl, variable = age, column = "p.value")`; Gender, `r inline_text(mv_tbl, variable = gender, column = "p.value")`; Lego, `r inline_text(mv_tbl, variable = lego, column = "p.value")`; Education, `r inline_text(mv_tbl, variable = lego, column = "p.value")`--suggest that the treatment groupings are not strongly associated with any of them. This result validates the group randomization effort, which mitigates the influence of known and unknown confounding variables, thereby reducing bias in the data. It is essential to the validity of statistical tests which assume sample independence, including most of those employed by this study.
 
 ::: content-hidden
-### Treatment Group Equivalence
+MAYBE: further analysis to show that:
+- nums
+  - height (0.11)
+- cats
+  - country (0.085)
+  - lenses (0.063)
+- ords
+  - manuf exp (0.046)
+  
+may be significant (p-val)
+used the following code to test all demographics
 
-- Compare the demographic characteristics across the four treatment groups
-- Use statistical tests (e.g., chi-square, ANOVA) to assess the equivalence of the groups
-- Discuss any notable differences or similarities between the groups
-::: 
+```text
+# test significance of treatment groups
+trt <- demo_f |>
+  select(treatment)
 
+# bind treatment for nums, ords (included in cats)
+cd <- bind_cols(ords, trt)
 
+cd |>
+  tbl_summary(
+      by = "treatment",
+      missing = "no",
+      statistic = list(
+        all_continuous() ~ "{mean} ({sd})"
+      )
+    ) |>
+    add_p()
+```
+:::
 
 ## Learning Phase Results
+
 
 ### Descriptive Statistics
 
@@ -811,6 +870,9 @@ demo_f |>
 #### Average Error Count per Car (H1b)
 
 #### Learning Rates (H1c)
+
+::: content-hidden
+TODO: learning add. analysis
 
 ### Additional Analyses
 
@@ -824,6 +886,8 @@ demo_f |>
 
 #### Qualified Operators
 
+:::
+
 ## Recall Phase Results
 
 ### Descriptive Statistics
@@ -833,6 +897,9 @@ demo_f |>
 #### Overall Equipment Effectiveness (H2a)
 
 #### Paper Work Instruction References (H2b)
+
+::: content-hidden
+TODO: recall add. analysis
 
 ### Additional Analyses
 
@@ -846,6 +913,8 @@ demo_f |>
 
 #### Ongoing Learning
 
+:::
+
 ## Retention Phase Results
 
 ### Descriptive Statistics
@@ -854,11 +923,16 @@ demo_f |>
 
 #### Change in OEE (H3a)
 
+::: content-hidden
+TODO: retention add. analysis
+
 ### Additional Analyses
 
 #### Absolute and Percentage Change in OEE
 
 #### Primary Driver of OEE Change
+
+:::
 
 ## Workload, Usability, and User Experience
 
@@ -867,6 +941,9 @@ demo_f |>
 ### System Usability Scale Results
 
 ### Qualitative Feedback Analysis
+
+::: content-hidden
+TODO: exploratory analysis
 
 ## Exploratory Analyses
 
@@ -882,7 +959,9 @@ demo_f |>
 
 ### Interactions between Workload, Usability, and Treatment
 
-## Challenges and Unexpected Observations {sec-res-challenges}
+:::
+
+## Challenges and Unexpected Observations {#sec-res-challenges}
 
 Discussion of any challenges encountered during the conduct of the protocol  Modifications made to the protocol in response to these challenges
 
