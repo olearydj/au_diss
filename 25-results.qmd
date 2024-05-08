@@ -305,7 +305,6 @@ demo_f <- demographics |>
     college = to_factors(college),
     program = to_factors(program),
     referral = to_factors(referral),
-    treatment = to_factors(treatment),
     
     # ordinal, levels != labels
     # ordered with predefined levels
@@ -357,6 +356,12 @@ demo_f <- demographics |>
         "Marathon",
         "Triathalon"
       ),
+      ordered = TRUE
+    ),
+    treatment = to_factors(
+      treatment,
+      levels = c("PWI", "PAR", "AR", "MR"),
+      ordered = TRUE
     )
   )
 ```
@@ -399,7 +404,8 @@ age_plot <- demo_f |>
   ) + 
   geom_boxplot(
     width = 0.075,
-    position = position_nudge(y = -0.07)
+    position = position_nudge(y = -0.07),
+    # notch = TRUE
   ) +
   labs(
     x = "Age (yr)",
@@ -427,7 +433,8 @@ height_plot <- demo_f |>
   ) + 
   geom_boxplot(
     width = 0.075,
-    position = position_nudge(y = -0.07)
+    position = position_nudge(y = -0.07),
+    notch = TRUE
   ) +
   labs(
     x = "Height (in)",
@@ -452,13 +459,12 @@ age_plot + height_plot +
   )
 ```
 
-
 #### Categorical Data
 
 ```{r categorical-data}
 cats <- demo_f |>
   select(where(~is.factor(.) && !is.ordered(.))) |>
-  select(-c("referral", "runner")) |>
+  select(-c("referral")) |>
   mutate(across(everything(), \(x) fct_lump(x, prop = 0.1)))
 
 # Summary table
@@ -596,7 +602,7 @@ vc_tbl <- cats |>
 
 ```
 
-Of the 54 participants, 52% (n=28) reported having a vision prescription. Of those, `r inline_text(vc_tbl, row_level = "Contacts", col_level = "Total")` were for contact lenses , but `r inline_text(vc_tbl, row_level = "Glasses", col_level = "Total")` had glasses. Whereas all contact wearers reported they would wear them during the session, among glasses wearers only seven (47%) planned to the same. Five (33%) did not intend to do so, and three (20%) gave no indication. This breakdown is summarized by @tbl-vc. Two participants also reported color-blindness (n=1) or other vision conditions (n=1). No participants indicated any other condition that might affect their performance.
+Of the 54 participants, 52% (n=28) reported having a vision prescription. Of those, `r inline_text(vc_tbl, row_level = "Contacts", col_level = "Total")` were for contact lenses , but `r inline_text(vc_tbl, row_level = "Glasses", col_level = "Total")` had glasses. Whereas all contact wearers reported they would wear them during the session, among glasses wearers only seven (47%) planned the same. Five (33%) did not intend to do so, and three (20%) gave no indication. This breakdown is summarized by @tbl-vc. Two participants also reported color-blindness (n=1) or other vision conditions (n=1). No participants indicated any other condition that might affect their performance.
 
 ::: content-hidden
 MAYBE: make this all inline code; rethink percent by row, col, or cell? format n= etc. as markdown?
@@ -750,8 +756,7 @@ educ_plot / (lego_plot + manuf_plot) +
 
 ### Multivariate Analysis
 
-In order to assess the equivalence of treatment groups and validate the random assignment that is assumed by most analysis to follow, 
-Age, Gender, Lego experience, and Education were compared across treatment groups. These variables were selected for their meaningful variation and potential relevance to the outcomes of interest. Other notable variables, including Ethnicity and Country of Origin were considered less critical due to their skewed distributions and small subgroup sizes.
+In order to assess the equivalence of treatment groups and validate the random assignment that is assumed by most analysis to follow, Age, Gender, Lego experience, and Education were compared across treatment groups. These variables were selected for their meaningful variation and potential relevance to the outcomes of interest. Other notable variables, including Ethnicity and Country of Origin were considered less critical due to their skewed distributions and small subgroup sizes.
 
 ```{r make-mv-table}
 
@@ -794,9 +799,11 @@ mv_tbl <- mv_data |>
     )
   ) |>
   add_p() |>
-  separate_p_footnotes() |>
+  # separate_p_footnotes() |>
   # add_stat_label() |>
   bold_labels()  |>
+  bold_p(t = 0.05) |>
+  italicize_levels() |>
   modify_header(
     all_stat_cols() ~ "**{level}**\nN = {n} ({style_percent(p)}%)",
     p.value ~ "**p-val**"
@@ -811,7 +818,7 @@ mv_tbl <- mv_data |>
 
 mv_tbl |>
   modify_footnote(update = everything() ~ NA) |>
-    as_kable_extra(
+  as_kable_extra(
     booktabs = TRUE,
     escape = FALSE,
     linesep = "\\addlinespace",
@@ -822,6 +829,12 @@ mv_tbl |>
   )
 
 ```
+
+::: content-hidden
+MAYBE: wrap gtsummary calls in a function that saves an svg to project
+and inserts embedding so that all original formatting is preserved?
+could they still be labeled as tables?
+:::
 
 The high p-values for all observed characteristics--Age, `r inline_text(mv_tbl, variable = age, column = "p.value")`; Gender, `r inline_text(mv_tbl, variable = gender, column = "p.value")`; Lego, `r inline_text(mv_tbl, variable = lego, column = "p.value")`; Education, `r inline_text(mv_tbl, variable = lego, column = "p.value")`--suggest that the treatment groupings are not strongly associated with any of them. This result validates the group randomization effort, which mitigates the influence of known and unknown confounding variables, thereby reducing bias in the data. It is essential to the validity of statistical tests which assume sample independence, including most of those employed by this study.
 
@@ -834,11 +847,11 @@ MAYBE: further analysis to show that:
   - lenses (0.063)
 - ords
   - manuf exp (0.046)
-  
+
 may be significant (p-val)
 used the following code to test all demographics
 
-```text
+``` text
 # test significance of treatment groups
 trt <- demo_f |>
   select(treatment)
@@ -860,16 +873,232 @@ cd |>
 
 ## Learning Phase Results
 
+```{r factor-car-results}
+
+res_f <- car_results |>
+  mutate(
+    treatment = to_factors(
+      treatment,
+      levels = c("PWI", "PAR", "AR", "MR"),
+      ordered = TRUE
+    ),
+  car_outcome = to_factors(car_outcome)
+)
+```
+
+```{r learn-data}
+learn <- res_f |>
+  filter(
+    phase == 1,
+    car_outcome == "complete",
+    uid != "1048-P1-C5"  # hack to remove incorrectly labeled car
+  ) |>
+  select(participant, car_elapsed_time, uce, treatment)
+
+# report descriptive stats for cet and uce
+learn_rpt <- learn |>
+  rename(
+    "Car Elapsed Time" = car_elapsed_time,
+    "Uncorrected Error Count" = uce
+  ) |>
+  select("Car Elapsed Time", "Uncorrected Error Count") |>
+  report::report()  # options not working!
+
+# agg participant results
+learn_agg <- learn |>
+  group_by(participant) |>
+  summarize(
+    treatment = first(treatment),
+    tot_cars = n(),  # Count the number of tasks per participant
+    avg_tct = mean(car_elapsed_time, na.rm = TRUE),
+    avg_uce = mean(uce, na.rm = TRUE)
+  ) |>
+  ungroup()
+```
+
+::: content-hidden
+TODO: correct data for `1048-P1-C5`; flagged complete with elapsed time
+of 4.267s TODO: investigate report::report options
+:::
+
+Analysis plan: 1. phase 1 complete cars, unmodified times 2. partial
+credit for incomplete count 3. modified times
 
 ### Descriptive Statistics
 
+`r learn_rpt`
+
+Each observation corresponds to a single repetition of the car assembly
+task during the Learning phase. The distributions for both variables are
+depicted in @fig-learn.
+
+```{r fig-learn}
+#| fig-cap: "Distribution of Learning Experimental Data"
+#| fig-height: 5
+#| warning: false
+
+# Plotting car_elapsed_time
+cet_plot <- learn |>
+  ggplot(aes(x = car_elapsed_time)) +
+  geom_histogram(
+    aes(y = ..density.. * 65),  # hack for relative size / scale
+    binwidth = 10, 
+    fill = base_color, 
+    alpha = 0.75
+  ) + 
+  geom_boxplot(
+    width = 0.075,
+    position = position_nudge(y = -0.07),
+    notch = TRUE
+  ) +
+  labs(
+    title = "Elapsed Time per Car (sec)",
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(size = 9, face = "bold"),
+    legend.position = "none",
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    # axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
+  )
+
+# Plotting Uncorrected Error Counts
+uce_plot <- learn |>
+  ggplot(aes(x = uce)) +
+  geom_histogram(
+    aes(y = ..density.. * 1.5),  # hack for relative size / scale
+    binwidth = 1, 
+    fill = base_color, 
+    alpha = 0.75
+  ) + 
+  geom_boxplot(
+    width = 0.075,
+    position = position_nudge(y = -0.07),
+    # notch = TRUE
+  ) +
+  labs(
+    title = "Number of Uncorrected Errors per Car",
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(size = 9, face = "bold"),
+    legend.position = "none",
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    # axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
+  )
+
+# combine using patchwork
+cet_plot / uce_plot +
+  # plot_layout(ncol = 2, widths = c(1,1)) +
+  plot_annotation(
+    title = "Learning Phase - Observed Measures",
+    subtitle = "Something insightful..."
+  )
+```
+
+@tbl-agg-results shows statistics for this data, summarized by
+participant, including the number of assembly tasks completed. From
+this, we can see that the
+
+```{r tbl-agg-results}
+#| tbl-cap: Observed Measures Summarized by Participant
+#| warning: false
+
+SmartEDA::ExpNumStat(
+  learn_agg |> select(-c(participant, treatment)),
+  Qnt = c(0.25, 0.75),
+  round = 1
+  ) |>
+  select(Vname, min, max, mean, median, SD, `25%`, `75%`, IQR, Skewness, Kurtosis) |>
+  gt()
+```
+
+@tbl-agg-results-by-treat shows...
+
+```{r tbl-agg-results-by-treat}
+#| tbl-cap: Summary of Participant Performance Metrics by Treatment Group
+
+t <- learn_agg |>
+  select(-participant) |>
+  tbl_summary(
+    type = all_continuous() ~ "continuous2",
+    digits = all_continuous2() ~ 1,
+    label = list(
+      avg_tct ~ "Task Completion Time",
+      avg_uce ~ "Error Count per Task",
+      tot_cars ~ "Number of Tasks Completed"
+    ),
+    by = treatment,
+    statistic = list(
+      all_continuous2() ~ c(
+        "{mean} ({sd})",
+        "{median} ({p25}, {p75})"
+      )
+    )
+  ) |>
+  # bold_labels() |>
+  add_p() |>
+  separate_p_footnotes() |>
+  bold_p(t = 0.05) |>
+  modify_header(
+    all_stat_cols() ~ "**{level}**\nn = {n} ({style_percent(p)}%)",
+    p.value ~ "**p-val**"
+  )
+
+t |>
+  modify_footnote(update = everything() ~ NA) |>
+  as_kable_extra(
+    booktabs = TRUE,
+    escape = FALSE,
+    linesep = "\\addlinespace",
+  ) |>
+  kableExtra::kable_styling(
+    latex_options = c("scale_down"),
+    font_size = 11
+  )
+```
+
+some text here to hopefully fix the weird centering
+
 ### Hypothesis Testing
 
-#### Average Time per Car (H1a)
+The first group of hypotheses are designed to test the effect of each
+treatment on training outcomes.
+
+Note that elapsed time is a continuous numerical value, but error count
+is discrete. This difference necessitates different approaches for
+hypothesis testing and the underlying assumptions that must be checked.
+
+#### Average Time per Car
+
+Here we will test
+$H_{1a}\textrm{: Average time per car varies with treatment}$.
+
+```{r}
+d <- learn |>
+  group_by(treatment)
+
+m <- aov(car_elapsed_time ~ treatment, data = d)
+
+# library(performance)
+# check_model(m)
+```
 
 #### Average Error Count per Car (H1b)
 
+$H_{1b}\textrm{: Average error count per car varies with treatment}$.
+
 #### Learning Rates (H1c)
+
+$H_{1c}\textrm{: Learning rates vary with treatment}$.
 
 ::: content-hidden
 TODO: learning add. analysis
@@ -885,7 +1114,6 @@ TODO: learning add. analysis
 #### First-Task Performance
 
 #### Qualified Operators
-
 :::
 
 ## Recall Phase Results
@@ -912,7 +1140,6 @@ TODO: recall add. analysis
 #### Error Types and Task Completion Rate
 
 #### Ongoing Learning
-
 :::
 
 ## Retention Phase Results
@@ -931,7 +1158,6 @@ TODO: retention add. analysis
 #### Absolute and Percentage Change in OEE
 
 #### Primary Driver of OEE Change
-
 :::
 
 ## Workload, Usability, and User Experience
@@ -958,7 +1184,6 @@ TODO: exploratory analysis
 ### TLX Components and Performance
 
 ### Interactions between Workload, Usability, and Treatment
-
 :::
 
 ## Challenges and Unexpected Observations {#sec-res-challenges}
@@ -976,9 +1201,9 @@ demoing AR/MR: The challenge of this choreography was compounded by significant 
 limitations
 
 - participant behavior
-  -   few participants assigned HMDMR took advantage of the affordance
+    -   few participants assigned HMDMR took advantage of the affordance
 - analysis
-  -   does not account for interactions between affordances
+    -   does not account for interactions between affordances
 
 noticed improvising - discourage as occurs
 
@@ -986,9 +1211,8 @@ sleeves, long hair problems for HL2
 
 height and "down-lookers"; tracking dropouts;
 
-battery life and performance; brightness and accuracy; 
+battery life and performance; brightness and accuracy;
 
 complexity of MR, less reliable tracking, crashes
-
 
 ## Summary of Key Findings
