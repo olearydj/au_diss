@@ -135,11 +135,6 @@ ggplot(daily_counts, aes(x = trial_date)) +
   custom_theme()
 ```
 
-Only eight trials were run before March 16th. That period was treated as a pilot study, during which the research team was trained, administration methods were refined, the self-service onboarding system was deployed, and version 2.1 of our IRB application was approved. Most significantly, the intake process was adjusted to collect more demographic data, increase the role of the TLX and SUS instruments, and gather BCS data for a companion study.
-
-Otherwise, only minor tweaks were made during the pilot to streamline the experiment's administration. Although the changes outlined above were not believed to have a material effect on the results, the data collected during the pilot were omitted from further analysis. Following the pilot, steady progress was made until the completion of the study's first session on April 27th.
-
-The second session was conducted during the end of study event on *XXX*. *YYY* of the study's original participants volunteered to attend and complete the Retention experiment.
 
 ::: content-hidden
 TODO: complete above paragraph about second session.
@@ -163,10 +158,6 @@ Decision on Pilot Study Inclusion
 - Based on the findings from 5.2.3 and 5.2.4, make a decision on whether to include the pilot study data in the main analysis
 - Clearly report your decision and rationale, considering factors such as data comparability, study design modifications, and statistical power
 :::
-
-## Analysis of Participant Demographics
-
-### Univariate Analysis
 
 ```{r drop-pilot-data}
 # drop participants in pilot study (first eight)
