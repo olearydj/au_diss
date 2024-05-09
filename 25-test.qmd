@@ -20,6 +20,31 @@ demographics <- read_xlsx(
 ```
 
 ```{r}
+base_color <- "#69b3a2"
+
+# Define a custom theme for ggplot
+custom_theme <- function() {
+  theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      # plot.subtitle = element_text(face = "italic"),
+      # plot.caption = element_text(color = "grey50"),
+      # axis.title.x = element_text(face = "bold"),
+      # axis.title.y = element_text(face = "bold"),
+      # axis.text = element_text(color = "black"),
+      # axis.line = element_line(color = "grey80"),
+      # legend.position = "bottom",
+      # legend.background = element_rect(fill = "white", colour = "grey50"),
+      # legend.key = element_rect(fill = "white", colour = "grey50"),
+    )
+}
+
+# Set the custom theme as the default theme
+theme_set(custom_theme())
+```
+
+```{r}
 participant_count <- demographics |>
   pull(participant) |>
   n_distinct()
@@ -70,8 +95,6 @@ daily_counts <- daily_counts |>
 pc_eng <- as.character(english::english(participant_count))
 pc_eng <- str_replace(pc_eng, "^.", str_to_upper)
 subtitle <- str_glue("{pc_eng} Learning and Recall Experiments Conducted between {trial_start_str} and {trial_end_str} of {trial_year_str}")
-
-base_color <- "#69b3a2"
 
 # Plotting
 ggplot(daily_counts, aes(x = trial_date)) +
