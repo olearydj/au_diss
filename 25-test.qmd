@@ -1,0 +1,153 @@
+# Results {#25-results}
+
+```{r}
+library(tidyverse)
+library(readxl)
+```
+
+```{r}
+car_results <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "car results"
+)
+
+demographics <- read_xlsx(
+  "./data/combined_results.xlsx",
+  na = c("", "N/A"),
+  sheet = "demographics"
+)
+```
+
+```{r}
+participant_count <- demographics |>
+  pull(participant) |>
+  n_distinct()
+
+# Convert the trial_datetime to Date type
+demographics <- demographics |>
+  mutate(
+    trial_date = as.Date(
+      as.POSIXct(trial_datetime, format = "%Y-%m-%d %H:%M:%S")
+    )
+  )
+
+# Get the first and last date
+first_trial_date <- demographics |>
+  summarize(first_date = min(trial_date)) |>
+  pull(first_date)
+
+last_trial_date <- demographics |>
+  summarize(last_date = max(trial_date)) |>
+  pull(last_date)
+
+trial_start_str <- str_glue(
+  "{month(first_trial_date)}/{day(first_trial_date)}"
+)
+trial_end_str <- str_glue(
+  "{month(last_trial_date)}/{day(last_trial_date)}"
+)
+trial_year_str <- str_glue("{year(last_trial_date)}")
+```
+
+```{r}
+# Count experiments per day
+daily_counts <- demographics |>
+  group_by(trial_date) |>
+  summarize(daily_count = n()) |>
+  arrange(trial_date)
+
+# Calculate the cumulative count of experiments
+daily_counts <- daily_counts |>
+  mutate(cumulative_count = cumsum(daily_count))
+
+# Calculate remaining experiments
+daily_counts <- daily_counts |>
+  mutate(
+    percentage_complete = (cumulative_count / participant_count) * 100
+  )
+
+pc_eng <- as.character(english::english(participant_count))
+pc_eng <- str_replace(pc_eng, "^.", str_to_upper)
+subtitle <- str_glue("{pc_eng} Learning and Recall Experiments Conducted between {trial_start_str} and {trial_end_str} of {trial_year_str}")
+
+base_color <- "#69b3a2"
+
+# Plotting
+ggplot(daily_counts, aes(x = trial_date)) +
+  geom_line(
+    aes(y = daily_count, group = 1),
+    color = base_color,
+    linewidth = 1,
+    alpha = 0.5
+  ) +
+  geom_line(
+    aes(y = percentage_complete, group = 1),
+    color = base_color,
+    linewidth = 1.25,
+    alpha = 1
+  ) +
+  scale_y_continuous(
+    name = "Trials Administered",
+    sec.axis = sec_axis(~., name = "Percentage Complete"),
+    position = "right",
+    limits = c(0, 100)
+  ) +
+  labs(
+    title = "First Session Progress",
+    subtitle = subtitle,
+    x = element_blank(),
+    y = element_blank()
+  )
+```
+
+```{r}
+# drop participants in pilot study (first eight)
+demographics <- demographics |>
+  filter(!(participant >= 1001 & participant <= 1010))
+
+# drop event data from the pilot study
+car_results <- car_results |>
+  filter(!(participant >= 1001 & participant <= 1010))
+```
+
+```{r}
+
+# safely convert data to ord / cat factors
+# create levels / labels as required and identify / warn about mismatches
+
+to_factors <- function(
+    column,
+    levels = NULL,
+    labels = NULL,
+    ordered = FALSE) {
+  if (is.null(levels)) {
+    levels <- unique(na.omit(column))
+  }
+
+  if (is.null(labels)) {
+    labels <- levels
+  }
+
+  mismatched <- setdiff(unique(na.omit(column)), levels)
+
+  if (length(mismatched) > 0) {
+    # Append mismatched values to levels and labels with a specific prefix
+    bad_levels <- paste("Bad -", mismatched)
+    levels <- c(levels, mismatched)
+    labels <- c(labels, bad_levels)
+    warning(
+      "Mismatched or unexpected values incorporated: ",
+      paste(bad_levels, collapse = ", ")
+    )
+  }
+
+  # Proceed to convert to factor using cleaned-up data
+  factor_column <- factor(column,
+    levels = levels, labels = labels,
+    ordered = ordered
+  )
+
+  return(factor_column)
+}
+```
