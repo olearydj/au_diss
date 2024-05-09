@@ -44,7 +44,7 @@ base_color <- "#69b3a2"
 custom_theme <- function() {
   theme_minimal(base_size = 10) +
     theme(
-      plot.title.position = 'plot',
+      plot.title.position = "plot",
       plot.title = element_text(face = "bold"),
       # plot.subtitle = element_text(face = "italic"),
       # plot.caption = element_text(color = "grey50"),
@@ -86,9 +86,11 @@ last_trial_date <- demographics |>
   pull(last_date)
 
 trial_start_str <- str_glue(
-  "{month(first_trial_date)}/{day(first_trial_date)}")
+  "{month(first_trial_date)}/{day(first_trial_date)}"
+)
 trial_end_str <- str_glue(
-  "{month(last_trial_date)}/{day(last_trial_date)}")
+  "{month(last_trial_date)}/{day(last_trial_date)}"
+)
 trial_year_str <- str_glue("{year(last_trial_date)}")
 
 # start, end = Feb 10, Apr 27 2023
@@ -125,22 +127,22 @@ subtitle <- str_glue("{pc_eng} Learning and Recall Experiments Conducted between
 # Plotting
 ggplot(daily_counts, aes(x = trial_date)) +
   geom_line(
-    aes(y = daily_count, group = 1), 
+    aes(y = daily_count, group = 1),
     color = base_color,
     linewidth = 1,
     alpha = 0.5
   ) +
   geom_line(
-    aes(y = percentage_complete, group = 1), 
+    aes(y = percentage_complete, group = 1),
     color = base_color,
     linewidth = 1.25,
     alpha = 1
   ) +
   scale_y_continuous(
     name = "Trials Administered",
-    sec.axis = sec_axis(~ ., name = "Percentage Complete"),
+    sec.axis = sec_axis(~., name = "Percentage Complete"),
     position = "right",
-    limits = c(0,100)
+    limits = c(0, 100)
   ) +
   labs(
     title = "First Session Progress",
@@ -200,36 +202,36 @@ car_results <- car_results |>
 # create levels / labels as required and identify / warn about mismatches
 
 to_factors <- function(
-    column, 
-    levels = NULL, 
+    column,
+    levels = NULL,
     labels = NULL,
-    ordered = FALSE
-    ) {
-
+    ordered = FALSE) {
   if (is.null(levels)) {
     levels <- unique(na.omit(column))
   }
-  
+
   if (is.null(labels)) {
     labels <- levels
   }
-  
+
   mismatched <- setdiff(unique(na.omit(column)), levels)
-  
+
   if (length(mismatched) > 0) {
     # Append mismatched values to levels and labels with a specific prefix
     bad_levels <- paste("Bad -", mismatched)
     levels <- c(levels, mismatched)
     labels <- c(labels, bad_levels)
     warning(
-      "Mismatched or unexpected values incorporated: ", 
+      "Mismatched or unexpected values incorporated: ",
       paste(bad_levels, collapse = ", ")
     )
   }
 
   # Proceed to convert to factor using cleaned-up data
-  factor_column <- factor(column, levels = levels, labels = labels, 
-                          ordered = ordered)
+  factor_column <- factor(column,
+    levels = levels, labels = labels,
+    ordered = ordered
+  )
 
   return(factor_column)
 }
@@ -246,7 +248,8 @@ demo_f <- demographics |>
     gender = to_factors(
       gender,
       levels = c("F", "M", "O"),
-      labels = c("Female", "Male", "Non-Binary")),
+      labels = c("Female", "Male", "Non-Binary")
+    ),
     race = to_factors(
       race,
       levels = c("1", "2", "3", "4", "5", "6", "7"),
@@ -279,7 +282,7 @@ demo_f <- demographics |>
         "Yes"
       )
     ),
-    
+
     # categorical, levels == labels
     # unordered with predefined levels
     language = to_factors(
@@ -305,7 +308,7 @@ demo_f <- demographics |>
     college = to_factors(college),
     program = to_factors(program),
     referral = to_factors(referral),
-    
+
     # ordinal, levels != labels
     # ordered with predefined levels
     education = to_factors(
@@ -398,10 +401,10 @@ age_plot <- demo_f |>
   filter(!is.na(age)) |>
   ggplot(aes(x = age)) +
   geom_bar(
-    aes(y = ..count../max(..count..)),
+    aes(y = ..count.. / max(..count..)),
     fill = I(base_color),
     alpha = 0.75
-  ) + 
+  ) +
   geom_boxplot(
     width = 0.075,
     position = position_nudge(y = -0.07),
@@ -426,11 +429,11 @@ height_plot <- demo_f |>
   filter(!is.na(height)) |>
   ggplot(aes(x = height)) +
   geom_bar(
-    aes(y = ..count../max(..count..)),
+    aes(y = ..count.. / max(..count..)),
     fill = I(base_color),
     alpha = 0.75,
     width = 0.55
-  ) + 
+  ) +
   geom_boxplot(
     width = 0.075,
     position = position_nudge(y = -0.07),
@@ -463,7 +466,7 @@ age_plot + height_plot +
 
 ```{r categorical-data}
 cats <- demo_f |>
-  select(where(~is.factor(.) && !is.ordered(.))) |>
+  select(where(~ is.factor(.) && !is.ordered(.))) |>
   select(-c("referral")) |>
   mutate(across(everything(), \(x) fct_lump(x, prop = 0.1)))
 
@@ -483,13 +486,13 @@ cat_names <- cats |>
 cats_long <- cats |>
   select(gender:country) |>
   pivot_longer(
-    cols = everything(), 
-    names_to = "Category", 
+    cols = everything(),
+    names_to = "Category",
     values_to = "Value"
   ) |>
   drop_na() |>
   group_by(Category, Value) |>
-  summarize(Count = n(), .groups = 'drop') |>
+  summarize(Count = n(), .groups = "drop") |>
   group_by(Category) |>
   mutate(Freq = Count / sum(Count))
 
@@ -510,13 +513,14 @@ create_cat_plot <- function(data, category, base_color) {
   # specify alpha ramp end points
   min_alpha <- 0.3
   max_alpha <- 0.8
-  
+
   # Filter and reorder data
   plot_data <- data |>
     filter(Category == category) |>
     mutate(
-      Value = if_else(Value == "Not Hispanic or Latino", 
-                      "Not Hispanic\nor Latino", Value),
+      Value = if_else(Value == "Not Hispanic or Latino",
+        "Not Hispanic\nor Latino", Value
+      ),
       Value = reorder(Value, Count, FUN = sum, decreasing = TRUE)
     )
 
@@ -524,30 +528,30 @@ create_cat_plot <- function(data, category, base_color) {
   alpha_values <- plot_data |>
     mutate(alpha = scales::rescale(Count, to = c(min_alpha, max_alpha))) |>
     pull(alpha)
-  
+
   # Set unique Value groups for setting colors and alphas
   unique_values <- unique(plot_data$Value)
-  
+
   # Create the plot
   ggplot(
-    plot_data, 
+    plot_data,
     aes(x = Value, y = Count, fill = I(base_color), alpha = Value)
   ) +
-  geom_bar(stat = "identity", position = "dodge", width = 0.8) +
-  scale_x_discrete(labels = function(x) tools::toTitleCase(x)) +
-  labs(x = tools::toTitleCase(category), y = element_blank()) +
-  scale_alpha_manual(values = setNames(alpha_values, unique_values)) +
-  guides(fill = "none", alpha = "none") +
-  ylim(0, max_count) +
-  theme_minimal(base_size = 10) +
-  theme(
-    plot.title.position = "plot",
-    plot.title = element_text(face = "bold"),
-    legend.position = "none",
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
-  )
+    geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+    scale_x_discrete(labels = function(x) tools::toTitleCase(x)) +
+    labs(x = tools::toTitleCase(category), y = element_blank()) +
+    scale_alpha_manual(values = setNames(alpha_values, unique_values)) +
+    guides(fill = "none", alpha = "none") +
+    ylim(0, max_count) +
+    theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      legend.position = "none",
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
+    )
 }
 
 # Calculate the maximum count to standardize the y-axis
@@ -555,14 +559,16 @@ max_count <- max(cats_long$Count)
 
 # Create all plots
 cat_plots <- map(
-  cat_names, 
-  ~create_cat_plot(cats_long, .x, base_color)
+  cat_names,
+  ~ create_cat_plot(cats_long, .x, base_color)
 )
 
 # Add y-axis text and ticks to first plot
 first_plot <- cat_plots[[1]] +
-  theme(axis.text.y = element_text(),
-        axis.ticks.y = element_line())
+  theme(
+    axis.text.y = element_text(),
+    axis.ticks.y = element_line()
+  )
 
 # Other plots without y-axis text and ticks, drop first
 other_plots <- cat_plots[-1]
@@ -572,7 +578,7 @@ all_plots <- c(list(first_plot), other_plots)
 
 # Combine all plots
 combined_plot <- reduce(all_plots, `+`) +
-  plot_layout(ncol = length(all_plots), widths = c(1,1,0.667,0.667)) + 
+  plot_layout(ncol = length(all_plots), widths = c(1, 1, 0.667, 0.667)) +
   plot_annotation(
     title = "Categorical Sample Characteristics",
     subtitle = "Value Count for Gender, Race, Ethnicity, and Country"
@@ -589,7 +595,7 @@ vc_tbl <- cats |>
   filter(!lenses %in% c("No", "Other", "Unknown")) |>
   filter(!(is.na(lenses) & is.na(worn))) |>
   droplevels() |>
-  mutate(worn = recode(worn, 'Y' = 'Yes', 'N' = 'No')) |>
+  mutate(worn = recode(worn, "Y" = "Yes", "N" = "No")) |>
   tbl_cross(
     row = lenses,
     col = worn,
@@ -630,7 +636,7 @@ Following the primary hypothesis testing, additional analyses may explore the di
 
 ```{r ord-data}
 ords <- demo_f |>
-  select(where(~is.factor(.) && is.ordered(.)))
+  select(where(~ is.factor(.) && is.ordered(.)))
 
 # Summary table
 ords_tbl <- ords |>
@@ -648,7 +654,7 @@ calculate_mode <- function(data, var_name) {
   max_freq <- max(count_table)
   # pick first if more than one value has max count
   mode_value <- names(count_table[count_table == max_freq])[1]
-  
+
   # Convert to an output that includes the level's name (mode_value) and its index
   mode_index <- which(levels(data[[var_name]]) == mode_value)
   return(list(value = mode_value, index = mode_index))
@@ -660,19 +666,21 @@ calculate_ord_summary_stats <- function(data, var_name) {
   if (!is.ordered(data[[var_name]])) {
     stop("The variable must be an ordered factor.")
   }
-  
+
   # Convert factor to integer codes
   factor_int <- as.integer(data[[var_name]])
-  
+
   # Calculate median, mode, and IQR
   median_value <- median(factor_int, na.rm = TRUE)
   mode_results <- calculate_mode(data, var_name)
   iqr_value <- IQR(factor_int, na.rm = TRUE)
-  
+
   # Format and return the result as a string
-  result_string <- sprintf("(Median = %.1f; Mode = %d, %s; IQR = %.1f)", 
-                           median_value, mode_results$index, mode_results$value, 
-                           iqr_value)
+  result_string <- sprintf(
+    "(Median = %.1f; Mode = %d, %s; IQR = %.1f)",
+    median_value, mode_results$index, mode_results$value,
+    iqr_value
+  )
   return(result_string)
 }
 ```
@@ -688,13 +696,13 @@ plot_ords <- function(data, var, title) {
   norm_data <- data |>
     count(var_name = {{ var }}) |>
     mutate(percent = n / sum(n) * 100)
-  
+
   p <- norm_data |>
     ggplot(aes(y = var_name, x = percent)) +
     geom_bar(
       aes(alpha = percent / 100),
       fill = base_color,
-      stat = "identity", 
+      stat = "identity",
       width = 0.75
     ) +
     scale_alpha_continuous(trans = "log10", range = c(0.2, 0.8), guide = "none") +
@@ -717,31 +725,31 @@ plot_ords <- function(data, var, title) {
 
 
 educ_plot <- ords |>
-  mutate(education = fct_recode(education, 
-                                College = "CND",
-                                Associate = "AS",
-                                Bachelor = "BS",
-                                Master = "MS",
-                                Doctorate = "PhD")
-  ) |>
+  mutate(education = fct_recode(education,
+    College = "CND",
+    Associate = "AS",
+    Bachelor = "BS",
+    Master = "MS",
+    Doctorate = "PhD"
+  )) |>
   plot_ords(var = education, title = "Current Education Level")
 
 lego_plot <- ords |>
   mutate(lego = fct_recode(lego,
-                           Little = "Little to no experience",
-                           Some = "Some experience",
-                           Lots = "Lots of experience",
-                           Expert = "Expert builder")
-  ) |>
+    Little = "Little to no experience",
+    Some = "Some experience",
+    Lots = "Lots of experience",
+    Expert = "Expert builder"
+  )) |>
   plot_ords(lego, title = "Lego Experience")
 
 manuf_plot <- ords |>
   mutate(manuf = fct_recode(manuf,
-                           None = "No experience",
-                           Training = "Taken one or more classes",
-                           PartTime = "Held a part time or temporary position",
-                           Some = "One or more year’s experience")
-  ) |>
+    None = "No experience",
+    Training = "Taken one or more classes",
+    PartTime = "Held a part time or temporary position",
+    Some = "One or more year’s experience"
+  )) |>
   plot_ords(manuf, title = "Manufacturing Experience")
 
 # combine using patchwork
@@ -769,20 +777,20 @@ cat_cols <- demo_f |>
 mv_data <- bind_cols(num_cols, cat_cols)
 
 mv_tbl <- mv_data |>
-  mutate(across(where(is.factor), ~fct_drop(.))) |>
+  mutate(across(where(is.factor), ~ fct_drop(.))) |>
   mutate(
     lego = fct_recode(lego,
-                      "Little" = "Little to no experience",
-                      "Some" = "Some experience",
-                      "Lots" = "Lots of experience",
-                      "Expert" = "Expert builder"
+      "Little" = "Little to no experience",
+      "Some" = "Some experience",
+      "Lots" = "Lots of experience",
+      "Expert" = "Expert builder"
     ),
     education = fct_recode(education,
-                           "College" = "CND",
-                           "Associate" = "AS",
-                           "Bachelor" = "BS",
-                           "Master" = "MS",
-                           "Doctorate" = "PhD"
+      "College" = "CND",
+      "Associate" = "AS",
+      "Bachelor" = "BS",
+      "Master" = "MS",
+      "Doctorate" = "PhD"
     )
   ) |>
   tbl_summary(
@@ -792,16 +800,16 @@ mv_tbl <- mv_data |>
       all_continuous() ~ "{mean} ({sd})"
     ),
     label = list(
-      "age" ~ "Age", 
-      "gender" ~ "Gender", 
-      "lego" ~ "Lego", 
+      "age" ~ "Age",
+      "gender" ~ "Gender",
+      "lego" ~ "Lego",
       "education" ~ "Education"
     )
   ) |>
   add_p() |>
   # separate_p_footnotes() |>
   # add_stat_label() |>
-  bold_labels()  |>
+  bold_labels() |>
   bold_p(t = 0.05) |>
   italicize_levels() |>
   modify_header(
@@ -882,8 +890,8 @@ res_f <- car_results |>
       levels = c("PWI", "PAR", "AR", "MR"),
       ordered = TRUE
     ),
-  car_outcome = to_factors(car_outcome)
-)
+    car_outcome = to_factors(car_outcome)
+  )
 ```
 
 ```{r learn-data}
@@ -891,7 +899,7 @@ learn <- res_f |>
   filter(
     phase == 1,
     car_outcome == "complete",
-    uid != "1048-P1-C5"  # hack to remove incorrectly labeled car
+    uid != "1048-P1-C5" # hack to remove incorrectly labeled car
   ) |>
   select(participant, car_elapsed_time, uce, treatment)
 
@@ -902,14 +910,14 @@ learn_rpt <- learn |>
     "Uncorrected Error Count" = uce
   ) |>
   select("Car Elapsed Time", "Uncorrected Error Count") |>
-  report::report()  # options not working!
+  report::report() # options not working!
 
 # agg participant results
 learn_agg <- learn |>
   group_by(participant) |>
   summarize(
     treatment = first(treatment),
-    tot_cars = n(),  # Count the number of tasks per participant
+    tot_cars = n(), # Count the number of tasks per participant
     avg_tct = mean(car_elapsed_time, na.rm = TRUE),
     avg_uce = mean(uce, na.rm = TRUE)
   ) |>
@@ -941,11 +949,11 @@ depicted in @fig-learn.
 cet_plot <- learn |>
   ggplot(aes(x = car_elapsed_time)) +
   geom_histogram(
-    aes(y = ..density.. * 65),  # hack for relative size / scale
-    binwidth = 10, 
-    fill = base_color, 
+    aes(y = ..density.. * 65), # hack for relative size / scale
+    binwidth = 10,
+    fill = base_color,
     alpha = 0.75
-  ) + 
+  ) +
   geom_boxplot(
     width = 0.075,
     position = position_nudge(y = -0.07),
@@ -970,11 +978,11 @@ cet_plot <- learn |>
 uce_plot <- learn |>
   ggplot(aes(x = uce)) +
   geom_histogram(
-    aes(y = ..density.. * 1.5),  # hack for relative size / scale
-    binwidth = 1, 
-    fill = base_color, 
+    aes(y = ..density.. * 1.5), # hack for relative size / scale
+    binwidth = 1,
+    fill = base_color,
     alpha = 0.75
-  ) + 
+  ) +
   geom_boxplot(
     width = 0.075,
     position = position_nudge(y = -0.07),
@@ -1016,7 +1024,7 @@ SmartEDA::ExpNumStat(
   learn_agg |> select(-c(participant, treatment)),
   Qnt = c(0.25, 0.75),
   round = 1
-  ) |>
+) |>
   select(Vname, min, max, mean, median, SD, `25%`, `75%`, IQR, Skewness, Kurtosis) |>
   gt()
 ```
