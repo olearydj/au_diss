@@ -81,9 +81,6 @@ trial_year_str <- str_glue("{year(last_trial_date)}")
 # start, end = Feb 10, Apr 27 2023
 ```
 
-## Study Administration and Participation
-
-This study was administered during the Spring of 2023. Ultimately, `r participant_count` eligible participants were recruited. All completed the Learning and Recall experiments of the first session beginning February 10th. Progress of the conduct of these trials is illustrated by @fig-s1-progress.
 
 ```{r fig-s1-progress}
 #| fig-cap: "Daily Trial Administration and Completion Percentage"
