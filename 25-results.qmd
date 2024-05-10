@@ -39,6 +39,7 @@ demographics <- read_xlsx(
 
 ```{r def-cust-theme}
 base_color <- "#69b3a2"
+outline_color <- "grey25"
 
 # Define a custom theme for ggplot
 custom_theme <- function() {
@@ -389,7 +390,7 @@ height_summary <- str_glue(
 )
 ```
 
-After excluding data from the pilot study, `r report_participants(nums, age = "age", participants = "participant")` were included in this analysis. Other than age, height (`r height_summary`) was the only numeric data collected. As discussed in @sec-res-challenges, height was first recorded following the pilot study, when its impact on user behavior and results was first observed. Both numeric characteristics are visualized with a combined box and scatter plot in @fig-numeric.
+After excluding data from the pilot study, `r report_participants(nums, age = "age", participants = "participant")` were included in this analysis. Other than age, height (`r height_summary`) was the only numeric data collected. As discussed in @sec-res-challenges, height was first recorded following the pilot study, when its impact on user behavior and results was first observed. Both numeric characteristics are visualized with a combined box and scatter plot in @fig-numeric. The notches of these box plots show the 95% confidence interval around the median.
 
 ```{r fig-numeric}
 #| fig-cap: "Distribution of Participant Age and Height"
@@ -403,7 +404,8 @@ age_plot <- demo_f |>
   geom_bar(
     aes(y = ..count.. / max(..count..)),
     fill = I(base_color),
-    alpha = 0.75
+    alpha = 0.75,
+    color = outline_color
   ) +
   geom_boxplot(
     width = 0.075,
@@ -432,7 +434,8 @@ height_plot <- demo_f |>
     aes(y = ..count.. / max(..count..)),
     fill = I(base_color),
     alpha = 0.75,
-    width = 0.55
+    width = 0.55,
+    color = outline_color
   ) +
   geom_boxplot(
     width = 0.075,
@@ -537,7 +540,7 @@ create_cat_plot <- function(data, category, base_color) {
     plot_data,
     aes(x = Value, y = Count, fill = I(base_color), alpha = Value)
   ) +
-    geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+    geom_bar(stat = "identity", position = "dodge", width = 0.8, color = outline_color) +
     scale_x_discrete(labels = function(x) tools::toTitleCase(x)) +
     labs(x = tools::toTitleCase(category), y = element_blank()) +
     scale_alpha_manual(values = setNames(alpha_values, unique_values)) +
@@ -589,7 +592,6 @@ print(combined_plot)
 ```
 
 ```{r make-vc-table}
-
 vc_tbl <- cats |>
   select(lenses:worn) |>
   filter(!lenses %in% c("No", "Other", "Unknown")) |>
@@ -605,7 +607,6 @@ vc_tbl <- cats |>
   ) |>
   add_stat_label() |>
   bold_labels()
-
 ```
 
 Of the 54 participants, 52% (n=28) reported having a vision prescription. Of those, `r inline_text(vc_tbl, row_level = "Contacts", col_level = "Total")` were for contact lenses , but `r inline_text(vc_tbl, row_level = "Glasses", col_level = "Total")` had glasses. Whereas all contact wearers reported they would wear them during the session, among glasses wearers only seven (47%) planned the same. Five (33%) did not intend to do so, and three (20%) gave no indication. This breakdown is summarized by @tbl-vc. Two participants also reported color-blindness (n=1) or other vision conditions (n=1). No participants indicated any other condition that might affect their performance.
@@ -627,7 +628,6 @@ vc_tbl |>
     latex_options = c("scale_down"),
     font_size = 11
   )
-
 ```
 
 Following the primary hypothesis testing, additional analyses may explore the differences in key outcomes across these demographic subgroups. That effort will aim to provide additional context and insights into potential underlying factors influencing the findings.
@@ -703,7 +703,8 @@ plot_ords <- function(data, var, title) {
       aes(alpha = percent / 100),
       fill = base_color,
       stat = "identity",
-      width = 0.75
+      width = 0.75,
+      color = outline_color
     ) +
     scale_alpha_continuous(trans = "log10", range = c(0.2, 0.8), guide = "none") +
     labs(
@@ -819,7 +820,7 @@ mv_tbl <- mv_data |>
 
 ```
 
-@tbl-demo-by-treatment shows the result of this analysis. The Kruskal-Wallis rank sum test was utilized for the numeric variable (Age) to compare distributions across groups, while Fisher's exact test was applied to the categorical and ordinal variables (Gender, Education, and Lego experience) to assess the independence of distributions from treatment assignments. The p-values from these tests evaluate whether there are statistically significant differences in these variables across the groups, which might suggest imbalances that could affect the validity of the randomization process.
+@tbl-demo-by-treatment shows the result of this analysis. The Kruskal-Wallis rank sum test was utilized for the numeric variable (Age) to compare distributions across groups, while Fisher's exact test was applied to the categorical and ordinal variables (Gender, Education, and Lego experience) to assess the independence of distributions from treatment assignments.
 
 ```{r tbl-demo-by-treatment}
 #| tbl-cap: Participant Demographics by Treatment Group
@@ -844,7 +845,7 @@ and inserts embedding so that all original formatting is preserved?
 could they still be labeled as tables?
 :::
 
-The high p-values for all observed characteristics--Age, `r inline_text(mv_tbl, variable = age, column = "p.value")`; Gender, `r inline_text(mv_tbl, variable = gender, column = "p.value")`; Lego, `r inline_text(mv_tbl, variable = lego, column = "p.value")`; Education, `r inline_text(mv_tbl, variable = lego, column = "p.value")`--suggest that the treatment groupings are not strongly associated with any of them. This result validates the group randomization effort, which mitigates the influence of known and unknown confounding variables, thereby reducing bias in the data. It is essential to the validity of statistical tests which assume sample independence, including most of those employed by this study.
+The high p-values for Age, `r inline_text(mv_tbl, variable = age, column = "p.value")`; Gender, `r inline_text(mv_tbl, variable = gender, column = "p.value")`; Lego, `r inline_text(mv_tbl, variable = lego, column = "p.value")`; and Education, `r inline_text(mv_tbl, variable = lego, column = "p.value")` indicate that these observed characteristics are not strongly associated with treatment groupings. This result validates the group randomization effort, mitigating the influence of confounding variables, and reducing bias in the data. It is essential to the validity of most of the statistical tests employed by this study, which assume sample independence.
 
 ::: content-hidden
 MAYBE: further analysis to show that:
@@ -906,10 +907,10 @@ learn <- res_f |>
 # report descriptive stats for cet and uce
 learn_rpt <- learn |>
   rename(
-    "Car Elapsed Time" = car_elapsed_time,
+    "Task Completion Time (sec)" = car_elapsed_time,
     "Uncorrected Error Count" = uce
   ) |>
-  select("Car Elapsed Time", "Uncorrected Error Count") |>
+  select("Task Completion Time (sec)", "Uncorrected Error Count") |>
   report::report() # options not working!
 
 # agg participant results
@@ -925,20 +926,21 @@ learn_agg <- learn |>
 ```
 
 ::: content-hidden
-TODO: correct data for `1048-P1-C5`; flagged complete with elapsed time
-of 4.267s TODO: investigate report::report options
+TODO: correct data for `1048-P1-C5`; flagged complete with elapsed time of 4.267s
+TODO: investigate report::report options
 :::
 
-Analysis plan: 1. phase 1 complete cars, unmodified times 2. partial
-credit for incomplete count 3. modified times
+Analysis plan:  
+1. phase 1 complete cars, unmodified times  
+2. partial credit for incomplete count  
+3. modified times  
+4. outliers?
 
 ### Descriptive Statistics
 
 `r learn_rpt`
 
-Each observation corresponds to a single repetition of the car assembly
-task during the Learning phase. The distributions for both variables are
-depicted in @fig-learn.
+This data provides a high-level summary of performance across all tasks and participants, where each observation corresponds to a single repetition of the Learning task. Both variables show a high coefficient of variance, as depicted in @fig-learn.
 
 ```{r fig-learn}
 #| fig-cap: "Distribution of Learning Experimental Data"
@@ -952,7 +954,8 @@ cet_plot <- learn |>
     aes(y = ..density.. * 65), # hack for relative size / scale
     binwidth = 10,
     fill = base_color,
-    alpha = 0.75
+    alpha = 0.75,
+    color = outline_color
   ) +
   geom_boxplot(
     width = 0.075,
@@ -960,7 +963,7 @@ cet_plot <- learn |>
     notch = TRUE
   ) +
   labs(
-    title = "Elapsed Time per Car (sec)",
+    title = "Task Completion Time (sec)",
     x = element_blank(),
     y = element_blank()
   ) +
@@ -981,7 +984,8 @@ uce_plot <- learn |>
     aes(y = ..density.. * 1.5), # hack for relative size / scale
     binwidth = 1,
     fill = base_color,
-    alpha = 0.75
+    alpha = 0.75,
+    color = outline_color
   ) +
   geom_boxplot(
     width = 0.075,
@@ -989,7 +993,7 @@ uce_plot <- learn |>
     # notch = TRUE
   ) +
   labs(
-    title = "Number of Uncorrected Errors per Car",
+    title = "Number of Uncorrected Errors per Task",
     x = element_blank(),
     y = element_blank()
   ) +
@@ -1008,31 +1012,16 @@ cet_plot / uce_plot +
   # plot_layout(ncol = 2, widths = c(1,1)) +
   plot_annotation(
     title = "Learning Phase - Observed Measures",
-    subtitle = "Something insightful..."
+    subtitle = "Error Count Shows Greater Relative Variability than Completion Time During Learning"
   )
 ```
 
-@tbl-agg-results shows statistics for this data, summarized by
-participant, including the number of assembly tasks completed. From
-this, we can see that the
+Error count shows greater relative variance and the presence of a floor effect. The later could potentially suggest limitations in the task's ability to capture a full range of participant performance. Further investigation is required to determine if this is due to task complexity or other factors.
 
-```{r tbl-agg-results}
-#| tbl-cap: Observed Measures Summarized by Participant
-#| warning: false
-
-SmartEDA::ExpNumStat(
-  learn_agg |> select(-c(participant, treatment)),
-  Qnt = c(0.25, 0.75),
-  round = 1
-) |>
-  select(Vname, min, max, mean, median, SD, `25%`, `75%`, IQR, Skewness, Kurtosis) |>
-  gt()
-```
-
-@tbl-agg-results-by-treat shows...
+To better understand individual performance, @tbl-agg-results-by-treat presents participant-level metrics, including the number of tasks completed, task completion time, and error count per task. In addition to the overall results, the data is broken out by assigned treatment group to allow for comparisons across conditions.
 
 ```{r tbl-agg-results-by-treat}
-#| tbl-cap: Summary of Participant Performance Metrics by Treatment Group
+#| tbl-cap: Performance Data Summarized by Participant and Treatment Group
 
 t <- learn_agg |>
   select(-participant) |>
@@ -1040,7 +1029,7 @@ t <- learn_agg |>
     type = all_continuous() ~ "continuous2",
     digits = all_continuous2() ~ 1,
     label = list(
-      avg_tct ~ "Task Completion Time",
+      avg_tct ~ "Task Completion Time (sec)",
       avg_uce ~ "Error Count per Task",
       tot_cars ~ "Number of Tasks Completed"
     ),
@@ -1055,6 +1044,7 @@ t <- learn_agg |>
   # bold_labels() |>
   add_p() |>
   separate_p_footnotes() |>
+  add_overall() |>
   bold_p(t = 0.05) |>
   modify_header(
     all_stat_cols() ~ "**{level}**\nn = {n} ({style_percent(p)}%)",
@@ -1073,6 +1063,138 @@ t |>
     font_size = 11
   )
 ```
+
+::: content-hidden
+Claude insights:
+
+1. Significant differences between treatment groups: The p-values for all three performance metrics (Number of Tasks Completed, Task Completion Time, and Error Count per Task) are less than 0.001, indicating statistically significant differences between the treatment groups. This suggests that the assigned treatment conditions had a meaningful impact on participant performance.
+
+2. Variability in performance metrics: The standard deviations and interquartile ranges (IQR) for each metric indicate considerable variability in performance within treatment groups. This is particularly noticeable for Task Completion Time, where the IQRs are quite wide, suggesting a broad range of completion times among participants.
+
+3. Differences in central tendencies: The means and medians for each metric vary across treatment groups. For example, the PWT group has the highest average number of tasks completed (7.1) and the lowest average task completion time (79.8 seconds), while the MR group has the lowest average error count per task (0.7). These differences in central tendencies provide insights into how performance varied between treatments.
+
+4. Potential trade-offs between speed and accuracy: The data suggests possible trade-offs between task completion time and error count. For instance, the PWT group has the fastest average completion time but the highest average error count, while the MR group has the slowest average completion time but the lowest average error count. This could indicate that some treatments prioritized speed over accuracy or vice versa.
+
+5. Skewed distributions: For some metrics, particularly Error Count per Task, the median is notably lower than the mean, and the IQR is relatively small compared to the overall range. This suggests positively skewed distributions, with most participants having low error counts but a few having much higher counts.
+
+:::
+
+::: content-hidden
+MAYBE: use conditional content to show best version of tables for html or pdf?
+:::
+
+See @fig-perf-by-treat
+
+```{r make-perf-data}
+# Reshape data to long format
+long_data <- learn_agg %>%
+  pivot_longer(cols = c(avg_tct, tot_cars, avg_uce), names_to = "metric", values_to = "value")
+
+# Calculate means, sample size, and SE for each metric within each treatment
+metrics_stats <- long_data %>%
+  group_by(treatment, metric) %>%
+  summarize(
+    mean_value = mean(value, na.rm = TRUE),
+    n = n(), # sample size
+    se = sd(value, na.rm = TRUE) / sqrt(n()), # standard error
+    .groups = "drop"
+  )
+
+# Find the highest mean for each metric across all treatments
+max_means <- metrics_stats %>%
+  group_by(metric) %>%
+  summarize(max_mean = max(mean_value), .groups = "drop")
+
+# Normalize means and calculate CI within their metrics
+normalized_metrics_stats <- metrics_stats %>%
+  left_join(max_means, by = "metric") %>%
+  mutate(
+    normalized_mean = mean_value / max_mean,
+    lower_ci = normalized_mean - qt(0.975, df = n - 1) * (se / max_mean),
+    upper_ci = normalized_mean + qt(0.975, df = n - 1) * (se / max_mean)
+  )
+
+# Calculate overall mean, SE, and normalize
+overall_stats <- long_data %>%
+  group_by(metric) %>%
+  summarize(
+    overall_mean = mean(value, na.rm = TRUE),
+    n = n(),
+    se = sd(value, na.rm = TRUE) / sqrt(n()),
+    .groups = "drop"
+  ) %>%
+  left_join(max_means, by = "metric") %>%
+  mutate(
+    normalized_mean = overall_mean / max_mean,
+    lower_ci = normalized_mean - qt(0.975, df = n - 1) * (se / max_mean),
+    upper_ci = normalized_mean + qt(0.975, df = n - 1) * (se / max_mean)
+  ) %>%
+  mutate(treatment = "ALL")
+
+# Combine with other stats
+final_stats <- bind_rows(normalized_metrics_stats, overall_stats)
+
+# Factorize the 'treatment' column
+final_stats$treatment <- factor(final_stats$treatment, levels = c("ALL", "PWI", "PAR", "AR", "MR"))
+
+# Factorize and label 'metric' column
+final_stats$metric <- factor(
+  final_stats$metric,
+  levels = c("avg_tct", "avg_uce", "tot_cars"),
+  labels = c("Average Task Time", "Average Error Count", "Tasks Completed")
+)
+
+# Predefined alpha values by treatment
+alpha_values <- c(0.4, 0.55, 0.7, 0.85, 1.0)
+names(alpha_values) <- levels(final_stats$treatment)
+```
+
+
+```{r fig-perf-by-treat}
+#| fig-cap: "Distribution of Learning Experimental Data"
+#| fig-height: 4
+#| warning: false
+
+ggplot(final_stats, aes(x = metric, y = normalized_mean, fill = treatment, label = treatment)) +
+  geom_col(
+    aes(alpha = normalized_mean),
+    position = position_dodge(0.9),
+    color = outline_color
+  ) +
+  geom_errorbar(
+    aes(ymin = lower_ci, ymax = upper_ci),
+    position = position_dodge(0.9),
+    width = 0.25,
+    alpha = 0.7
+  ) +
+  geom_text(
+    aes(y=0),
+    position = position_dodge(width = 0.9),
+    vjust = 1.65,  # Adjust based on visual preference
+    size = 3,
+    alpha = 0.9
+  ) +
+  scale_fill_manual(values = rep(base_color, length(unique(final_stats$treatment)))) +
+  scale_alpha_continuous(transform = "pseudo_log", range = c(0.3, 1.0)) +
+  labs(
+    title = "Normalized Performance Metrics by Treatment",
+    subtitle = "Includes Overall Measures and 95% Confidence Intervals",
+    y = element_blank(),
+    x = element_blank()
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text.x = element_text(
+      margin = margin(b = 5, unit = "pt"),
+      color = "black"
+    )
+  )
+
+```
+
+From this, we can see that the
+
 
 some text here to hopefully fix the weird centering
 
