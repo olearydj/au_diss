@@ -1,0 +1,24 @@
+book:
+  title: "Augmented vs. Traditional Instruction in Manufacturing Assembly"
+  subtitle: "An Affordance-Based, Multi-Modal Assessment of Learning, Recall, and Retention"
+  author: "Danny J. O'Leary"
+  date: today
+  chapters:
+    - index.qmd
+  # - 21-intro.qmd
+  # - 22-lit_review.qmd
+  # - 23-prob_statement.qmd
+  # - 24-methods.qmd
+    - 25-results.qmd
+  # - 26-conclusions.qmd
+  # - 27-colophon.qmd
+  # - 28-references.qmd
+  # appendices:
+  #   - 31a-irb.qmd
+  #   - 32b-contributions.qmd
+  #   - 33c-s1conduct.qmd
+  #   - 34d-s2conduct.qmd
+  #   - 35e-videotools.qmd
+  #   - 36f-videoproc.qmd
+  #   - 37g-datadict.qmd
+  #   - 38h-dataorg.qmd
