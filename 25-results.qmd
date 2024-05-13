@@ -1065,25 +1065,10 @@ t |>
 ```
 
 ::: content-hidden
-Claude insights:
-
-1. Significant differences between treatment groups: The p-values for all three performance metrics (Number of Tasks Completed, Task Completion Time, and Error Count per Task) are less than 0.001, indicating statistically significant differences between the treatment groups. This suggests that the assigned treatment conditions had a meaningful impact on participant performance.
-
-2. Variability in performance metrics: The standard deviations and interquartile ranges (IQR) for each metric indicate considerable variability in performance within treatment groups. This is particularly noticeable for Task Completion Time, where the IQRs are quite wide, suggesting a broad range of completion times among participants.
-
-3. Differences in central tendencies: The means and medians for each metric vary across treatment groups. For example, the PWT group has the highest average number of tasks completed (7.1) and the lowest average task completion time (79.8 seconds), while the MR group has the lowest average error count per task (0.7). These differences in central tendencies provide insights into how performance varied between treatments.
-
-4. Potential trade-offs between speed and accuracy: The data suggests possible trade-offs between task completion time and error count. For instance, the PWT group has the fastest average completion time but the highest average error count, while the MR group has the slowest average completion time but the lowest average error count. This could indicate that some treatments prioritized speed over accuracy or vice versa.
-
-5. Skewed distributions: For some metrics, particularly Error Count per Task, the median is notably lower than the mean, and the IQR is relatively small compared to the overall range. This suggests positively skewed distributions, with most participants having low error counts but a few having much higher counts.
-
-:::
-
-::: content-hidden
 MAYBE: use conditional content to show best version of tables for html or pdf?
 :::
 
-See @fig-perf-by-treat
+See @fig-perf-by-treat for a depiction of the mean values with 95% confidence intervals for each. Based on this analysis, several additional observations can be made. The p-values indicate statistically significant differences between groups. The previously noted variability and positive skew are also observed in the grouped data. Finally, there is evidence that some treatments may have prioritized speed over accuracy, or vice versa.
 
 ```{r make-perf-data}
 # Reshape data to long format
