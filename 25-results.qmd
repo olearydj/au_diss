@@ -390,7 +390,7 @@ height_summary <- str_glue(
 )
 ```
 
-After excluding data from the pilot study, `r report_participants(nums, age = "age", participants = "participant")` were included in this analysis. Other than age, height (`r height_summary`) was the only numeric data collected. As discussed in @sec-res-challenges, height was first recorded following the pilot study, when its impact on user behavior and results was first observed. Both numeric characteristics are visualized with a combined box and scatter plot in @fig-numeric. The notches of these box plots show the 95% confidence interval around the median.
+After excluding data from the pilot study, `r report_participants(nums, age = "age", participants = "participant")` were included in this analysis. Other than age, height (`r height_summary`) was the only numeric data collected. As discussed in @sec-res-challenges, height was first recorded following the pilot study, when its impact on user behavior and results was first observed. Both numeric characteristics are visualized with a combined box and scatter plot in @fig-numeric. Where present, the notches of these box plots show the 95% confidence interval around the median.
 
 ```{r fig-numeric}
 #| fig-cap: "Distribution of Participant Age and Height"
@@ -882,6 +882,8 @@ cd |>
 
 ## Learning Phase Results
 
+Only completed tasks, the primary result of interest, are considered in this analysis. While excluding incomplete tasks may limit the generalizability of the findings to scenarios where time constraints are common, it ensures the analysis is based on objective, directly observed data and avoids introducing assumptions or biases that could arise from predicting results for unfinished tasks. 
+
 ```{r factor-car-results}
 
 res_f <- car_results |>
@@ -897,32 +899,65 @@ res_f <- car_results |>
 
 ```{r learn-data}
 learn <- res_f |>
-  filter(
-    phase == 1,
-    car_outcome == "complete",
-    uid != "1048-P1-C5" # hack to remove incorrectly labeled car
-  ) |>
-  select(participant, car_elapsed_time, uce, treatment)
+  filter(phase == 1,
+         car_outcome == "complete",
+         # hack to remove incorrectly labeled car
+         uid != "1048-P1-C5") |>
+  select(
+    participant,
+    car_elapsed_time,
+    uce,
+    treatment,
+    drop_event_count,
+    drop_event_tot_time_adj,
+    repair_event_count,
+    repair_event_tot_time,
+    system_event_count,
+    system_event_tot_time
+  )
 
+# add tot_sys_adj, tot_usr_adj, and adjusted TCT time to learn
+# tot_sys_adj will be used to calculate OEE
+# tot_usr_adj just to reduce TCT
+
+learn <- learn |>
+  mutate(
+    # Replace NA with 0 using coalesce for safe addition
+    tot_sys_adj = coalesce(drop_event_tot_time_adj, 0) +
+      coalesce(system_event_tot_time, 0),
+    tot_usr_adj = coalesce(repair_event_tot_time, 0),
+    tot_adj = tot_sys_adj + tot_usr_adj,
+    car_elapsed_time_adj = car_elapsed_time - tot_adj
+  )
+
+changes <- learn |>
+  filter(car_elapsed_time != car_elapsed_time_adj)
+
+total_tasks_completed <- dim(learn)[1]
+total_tasks_adjusted <- dim(changes)[1]
+```
+
+One final step of data preparation was taken to account for drop-outs and other system events, along with time spent making repairs. This lost time was deducted from measured task times to give a more accurate record of participant performance. `r total_tasks_adjusted` of `r total_tasks_completed` completed tasks (`r round(total_tasks_adjusted / total_tasks_completed * 100, 1)`%) were affected by this adjustment.
+
+::: content-hidden
+MAYBE: consider better quantifying the effect of these adjustments
+:::
+
+### Descriptive Statistics for Granular Data
+
+```{r make-report}
 # report descriptive stats for cet and uce
 learn_rpt <- learn |>
   rename(
-    "Task Completion Time (sec)" = car_elapsed_time,
+    "Task Completion Time (sec)" = car_elapsed_time_adj,
     "Uncorrected Error Count" = uce
   ) |>
   select("Task Completion Time (sec)", "Uncorrected Error Count") |>
   report::report() # options not working!
 
-# agg participant results
-learn_agg <- learn |>
-  group_by(participant) |>
-  summarize(
-    treatment = first(treatment),
-    tot_cars = n(), # Count the number of tasks per participant
-    avg_tct = mean(car_elapsed_time, na.rm = TRUE),
-    avg_uce = mean(uce, na.rm = TRUE)
-  ) |>
-  ungroup()
+rpt_table <- as.report_table(learn_rpt)
+cv_tct <- rpt_table$SD[1] / rpt_table$Mean[1]
+cv_uce <- rpt_table$SD[2] / rpt_table$Mean[2]
 ```
 
 ::: content-hidden
@@ -930,26 +965,18 @@ TODO: correct data for `1048-P1-C5`; flagged complete with elapsed time of 4.267
 TODO: investigate report::report options
 :::
 
-Analysis plan:  
-1. phase 1 complete cars, unmodified times  
-2. partial credit for incomplete count  
-3. modified times  
-4. outliers?
-
-### Descriptive Statistics
-
 `r learn_rpt`
 
-This data provides a high-level summary of performance across all tasks and participants, where each observation corresponds to a single repetition of the Learning task. Both variables show a high coefficient of variance, as depicted in @fig-learn.
+These statistics provide a high-level summary of performance across all tasks and participants, where each observation corresponds to a single repetition of the Learning task. Both Task Completion Time (TCT) and Uncorrected Error Count (UCE) show considerable variance, as depicted in @fig-learn.
 
 ```{r fig-learn}
 #| fig-cap: "Distribution of Learning Experimental Data"
 #| fig-height: 5
 #| warning: false
 
-# Plotting car_elapsed_time
+# Plotting adjusted car_elapsed_time
 cet_plot <- learn |>
-  ggplot(aes(x = car_elapsed_time)) +
+  ggplot(aes(x = car_elapsed_time_adj)) +
   geom_histogram(
     aes(y = ..density.. * 65), # hack for relative size / scale
     binwidth = 10,
@@ -1016,12 +1043,31 @@ cet_plot / uce_plot +
   )
 ```
 
-Error count shows greater relative variance and the presence of a floor effect. The later could potentially suggest limitations in the task's ability to capture a full range of participant performance. Further investigation is required to determine if this is due to task complexity or other factors.
+Compared to TCT, with a coefficient of variation (CV) of `r round(cv_tct, 2)`, UCE shows substantially greater spread (CV=`r round(cv_uce, 2)`) and the presence of a floor effect. The later could potentially suggest limitations in the task's ability to capture a full range of participant performance. Further investigation is required to determine if this is due to task complexity or other factors.
 
-To better understand individual performance, @tbl-agg-results-by-treat presents participant-level metrics, including the number of tasks completed, task completion time, and error count per task. In addition to the overall results, the data is broken out by assigned treatment group to allow for comparisons across conditions.
+### Aggregated Data
+
+```{r agg-results}
+# agg participant results
+learn_agg <- learn |>
+  group_by(participant) |>
+  summarize(
+    treatment = first(treatment),
+    tot_cars = n(), # Count the number of tasks per participant
+    avg_tct_adj = mean(car_elapsed_time_adj, na.rm = TRUE),
+    avg_uce = mean(uce, na.rm = TRUE)
+  ) |>
+  ungroup()
+```
+
+::: content-hidden
+MAYBE: may need to add back other variables from learn into this agg table
+:::
+
+@tbl-agg-results-by-treat presents participant-level metrics, including the number of tasks completed along with the average TCT and UCE per task. In addition to the overall results, the data is broken out by assigned treatment group to allow for comparisons across conditions. Note that the statistics presented are the overall (aka "grand") mean and median values. That is, they are the average or middle values of all individual participant averages. This provides overall summary statistics for each treatment group that reflect the central tendency and variability among the average outcomes reported by participants within each group.
 
 ```{r tbl-agg-results-by-treat}
-#| tbl-cap: Performance Data Summarized by Participant and Treatment Group
+#| tbl-cap: Average Participant Performance Data Summarized by Treatment Group
 
 t <- learn_agg |>
   select(-participant) |>
@@ -1029,8 +1075,8 @@ t <- learn_agg |>
     type = all_continuous() ~ "continuous2",
     digits = all_continuous2() ~ 1,
     label = list(
-      avg_tct ~ "Task Completion Time (sec)",
-      avg_uce ~ "Error Count per Task",
+      avg_tct_adj ~ "Avg TCT per Task (sec)",
+      avg_uce ~ "Avg UCE per Task",
       tot_cars ~ "Number of Tasks Completed"
     ),
     by = treatment,
@@ -1042,13 +1088,13 @@ t <- learn_agg |>
     )
   ) |>
   # bold_labels() |>
-  add_p() |>
-  separate_p_footnotes() |>
+  # add_p() |>
+  # separate_p_footnotes() |>
   add_overall() |>
-  bold_p(t = 0.05) |>
+  # bold_p(t = 0.05) |>
   modify_header(
     all_stat_cols() ~ "**{level}**\nn = {n} ({style_percent(p)}%)",
-    p.value ~ "**p-val**"
+    # p.value ~ "**p-val**"
   )
 
 t |>
@@ -1064,20 +1110,16 @@ t |>
   )
 ```
 
-::: content-hidden
-MAYBE: use conditional content to show best version of tables for html or pdf?
-:::
-
-See @fig-perf-by-treat for a depiction of the mean values with 95% confidence intervals for each. Based on this analysis, several additional observations can be made. The p-values indicate statistically significant differences between groups. The previously noted variability and positive skew are also observed in the grouped data. Finally, there is evidence that some treatments may have prioritized speed over accuracy, or vice versa.
+See @fig-perf-by-treat for a depiction of the grand means for all variables, with 95% confidence intervals for each. Observe that the previously noted variability and positive skew are also present in the grouped data, and some treatments like PWI may have prioritized speed over accuracy, or vice versa (e.g. AR).
 
 ```{r make-perf-data}
 # Reshape data to long format
-long_data <- learn_agg %>%
-  pivot_longer(cols = c(avg_tct, tot_cars, avg_uce), names_to = "metric", values_to = "value")
+long_data <- learn_agg |>
+  pivot_longer(cols = c(avg_tct_adj, tot_cars, avg_uce), names_to = "metric", values_to = "value")
 
 # Calculate means, sample size, and SE for each metric within each treatment
-metrics_stats <- long_data %>%
-  group_by(treatment, metric) %>%
+metrics_stats <- long_data |>
+  group_by(treatment, metric) |>
   summarize(
     mean_value = mean(value, na.rm = TRUE),
     n = n(), # sample size
@@ -1086,13 +1128,13 @@ metrics_stats <- long_data %>%
   )
 
 # Find the highest mean for each metric across all treatments
-max_means <- metrics_stats %>%
-  group_by(metric) %>%
+max_means <- metrics_stats |>
+  group_by(metric) |>
   summarize(max_mean = max(mean_value), .groups = "drop")
 
 # Normalize means and calculate CI within their metrics
-normalized_metrics_stats <- metrics_stats %>%
-  left_join(max_means, by = "metric") %>%
+normalized_metrics_stats <- metrics_stats |>
+  left_join(max_means, by = "metric") |>
   mutate(
     normalized_mean = mean_value / max_mean,
     lower_ci = normalized_mean - qt(0.975, df = n - 1) * (se / max_mean),
@@ -1100,20 +1142,20 @@ normalized_metrics_stats <- metrics_stats %>%
   )
 
 # Calculate overall mean, SE, and normalize
-overall_stats <- long_data %>%
-  group_by(metric) %>%
+overall_stats <- long_data |>
+  group_by(metric) |>
   summarize(
     overall_mean = mean(value, na.rm = TRUE),
     n = n(),
     se = sd(value, na.rm = TRUE) / sqrt(n()),
     .groups = "drop"
-  ) %>%
-  left_join(max_means, by = "metric") %>%
+  ) |>
+  left_join(max_means, by = "metric") |>
   mutate(
     normalized_mean = overall_mean / max_mean,
     lower_ci = normalized_mean - qt(0.975, df = n - 1) * (se / max_mean),
     upper_ci = normalized_mean + qt(0.975, df = n - 1) * (se / max_mean)
-  ) %>%
+  ) |>
   mutate(treatment = "ALL")
 
 # Combine with other stats
@@ -1125,7 +1167,7 @@ final_stats$treatment <- factor(final_stats$treatment, levels = c("ALL", "PWI", 
 # Factorize and label 'metric' column
 final_stats$metric <- factor(
   final_stats$metric,
-  levels = c("avg_tct", "avg_uce", "tot_cars"),
+  levels = c("avg_tct_adj", "avg_uce", "tot_cars"),
   labels = c("Average Task Time", "Average Error Count", "Tasks Completed")
 )
 
@@ -1178,19 +1220,131 @@ ggplot(final_stats, aes(x = metric, y = normalized_mean, fill = treatment, label
 
 ```
 
-From this, we can see that the
+#### Assess outliers
+
+Given the level of variation and spread seen above, the presence of outliers was analyzed. Participant-level outliers within treatment groups were the focus, rather than individual data points across the entire dataset. This method helps ensure that outliers are identified relative to the specific context of each treatment, accounting for the corresponding variability.
+
+::: content-hidden
+The distribution of this data is visualized in @fig-agg-learn.
+removed - unnecessary?
+
+{r fig-agg-learn}
+#| fig-cap: "Aggregated Learning Data"
+#| fig-height: 5
+
+avg_tct_adj_plot <-
+  ggplot(learn_agg, aes(x = treatment, y = avg_tct_adj)) +
+  geom_boxplot(fill = "skyblue", color = outline_color) +
+  geom_jitter(
+    aes(color = "pink"),
+    width = 0.375,
+    height = 0,
+    size = 2,
+    alpha = 0.75,
+    # shape = "*"
+  )
+
+avg_uce_plot <- ggplot(learn_agg, aes(x = treatment, y = avg_uce)) +
+  geom_boxplot(fill = "pink", color = outline_color) +
+  geom_jitter(
+    aes(color = "skyblue"),
+    width = 0.375,
+    height = 0,
+    size = 2,
+    alpha = 0.75,
+    # shape = "*"
+  )
+
+avg_tct_adj_plot / avg_uce_plot
+:::
+
+Four different tests were used to assess each participant as an outlier in their treatment group: (1) Tukey's Fences at 1.5 times the IQR, (2) Tukey's Fences at 3.0 times the IQR, (3) outside the 5th and 95th percentiles, and (4) using the Mahalanobis distance. TCE and UCE were each tested separately using the first three methods. The fourth method is a multivariate test that considers TCE and UCE together. The results are summarized in @tbl-outlier-summary, for all participants that were identified by two or more tests.
+
+```{r find-outliers}
+# Function to detect outliers in a vector
+find_outliers <- function(x, mult) {
+  q1 <- quantile(x, 0.25, na.rm = TRUE)
+  q3 <- quantile(x, 0.75, na.rm = TRUE)
+  iqr <- q3 - q1
+  lower_bound <- q1 - mult * iqr
+  upper_bound <- q3 + mult * iqr
+  x < lower_bound | x > upper_bound
+}
+
+# Function to calculate Mahalanobis distance for a group
+compute_mahalanobis <- function(df, cols) {
+  cov_matrix <- cov(df[, cols], use = "complete.obs")
+  center <- colMeans(df[, cols], na.rm = TRUE)
+  mahal_dist <- mahalanobis(df[, cols], center, cov_matrix)
+  return(mahal_dist)
+}
+
+outlier_summary <- learn_agg |>
+  group_by(treatment) |>
+  mutate(
+    # find 1.5 and 3x IQR outliers using Tukey method
+    out15_tct = find_outliers(avg_tct_adj, 1.5),
+    out15_uce = find_outliers(avg_uce, 1.5),
+    out30_tct = find_outliers(avg_tct_adj, 3.0),
+    out30_uce = find_outliers(avg_uce, 3.0),
+    # find by 5th and 95th percentile
+    pct_tct = avg_tct_adj < quantile(avg_tct_adj, 0.05, na.rm = TRUE) |
+      avg_tct_adj > quantile(avg_tct_adj, 0.95, na.rm = TRUE),
+    pct_uce = avg_uce < quantile(avg_uce, 0.05, na.rm = TRUE) |
+      avg_uce > quantile(avg_uce, 0.95, na.rm = TRUE),
+    # find by Mahalanobis distance
+    mahal_dist = compute_mahalanobis(pick(avg_tct_adj, avg_uce),
+                                     c("avg_tct_adj", "avg_uce")),
+    md_out = mahal_dist > qchisq(0.975, df = 2)
+  ) |>
+  ungroup() |>
+  group_by(participant) |>
+  summarize(
+    treatment = first(treatment),
+    out15_tct = sum(out15_tct),
+    out15_uce = sum(out15_uce),
+    out30_tct = sum(out30_tct),
+    out30_uce = sum(out30_uce),
+    pct_tct = sum(pct_tct),
+    pct_uce = sum(pct_uce),
+    md_out = sum(md_out),
+    .groups = 'drop'
+  )
+```
 
 
-some text here to hopefully fix the weird centering
+```{r tbl-outlier-summary}
+#| tbl-cap: Summary of Participants Identified by Two or More Outlier Tests
+#| warning: false
+
+outlier_summary |>
+  rowwise() |>
+  mutate(tot_out = sum(c_across(-c(participant, treatment)))) |>
+  ungroup() |>
+  filter(tot_out > 1) |>
+  arrange(desc(tot_out)) |>
+  select(participant, treatment, tot_out) |>
+  inner_join(learn_agg) |>
+  gt()
+
+```
+
+::: content-hidden
+TODO: make this table prettier
+:::
+
+Further investigation of these seven participants showed that only 1063 experienced systematic problems that might warrant excluding their performance. The other participants were just relatively poor performers, with high TCT and/or UCE. Given the limited amount of data collected per treatment, it was decided to retain all but 1063's data for further analysis.
+
+```{r drop-learn-outliers}
+# drop 1063
+learn_agg_out <- learn_agg |> filter(treatment != 1063)
+```
 
 ### Hypothesis Testing
 
 The first group of hypotheses are designed to test the effect of each
-treatment on training outcomes.
+treatment on training outcomes, including average TCT and UCE, along with the learning rate.
 
-Note that elapsed time is a continuous numerical value, but error count
-is discrete. This difference necessitates different approaches for
-hypothesis testing and the underlying assumptions that must be checked.
 
 #### Average Time per Car
 
@@ -1198,18 +1352,21 @@ Here we will test
 $H_{1a}\textrm{: Average time per car varies with treatment}$.
 
 ```{r}
-d <- learn |>
-  group_by(treatment)
+# Perform Kruskal-Wallis test
+kruskal_test_result <- learn_agg_out |>
+  kruskal.test(avg_tct_adj ~ treatment, data = _)
 
-m <- aov(car_elapsed_time ~ treatment, data = d)
+print(kruskal_test_result)
 
-# library(performance)
-# check_model(m)
 ```
 
 #### Average Error Count per Car (H1b)
 
 $H_{1b}\textrm{: Average error count per car varies with treatment}$.
+
+Note that elapsed time is a continuous numerical value, but error count
+is discrete. This difference necessitates different approaches for
+hypothesis testing and the underlying assumptions that must be checked.
 
 #### Learning Rates (H1c)
 
