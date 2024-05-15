@@ -899,10 +899,12 @@ res_f <- car_results |>
 
 ```{r learn-data}
 learn <- res_f |>
-  filter(phase == 1,
-         car_outcome == "complete",
-         # hack to remove incorrectly labeled car
-         uid != "1048-P1-C5") |>
+  filter(
+    phase == 1,
+    car_outcome == "complete",
+    # hack to remove incorrectly labeled car
+    uid != "1048-P1-C5"
+  ) |>
   select(
     participant,
     car_elapsed_time,
@@ -1067,7 +1069,7 @@ MAYBE: may need to add back other variables from learn into this agg table
 @tbl-agg-results-by-treat presents participant-level metrics, including the number of tasks completed along with the average TCT and UCE per task. In addition to the overall results, the data is broken out by assigned treatment group to allow for comparisons across conditions. Note that the statistics presented are the overall (aka "grand") mean and median values. That is, they are the average or middle values of all individual participant averages. This provides overall summary statistics for each treatment group that reflect the central tendency and variability among the average outcomes reported by participants within each group.
 
 ```{r tbl-agg-results-by-treat}
-#| tbl-cap: Average Participant Performance Data Summarized by Treatment Group
+#| tbl-cap: Avg. Participant Performance Data Summarized by Treatment Group
 
 t <- learn_agg |>
   select(-participant) |>
@@ -1115,7 +1117,11 @@ See @fig-perf-by-treat for a depiction of the grand means for all variables, wit
 ```{r make-perf-data}
 # Reshape data to long format
 long_data <- learn_agg |>
-  pivot_longer(cols = c(avg_tct_adj, tot_cars, avg_uce), names_to = "metric", values_to = "value")
+  pivot_longer(
+    cols = c(avg_tct_adj, tot_cars, avg_uce),
+    names_to = "metric",
+    values_to = "value"
+  )
 
 # Calculate means, sample size, and SE for each metric within each treatment
 metrics_stats <- long_data |>
@@ -1195,9 +1201,9 @@ ggplot(final_stats, aes(x = metric, y = normalized_mean, fill = treatment, label
     alpha = 0.7
   ) +
   geom_text(
-    aes(y=0),
+    aes(y = 0),
     position = position_dodge(width = 0.9),
-    vjust = 1.65,  # Adjust based on visual preference
+    vjust = 1.65, # Adjust based on visual preference
     size = 3,
     alpha = 0.9
   ) +
@@ -1220,6 +1226,10 @@ ggplot(final_stats, aes(x = metric, y = normalized_mean, fill = treatment, label
 
 ```
 
+::: content-hidden
+TODO: fix title / subtitle formatting
+:::
+
 #### Assess outliers
 
 Given the level of variation and spread seen above, the presence of outliers was analyzed. Participant-level outliers within treatment groups were the focus, rather than individual data points across the entire dataset. This method helps ensure that outliers are identified relative to the specific context of each treatment, accounting for the corresponding variability.
@@ -1228,21 +1238,7 @@ Given the level of variation and spread seen above, the presence of outliers was
 The distribution of this data is visualized in @fig-agg-learn.
 removed - unnecessary?
 
-{r fig-agg-learn}
-#| fig-cap: "Aggregated Learning Data"
-#| fig-height: 5
-
-avg_tct_adj_plot <-
-  ggplot(learn_agg, aes(x = treatment, y = avg_tct_adj)) +
-  geom_boxplot(fill = "skyblue", color = outline_color) +
-  geom_jitter(
-    aes(color = "pink"),
-    width = 0.375,
-    height = 0,
-    size = 2,
-    alpha = 0.75,
-    # shape = "*"
-  )
+moved to hypothesis testing
 
 avg_uce_plot <- ggplot(learn_agg, aes(x = treatment, y = avg_uce)) +
   geom_boxplot(fill = "pink", color = outline_color) +
@@ -1293,8 +1289,10 @@ outlier_summary <- learn_agg |>
     pct_uce = avg_uce < quantile(avg_uce, 0.05, na.rm = TRUE) |
       avg_uce > quantile(avg_uce, 0.95, na.rm = TRUE),
     # find by Mahalanobis distance
-    mahal_dist = compute_mahalanobis(pick(avg_tct_adj, avg_uce),
-                                     c("avg_tct_adj", "avg_uce")),
+    mahal_dist = compute_mahalanobis(
+      pick(avg_tct_adj, avg_uce),
+      c("avg_tct_adj", "avg_uce")
+    ),
     md_out = mahal_dist > qchisq(0.975, df = 2)
   ) |>
   ungroup() |>
@@ -1308,7 +1306,7 @@ outlier_summary <- learn_agg |>
     pct_tct = sum(pct_tct),
     pct_uce = sum(pct_uce),
     md_out = sum(md_out),
-    .groups = 'drop'
+    .groups = "drop"
   )
 ```
 
@@ -1333,7 +1331,7 @@ outlier_summary |>
 TODO: make this table prettier
 :::
 
-Further investigation of these seven participants showed that only 1063 experienced systematic problems that might warrant excluding their performance. The other participants were just relatively poor performers, with high TCT and/or UCE. Given the limited amount of data collected per treatment, it was decided to retain all but 1063's data for further analysis.
+Further investigation of these seven participants showed that only 1063 experienced systematic problems that might warrant excluding their performance. The other participants were just relatively poor performers, with high TCT and/or UCE. Given the limited amount of data collected per treatment, it was decided to retain all but 1063's data for hypothesis testing.
 
 ```{r drop-learn-outliers}
 # drop 1063
@@ -1342,9 +1340,8 @@ learn_agg_out <- learn_agg |> filter(treatment != 1063)
 
 ### Hypothesis Testing
 
-The first group of hypotheses are designed to test the effect of each
+This first group of hypotheses are designed to test the effect of each
 treatment on training outcomes, including average TCT and UCE, along with the learning rate.
-
 
 #### Average Time per Car
 
@@ -1352,13 +1349,229 @@ Here we will test
 $H_{1a}\textrm{: Average time per car varies with treatment}$.
 
 ```{r}
-# Perform Kruskal-Wallis test
-kruskal_test_result <- learn_agg_out |>
+
+# Perform Kruskal-Wallis test for differences
+h1a_kwt <- learn_agg_out |>
   kruskal.test(avg_tct_adj ~ treatment, data = _)
 
-print(kruskal_test_result)
+h1a_hwt_p <- format(h1a_kwt$p.value, digits = 2, scientific = TRUE)
 
 ```
+
+```{r}
+#| fig-height: 5
+#| warning: false
+
+library(ggstatsplot)
+h1a_plot <- ggbetweenstats(
+  data = learn_agg_out,
+  x = treatment,
+  y = avg_tct_adj,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "Average TCT by Treatment",
+  digits = 1,
+  # results.subtitle = FALSE,
+  # bf.message = FALSE,
+  # subtitle = "this is the subtitle",
+  # ggtheme = theme_minimal()
+)
+
+h1a_plot
+```
+
+There are ss overall differences in TCT by treatment (KW)
+Pairwise Dunn test shows PWI and PAR are both ss different from AR and MR but neither PWI / PAR (faster group) nor AR / MR (slower group) are ss different from one another
+Effect size of 0.5 (moderate to large) indicates that proportion of the variance in TCT can be explained by treatment groups.
+95% CI of 0.3 to 1.0 suggests at least moderate effect of treatment, but could explain up to 100% of the variance.
+ES + CI -> moderate to large practical significance
+
+```{r}
+library(pwr)
+
+# # Function to calculate power for Kruskal-Wallis test via simulation
+simulate_kruskal_power <- function(n, k, effect_size, sig_level = 0.05, num_simulations = 1000) {
+  p_values <- numeric(num_simulations)
+  for (i in 1:num_simulations) {
+    # Simulate data for each group with an effect size
+    data <- data.frame(
+      value = unlist(lapply(1:k, function(x) rnorm(n, mean = x * effect_size))),
+      group = gl(k, n)
+    )
+    # Perform Kruskal-Wallis tes
+    p_values[i] <- kruskal.test(value ~ group, data = data)$p.value
+  }
+  # Proportion of tests rejecting null hypothesis gives power estimate
+  power <- mean(p_values < sig_level)
+  return(power)
+}
+
+# # Function to run post-hoc power analysis based on observed epsilon squared
+posthoc_power_analysis <- function(n, k, observed_effect_size, sig_level = 0.05, num_simulations = 1000) {
+  # Convert the epsilon squared back to a standard effect size approximation for simulation
+  std_effect_size <- sqrt(observed_effect_size / (1 - observed_effect_size))
+
+  # Use simulation to estimate power as before
+  power <- simulate_kruskal_power(n, k, std_effect_size, sig_level, num_simulations)
+  return(power)
+}
+
+# Number of groups
+k <- length(unique(learn_agg_out$treatment))
+
+# Sample size per group
+n <- round(nrow(learn_agg_out) / k)
+
+epsilon_sq <- 0.51
+
+# # Estimate post-hoc power
+posthoc_power <- posthoc_power_analysis(n, k, epsilon_sq, sig_level = 0.05, num_simulations = 1000)
+print(posthoc_power)
+
+# # Optional: Run with a smaller effect size to compare
+epsilon_sq_smaller <- 0.2
+posthoc_power_smaller <- posthoc_power_analysis(n, k, epsilon_sq_smaller, sig_level = 0.05, num_simulations = 1000)
+print(posthoc_power_smaller)
+```
+
+#### Check Normality of Treatment Data
+
+As noted in the original assessment of the learning data, the overall TCT dataset exhibits skewness and kurtosis, suggesting deviations from a normal distribution. To choose the most appropriate statistical method for hypothesis testing, this must be revisited. Standard between-groups hypothesis tests rely on the assumption that the data *within each group* follows a normal distribution. Furthermore, the data has changed. By averaging the observations and eliminating an outlier, the grouped data likely better resembles a normal distribution.
+
+To accurately assess normality of each treatment group, a combination of quantitative and qualitative analysis is required. Statistical tests provide a formal but imperfect measure of the data's shape. Visual confirmation of the characteristic quantile-quantile (Q-Q) plot provides further support for the claim.
+
+@tbl-learn-norm tabulates the results of the D'Agostino skewness test, Anscombe-Glynn kurtosis test, and the Shapiro-Wilk normality test.
+
+```{r def-tab-norm}
+# Function to tabulate normality test results for each treatment group
+tabulate_normality_tests <-
+  function(data, treatment_col, value_col) {
+    levels <- levels(data[[treatment_col]])
+    all_levels <- c("ALL", levels)
+
+    results <- map(all_levels, function(level) {
+      if (level == "ALL") {
+        data_subset <- data |> pull(!!sym(value_col))
+      } else {
+        data_subset <-
+          data |>
+          filter((!!sym(treatment_col)) == level) |>
+          pull(!!sym(value_col))
+      }
+
+      if (length(data_subset) > 0) {
+        # Ensure there's data to process
+        skew_test <- moments::agostino.test(data_subset)
+        kurtosis_test <- moments::anscombe.test(data_subset)
+        normality_test <- shapiro.test(data_subset)
+
+        tibble(
+          Group = level,
+          Skewness = paste(
+            round(skew_test$statistic[1], 2),
+            round(skew_test$p.value, 3),
+            sep = ", "
+          ),
+          Kurtosis = paste(
+            round(kurtosis_test$statistic[1], 2),
+            round(kurtosis_test$p.value, 3),
+            sep = ", "
+          ),
+          Normality = paste(
+            round(normality_test$statistic, 2),
+            round(normality_test$p.value, 3),
+            sep = ", "
+          )
+        )
+      } else {
+        tibble(
+          Group = level,
+          Skewness = NA,
+          Kurtosis = NA,
+          Normality = NA
+        )
+      }
+    }) |> bind_rows()
+
+    # Ensure the desired order, converting Group to a factor
+    results <- results |>
+      mutate(Group = factor(Group, levels = c("ALL", "MR", "AR", "PWI", "PAR"))) |>
+      filter(!is.na(Group)) |>
+      arrange(Group)
+
+    results
+  }
+```
+
+
+```{r tbl-learn-norm}
+#| tbl-cap: "Test Statistic, p-value for Normality Assessment"
+#|
+result_table <- tabulate_normality_tests(learn_agg_out, "treatment", "avg_tct_adj")
+result_table |> gt()
+```
+
+From this we can see that, overall, the data has a significant left skew (0.84, p=0.011)
+
+In each case, the null hypothesis
+
+
+
+```{r}
+library(ggpubr)
+
+# Function to create QQ plots and arrange them in a 2x2 grid
+qq_plot_patchwork <-
+  function(data,
+           x_var,
+           by_var) {
+    levels <- unique(data[[by_var]])
+
+    if (length(levels) != 4) {
+      stop("This script expects exactly 4 levels in the grouping variable.")
+    }
+
+    plots <- lapply(levels, function(level) {
+      p <- data |>
+        filter((!!sym(by_var)) == level) |>
+        ggqqplot(
+          x = x_var,
+          xlab = "",
+          ylab = "",
+          title = level,
+          ggtheme = theme_void() +
+            theme(
+              plot.margin = margin(0, 0, 0, 0),
+              panel.spacing = unit(0, "lines"),
+              panel.grid = element_blank(),
+              axis.title = element_blank(),
+              axis.text = element_blank(),
+              axis.ticks = element_blank(),
+              axis.line = element_blank(),
+              plot.title = element_text(hjust = 0.5),
+              panel.border = element_rect(
+                color = outline_color,
+                fill = NA,
+                linewidth = 0.5
+              ),
+            )
+        ) |>
+        ggpar(ticks = FALSE, tickslab = FALSE)
+    })
+
+    # Arrange the plots in a 2x2 grid using patchwork
+    plot_layout <-
+      (plots[[1]] + plots[[2]]) / (plots[[3]] + plots[[4]])
+
+    return(plot_layout)
+  }
+
+qq_plot_patchwork(learn_agg_out, x_var = "avg_tct_adj", by_var = "treatment")
+
+```
+
+
 
 #### Average Error Count per Car (H1b)
 
