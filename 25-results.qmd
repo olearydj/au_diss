@@ -12,9 +12,9 @@ library(xtable)
 library(broom)
 library(report)
 library(tools)
+# library(ggtext)
 # library(glue) now included with tidyverse as str_glue
 # library(gridExtra)
-# library(ggtext)
 
 # currently unused:
 # library(skimr)
@@ -103,7 +103,7 @@ This study was administered during the Spring of 2023. Ultimately, `r participan
 
 ```{r fig-s1-progress}
 #| fig-cap: "Daily Trial Administration and Completion Percentage"
-#| fig-height: 4
+#| fig-height: 3.5
 
 # Count experiments per day
 daily_counts <- demographics |>
@@ -394,7 +394,7 @@ After excluding data from the pilot study, `r report_participants(nums, age = "a
 
 ```{r fig-numeric}
 #| fig-cap: "Distribution of Participant Age and Height"
-#| fig-height: 4
+#| fig-height: 3.5
 #| warning: false
 
 # Plotting age
@@ -509,7 +509,7 @@ Of the sample's `r inline_text(cat_tbl, language, level = "English", pattern = "
 
 ```{r fig-categorical}
 #| fig-cap: "Distribution of Categorical Characteristics"
-#| fig-height: 4
+#| fig-height: 3.5
 #| results: hide
 
 create_cat_plot <- function(data, category, base_color) {
@@ -622,7 +622,7 @@ vc_tbl |>
   as_kable_extra(
     booktabs = TRUE,
     escape = FALSE,
-    linesep = "\\addlinespace",
+    #linesep = "\\addlinespace",
   ) |>
   kableExtra::kable_styling(
     latex_options = c("scale_down"),
@@ -689,7 +689,7 @@ Unlike the data above, the categories analyzed in this section are inherently or
 
 ```{r fig-ordinal}
 #| fig-cap: "Distribution of Ordinal Characteristics"
-#| fig-height: 4
+#| fig-height: 3.5
 #| results: hide
 
 plot_ords <- function(data, var, title) {
@@ -830,7 +830,7 @@ mv_tbl |>
   as_kable_extra(
     booktabs = TRUE,
     escape = FALSE,
-    linesep = "\\addlinespace",
+    #linesep = "\\addlinespace",
   ) |>
   kableExtra::kable_styling(
     latex_options = c("scale_down"),
@@ -972,8 +972,8 @@ TODO: investigate report::report options
 These statistics provide a high-level summary of performance across all tasks and participants, where each observation corresponds to a single repetition of the Learning task. Both Task Completion Time (TCT) and Uncorrected Error Count (UCE) show considerable variance, as depicted in @fig-learn.
 
 ```{r fig-learn}
-#| fig-cap: "Distribution of Learning Experimental Data"
-#| fig-height: 5
+#| fig-cap: "Distribution of Task Completion Time and Error Rates in Learning"
+#| fig-height: 3.5
 #| warning: false
 
 # Plotting adjusted car_elapsed_time
@@ -1041,7 +1041,7 @@ cet_plot / uce_plot +
   # plot_layout(ncol = 2, widths = c(1,1)) +
   plot_annotation(
     title = "Learning Phase - Observed Measures",
-    subtitle = "Error Count Shows Greater Relative Variability than Completion Time During Learning"
+    subtitle = "Error Count Exhibits Greater Variability than Task Completion Time"
   )
 ```
 
@@ -1104,7 +1104,7 @@ t |>
   as_kable_extra(
     booktabs = TRUE,
     escape = FALSE,
-    linesep = "\\addlinespace",
+    #linesep = "\\addlinespace",
   ) |>
   kableExtra::kable_styling(
     latex_options = c("scale_down"),
@@ -1184,8 +1184,8 @@ names(alpha_values) <- levels(final_stats$treatment)
 
 
 ```{r fig-perf-by-treat}
-#| fig-cap: "Distribution of Learning Experimental Data"
-#| fig-height: 4
+#| fig-cap: "Aggregated Learning Performance Data by Treatment"
+#| fig-height: 3.5
 #| warning: false
 
 ggplot(final_stats, aes(x = metric, y = normalized_mean, fill = treatment, label = treatment)) +
@@ -1210,13 +1210,15 @@ ggplot(final_stats, aes(x = metric, y = normalized_mean, fill = treatment, label
   scale_fill_manual(values = rep(base_color, length(unique(final_stats$treatment)))) +
   scale_alpha_continuous(transform = "pseudo_log", range = c(0.3, 1.0)) +
   labs(
-    title = "Normalized Performance Metrics by Treatment",
-    subtitle = "Includes Overall Measures and 95% Confidence Intervals",
+    title = "Comparison of Normalized Performance Metrics by Treatment",
+    subtitle = "Includes Overall and Treatment Groups with 95% Confidence Intervals",
     y = element_blank(),
     x = element_blank()
   ) +
-  theme_minimal() +
+  theme_minimal(base_size = 10) +
   theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold"),
     legend.position = "none",
     axis.text.x = element_text(
       margin = margin(b = 5, unit = "pt"),
@@ -1226,33 +1228,9 @@ ggplot(final_stats, aes(x = metric, y = normalized_mean, fill = treatment, label
 
 ```
 
-::: content-hidden
-TODO: fix title / subtitle formatting
-:::
-
 #### Assess outliers
 
 Given the level of variation and spread seen above, the presence of outliers was analyzed. Participant-level outliers within treatment groups were the focus, rather than individual data points across the entire dataset. This method helps ensure that outliers are identified relative to the specific context of each treatment, accounting for the corresponding variability.
-
-::: content-hidden
-The distribution of this data is visualized in @fig-agg-learn.
-removed - unnecessary?
-
-moved to hypothesis testing
-
-avg_uce_plot <- ggplot(learn_agg, aes(x = treatment, y = avg_uce)) +
-  geom_boxplot(fill = "pink", color = outline_color) +
-  geom_jitter(
-    aes(color = "skyblue"),
-    width = 0.375,
-    height = 0,
-    size = 2,
-    alpha = 0.75,
-    # shape = "*"
-  )
-
-avg_tct_adj_plot / avg_uce_plot
-:::
 
 Four different tests were used to assess each participant as an outlier in their treatment group: (1) Tukey's Fences at 1.5 times the IQR, (2) Tukey's Fences at 3.0 times the IQR, (3) outside the 5th and 95th percentiles, and (4) using the Mahalanobis distance. TCE and UCE were each tested separately using the first three methods. The fourth method is a multivariate test that considers TCE and UCE together. The results are summarized in @tbl-outlier-summary, for all participants that were identified by two or more tests.
 
@@ -1345,103 +1323,14 @@ treatment on training outcomes, including average TCT and UCE, along with the le
 
 #### Average Time per Car
 
-Here we will test
-$H_{1a}\textrm{: Average time per car varies with treatment}$.
-
-```{r}
-
-# Perform Kruskal-Wallis test for differences
-h1a_kwt <- learn_agg_out |>
-  kruskal.test(avg_tct_adj ~ treatment, data = _)
-
-h1a_hwt_p <- format(h1a_kwt$p.value, digits = 2, scientific = TRUE)
-
-```
-
-```{r}
-#| fig-height: 5
-#| warning: false
-
-library(ggstatsplot)
-h1a_plot <- ggbetweenstats(
-  data = learn_agg_out,
-  x = treatment,
-  y = avg_tct_adj,
-  type = "nonparametric",
-  xlab = "",
-  ylab = "",
-  title = "Average TCT by Treatment",
-  digits = 1,
-  # results.subtitle = FALSE,
-  # bf.message = FALSE,
-  # subtitle = "this is the subtitle",
-  # ggtheme = theme_minimal()
-)
-
-h1a_plot
-```
-
-There are ss overall differences in TCT by treatment (KW)
-Pairwise Dunn test shows PWI and PAR are both ss different from AR and MR but neither PWI / PAR (faster group) nor AR / MR (slower group) are ss different from one another
-Effect size of 0.5 (moderate to large) indicates that proportion of the variance in TCT can be explained by treatment groups.
-95% CI of 0.3 to 1.0 suggests at least moderate effect of treatment, but could explain up to 100% of the variance.
-ES + CI -> moderate to large practical significance
-
-```{r}
-library(pwr)
-
-# # Function to calculate power for Kruskal-Wallis test via simulation
-simulate_kruskal_power <- function(n, k, effect_size, sig_level = 0.05, num_simulations = 1000) {
-  p_values <- numeric(num_simulations)
-  for (i in 1:num_simulations) {
-    # Simulate data for each group with an effect size
-    data <- data.frame(
-      value = unlist(lapply(1:k, function(x) rnorm(n, mean = x * effect_size))),
-      group = gl(k, n)
-    )
-    # Perform Kruskal-Wallis tes
-    p_values[i] <- kruskal.test(value ~ group, data = data)$p.value
-  }
-  # Proportion of tests rejecting null hypothesis gives power estimate
-  power <- mean(p_values < sig_level)
-  return(power)
-}
-
-# # Function to run post-hoc power analysis based on observed epsilon squared
-posthoc_power_analysis <- function(n, k, observed_effect_size, sig_level = 0.05, num_simulations = 1000) {
-  # Convert the epsilon squared back to a standard effect size approximation for simulation
-  std_effect_size <- sqrt(observed_effect_size / (1 - observed_effect_size))
-
-  # Use simulation to estimate power as before
-  power <- simulate_kruskal_power(n, k, std_effect_size, sig_level, num_simulations)
-  return(power)
-}
-
-# Number of groups
-k <- length(unique(learn_agg_out$treatment))
-
-# Sample size per group
-n <- round(nrow(learn_agg_out) / k)
-
-epsilon_sq <- 0.51
-
-# # Estimate post-hoc power
-posthoc_power <- posthoc_power_analysis(n, k, epsilon_sq, sig_level = 0.05, num_simulations = 1000)
-print(posthoc_power)
-
-# # Optional: Run with a smaller effect size to compare
-epsilon_sq_smaller <- 0.2
-posthoc_power_smaller <- posthoc_power_analysis(n, k, epsilon_sq_smaller, sig_level = 0.05, num_simulations = 1000)
-print(posthoc_power_smaller)
-```
-
-#### Check Normality of Treatment Data
+Here we will test:
+$$H_{1a}\textrm{: Average time per car varies with treatment}$$
 
 As noted in the original assessment of the learning data, the overall TCT dataset exhibits skewness and kurtosis, suggesting deviations from a normal distribution. To choose the most appropriate statistical method for hypothesis testing, this must be revisited. Standard between-groups hypothesis tests rely on the assumption that the data *within each group* follows a normal distribution. Furthermore, the data has changed. By averaging the observations and eliminating an outlier, the grouped data likely better resembles a normal distribution.
 
 To accurately assess normality of each treatment group, a combination of quantitative and qualitative analysis is required. Statistical tests provide a formal but imperfect measure of the data's shape. Visual confirmation of the characteristic quantile-quantile (Q-Q) plot provides further support for the claim.
 
-@tbl-learn-norm tabulates the results of the D'Agostino skewness test, Anscombe-Glynn kurtosis test, and the Shapiro-Wilk normality test.
+@tbl-learn-norm tabulates the results of the D'Agostino skewness test, Anscombe-Glynn kurtosis test, and the Shapiro-Wilk normality test. In each case, the null hypothesis ($H_0$) for these tests assumes that the data follows the characteristics of a normal distribution. Therefore, low p-values indicate evidence against $H_0$, suggesting that the data deviates from normality in the tested aspect.
 
 ```{r def-tab-norm}
 # Function to tabulate normality test results for each treatment group
@@ -1506,20 +1395,24 @@ tabulate_normality_tests <-
 
 
 ```{r tbl-learn-norm}
-#| tbl-cap: "Test Statistic, p-value for Normality Assessment"
+#| tbl-cap: "Summary of Test Statistics, p-Values for Normality Assessment"
 #|
 result_table <- tabulate_normality_tests(learn_agg_out, "treatment", "avg_tct_adj")
 result_table |> gt()
 ```
 
-From this we can see that, overall, the data has a significant left skew (0.84, p=0.011)
+From this we see that only PWI fails the normality test (p=0.02), despite showing only marginally non-significant skewness (p=0.06). Similarly, MR exhibits significant positive skew (p=0.02) but the Shapiro-Wilk test gives evidence of normality (p=0.08). Both AR and PAR are relatively consistent in confirming normality, though AR's slightly positive skew shows borderline significance (1.03, p=0.05).
 
-In each case, the null hypothesis
+::: content-hidden
+TODO: correct hard-coded values in text
+:::
 
+To reconcile these findings for MR and PWI, and confirm those for AR and PAR, the set of four Q-Q plots in @fig-qq-h1a were generated. Observations for normal  data should fall along or near the line, within the shaded confidence interval. These plots show that PAR, AR, and MR all meet the expectations of normality, save for a point in the right tail of AR and MR. This aligns with the skewness and kurtosis test results. PWI, on the other hand, diverges from the line enough to leave the confidence interval, supporting the statistical evidence that it is not normally distributed.
 
+```{r fig-qq-h1a}
+#| fig-cap: Q-Q Plots of Learning Data by Treatment
+#| fig-height: 3.5
 
-```{r}
-library(ggpubr)
 
 # Function to create QQ plots and arrange them in a 2x2 grid
 qq_plot_patchwork <-
@@ -1535,12 +1428,12 @@ qq_plot_patchwork <-
     plots <- lapply(levels, function(level) {
       p <- data |>
         filter((!!sym(by_var)) == level) |>
-        ggqqplot(
+        ggpubr::ggqqplot(
           x = x_var,
           xlab = "",
           ylab = "",
           title = level,
-          ggtheme = theme_void() +
+          ggtheme = theme_minimal(base_size = 10) +
             theme(
               plot.margin = margin(0, 0, 0, 0),
               panel.spacing = unit(0, "lines"),
@@ -1557,18 +1450,135 @@ qq_plot_patchwork <-
               ),
             )
         ) |>
-        ggpar(ticks = FALSE, tickslab = FALSE)
+        ggpubr::ggpar(ticks = FALSE, tickslab = FALSE)
     })
 
     # Arrange the plots in a 2x2 grid using patchwork
     plot_layout <-
-      (plots[[1]] + plots[[2]]) / (plots[[3]] + plots[[4]])
-
+      (plots[[1]] + plots[[2]]) / (plots[[3]] + plots[[4]]) +
+      plot_annotation(title = "Quantile-Quantile Plots of Treatment Data",
+                      subtitle = "PWI Data is the Most Uncharacteristic")
+    
     return(plot_layout)
   }
 
 qq_plot_patchwork(learn_agg_out, x_var = "avg_tct_adj", by_var = "treatment")
 
+
+```
+
+Given the minor deviations from normality, particularly for the PWI group, and considering the robust consistency of results between parametric and non-parametric tests, it was concluded that non-parametric methods provide the most reliable and straightforward approach for hypothesis testing. This decision avoids the complexities associated with transformation pipelines, ensuring robust statistical conclusions while maintaining the interpretability of the original data. Should future analysis require linear regression or related methods (e.g. ANOVA and its variants), the data will be transformed accordingly,
+
+::: content-hidden
+MAYBE: try to fix data transformation issues with h1a? see: _temp.qmd
+:::
+
+
+See @fig-h1a-plot ...
+
+```{r fig-h1a-plot}
+#| fig-cap: Task Completion Time Differences by Treatment
+#| fig-height: 6
+#| warning: false
+
+h1a_plot <- ggstatsplot::ggbetweenstats(
+  data = learn_agg_out,
+  x = treatment,
+  y = avg_tct_adj,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "TCT Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  results.subtitle = FALSE,
+  subtitle = "Significant Pairwise Differences Identified using Dunn's Test, Holm-adjusted post-hoc",
+  digits = 1,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+h1a_plot
+
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "26.8", italic(p) == 
+#     "6.4e-06", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~ 
+#     "[" * "0.4", "1.0" * "]", italic("n")["obs"] == "54")
+```
+
+r ggstatsplot::extract_stats(h1a_plot)$pairwise_comparisons_data
+
+non-parametric
+centrality: median -> datawizard::describe_distribution()
+between-subjects one-way ANOVA: Kruskal-Wallis one-way ANOVA -> stats::kruskal.test()
+why chi-squared?
+effect size estimation: rank epsilon squared -> effectsize::rank_epsilon_squared()
+pairwise between-subjects test: Dunn Test -> PMCMRpluss::kwAllPairsDunnTest()
+Holm's adjustment?
+
+There are ss overall differences in TCT by treatment (KW)
+Pairwise Dunn test shows PWI and PAR are both ss different from AR and MR but neither PWI / PAR (faster group) nor AR / MR (slower group) are ss different from one another
+Effect size of 0.5 (moderate to large) indicates that proportion of the variance in TCT can be explained by treatment groups.
+95% CI of 0.3 to 1.0 suggests at least moderate effect of treatment, but could explain up to 100% of the variance.
+ES + CI -> moderate to large practical significance
+
+```{r test-power-sim}
+library(pwr)
+
+# # Function to calculate power for Kruskal-Wallis test via simulation
+simulate_kruskal_power <- function(n, k, effect_size, sig_level = 0.05, num_simulations = 1000) {
+  p_values <- numeric(num_simulations)
+  for (i in 1:num_simulations) {
+    # Simulate data for each group with an effect size
+    data <- data.frame(
+      value = unlist(lapply(1:k, function(x) rnorm(n, mean = x * effect_size))),
+      group = gl(k, n)
+    )
+    # Perform Kruskal-Wallis tes
+    p_values[i] <- kruskal.test(value ~ group, data = data)$p.value
+  }
+  # Proportion of tests rejecting null hypothesis gives power estimate
+  power <- mean(p_values < sig_level)
+  return(power)
+}
+
+# # Function to run post-hoc power analysis based on observed epsilon squared
+posthoc_power_analysis <- function(n, k, observed_effect_size, sig_level = 0.05, num_simulations = 1000) {
+  # Convert the epsilon squared back to a standard effect size approximation for simulation
+  std_effect_size <- sqrt(observed_effect_size / (1 - observed_effect_size))
+
+  # Use simulation to estimate power as before
+  power <- simulate_kruskal_power(n, k, std_effect_size, sig_level, num_simulations)
+  return(power)
+}
+
+# Number of groups
+k <- length(unique(learn_agg_out$treatment))
+
+# Sample size per group
+n <- round(nrow(learn_agg_out) / k)
+
+epsilon_sq <- 0.51
+
+# # Estimate post-hoc power
+posthoc_power <- posthoc_power_analysis(n, k, epsilon_sq, sig_level = 0.05, num_simulations = 1000)
+# print(posthoc_power)
+
+# # Optional: Run with a smaller effect size to compare
+epsilon_sq_smaller <- 0.2
+posthoc_power_smaller <- posthoc_power_analysis(n, k, epsilon_sq_smaller, sig_level = 0.05, num_simulations = 1000)
+# print(posthoc_power_smaller)
 ```
 
 
