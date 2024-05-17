@@ -1326,11 +1326,9 @@ treatment on training outcomes, including average TCT and UCE, along with the le
 Here we will test:
 $$H_{1a}\textrm{: Average time per car varies with treatment}$$
 
-As noted in the original assessment of the learning data, the overall TCT dataset exhibits skewness and kurtosis, suggesting deviations from a normal distribution. To choose the most appropriate statistical method for hypothesis testing, this must be revisited. Standard between-groups hypothesis tests rely on the assumption that the data *within each group* follows a normal distribution. Furthermore, the data has changed. By averaging the observations and eliminating an outlier, the grouped data likely better resembles a normal distribution.
+Specifically, statistical comparison of the average time taken to complete the assembly task under various treatments will identify which instructional approach leads to the quickest task completion. As noted in the original assessment of the learning data, the overall TCT dataset exhibits skewness and kurtosis, suggesting deviations from a normal distribution. To choose the most appropriate statistical method for hypothesis testing, this must be revisited. Standard between-groups hypothesis tests rely on the assumption that the data *within each group* follows a normal distribution. Furthermore, the data has changed. By averaging the observations and eliminating an outlier, the grouped data likely better resembles a normal distribution.
 
-To accurately assess normality of each treatment group, a combination of quantitative and qualitative analysis is required. Statistical tests provide a formal but imperfect measure of the data's shape. Visual confirmation of the characteristic quantile-quantile (Q-Q) plot provides further support for the claim.
-
-@tbl-learn-norm tabulates the results of the D'Agostino skewness test, Anscombe-Glynn kurtosis test, and the Shapiro-Wilk normality test. In each case, the null hypothesis ($H_0$) for these tests assumes that the data follows the characteristics of a normal distribution. Therefore, low p-values indicate evidence against $H_0$, suggesting that the data deviates from normality in the tested aspect.
+To accurately assess normality of each treatment group, a combination of quantitative and qualitative analysis is required. Statistical tests provide a formal but imperfect measure of the data's shape. Visual confirmation of the characteristic quantile-quantile (Q-Q) plot provides further support for the claim. @tbl-learn-norm tabulates the results of the D'Agostino skewness test, Anscombe-Glynn kurtosis test, and the Shapiro-Wilk normality test. In each case, the null hypothesis ($H_0$) for these tests assumes that the data follows the characteristics of a normal distribution. Therefore, low p-values indicate evidence against $H_0$, suggesting that the data deviates from normality in the tested aspect.
 
 ```{r def-tab-norm}
 # Function to tabulate normality test results for each treatment group
@@ -1457,7 +1455,7 @@ qq_plot_patchwork <-
     plot_layout <-
       (plots[[1]] + plots[[2]]) / (plots[[3]] + plots[[4]]) +
       plot_annotation(title = "Quantile-Quantile Plots of Treatment Data",
-                      subtitle = "PWI Data is the Most Uncharacteristic")
+                      subtitle = "PWI Data is the Most Uncharacteristic of Normality")
     
     return(plot_layout)
   }
@@ -1467,14 +1465,18 @@ qq_plot_patchwork(learn_agg_out, x_var = "avg_tct_adj", by_var = "treatment")
 
 ```
 
-Given the minor deviations from normality, particularly for the PWI group, and considering the robust consistency of results between parametric and non-parametric tests, it was concluded that non-parametric methods provide the most reliable and straightforward approach for hypothesis testing. This decision avoids the complexities associated with transformation pipelines, ensuring robust statistical conclusions while maintaining the interpretability of the original data. Should future analysis require linear regression or related methods (e.g. ANOVA and its variants), the data will be transformed accordingly,
+Given the minor deviations from normality, particularly for the PWI group, and considering the robust consistency of results between parametric and non-parametric tests, it was concluded that non-parametric methods provide the most reliable and straightforward approach for hypothesis testing. This decision *avoids the complexities associated with transformation pipelines*, ensuring robust statistical conclusions while maintaining the interpretability of the original data. Should future analysis require linear regression or related methods (e.g. ANOVA and its variants), the data will be transformed accordingly,
 
 ::: content-hidden
 MAYBE: try to fix data transformation issues with h1a? see: _temp.qmd
 :::
 
+@fig-h1a-plot shows the results of a non-parametric comparison of average TCT within each treatment group. It combines elements of violin, scatter, and box plots to provide a comprehensive portrayal of the data. Treatment differences were analyzed using the Kruskal-Wallis test by ranks, a non-parametric equivalent of ANOVA. Its test statistic, $H$, approximately follows a $\chi^{2}_{k-1}$ distribution, where $k$ is the number of groups. Here, $\chi^{2}_{Kruskal-Wallis}(3)=26.8$, with a p-value of 6.3e-6. These results indicate a statistically significant difference between groups. The effect size of this difference is
+$\hat{\epsilon}^{2}_{rank}=0.5$, with $CI_{95\%}\:[0.4,1.0]$, indicating a moderate to large treatment effect where 50% of the variance in TCT can be explained by the difference in groups. Together, these results provide strong evidence of overall differences in TCT that are both statistically and practically significant.
 
-See @fig-h1a-plot ...
+::: content-hidden
+TODO: fix hard-coded numbers
+:::
 
 ```{r fig-h1a-plot}
 #| fig-cap: Task Completion Time Differences by Treatment
@@ -1512,26 +1514,12 @@ h1a_plot <- ggstatsplot::ggbetweenstats(
 
 h1a_plot
 
-# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "26.8", italic(p) == 
-#     "6.4e-06", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~ 
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "26.8", italic(p) ==
+#     "6.4e-06", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~
 #     "[" * "0.4", "1.0" * "]", italic("n")["obs"] == "54")
 ```
 
-r ggstatsplot::extract_stats(h1a_plot)$pairwise_comparisons_data
-
-non-parametric
-centrality: median -> datawizard::describe_distribution()
-between-subjects one-way ANOVA: Kruskal-Wallis one-way ANOVA -> stats::kruskal.test()
-why chi-squared?
-effect size estimation: rank epsilon squared -> effectsize::rank_epsilon_squared()
-pairwise between-subjects test: Dunn Test -> PMCMRpluss::kwAllPairsDunnTest()
-Holm's adjustment?
-
-There are ss overall differences in TCT by treatment (KW)
-Pairwise Dunn test shows PWI and PAR are both ss different from AR and MR but neither PWI / PAR (faster group) nor AR / MR (slower group) are ss different from one another
-Effect size of 0.5 (moderate to large) indicates that proportion of the variance in TCT can be explained by treatment groups.
-95% CI of 0.3 to 1.0 suggests at least moderate effect of treatment, but could explain up to 100% of the variance.
-ES + CI -> moderate to large practical significance
+Pairwise comparisons were conducted post-hoc using Dunn's non-parametric test for Kruskal-type ranked data. Holm's adjustment for multiple comparisons was preferred over the oft-cited Bonferroni method, which tends to be too conservative. The results show that PWI and PAR are both significantly faster than AR and MR, with all p-values less than 0.001. Within each those faster / slower groups, no significant difference was found between treatments. Statistically, PWI and PAR are both equivalent and faster than AR and MR, which are also equivalent to one another.
 
 ```{r test-power-sim}
 library(pwr)
@@ -1563,27 +1551,18 @@ posthoc_power_analysis <- function(n, k, observed_effect_size, sig_level = 0.05,
   return(power)
 }
 
-# Number of groups
 k <- length(unique(learn_agg_out$treatment))
-
-# Sample size per group
 n <- round(nrow(learn_agg_out) / k)
+epsilon_sq <- 0.5
 
-epsilon_sq <- 0.51
-
-# # Estimate post-hoc power
+# Estimate post-hoc power
 posthoc_power <- posthoc_power_analysis(n, k, epsilon_sq, sig_level = 0.05, num_simulations = 1000)
-# print(posthoc_power)
-
-# # Optional: Run with a smaller effect size to compare
-epsilon_sq_smaller <- 0.2
-posthoc_power_smaller <- posthoc_power_analysis(n, k, epsilon_sq_smaller, sig_level = 0.05, num_simulations = 1000)
-# print(posthoc_power_smaller)
 ```
 
+A post-hoc simulation was run to validate these results by estimating the statistical power. Power analysis measures the effectiveness of a statistical test in detecting true differences when they exist. High power (typically 0.8 or above) suggests that the test is appropriate for the given data and experimental conditions and therefore aligns with the goal of making correct decisions based on the data. The simulation repeatedly applies the Kruskal-Wallis test to data generated based on the observed mean and effect size. The resulting power is the proportion of tests that correctly reject the null hypothesis. The outcome of `r posthoc_power` (`r posthoc_power * 100`% power), while uncommon, suggests that, for the conditions of this experiment (n=54, an average of 13.5 samples in each of the four groups, $\hat{\epsilon}^{2}=0.5$, and $\alpha = 0.05$), the test is extremely effective at detecting the observed differences. The combination of a large effect size and a reasonable sample size is largely attributable to this value, which offers great confidence in the validity of the test results.
 
+#### Average Error Count per Car
 
-#### Average Error Count per Car (H1b)
 
 $H_{1b}\textrm{: Average error count per car varies with treatment}$.
 
