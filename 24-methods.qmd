@@ -183,6 +183,10 @@ HMDMR in Operation
 
 apply framework from the LR to the study
 
+::: content-hidden
+TODO: correct or eliminate the above fragment
+:::
+
 | **Affordance**           | **PWI** | **PAR** | **HMDAR** | **HMDMR** |
 |--------------------------|:-------:|:-------:|:---------:|:---------:|
 | Task Instructions        |    Y    |    Y    |     Y     |     Y     |
