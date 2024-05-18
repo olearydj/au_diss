@@ -1317,7 +1317,7 @@ Further investigation of these seven participants showed that only 1063 experien
 
 ```{r drop-learn-outliers}
 # drop 1063
-learn_agg_out <- learn_agg |> filter(treatment != 1063)
+learn_agg_out <- learn_agg |> filter(participant != 1063)
 ```
 
 ### Hypothesis Testing
@@ -1403,13 +1403,13 @@ tct_norm <- tabulate_normality_tests(learn_agg_out, "treatment", "avg_tct_adj")
 tct_norm |> gt()
 ```
 
-From this we see that only PWI fails the normality test (p=0.02), despite showing only marginally non-significant skewness (p=0.06). Similarly, MR exhibits significant positive skew (p=0.02) but the Shapiro-Wilk test gives evidence of normality (p=0.08). Both AR and PAR are relatively consistent in confirming normality, though AR's slightly positive skew shows borderline significance (1.03, p=0.05).
+From this we see that only PWI fails the normality test (p=0.021), despite showing marginally non-significant skewness (p=0.058). Similarly, MR exhibits significant positive skew (p=0.021) but the Shapiro-Wilk test gives evidence of normality (p=0.084). Both AR and PAR are consistent in confirming normality, though PAR's slightly positive skew is marginally non-significant (p=0.068).
 
 ::: content-hidden
 TODO: correct hard-coded values in text
 :::
 
-To reconcile these findings for MR and PWI, and confirm those for AR and PAR, the set of four Q-Q plots in @fig-qq-h1a were generated. Observations for normal  data should fall along or near the line, within the shaded confidence interval. These plots show that PAR, AR, and MR all meet the expectations of normality, save for a point in the right tail of AR and MR. This aligns with the skewness and kurtosis test results. PWI, on the other hand, diverges from the line enough to leave the confidence interval, supporting the statistical evidence that it is not normally distributed.
+To reconcile these findings for MR and PWI, and confirm those for AR and PAR, the set of four Q-Q plots in @fig-qq-h1a were generated. Observations for normal  data should fall along or near the line, within the shaded confidence interval. These plots show that PAR and AR both meet the expectations of normality. The MR group mostly aligns with the line, except for a single point in the right tail. This aligns with the skewness and kurtosis test results and provides insufficient evidence to reject normality. On the other hand, the PWI group diverges significantly from the line, with several points leaving the confidence interval, supporting the statistical evidence that it is not normally distributed.
 
 ```{r def-qq-plotter}
 
@@ -1471,14 +1471,13 @@ p + plot_annotation(title = "Quantile-Quantile Plots of TCT Treatment Data",
 
 ```
 
-Given the minor deviations from normality, particularly for the PWI group, and considering the robust consistency of results between parametric and non-parametric tests, it was concluded that non-parametric methods provide the most reliable and straightforward approach for hypothesis testing. This decision *avoids the complexities associated with transformation pipelines*, ensuring robust statistical conclusions while maintaining the interpretability of the original data. Should future analysis require linear regression or related methods (e.g. ANOVA and its variants), the data will be transformed accordingly,
+Given the minor deviations from normality, particularly for the PWI group, and *considering the robust consistency of results between parametric and non-parametric tests*, it was concluded that non-parametric methods provide the most reliable and straightforward approach for hypothesis testing. This decision *avoids the complexities associated with transformation pipelines*, ensuring robust statistical conclusions while maintaining the interpretability of the original data. Should future analysis require linear regression or related methods (e.g. ANOVA and its variants), the data will be transformed accordingly,
 
 ::: content-hidden
 MAYBE: try to fix data transformation issues with h1a? see: _temp.qmd
 :::
 
-@fig-h1a-plot shows the results of a non-parametric comparison of average TCT within each treatment group. It combines elements of violin, scatter, and box plots to provide a comprehensive portrayal of the data. Treatment differences were analyzed using the Kruskal-Wallis test by ranks, a non-parametric equivalent of ANOVA. Its test statistic, $H$, approximately follows a $\chi^{2}_{k-1}$ distribution, where $k$ is the number of groups. Here, $\chi^{2}_{Kruskal-Wallis}(3)=26.8$, with a p-value of 6.3e-6. These results indicate a statistically significant difference between groups. The effect size of this difference is
-$\hat{\epsilon}^{2}_{rank}=0.5$, with $CI_{95\%}\:[0.4,1.0]$, indicating a moderate to large treatment effect where 50% of the variance in TCT can be explained by the difference in groups. Together, these results provide strong evidence of overall differences in TCT that are both statistically and practically significant.
+@fig-h1a-plot shows the results of a non-parametric comparison of average TCT within each treatment group. It combines elements of violin, scatter, and box plots to provide a comprehensive portrayal of the data. Treatment differences were analyzed using the Kruskal-Wallis test by ranks, a non-parametric equivalent of ANOVA. Its test statistic, $H$, approximately follows a $\chi^{2}_{k-1}$ distribution, where $k$ is the number of groups. Here, $\chi^{2}_{Kruskal-Wallis}(3)=25.9$, with a p-value of 1.0e-5. These results indicate a statistically significant difference between groups. The effect size of this difference is $\hat{\epsilon}^{2}_{rank}=0.5$, with $CI_{95\%}\:[0.4,1.0]$, indicating a moderate to large treatment effect where 50% of the variance in TCT can be explained by the difference in groups. Together, these results provide strong evidence of overall differences in TCT that are both statistically and practically significant.
 
 ::: content-hidden
 TODO: fix hard-coded numbers
@@ -1520,12 +1519,12 @@ h1a_plot <- ggstatsplot::ggbetweenstats(
 
 h1a_plot
 
-# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "26.8", italic(p) ==
-#     "6.4e-06", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~
-#     "[" * "0.4", "1.0" * "]", italic("n")["obs"] == "54")
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.9", italic(p) == 
+#     "1.0e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~ 
+#     "[" * "0.4", "1.0" * "]", italic("n")["obs"] == "53")
 ```
 
-Pairwise comparisons were conducted post-hoc using Dunn's non-parametric test for Kruskal-type ranked data. Holm's adjustment for multiple comparisons was preferred over the oft-cited Bonferroni method, which tends to be too conservative. The results show that PWI and PAR are both significantly faster than AR and MR, with all p-values less than 0.001. Within each those faster / slower groups, no significant difference was found between treatments. Statistically, PWI and PAR are both equivalent and faster than AR and MR, which are also equivalent to one another.
+Pairwise comparisons were conducted post-hoc using Dunn's non-parametric test for Kruskal-type ranked data. Holm's adjustment for multiple comparisons was preferred over the oft-cited Bonferroni method, which tends to be too conservative. The results show that PWI and PAR are both significantly faster than AR and MR, with all p-values less than 0.01. Statistically, PWI and PAR are both equivalent and faster than AR and MR, which are also equivalent to one another.
 
 ```{r test-power-sim}
 library(pwr)
@@ -1565,7 +1564,7 @@ epsilon_sq <- 0.5
 posthoc_power <- posthoc_power_analysis(n, k, epsilon_sq, sig_level = 0.05, num_simulations = 1000)
 ```
 
-A post-hoc simulation was run to validate these results by estimating the statistical power. Power analysis measures the effectiveness of a statistical test in detecting true differences when they exist. High power (typically 0.8 or above) suggests that the test is appropriate for the given data and experimental conditions and therefore aligns with the goal of making correct decisions based on the data. The simulation repeatedly applies the Kruskal-Wallis test to data generated based on the observed mean and effect size. The resulting power is the proportion of tests that correctly reject the null hypothesis. The outcome of `r posthoc_power` (`r posthoc_power * 100`% power), while uncommon, suggests that, for the conditions of this experiment (n=54, an average of 13.5 samples in each of the four groups, $\hat{\epsilon}^{2}=0.5$, and $\alpha = 0.05$), the test is extremely effective at detecting the observed differences. The combination of a large effect size and a reasonable sample size is largely attributable to this value, which offers great confidence in the validity of the test results.
+A post-hoc simulation was run to validate these results by estimating the statistical power. Power analysis measures the effectiveness of a statistical test in detecting true differences when they exist. High power (typically 0.8 or above) suggests that the test is appropriate for the given data and experimental conditions and therefore aligns with the goal of making correct decisions based on the data. The simulation repeatedly applies the Kruskal-Wallis test to data generated based on the observed mean and effect size. The resulting power is the proportion of tests that correctly reject the null hypothesis. The outcome of `r posthoc_power` (`r posthoc_power * 100`% power), while uncommon, suggests that, for the conditions of this experiment (n=53, an average of 13.25 samples in each of the four groups, $\hat{\epsilon}^{2}=0.5$, and $\alpha = 0.05$), the test is extremely effective at detecting the observed differences. The combination of a large effect size and a reasonable sample size is largely attributable to this value, which offers great confidence in the validity of the test results.
 
 #### Average Error Count per Car
 
@@ -1580,7 +1579,7 @@ uce_norm <- tabulate_normality_tests(learn_agg_out, "treatment", "avg_uce")
 # uce_norm |> gt()
 ```
 
-As seen before, the overall average error count data exhibits floor effects that contribute to a strongly positive skew. The Shapiro-Wilk normality test gives strong evidence that the PAR, AR, and MR groups are non-normal (p<=0.001 in all cases). This is likely due to the observed skewness, which the D'Agostino test indicates is significant in each case (PAR p=0.01, AR p=0.02, MR p=0.02). Only the PWI treatment group passes the Shapiro-Wilk test (p=0.61) with normal-like skewness (p=0.72). The Anscombe-Glynn kurtosis test showed no significant devation from normality for any treatment. These findings are confirmed by @fig-qq-h1b, which shows strong deviations from the normal line.
+As seen before, the overall average error count data exhibits floor effects that contribute to a strongly positive skew. The Shapiro-Wilk normality test gives strong evidence that the PAR, AR, and MR groups are non-normal (p<=0.001 in all cases). This is likely due to the observed skewness, which the D'Agostino test indicates is significant in each case (PAR p=0.012, AR p=0.03, MR p=0.017). Only the PWI treatment group passes the Shapiro-Wilk test (p=0.607) with normal-like skewness (p=0.725). The Anscombe-Glynn kurtosis test showed no significant devation from normality for any treatment. These findings are confirmed by @fig-qq-h1b, which shows strong deviations from the normal line for all but the PWI treatment.
 
 ::: content-hidden
 TODO: correct hard-coded values in text
@@ -1639,11 +1638,11 @@ h1b_plot
 
 # list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.5", italic(p) == 
 #     "1.2e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~ 
-#     "[" * "0.3", "1.0" * "]", italic("n")["obs"] == "54")
+#     "[" * "0.3", "1.0" * "]", italic("n")["obs"] == "53")
 ```
 
-The Kruskal-Wallis test statistic $\chi^{2}_{Kruskal-Wallis}(3)=25.5$, with a p-value of 1.2e-5, indicating a statistically significant difference between groups. Again, the effect size is found to be $\hat{\epsilon}^{2}_{rank}=0.5$, with a slightly wider $CI_{95\%}\:[0.3,1.0]$, reflecting the data's variability. The results of Dunn's Holm-adjusted pairwise comparisons show statistically significant differences between PWI and all other treatments (p<<0.01 in all cases). PAR, AR, and MR treatments are statistically similar. These results formally quantify the clearly apparent reduction in error count experienced with any form of augmented instruction.
- 
+The Kruskal-Wallis test statistic $\chi^{2}_{Kruskal-Wallis}(3)=25.5$, with a p-value of 1.2e-5, indicating a statistically significant difference between groups. Again, the effect size is found to be $\hat{\epsilon}^{2}_{rank}=0.5$, with a slightly wider $CI_{95\%}\:[0.3,1.0]$, reflecting the data's variability. The results of Dunn's Holm-adjusted pairwise comparisons show statistically significant differences between PWI and all other treatments (p<<0.01 in all cases). PAR, AR, and MR treatments are statistically similar. These results formally quantify the obvious reduction in error count experienced with any form of augmented instruction. The power of this test is again 100%, given that the experimental conditions have not changed and the effect size is the same.
+
 ::: content-hidden
 TODO: fix hard-coded numbers
 :::
@@ -1653,9 +1652,16 @@ consider investigating zero-inflated model, e.g. ZIP / ZINB?
 :::
 
 
-#### Learning Rates (H1c)
+#### Learning Rates
 
-$H_{1c}\textrm{: Learning rates vary with treatment}$.
+$$H_{1c}\textrm{: Learning rates vary with treatment.}$$
+
+```{r}
+learn_h1c <- learn |>
+  select(participant, treatment, car_elapsed_time_adj, uce) |>
+  filter(participant != 1063)
+```
+
 
 ::: content-hidden
 TODO: learning add. analysis
