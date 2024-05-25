@@ -1,0 +1,133 @@
+# H1b Error Counts {#25b-uce}
+
+```{r load-libs}
+#| warning: false
+
+library(tidyverse)
+library(pwr)
+library(emmeans)
+library(performance)
+library(lmerTest)
+library(gt)
+library(patchwork)
+library(moments)
+library(ggpubr)
+library(ggstatsplot)
+```
+
+```{r load-data}
+# Load data objects from the file
+load("learn.RData")
+
+# load functions from h1a
+load("h1a.RData")
+```
+
+```{r}
+# use the same method as in h1a to prep data
+
+# create data
+learn_h1b <- learn |>
+  filter(participant != 1063) |>
+  rename(tct = car_elapsed_time_adj)
+
+# mutate
+learn_h1b <- learn_h1b |>
+  group_by(participant) |>
+  mutate(
+    seq = row_number(),
+    treatment = factor(as.character(treatment))
+  ) |>
+  ungroup() |>
+  select(participant, treatment, seq, tct, uce)
+
+glimpse(learn_h1b)
+```
+
+#### Average Error Count per Car
+
+Similar methodology will be applied to testing the second hypothesis associated with the Learning phase. Here again, we are interested in finding statistically significant differences in the average error count under different treatment conditions to identify which instructional method leads to the lowest defect rate. Formally stated:
+
+$$H_{1b}\textrm{: Average error count per car varies with treatment.}$$
+
+```{r learn-norm-uce}
+##| tbl-cap: "Summary of UCE Test Statistics, p-Values for Normality Assessment"
+
+uce_norm <- tabulate_normality_tests(learn_agg_out, "treatment", "avg_uce")
+# uce_norm |> gt()
+```
+
+As seen before, the overall average error count data exhibits floor effects that contribute to a strongly positive skew. The Shapiro-Wilk normality test gives strong evidence that the PAR, AR, and MR groups are non-normal (p<=0.001 in all cases). This is likely due to the observed skewness, which the D'Agostino test indicates is significant in each case (PAR p=0.012, AR p=0.03, MR p=0.017). Only the PWI treatment group passes the Shapiro-Wilk test (p=0.607) with normal-like skewness (p=0.725). The Anscombe-Glynn kurtosis test showed no significant devation from normality for any treatment. These findings are confirmed by @fig-qq-h1b, which shows strong deviations from the normal line for all but the PWI treatment.
+
+::: content-hidden
+TODO: correct hard-coded values in text
+:::
+
+```{r fig-qq-h1b}
+#| fig-cap: Q-Q Plots of Learning Errors by Treatment
+#| fig-height: 3.5
+
+p <- qq_plot_patchwork(learn_agg_out, x_var = "avg_uce", by_var = "treatment")
+
+p + plot_annotation(title = "Quantile-Quantile Plots of UCE Treatment Data",
+                    subtitle = "observation")
+
+```
+
+
+Given the non-normal nature of these distributions, a non-parametric hypothesis test is called for. Furthermore, it is important to note that this is counted data. Despite the fact that means / grand means may appear continuous in this aggregated form, the underlying distribution remains discrete. Traditional parametric tests are not recommended in this case. Kruskal-Wallis and Dunn tests were again employed for this analysis, the results of which are summarized in @fig-h1b-plot.
+
+```{r fig-h1b-plot}
+#| fig-cap: Uncorrected Error Count Differences by Treatment
+#| fig-height: 5
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+h1b_plot <- ggstatsplot::ggbetweenstats(
+  data = learn_agg_out,
+  x = treatment,
+  y = avg_uce,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "UCE Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  results.subtitle = FALSE,
+  subtitle = "Significant Pairwise Differences Identified between PWI and Augmented Treatments",
+  digits = 1,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+h1b_res <- ggstatsplot::extract_stats(h1b_plot)
+h1b_plot
+
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.5", italic(p) == 
+#     "1.2e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~ 
+#     "[" * "0.3", "1.0" * "]", italic("n")["obs"] == "53")
+```
+
+The Kruskal-Wallis test statistic $\chi^{2}_{Kruskal-Wallis}(3)=25.5$, with a p-value of 1.2e-5, indicating a statistically significant difference between groups. Again, the effect size is found to be $\hat{\epsilon}^{2}_{rank}=0.5$, with a slightly wider $CI_{95\%}\:[0.3,1.0]$, reflecting the data's variability. The results of Dunn's Holm-adjusted pairwise comparisons show statistically significant differences between PWI and all other treatments (p<<0.01 in all cases). PAR, AR, and MR treatments are statistically similar. These results formally quantify the obvious reduction in error count experienced with any form of augmented instruction. The power of this test is again 100%, given that the experimental conditions have not changed and the effect size is the same.
+
+::: content-hidden
+TODO: fix hard-coded numbers
+MAYBE: consider investigating zero-inflated model, e.g. ZIP / ZINB?
+MAYBE: reevaluate using mixed effect models to account for participant variation?
+:::
+
