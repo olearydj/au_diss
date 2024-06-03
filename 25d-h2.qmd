@@ -1,0 +1,775 @@
+```{r load-libs}
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(ggstatsplot)
+library(lmerTest)
+library(report)
+library(patchwork)
+library(car)
+library(boot)
+library(gt)
+
+# library(pwr)
+# library(emmeans)
+# library(performance)
+# library(moments)
+# library(ggpubr)
+```
+
+
+```{r load-stuff}
+# load results data
+load("res_f.RData")
+
+# load shared objects
+load("shared.RData")
+```
+
+```{r recall-data}
+recall <- res_f |>
+  filter(
+    phase == 2,
+    car_outcome == "complete",
+  ) |>
+  select(
+    participant,
+    car_elapsed_time,
+    uce,
+    treatment,
+    drop_event_count,
+    drop_event_tot_time_adj,
+    repair_event_count,
+    repair_event_tot_time,
+    system_event_count,
+    system_event_tot_time,
+    pwi_event_count,
+    pwi_event_tot_time
+  )
+
+# add tot_sys_adj, tot_usr_adj, and adjusted TCT time to learn
+# tot_sys_adj will be used to calculate OEE
+# tot_usr_adj just to reduce TCT
+
+recall <- recall |>
+  mutate(
+    # Replace NA with 0 using coalesce for safe addition
+    tot_sys_adj = coalesce(drop_event_tot_time_adj, 0) +
+      coalesce(system_event_tot_time, 0),
+    tot_usr_adj = coalesce(repair_event_tot_time, 0),
+    tot_adj = tot_sys_adj + tot_usr_adj,
+    car_elapsed_time_adj = car_elapsed_time - tot_adj
+  )
+
+
+changes <- recall |>
+  filter(car_elapsed_time != car_elapsed_time_adj)
+
+# only 1057 had deductions for system events; none for user events
+# what were the source of these in recall, which is PWI only?
+# hololens menu popping up inadvertantly - lost time dismissing it
+
+total_tasks_completed <- dim(recall)[1] # 216
+total_tasks_adjusted <- dim(changes)[1] # 2
+
+recall <- recall |>
+  select(
+    participant,
+    treatment,
+    car_elapsed_time_adj,
+    uce,
+    pwi_event_count,
+    pwi_event_tot_time,
+    tot_sys_adj,
+    tot_usr_adj
+  )
+```
+
+```{r make-h2a-data}
+# calculate OEE from filtered res_f data
+oee_data <- res_f |>
+  filter(phase == 2,
+         car_outcome == "complete",) |>
+  group_by(participant) |>
+  summarize(
+    treatment = first(treatment),
+    session_start = min(car_start_time, na.rm = TRUE),
+    session_end = max(car_end_time, na.rm = TRUE),
+    session_duration = session_end - session_start,
+    units_produced = n(),
+    units_defective = sum(uce > 0, na.rm = TRUE),
+    tot_sys_adj = sum(
+      coalesce(drop_event_tot_time_adj, 0)
+      + coalesce(system_event_tot_time, 0),
+      na.rm = TRUE
+    ),
+    prod = units_produced * 60 / session_duration,
+    qual = (units_produced - units_defective) / units_produced,
+    avail = (session_duration - tot_sys_adj) / session_duration,
+    oee_100 = 1 * prod * qual,
+    oee_85 = 0.85 * prod * qual,
+    oee_avail = avail * prod * qual
+  )
+```
+
+```{r make-h2b-data}
+recall_agg <- recall |>
+  group_by(participant) |>
+  summarize(
+    treatment = first(treatment),
+    tot_pwi_count = sum(pwi_event_count, na.rm = TRUE),
+    tot_pwi_time = sum(pwi_event_tot_time, na.rm = TRUE),
+    task_num = n(),
+    avg_pwi_count = tot_pwi_count / task_num,
+    avg_pwi_time = tot_pwi_time / task_num
+  )
+```
+
+## Recall Phase Results
+
+As with the learning phase results, only completed tasks are considered for recall analysis. Paper work instructions were available for reference, and participants wore the HL2 only for recording purposes. This almost entirely eliminated system-related interruptions, though participant 1057 inadvertently triggered the HL2 menu twice during their trial. The time lost to those events was deducted from measured task times as before. `r total_tasks_completed` observations were recorded during this phase, as expected for `r length(unique(recall$participant))` participants, each with four iterations.
+
+### $H_{2a}$: Overall Equipment Effectiveness
+
+The first hypothesis of the recall phase:
+$$H_{2a}\textrm{: OEE varies with treatment}$$
+
+is designed to determine if the instructional method has an impact on overall performance after the initial training period. As described in @sec-calc-meas, OEE is the product of performance (task rate relative to takt time), quality (percentage of units produced without defects), and availability (percentage of system up time). For the purposes of this analysis, 100% availability is assumed. Takt time is set to 60 seconds in accordance with the line policy and instructional design.
+
+#### Descriptive Statistics
+
+```{r make-report}
+# report descriptive stats for cet and uce
+h2a_rpt <- oee_data |>
+  select(prod, qual, oee_100) |>
+  rename(
+    "Productivity" = prod,
+    "Quality" = qual,
+    "Overall Equipment Effectiveness" = oee_100
+  ) |>
+  report::report() # options not working!
+
+# Extract and split the string by the pattern "\n - ", remove first line
+h2a_rpt_list <- strsplit(h2a_rpt[1], "\n  - ")[[1]][-1]
+
+# Add hyphen to first element and rejoin
+h2a_rpt_list[1] <- paste0("- ", h2a_rpt_list[1])
+h2a_rpt_list <- paste(h2a_rpt_list, collapse = "\n- ")
+h2a_rpt_list <- gsub(", 0 missing", "", h2a_rpt_list)
+h2a_rpt_list <- gsub("n = 54, ", "", h2a_rpt_list)
+
+# cat(h2a_rpt_list)
+```
+
+The calculated measures are summarized below:
+
+`r h2a_rpt_list`
+
+As this is aggregated data, there is one observation for each participant, and no missing values. Productivity and quality are slightly skewed right (0.22) and left (-0.28), respectively. Kurtosis measures suggest that productivity is close to normal (1.18), but quality has a flatter distribution (-1.94). Productivity exhibits relatively low variability and similar mean (0.83) and median (0.82), suggesting consistency among participants. For quality, the median (1.00) and its absolute deviation (MAD = 0.00) show that many participants achieved perfect quality during recall. However, the range (0, 1) and high standard deviation (0.48) relative to its mean (0.57) indicates considerable variability, where some participants produce only defective assemblies. Note that quality is essentially a discrete variable, as it can only take on values of $n/4$, where $n = 0, 1, \dots, 4$, corresponding to each of the four task iterations.
+
+OEE shows a notably asymmetric distribution with a mean of 0.48 and a higher median of 0.62, indicating a significant number of low values dragging down the mean. A high concentration of zeros are observed in the OEE histogram, @fig-oee-hist, suggesting that many participants experience zero effectiveness, presumably due to high defect rates. The standard deviation (sd = 0.42) and median absolute deviation (MAD = 0.56) reflect substantial variability in effectiveness across participants. Despite the approximately symmetric skewness (-0.09), the range (0 to 1.14) indicates diverse effectiveness levels, from complete failures to high performance. These findings highlight the variability in participants' abilities to achieve consistent and effective output.
+
+```{r fig-oee-hist}
+#| fig-cap: Histogram of Overall Equipment Effectiveness in Recall
+#| fig-height: 3.5
+#| warning: false
+#| message: false
+
+oee_data |>
+  ggplot(aes(x = oee_100)) +
+  geom_histogram(
+    fill = I(base_color),
+    alpha = 0.75,
+    color = outline_color
+  ) +
+  labs(title = "Distribution of OEE Values",
+       subtitle = "High defect rates have an obvious effect on effectiveness",
+       x = element_blank(),
+       y = element_blank()) +
+  theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+    )
+```
+
+```{r}
+st_oee_treat <- by(oee_data$oee_100, oee_data$treatment, shapiro.test)
+
+# no outliers are detected (output nrow = 0)
+outliers <- oee_data |>
+  group_by(treatment) |>
+  mutate(z_oee = (oee_100 - mean(oee_100, na.rm = TRUE)) / sd(oee_100, na.rm = TRUE)) |>
+  filter(abs(z_oee) > 3) |>
+  nrow()
+
+lt_oee_treat  <- leveneTest(oee_100 ~ treatment, data = oee_data)
+pv <- lt_oee_treat$`Pr(>F)`[1]
+```
+
+Results from the Shapiro-Wilk test provide further evidence against the normality hypothesis for OEE, both overall (p `r fmt_p_val(shapiro.test(oee_data$oee_100)$p.value)`) and by treatment (p < 0.05 in all cases). Q-Q plots in @fig-qq-h2a suggest that OEE is close to normally distributed for all augmented treatments, but PWI is clearly not. No outliers were detected in the OEE data based on the Z-score test. Finally, Levene's test indicated no significant heterogeneity of variance between treatment groups (`r fmt_p_val(pv)`).
+
+```{r fig-qq-h2a}
+#| fig-cap: Q-Q Plots of OEE by Treatment
+#| fig-height: 3.5
+
+p <- qq_plot_patchwork(oee_data, x_var = "oee_100", by_var = "treatment")
+
+p + plot_annotation(title = "Quantile-Quantile Plots of OEE Treatment Data",
+                    subtitle = "PWI effectiveness is not normally distributed")
+```
+
+#### Analysis
+
+These findings again dictate a non-parametric approach to testing $H_{2a}$.
+
+```{r fig-h2a-plot}
+#| fig-cap: OEE Differences by Treatment
+#| fig-height: 5
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+h2a_plot <- ggstatsplot::ggbetweenstats(
+  data = oee_data,
+  x = treatment,
+  y = oee_100,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "OEE Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  results.subtitle = FALSE,
+  subtitle = "Significant Differences Identified between PWI and PAR Groups using Dunn's Test, Holm-adjusted post-hoc",
+  digits = 2,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+h2a_plot
+
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "9.99", italic(p) == 
+#     "0.02", widehat(epsilon)["ordinal"]^2 == "0.19", CI["95%"] ~ 
+#     "[" * "0.08", "1.00" * "]", italic("n")["obs"] == "54")
+```
+
+```{r test-oee-power}
+k <- length(unique(oee_data$treatment))
+n <- round(nrow(oee_data) / k)
+epsilon_sq <- 0.19
+
+# Estimate post-hoc power
+oee_power <- posthoc_power_analysis(
+  n, k, epsilon_sq, sig_level = 0.05, num_simulations = 1000
+)
+```
+
+In @fig-h2a-plot, group-wise significant differences are found (p = 0.02), with with small to moderate effect size $\hat{\epsilon}^{2}_{rank}=0.19$ and a broad $CI_{95\%}\:[0.08,1.0]$. Pair-wise tests show only PWI and PAR are significantly different (p = 0.02). A post-hoc simulation was performed to assess the power of the analysis. The result of `r round(oee_power * 100, 1)`% indicates the analysis had sufficient power to detect significant differences, thereby supporting the reliability of the findings.
+
+```{r}
+ost <- oee_data |>
+  group_by(treatment) |> 
+  summarize(
+    mean = mean(oee_100, na.rm = T),
+    sd = sd(oee_100, na.rm = T),
+    med = median(oee_100, na.rm = T),
+    iqr = IQR(oee_100, na.rm = T),
+    min = min(oee_100, na.rm = T),
+    max = max(oee_100, na.rm = T),
+  ) |>
+  mutate(
+    cv = sd / mean,
+    rng = max - min,
+    iqr_ratio = iqr / rng
+  )
+
+# Extract the iqr_ratio for PAR
+pr <- function(trt) {
+  iqr_r <- ost |> filter(treatment == trt) |> 
+    pull(iqr_ratio)
+  return(round(iqr_r, 2))
+} 
+```
+
+This result unexpectedly indicates that, despite substantial observed differences, the PWI, AR, and MR treatments have statistically equivalent OEE. High within-group variability likely contributes to this finding by obscuring genuine differences in group means. Kruskal-Wallis test is especially vulnerable to this effect due to its rank-based design and underlying assumptions. The ratio of interquartile range to overall range for PAR (`r pr("PAR")`), AR (`r pr("AR")`), and MR (`r pr("MR")`) treatments show that the central 50% of observations in each group is spread over more than half of its overall range. This wide variation can also be observed in the box plots of @fig-h2a-plot.
+
+Bootstrapping provided a complementary perspective for the analysis. This flexible technique samples with replacement to construct robust estimates of the distribution for various statistics, including means and their confidence intervals. Bootstrapping relies on the empirical distribution of the data to accurately capture variability with few assumptions. Additionally, the replication process effectively increases the sample size and statistical power of the analysis, enhancing the accuracy and reliability of its results.
+
+A bootstrap analysis with 10,000 resamples was used to estimate pairwise mean differences in OEE across all treatments. This process was replicated five times, and the results were averaged to determine grand means and related statistics. The results are tabulated in @tbl-bootstrap-res. Pairs where the 95% confidence interval does not include zero are marked as significant.
+
+```{r bootstrap-oee}
+# Define a function to calculate mean differences between two groups
+mean_diff <- function(data, indices, group1, group2) {
+  d <- data[indices, ]
+  mean(d$OEE[d$treatment == group1]) - mean(d$OEE[d$treatment == group2])
+}
+
+# Function to perform bootstrap and get results
+bootstrap_mean_diff <- function(data, group1, group2) {
+  # Define statistic function for bootstrap
+  stat_func <- function(data, indices) {
+    mean_diff(data, indices, group1, group2)
+  }
+  
+  # Bootstrap with 10,000 replications
+  results <- boot(data = data, statistic = stat_func, R = 10000)
+  
+  # Get bootstrap confidence intervals
+  ci <- boot.ci(results, type = "perc")
+  
+  # Create a summary of bootstrap results
+  summary <- list(
+    original = results$t0,
+    bias = mean(results$t) - results$t0,
+    std_error = sd(results$t),
+    ci_lower = ci$percent[4],
+    ci_upper = ci$percent[5]
+  )
+  
+  return(summary)
+}
+
+# Function to perform multiple replications of the bootstrap
+multiple_bootstrap <- function(data, group1, group2, num_reps = 10) {
+  all_results <- replicate(num_reps, {
+    bootstrap_mean_diff(data, group1, group2)
+  }, simplify = FALSE)
+  
+  # Aggregate or summarize results across replications
+  results_list <- lapply(1:num_reps, function(i) {
+    res <- all_results[[i]]
+    list(
+      Replication = i,
+      original = res$original,
+      bias = res$bias,
+      std_error = res$std_error,
+      ci_lower = res$ci_lower,
+      ci_upper = res$ci_upper
+    )
+  })
+  
+  return(do.call(rbind, results_list))
+}
+
+# Pairwise tests to capture results for each replication
+pairwise_tests <- function(data, num_reps = 5) {
+  treatments <- levels(data$treatment)
+  results <- data.frame(
+    Group1 = character(),
+    Group2 = character(),
+    Replication = numeric(),
+    Mean_Difference = numeric(),
+    Bias = numeric(),
+    Std_Error = numeric(),
+    CI_Lower = numeric(),
+    CI_Upper = numeric(),
+    Sig = character(),
+    stringsAsFactors = FALSE
+  )
+  
+  for (i in 1:(length(treatments) - 1)) {
+    for (j in (i + 1):length(treatments)) {
+      group1 <- treatments[i]
+      group2 <- treatments[j]
+      
+      # Perform bootstrap test
+      # test_result <- bootstrap_mean_diff(data, group1, group2)
+      test_results <- multiple_bootstrap(data, group1, group2, num_reps)
+      
+      # Add results to the dataframe
+      for (k in 1:num_reps) {
+        rep_result <- test_results[k, ]
+        results <- rbind(results, data.frame(
+          Group1 = group1,
+          Group2 = group2,
+          Replication = rep_result$Replication,
+          Mean_Difference = rep_result$original,
+          Bias = rep_result$bias,
+          Std_Error = rep_result$std_error,
+          CI_Lower = rep_result$ci_lower,
+          CI_Upper = rep_result$ci_upper,
+          Sig = ifelse(rep_result$ci_lower > 0 | rep_result$ci_upper < 0, "*", "")
+        ))
+      }
+    }
+  }
+  
+  return(results)
+}
+
+# Prepare data for bootstrap (assuming 'oee_data' contains 'OEE' and 'treatment')
+set.seed(42)  # overall results reproducible; will share starting point for rand
+pairwise_results <- oee_data |> 
+  mutate(OEE = oee_100) |>
+  pairwise_tests()
+
+# Define treatment levels
+treatments <- levels(oee_data$treatment)
+
+# Generate ordered pair levels
+ordered_pairs <- c()
+for (i in 1:(length(treatments) - 1)) {
+  for (j in (i + 1):length(treatments)) {
+    ordered_pairs <- c(ordered_pairs, paste(treatments[i], "-", treatments[j]))
+  }
+}
+
+# Summarize results by Group1 and Group2
+summary_results <- pairwise_results |>
+  filter(is.finite(Bias) & is.finite(Std_Error)) |> 
+  group_by(Group1, Group2) |>
+  # these are all grand means for all replications
+  summarise(
+    Diff = mean(Mean_Difference, na.rm = TRUE),
+    Diff_L = mean(CI_Lower, na.rm = TRUE),
+    Diff_U = mean(CI_Upper, na.rm = TRUE),
+    Bias_mean = mean(Bias, na.rm = TRUE),
+    Bias_sd = sd(Bias, na.rm = TRUE),
+    SE_mean = mean(Std_Error, na.rm = TRUE),
+    SE_sd = sd(Std_Error, na.rm = TRUE),
+    Sig = ifelse(
+      mean(CI_Lower > 0, na.rm = TRUE) | mean(CI_Upper < 0, na.rm = TRUE), "*", ""
+    ),
+    .groups = "drop"
+  ) |> 
+  mutate(
+    Pair = paste(Group1, Group2, sep = " - "),
+    Pair = factor(Pair, levels = ordered_pairs)
+  ) |> 
+  arrange(Pair) |> 
+  select(Pair, Diff:Sig)
+
+```
+
+
+```{r tbl-bootstrap-res}
+#| tbl-cap: this is the table caption
+
+summary_results |>
+  gt() |>
+  tab_header(
+    title = "OEE Differences by Treatment: Bootstrapped Estimates",
+    subtitle = "Grand Mean (SD) Values from Five Replications of 10,000 Resamples"
+  ) |>
+  cols_label(
+    Pair = "Comparison",
+    Diff = "OEE Difference",
+    Diff_L = "Lower CI",
+    Diff_U = "Upper CI",
+    Bias_mean = "Bias",
+    Bias_sd = "sd_Bias",
+    SE_mean = "Standard Error",
+    SE_sd = "sd_SE",
+    Sig = "Significance"
+  ) |>
+  cols_merge(
+    columns = c(Bias_mean, Bias_sd),
+    pattern = "{1} ({2})"
+  ) |> 
+  cols_merge(
+    columns = c(SE_mean, SE_sd),
+    pattern = "{1} ({2})"
+  ) |> 
+  cols_merge(
+    columns = c(Diff_L, Diff_U),
+    pattern = "[{1}, {2}]"
+  ) |> 
+  cols_label(
+    .list = c(
+      "Diff" = "Mean",
+      "Diff_L" = "95% CI"
+    )
+  ) |> 
+  fmt_number(
+    # columns = c(Diff, Diff_L, Diff_U, Bias, SE),
+    decimals = 3
+  ) |>
+  cols_align(align = "center") |> 
+  tab_options(
+    table.font.size = "smaller",
+    table.width = pct(90),
+    column_labels.font.weight = "bold",
+    heading.title.font.weight = "bolder",
+    heading.subtitle.font.size = px(13)
+  ) |> 
+  tab_footnote(
+    footnote = "Significance indicated where the confidence interval does not include zero.",
+    locations = cells_column_labels(
+      columns = c(Sig)
+    )
+  )
+```
+
+This result supports the previous findings of significant overall differences in OEE, and between the PWI and PAR conditions ($CI_{95\%}\:[-0.798,-0.194]$). In addition, bootstrapping revealed significant differences between PWI and both the AR ($CI_{95\%}\:[-0.643,-0.149]$) and MR ($CI_{95\%}\:[-0.711,-0.158]$) groups. These results show that the OEE of PWI is substantially worse than all other treatments, with estimated differences of 0.512 (PAR), 0.412 (AR), and 0.448 (MR). The negligible bias values and low standard error across bootstrapped replicates reinforce the reliability of these findings.
+
+::: content-hidden
+MAYBE: look into factors underlying OEE
+
+#### Additional Analysis
+
+does PWI time play a significant role in variation? with / without?
+look at trends in recall - still learning?
+
+look at differences in OEE components by treatment
+
+```{r fig-oee-components}
+# Plot of Productivity by Treatment
+plot_prod <- ggplot(oee_data, aes(x = treatment, y = prod)) +
+  geom_boxplot() +
+  labs(title = "Productivity by Treatment", y = "Productivity", x = "Treatment")
+
+# Plot of Quality by Treatment
+plot_qual <- ggplot(oee_data, aes(x = treatment, y = qual)) +
+  geom_boxplot() +
+  labs(title = "Quality by Treatment", y = "Quality", x = "Treatment")
+
+# Combine the plots
+plot_combined <- plot_prod + plot_qual
+print(plot_combined)
+```
+
+as seen with H1c, PWI quality is very low due to the number of errors
+on average, each participant in the PWI treatment makes XXX UCEs, compared to a, b, c for the other treatments
+
+are the differences in productivity, quality significantly different?
+
+```{r fig-oee-prod}
+#| fig-cap: Productivity Differences by Treatment
+#| fig-height: 6
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+prod_plot <- ggstatsplot::ggbetweenstats(
+  data = oee_data,
+  x = treatment,
+  y = prod,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "Productivity Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  # results.subtitle = FALSE,
+  subtitle = "Significant Differences Identified between Groups using Dunn's Test, Holm-adjusted post-hoc",
+  digits = 2,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+prod_plot
+```
+
+```{r fig-oee-qual}
+#| fig-cap: Quality Differences by Treatment
+#| fig-height: 6
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+qual_plot <- ggstatsplot::ggbetweenstats(
+  data = oee_data,
+  x = treatment,
+  y = qual,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "Quality Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  # results.subtitle = FALSE,
+  subtitle = "Significant Differences Identified between Groups using Dunn's Test, Holm-adjusted post-hoc",
+  digits = 2,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+qual_plot
+```
+
+:::
+
+#### Conclusion
+
+As both approaches identified a significant treatment effect on OEE, there is ample evidence to accept $H_{2a}$. However, the conflicting pairwise analysis results must be reconciled. While the Kruskal-Wallis test only identified significant differences between the PWI and PAR treatments, subsequent bootstrapped analysis revealed additional differences between PWI and the AR and MR treatments. Considering the bootstrap method's advantages when faced with high between-group variance, limited sample size, and non-normally distributed data, the consistent mean differences and robust confidence intervals it produced provides compelling evidence that the observed differences are reliable. Ultimately, it is concluded that PAR, AR, and MR treatments all result in statistically significant and practically meaningful improvements in OEE compared to PWI, which was hampered by a high defect rate.
+
+
+### $H_{2b}$: Paper Work Instruction References
+
+The second hypothesis of the recall phase:
+$$H_{2b}\textrm{: Total duration of PWI references varies with treatment}$$
+
+maybe make this more general? PWI usage varies...?
+
+look at distribution of pwi count / time by treatment
+consider pwi count a measure of the frequency of uncertainty
+pwi time a measure of the depth of uncertainty
+
+look at distributions by treatment
+
+```{r fig-pwi-ref}
+plot_pwi_count <- ggplot(recall_agg, aes(x = treatment, y = avg_pwi_count)) +
+  geom_boxplot() +
+  labs(title = "Avg PWI Count by Treatment", y = element_blank(), x = element_blank())
+
+plot_pwi_time <- ggplot(recall_agg, aes(x = treatment, y = avg_pwi_time)) +
+  geom_boxplot() +
+  labs(title = "Avg PWI Time by Treatment", y = element_blank(), x = element_blank())
+
+# Combine the plots
+plot_combined <- plot_pwi_count + plot_pwi_time
+print(plot_combined)
+```
+
+observations:
+
+- PWI confident, regardless of competence
+- PAR seems to be the best mix of confidence and competence - would it be better than simple error checking / prevention?
+
+
+
+non-parametric comparison of avg pwi count by treatment
+
+```{r fig-pwi-count}
+#| fig-cap: Avg PWI Count Differences by Treatment
+#| fig-height: 6
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+pwi_count_plot <- ggstatsplot::ggbetweenstats(
+  data = recall_agg,
+  x = treatment,
+  y = avg_pwi_count,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "Avg PWI Count Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  # results.subtitle = FALSE,
+  subtitle = "Significant Differences Identified between Groups using Dunn's Test, Holm-adjusted post-hoc",
+  digits = 2,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+pwi_count_plot
+```
+
+there may be outliers in this data!
+drop, transform, or use robust statistical methods?
+
+same for avg pwi time
+
+```{r fig-pwi-time}
+#| fig-cap: Avg PWI Time Differences by Treatment
+#| fig-height: 6
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+pwi_time_plot <- ggstatsplot::ggbetweenstats(
+  data = recall_agg,
+  x = treatment,
+  y = avg_pwi_time,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "Avg PWI Time Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  # results.subtitle = FALSE,
+  subtitle = "Significant Differences Identified between Groups using Dunn's Test, Holm-adjusted post-hoc",
+  digits = 2,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+pwi_time_plot
+```
+
+again, outliers!
+
+MANOVA to look at combined effect of count and time
+
+```{r}
+# MANOVA for average PWI count and average PWI time by treatment
+manova_model <- manova(cbind(avg_pwi_count, avg_pwi_time) ~ treatment, data = recall_agg)
+summary(manova_model)
+
+```
+
+no significant effect of treatment on pwi count or time

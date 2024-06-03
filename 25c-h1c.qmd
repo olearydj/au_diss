@@ -1,4 +1,4 @@
-# H1c Learning Rates {#25c-lr}
+# H1c Error Counts {#25c-uce}
 
 ```{r load-libs}
 #| warning: false
@@ -23,7 +23,6 @@ load("learn.RData")
 load("h1a.RData")
 ```
 
-
 ```{r}
 # use the same method as in h1a to prep data
 
@@ -45,617 +44,59 @@ learn_h1c <- learn_h1c |>
 glimpse(learn_h1c)
 ```
 
-#### Learning Rates
+#### Average Error Count per Car
 
-$$H_{1c}\textrm{: Learning rates vary with treatment.}$$
-Initially tried to fit an exponential decay model to estimate learning rate, $c$. The equation for this model is:
+Similar methodology will be applied to testing the second hypothesis associated with the Learning phase. Here again, we are interested in finding statistically significant differences in the average error count under different treatment conditions to identify which instructional method leads to the lowest defect rate. Formally stated:
 
-$$y(t) = a + b \times e^{-ct}$$
+$$H_{1b}\textrm{: Average error count per car varies with treatment.}$$
 
-I was unable to get a solution to converge, so began exploring alternatives, including:
+```{r learn-norm-uce}
+##| tbl-cap: "Summary of UCE Test Statistics, p-Values for Normality Assessment"
 
-- mixed-effects model
-- growth curve analysis
-- survival analysis (time to reach standard)
-
-Having no experience with any of these approaches, I decided to start with the most straightforward of the bunch - MEM.
-
-A simple form of mixed-effects model for the data could be:
-
-$$
-\text{TCT}_{ij} = \beta_{0} + \beta_{1} \text{TRT}_{i} + \beta_{2} \text{SEQ}_{j} + (1 \mid \text{PART}_{i}) + \epsilon_{ij}
-$$
-
-Where:
-
-- $i$ and $j$: Indices for the participant and task sequence
-- $\beta_0$: Overall intercept.
-- $\beta_1$: Fixed effect of treatment.
-- $\beta_2$: Fixed effect of the sequence number.
-- $(1 \mid \text{participant}_i)$: Random intercepts for each participant, capturing individual variability. It essentially represents the part of the error term that is specific to each participant.
-- $\epsilon_{ij}$: Residual error term for each observation.
-
-Including Interaction Terms
-
-To see if the effect of the sequence number (learning curve) depends on the treatment, an interaction term is included:
-
-$$
-\text{TCT}_{ij} = \beta_{0} + \beta_{1} \text{TRT}_{i} + \beta_{2} \text{SEQ}_{j} + \beta_{3} (\text{TRT}_{i} \times \text{SEQ}_{j}) + (1 + \text{SEQ}_{j} \mid \text{PART}_{i}) + \epsilon_{ij}
-$$
-
-A nice thing about mixed-effect models is that they inherently account for the unbalanced nature of repeated measures data like ours, where participants complete a different number of tasks. Because participants are treated as random effects this contribution to variability is accounted for.
-
-The dataset for this hypothesis has the form:
-
-```{r make-h1c-data}
-# learning rate modeling requires disaggregated data
-learn_h1c <- learn |>
-  filter(participant != 1063) |>
-  rename(tct = car_elapsed_time_adj) |>
-  group_by(participant) |>
-  mutate(seq = row_number()) |>
-  ungroup() |>
-  select(participant, treatment, seq, tct, uce)
-
-glimpse(learn_h1c)
+uce_norm <- tabulate_normality_tests(learn_agg_out, "treatment", "avg_uce")
+# uce_norm |> gt()
 ```
 
-Each row represents the outcome of a single participant repetition of a task, where:
+As seen before, the overall average error count data exhibits floor effects that contribute to a strongly positive skew. The Shapiro-Wilk normality test gives strong evidence that the PAR, AR, and MR groups are non-normal (p<=0.001 in all cases). This is likely due to the observed skewness, which the D'Agostino test indicates is significant in each case (PAR p=0.012, AR p=0.03, MR p=0.017). Only the PWI treatment group passes the Shapiro-Wilk test (p=0.607) with normal-like skewness (p=0.725). The Anscombe-Glynn kurtosis test showed no significant devation from normality for any treatment. These findings are confirmed by @fig-qq-h1c, which shows strong deviations from the normal line for all but the PWI treatment.
 
-- participant is a UID
-- treatment is instructional method: AR (augmented reality), MR (mixed reality), PAR (projected AR), PWI (paper work instructions)
-- seq is the task number
-- tct is the task completion time (in seconds)
-- uce is the number of uncorrected errors
+::: content-hidden
+TODO: correct hard-coded values in text
+:::
 
-Here is a plot of smoothed TCT data by treatment:
+```{r fig-qq-h1c}
+#| fig-cap: Q-Q Plots of Learning Errors by Treatment
+#| fig-height: 3.5
 
-```{r}
-#| warning: false
+p <- qq_plot_patchwork(learn_agg_out, x_var = "avg_uce", by_var = "treatment")
 
-# Plot smoothed TCT data by treatment
-ggplot(learn_h1c,
-       aes(
-         x = seq,
-         y = tct,
-         color = treatment,
-         group = participant
-       )) +
-  # geom_line(aes(group = participant), alpha = 0.3) +
-  geom_smooth(aes(group = treatment),
-              method = "loess",
-              se = FALSE,
-              size = 1) +
-  labs(title = "Learning Curves by Treatment",
-       x = "Task Number",
-       y = "Task Completion Time (TCT)") +
-  theme_minimal()
+p + plot_annotation(title = "Quantile-Quantile Plots of UCE Treatment Data",
+                    subtitle = "observation")
 
 ```
 
-AR, MR appear to have higher slope, but neither reach takt time of 60 seconds.
 
-Here is the output of a model fit based on non-standardized data:
+Given the non-normal nature of these distributions, a non-parametric hypothesis test is called for. Furthermore, it is important to note that this is counted data. Despite the fact that means / grand means may appear continuous in this aggregated form, the underlying distribution remains discrete. Traditional parametric tests are not recommended in this case. Kruskal-Wallis and Dunn tests were again employed for this analysis, the results of which are summarized in @fig-h1c-plot.
 
-```{r h1c-lmer-model-1}
-#| warning: false
-
-#library(lme4)
-library(broom.mixed)
-library(lmerTest)
-
-# use unordered factor to improve interpretability of results
-learn_h1c$treatment <- factor(as.character(learn_h1c$treatment))
-
-# Fit the mixed-effects model with interaction effects
-# use the overloaded version of lmer from lmerTest to get CI, p-vals
-h1c_mod_lmer <- lmerTest::lmer(
-    tct ~ treatment * seq + (1 + seq | participant),
-    data = learn_h1c,
-    control = lmerControl(optimizer = "bobyqa")
-  )
-
-# Summary of the model to understand fixed and random effects
-h1c_mod_sum <- summary(h1c_mod_lmer)
-
-h1c_mod_sum
-
-# resid(h1c_mod_lmer)
-# coef(h1c_mod_lmer)
-# ranef(h1c_mod_lmer)
-
-# Clean output for easier interpretation if needed
-# h1c_mod_tsum <- tidy(h1c_mod_lmer, effects = "fixed", conf.int = TRUE)
-
-# verbose narrative report
-# report::report(h1c_mod_lmer)
-
-# other display methods and diagnostics
-# tbl_regression(h1c_mod_lmer)
-# modelsummary::modelsummary(h1c_mod_lmer)
-# marginaleffects::avg_comparisons(h1c_mod_lmer)
-```
-
-This uses a mixed effects model:
-
-`tct ~ treatment * seq + (1 + seq | participant)`
-
-where Task completion time is a function of:
-
-- fixed effects (predictors):
-  - treatment (PWI, PAR, AR, MR)
-  - seq (task number)
-  - treatment * seq (interaction)
-- random effects (account for participant variability):
-  - (1 + seq | participant)
-
-The treatment * seq interaction indicates how the relationship between seq and tct changes for different levels of treatment.
-
-The random effects indicate that, in terms of TCT, each participant will have a unique starting point (intercept) and learning rate (slope).
-
-In the results we see that the total variance contributed by random effects is 1977.0 + 79.3 + 228.5 = `r 1977.0 + 79.3 + 228.5`, with participant idiosyncrasies accounting for `r round(1977 / (1977.0 + 79.3 + 228.5) * 100, 1)`% of that. 
-
-These results are based on data that has not been standardized. Results of standard post-hoc model evaluation showed issues with homoscedasticity and multicolinearity, etc. They are kept here for comparison with the output using standardized data.
-
-Here is an alternate model, fit on standardized data:
-
-```{r h1c-lmer-model-2}
-
-# record original means and SDs
-mean_tct <- mean(learn_h1c$tct, na.rm = TRUE)
-sd_tct <- sd(learn_h1c$tct, na.rm = TRUE)
-
-# standardize data
-learn_h1c_std <- learn_h1c |>
-  mutate(
-    tct = scale(tct) |> as.vector(),
-    uce = scale(uce) |> as.vector()
-  )
-
-h1c_mod_lmer_std <- lmerTest::lmer(
-    tct ~ treatment * seq + (1 + seq | participant),
-    data = learn_h1c_std,
-#    control = lmerControl(optimizer = "bobyqa")
-  )
-
-summary(h1c_mod_lmer_std)
-```
-
-These results use a dataset where TCT was standardized in the following manner:
-
-$$z_x = \frac{x - \mu_x}{\sigma_x}$$
-
-Several tests are run to confirm the model quality:
-
-```{r}
-## model tests
-# normality of residuals 
-mr <- resid(h1c_mod_lmer_std)
-qqnorm(mr)
-qqline(mr)
-shapiro.test(mr)
-# homoscedaasticity - constant variance of residuals
-plot(h1c_mod_lmer_std)
-# multicolinearity among predictors
-car::vif(h1c_mod_lmer_std)
-# R2 goodness of fit
-performance::r2_nakagawa(h1c_mod_lmer_std)
-```
-
-The test results confirm model validity. All but MR-related coefficients are significant:
-
-```text
-                 Estimate Std. Error       df t value Pr(>|t|)    
-(Intercept)       2.08412    0.31182 48.34414   6.684 2.18e-08 ***
-treatmentMR       0.01964    0.43352 48.42402   0.045 0.964044    
-treatmentPAR     -1.66019    0.44385 45.55992  -3.740 0.000512 ***
-treatmentPWI     -1.72445    0.42565 44.90851  -4.051 0.000199 ***
-seq              -0.51620    0.07129 46.19347  -7.241 3.88e-09 ***
-treatmentMR:seq  -0.02100    0.10001 46.70136  -0.210 0.834635    
-treatmentPAR:seq  0.32280    0.09651 35.36790   3.345 0.001960 ** 
-treatmentPWI:seq  0.27296    0.09225 34.26448   2.959 0.005565 ** 
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-```
-
-All values are expressed in terms of standard deviations of TCT, and can be restored to the original units for easier interpretation. Only the intercept gets the mean TCT value added back, as the others are offsets from that.
-
-$$x = z_x \times \sigma_x + \mu_x$$
-
-Here are the results of reversing the standardization process:
-
-```{r}
-# Extract coefficients
-coefficients_std <- fixef(h1c_mod_lmer_std)
-
-# Unstandardize coefficients - return to original units for interpretation
-coef_unstd <- coefficients_std * sd_tct
-coef_unstd["(Intercept)"] <- coef_unstd["(Intercept)"] + mean_tct
-
-print(coef_unstd)
-```
-
-These roughly match the values from the model using the unaltered data:
-
-```text
-Fixed effects:
-                 Estimate Std. Error       df t value Pr(>|t|)    
-(Intercept)      185.5695    13.2651  48.3432  13.989  < 2e-16 ***
-treatmentMR        0.8357    18.4420  48.4231   0.045 0.964045    
-treatmentPAR     -70.6252    18.8816  45.5591  -3.740 0.000512 ***
-treatmentPWI     -73.3588    18.1075  44.9077  -4.051 0.000199 ***
-seq              -21.9595     3.0327  46.1927  -7.241 3.88e-09 ***
-treatmentMR:seq   -0.8931     4.2545  46.7006  -0.210 0.834637    
-treatmentPAR:seq  13.7321     4.1056  35.3674   3.345 0.001960 ** 
-treatmentPWI:seq  11.6117     3.9243  34.2640   2.959 0.005565 ** 
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-```
-
-From this, we can gather that (all in seconds, rounding to 1 digit):
-
-- starting values of TCT
-  - the significant average for AR (aka Intercept) is 185.6
-  - MR was insignificantly higher
-  - PAR was significantly lower, 185.6 - 70.6 = 115.0
-  - PWI was significantly lower, 185.6 - 73.4 = 112.2
-- change with each task completed
-  - AR's sigificant estimate of -22.0 indicates that, on average, each task was completed 22s faster
-  - MR was insignificantly lower
-  - PAR was significantly higher, -22.0 + 13.7 = -8.3
-  - PWI was significantly higher, -22.0 + 11.6 = -10.4
-
-Interpretation:
-
-- PAR and PWI groups started faster than AR/MR, exhibiting significantly lower TCT
-- The TCT decreased significantly faster per task with AR/MR than for PWI or PAR
-- MR was not significantly different than AR in either case, suggesting they are equivalent
-
-
-Continued evaluation by comparing with simpler models:
-
-```{r}
-# compare alternative models
-# baseline, as formulated above
-m1 <- lmerTest::lmer(tct ~ treatment * seq + (1 + seq | participant),
-    data = learn_h1c,
-    control = lmerControl(optimizer = "bobyqa")
-  )
-
-# random intercept only
-m2 <- lmerTest::lmer(tct ~ treatment * seq + (1 | participant),
-    data = learn_h1c,
-    control = lmerControl(optimizer = "bobyqa")
-  )
-
-# fixed intercept, random slope
-m3 <- lmerTest::lmer(tct ~ treatment * seq + (seq | participant),
-    data = learn_h1c,
-    control = lmerControl(optimizer = "bobyqa")
-  )
-
-AIC(m1, m2, m3)
-```
-
-The results show that m1 and m3 are equal, and better than m2. Sticking with m1. This really only tells us that the starting TCT and rates varied by treatment, but we know that there is a relationship between those three. Is the difference coming from the treatment or that relationship?
-
-Goals: try other approaches to model the non-linear nature of learning, account for different initial efficiencies, variable repetition counts, and the dual criteria of speed and accuracy.
-
-First effort to improve understanding: start simple, add UCE as a covariate in the current formulation:
-
-`tct ~ treatment * seq + uce + (1 + seq | participant)`
-
-It does make sense that errors could extend the TCT...
-
-```{r}
-# first just try adding uce as a covariate
-h1c_mod_lmer_std_uce <- lmerTest::lmer(
-  tct ~ treatment * seq + uce + (1 + seq | participant),
-  data = learn_h1c_std,
-  control = lmerControl(optimizer = "bobyqa")
-)
-
-# summary(h1c_mod_lmer_std_uce)
-
-# uce is not significant
-broom::tidy(h1c_mod_lmer_std_uce) |>
-  filter(term == "uce") |>
-  select(p.value)
-
-```
-
-Nope. UCE is not significant. Uncorrected errors go unnoticed and do not impact time?
-
-Also, it is a counted (discrete) value, so modeling it in this way is, in hindsight, not advisable. We'll come back to error analysis later. For now, focus on TCT.
-
-So far we've used linear models but learning curves are naturally exponential in shape. Also, there is a natural tendency of learning rate to depend on the difference between starting point and where the curve naturally flattens out. Here AR and MR start out slower, which may be the primary reason that they improve faster than PWI / PAR.
-
-Second effort: tried using nlme with SSasymp and SSasympOrig to deal with these issues. These are non-linear methods that account for asymptotic behavior. In mixed-effect form they are also naturally robust with repeated measures data (e.g. variable number of tasks completed).
-
-After hours of trying to get something to converge, I gave up. Sample code snippets below:
-
-```R
-# never got this to work!!
-library(nlme)
-
-data <- learn_h1c_std |>
-  mutate(treatment = factor(as.character(treatment)))
-
-gd <- nlme::groupedData(tct ~ seq | participant, data = data)
-
-# Extract simple model coefficients
-simple_model <- nls(tct ~ SSasymp(seq, Asym, R0, lrc), data = data)
-simple_start_vals <- coef(simple_model)
-
-# Check the levels of the treatment
-lc <- length(unique(data$treatment))
-
-start_vals <- c(
-  rep(simple_start_vals["Asym"], lc),
-  rep(simple_start_vals["R0"], lc),
-  rep(simple_start_vals["lrc"], lc)
-)
-
-names(start_vals) <- c(paste0("Asym.", unique(data$treatment)),
-                       paste0("R0.", unique(data$treatment)),
-                       paste0("lrc.", unique(data$treatment)))
-
-# exponential model with SSasymp (self-starting asymptotic regression) function
-exp1 <- nlme::nlme(tct ~ SSasymp(seq, Asym, R0, lrc),
-                  fixed = Asym + R0 + lrc ~ treatment,
-                  random = nlme::pdDiag(Asym ~ 1 | participant),
-                  start = start_vals,
-                  data = gd)
-
-summary(exp1)
-
-# using SSasympOrig if starting points (R0) differ significantly
-exp2 <- nlme::nlme(tct ~ SSasympOrig(seq, Asym, lrc),
-                   fixed = Asym + lrc ~ treatment,
-                   random = Asym ~ 1 | participant,
-                   data = gd,
-                   control = nlme::nlmeControl(pnlsTol = 0.1))
-
-summary(exp2)
-```
-
-Let's try a different approach, based on change in TCT over time. Essentially find differences in rate of change in TCT. Related to "first differences" in Time Series Analysis, slope comparison in Growth Curves.
-
-```{r}
-# first attempt
-
-# Extract Starting Values from the model estimates
-# hardcoded - ick!
-start_values <- data.frame(
-  treatment = c("AR", "MR", "PAR", "PWI"),
-  start_tct = c(185.6, 185.6 + 0.8, 185.6 - 70.6, 185.6 - 73.4)
-)
-
-# Calculate First Differences including properly handling initial TCT
-d <- learn_h1c |>
-  left_join(start_values, by = "treatment") |>
-  group_by(participant) |>
-  mutate(
-    tct_diff = ifelse(
-      is.na(lag(tct)),
-      tct - start_tct,  # For t = 1, calculate difference from estimated TCT(t=0) directly
-      tct - lag(tct)    # For subsequent tasks, difference from the previous task
-    )
-  ) |>
-  ungroup()
-
-d
-```
-
-At this point, we can simply compare `tct_diff` between groups with non-parametric tests:
-
-```{r}
-#| fig-height: 6
+```{r fig-h1c-plot}
+#| fig-cap: Uncorrected Error Count Differences by Treatment
+#| fig-height: 5
 #| warning: false
 
 # since ggstatsplot computes confidence intervals for the effect sizes
 # using bootstrapping, it is important to set a seed for reproducibility
 set.seed(42)
 
-ggstatsplot::ggbetweenstats(
-  data = d,
+h1c_plot <- ggstatsplot::ggbetweenstats(
+  data = learn_agg_out,
   x = treatment,
-  y = tct_diff,
+  y = avg_uce,
   type = "nonparametric",
   xlab = "",
   ylab = "",
-  title = "rate of change in tct by treatment",
-  #results.subtitle = FALSE,
-  #pairwise.display = "all",
-  subtitle = "Significant Pairwise Differences Identified between 'Fast' (PWI, PAR) and 'Slow' (AR, MR) Groups using Dunn's Test, Holm-adjusted post-hoc",
-  digits = 1,
-  # centrality.label.args = list(point.padding = 30),
-  ggtheme = theme_minimal(base_size = 10) +
-    theme(
-      plot.title.position = "plot",
-      plot.title = element_text(face = "bold"),
-      axis.text.y.right = element_blank(),
-      axis.ticks.y.right = element_blank(),
-      axis.text.x = element_text(color = "black")
-      # legend.position = "none",
-      # axis.text.y = element_blank(),
-      # axis.ticks.y = element_blank(),
-    ),
-  # remove side label
-  ggplot.component = list(
-      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
-    )
-)
-```
-
-This shows significant differences between AR/MR and PWI/PAR. Unfortunately, this isn't very informative as it only confirms what we already know:
-
-- high initial TCT is correlated with high TCT differences
-- AR and MR have higher initial TCT
-- there is a natural limit to TCT that prevents further improvement
-- together these create a kind of ceiling and floor effect that limit the value of mean / median statistics for comparison purposes
-
-Instead, we should try to fit a mixed effects model to the differences, for example:
-
-`tct_diff ~ treatment * seq + (1 + seq | participant)`
-
-This would allow us to understand the participant-independent (fixed) effects of treatment and sequence on the changes in task completion time.
-
-One such attempt:
-
-```{r}
-# Fit the mixed-effects model
-m <- lmerTest::lmer(
-  tct_diff ~ treatment * seq + (1 + seq | participant),
-  data = d,
-  control = lmerControl(optimizer = "bobyqa")
-)
-
-summary(m)
-
-```
-
-No significant effects other than intercept (the average initial tct_diff for AR).
-Singularity fit due to a lack of variance to model per participant, as shown in Random effects table. Large residuals indicate lots of unexplained variance.
-
-Tried lots of things to address these issues. Here's one attempt to improve the data and simplify the model:
-
-```{r}
-# use unordered factor to improve interpretability of results
-d$treatment <- factor(as.character(learn_h1c$treatment))
-
-# record original means and SDs
-mean_diff <- mean(d$tct_diff, na.rm = TRUE)
-sd_diff <- sd(d$tct_diff, na.rm = TRUE)
-
-# standardize data
-d2 <- d |>
-  mutate(
-    tct_diff = scale(tct_diff) |> as.vector()
-  )
-
-glimpse(d2)
-
-# Fit the mixed-effects model with interaction effects
-# use the overloaded version of lmer from lmerTest to get CI, p-vals
-m <- lmerTest::lmer(
-    tct_diff ~ treatment + seq + (1 | participant),
-    data = d2,
-    control = lmerControl(optimizer = "bobyqa")
-  )
-
-summary(m)
-```
-
-Singularity problems persist. Marginal to low significance in PWI, PAR differences. Lack of participant variance is frustrating as it implies that all 50+ participants experienced the same learning progression, regardless of treatment, personal idiosyncracies, etc. Doesn't make sense.
-
-Potential sources of this discrepancy are issues with data transformation or model specification, or  insufficient participant variability relative to within-participant variability (intraclass correlation, ICC). *The later seems unlikely?*
-
-To attempt to address these issues, further changes were made to:
-
-- eliminate the use of estimated TCT(t=0), which might be concealing some participant variation, and base changes only on lag
-- incorporate ICC checks and other model diagnostics including plots (e.g. change in TCT, as shown below)
-- varying the model formulation, e.g. adding random slopes `(1 + seq | participant)`, treating SEQ as a random effect only `tct_diff ~ treatment + (1 + seq | participant)`, fixed-effects only
-- centering the SEQ data in an attempt to address correlation between the intercept and slope of TCT changes (a waste of time since they are naturally related in learning rates)
-- converting change in TCT from time data to proportions of total improvement
-
-
-```{r}
-#| warning: false
-
-ggplot(d, aes(x = seq, y = tct_diff, group = participant, color = treatment)) +
-  geom_line(alpha = 0.2) +
-  geom_smooth(aes(group = treatment),
-              method = "loess",
-              se = FALSE,
-              size = 1) +
-  theme_minimal() +
-  labs(title = "Participant Learning Progressions",
-       x = "Task Sequence",
-       y = "TCT Differences")
-```
-
-Here is one such attempt, using simplified implementation of diffs:
-
-```{r}
-ds <- learn_h1c |>
-  left_join(start_values, by = "treatment") |>
-  group_by(participant) |>
-  mutate(tct_diff = tct - lag(tct)) |>
-  ungroup() |>
-  filter(!is.na(tct_diff))
-
-# use unordered factor to improve interpretability of results
-ds$treatment <- factor(as.character(ds$treatment))
-
-ms <- lmerTest::lmer(
-  tct_diff ~ treatment + seq + (1 + seq | participant),
-  data = ds,
-  control = lmerControl(optimizer = "bobyqa")
-)
-
-summary(ms)
-
-# Calculate ICC
-as.numeric(VarCorr(ms)$participant[1]) /
-  (as.numeric(VarCorr(ms)$participant[1]) +
-     as.numeric(attr(VarCorr(ms), "sc") ^ 2))
-```
-
-This shows an improvement in the participant variance, but no significant treatment effects. RE stats indicate that intercept and slope are 100% inversely correlated. ICC of 0.81 suggests substantial participant-level variability.
-
-*Is this the "best" model of all?*
-
-Here's another attempt based on normalized (proportions) `tct_diff` values. In spite of finding marginally significant (p=0.04) overall differences, the Holm-adjusted Dunn comparisons show no significant treatment effects.
-
-```{r}
-#| warning: false
-
-# add start times and diffs
-d <- learn_h1c |>
-  left_join(start_values, by = "treatment") |>
-  group_by(participant) |>
-  mutate(tct_diff = tct - ifelse(is.na(lag(tct)), start_tct, lag(tct))) |>
-  ungroup() |>
-  filter(!is.na(tct_diff))
-
-# use progress (proportion) instead of difference
-# include Start TCT in Total Improvement Calculation
-d <- d |>
-  group_by(participant) |>
-  mutate(max_tct = max(c(tct, start_tct)),
-         min_tct = min(tct),
-         tot_imp = max_tct - min_tct) |>
-  ungroup()
-
-# normalize tct_diff by tot_imp
-d <- d |>
-  mutate(tct_diff_norm = tct_diff / tot_imp) |>  # Normalize the differences
-  filter(!is.na(tct_diff_norm))   # Ensure there are no NA values
-
-# View the transformed data
-glimpse(d)
-```
-
-```{r}
-#| fig-height: 6
-
-# since ggstatsplot computes confidence intervals for the effect sizes
-# using bootstrapping, it is important to set a seed for reproducibility
-set.seed(42)
-
-ggstatsplot::ggbetweenstats(
-  data = d,
-  x = treatment,
-  y = tct_diff_norm,
-  type = "nonparametric",
-  xlab = "",
-  ylab = "",
-  title = "rate of change in tct by treatment",
-  #results.subtitle = FALSE,
-  pairwise.display = "all",
-  subtitle = "Significant Pairwise Differences Identified between 'Fast' (PWI, PAR) and 'Slow' (AR, MR) Groups using Dunn's Test, Holm-adjusted post-hoc",
-  digits = 1,
+  title = "UCE Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  results.subtitle = FALSE,
+  subtitle = "Significant Pairwise Differences Identified between PWI and Augmented Treatments",
+  digits = 2,
   # centrality.label.args = list(point.padding = 30),
   ggtheme = theme_minimal(base_size = 10) +
     theme(
@@ -674,50 +115,19 @@ ggstatsplot::ggbetweenstats(
     )
 )
 
+h1c_res <- ggstatsplot::extract_stats(h1c_plot)
+h1c_plot
+
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.5", italic(p) == 
+#     "1.2e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~ 
+#     "[" * "0.3", "1.0" * "]", italic("n")["obs"] == "53")
 ```
 
-At this point it seems clear that, if there is a treatment effect at all, it is small. This is not an effort to 'p-hack', I just want to make sure all efforts are made to get a valid finding. We've collected strong statistical evidence that there is little to no treatment effect, but our confidence in that result is not high based on prior expectations (which should not unduly influence interpretation). Some statistical results (e.g. the initial mixed-effect model on raw TCT, its changes) seemed to support the idea of treatment effect, but were influenced by other effects / covariance.
+The Kruskal-Wallis test statistic $\chi^{2}_{Kruskal-Wallis}(3)=25.5$, with a p-value of 1.2e-5, indicating a statistically significant difference between groups. Again, the effect size is found to be $\hat{\epsilon}^{2}_{rank}=0.5$, with a slightly wider $CI_{95\%}\:[0.3,1.0]$, reflecting the data's variability. The results of Dunn's Holm-adjusted pairwise comparisons show statistically significant differences between PWI and all other treatments (p<<0.01 in all cases). PAR, AR, and MR treatments are statistically similar. These results formally quantify the obvious reduction in error count experienced with any form of augmented instruction. The power of this test is again 100%, given that the experimental conditions have not changed and the effect size is the same.
 
-One last shot, fitting fixed effect and mixed effects models on the proportional data, standardized:
+::: content-hidden
+TODO: fix hard-coded numbers
+MAYBE: consider investigating zero-inflated model, e.g. ZIP / ZINB?
+MAYBE: reevaluate using mixed effect models to account for participant variation?
+:::
 
-```{r}
-# use unordered factor to improve interpretability of results
-d$treatment <- factor(as.character(d$treatment))
-
-# record original means and SDs
-mean_diff <- mean(d$tct_diff, na.rm = TRUE)
-sd_diff <- sd(d$tct_diff, na.rm = TRUE)
-
-# standardize data
-d <- d |>
-  mutate(
-    tct_diff = scale(tct_diff) |> as.vector()
-  )
-
-glimpse(d)
-
-## try simple baseline model
-# Fit a fixed-effects linear model (OLS)
-fem <- lm(tct_diff_norm ~ treatment + seq, data = d)
-
-# Summarize the model
-summary(fem)
-
-# Fit the mixed-effects model with interaction effects
-# use the overloaded version of lmer from lmerTest to get CI, p-vals
-h1c_mod_diffs <- lmerTest::lmer(
-    tct_diff_norm ~ treatment + seq + (1 + seq | participant),
-    data = d,
-    control = lmerControl(optimizer = "bobyqa")
-  )
-
-summary(h1c_mod_diffs)
-```
-
-Poor fit, singularity, no significant treatment effects. Pffft.
-
-Confluence of evidence that, either (1) I don't know what I'm doing, or (2) there is no treatment effect.
-
-Things to consider:
-1. We have focused almost exclusively on improvements to TCT as the sole indicator of increasing proficiency. How can error counts be considered? Bivariate analysis or survival models?
-2. Should we attempt a piecewise linear model of the data to see if treatment effect can be spotted?

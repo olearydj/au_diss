@@ -63,6 +63,132 @@ custom_theme <- function() {
 theme_set(custom_theme())
 ```
 
+```{r def-funcs}
+# Function to create QQ plots and arrange them in a 2x2 grid
+qq_plot_patchwork <-
+  function(data,
+           x_var,
+           by_var) {
+    levels <- unique(data[[by_var]])
+
+    if (length(levels) != 4) {
+      stop("This script expects exactly 4 levels in the grouping variable.")
+    }
+
+    plots <- lapply(levels, function(level) {
+      p <- data |>
+        filter((!!sym(by_var)) == level) |>
+        ggpubr::ggqqplot(
+          x = x_var,
+          xlab = "",
+          ylab = "",
+          title = level,
+          ggtheme = theme_minimal(base_size = 10) +
+            theme(
+              plot.margin = margin(0, 0, 0, 0),
+              panel.spacing = unit(0, "lines"),
+              panel.grid = element_blank(),
+              axis.title = element_blank(),
+              axis.text = element_blank(),
+              axis.ticks = element_blank(),
+              axis.line = element_blank(),
+              plot.title = element_text(hjust = 0.5),
+              panel.border = element_rect(
+                color = outline_color,
+                fill = NA,
+                linewidth = 0.5
+              ),
+            )
+        ) |>
+        ggpubr::ggpar(ticks = FALSE, tickslab = FALSE)
+    })
+
+    # Arrange the plots in a 2x2 grid using patchwork
+    plot_layout <-
+      (plots[[1]] + plots[[2]]) / (plots[[3]] + plots[[4]])
+    
+    return(plot_layout)
+  }
+
+# convert a p-value into an appropriately formatted string
+fmt_p_val <- function(p_value, alpha = 0.05) {
+  # # Check if p-value is greater than alpha
+  # if (p_value > alpha) {
+  #   return(paste0("> ", alpha))
+  # }
+  
+  if (p_value < 0.001) {
+    return("p < 0.001")
+  }
+
+  # need more precision for 0.01 > p-val > 0.001
+  if (p_value < 0.01) {
+    return(paste0("p = ", round(p_value, digits = 3)))
+  }
+  
+  return(paste0("p = ", round(p_value, digits = 2)))
+}
+
+# Function to calculate power for Kruskal-Wallis test via simulation
+simulate_kruskal_power <- function(
+    n, k, effect_size, sig_level = 0.05, num_simulations = 1000
+    ) {
+    set.seed(42)
+    p_values <- numeric(num_simulations)
+    for (i in 1:num_simulations) {
+      # Simulate data for each group with an effect size
+      data <- data.frame(value = unlist(lapply(1:k, function(x)
+        rnorm(n, mean = x * effect_size))),
+        group = gl(k, n))
+      # Perform Kruskal-Wallis test
+      p_values[i] <- kruskal.test(value ~ group, data = data)$p.value
+    }
+    # Proportion of tests rejecting null hypothesis gives power estimate
+    power <- mean(p_values < sig_level)
+    return(power)
+  }
+
+# Function to run post-hoc power analysis based on observed epsilon squared
+posthoc_power_analysis <- function(
+    n, k, observed_effect_size, sig_level = 0.05, num_simulations = 1000
+    ) {
+    # Convert epsilon squared back to standard effect size approximation for simulation
+    std_effect_size <- sqrt(observed_effect_size / (1 - observed_effect_size))
+    
+    # Use simulation to estimate power as before
+    power <- simulate_kruskal_power(
+      n, k, std_effect_size, sig_level, num_simulations
+    )
+    return(power)
+}
+
+# convert a column of a table into a string with the format "a, b, and c"
+# numbers are rounded to the specified number of digits
+col_to_string <- function(data, column, digits = 2) {
+  data |>
+    mutate({{column}} := round({{column}}, digits)) |>
+    pull({{column}}) |>
+    str_c(collapse = ", ") |>
+    (\(x) sub(", ([^,]+)$", ", and \\1", x))()
+}
+```
+
+```{r save-shared}
+# saving for use elsewhere
+save(
+  qq_plot_patchwork, 
+  fmt_p_val,
+  simulate_kruskal_power,
+  posthoc_power_analysis,
+  col_to_string,
+  base_color,
+  outline_color,
+  custom_theme,
+  file = "shared.RData"
+)
+```
+
+
 ```{r study-metadata}
 
 participant_count <- demographics |>
@@ -760,7 +886,6 @@ educ_plot / (lego_plot + manuf_plot) +
     title = "Ordinal Sample Characteristics",
     subtitle = "Reflects the Focus of Recruiting Efforts"
   )
-
 ```
 
 ### Multivariate Analysis
@@ -895,6 +1020,11 @@ res_f <- car_results |>
     ),
     car_outcome = to_factors(car_outcome)
   )
+```
+
+```{r save-results-data}
+# saving for use in broken out recall and retention analysis files
+save(res_f, file = "res_f.RData")
 ```
 
 ```{r learn-data}
@@ -1332,23 +1462,890 @@ save(
   file = "learn.RData")
 ```
 
-### Hypothesis Testing
 
-This first group of hypotheses are designed to test the effect of each
-treatment on training outcomes, including average TCT and UCE, along with the learning rate.
+### $H_{1a}$: Average Time per Car
 
-#### Average Time per Car
+```{r load-h1a-libs}
+library(emmeans)
+library(performance)
+library(lmerTest)
+```
+
+The first hypothesis of the learning phase:
+$$H_{1a}\textrm{: Average task completion time varies with treatment}$$
+
+will be tested by comparing the average TCT of each treatment group to understand the magnitude, direction, and significance of differences.
+
+#### Applicable Statistical Methods
+
+Methods based on one-way ANOVA, including Fisher's or Welch's parametric methods and their non-parametric equivalent, Kruskal-Wallis' test by ranks, are commonly used for such comparisons. All assume independence of observations additivity of treatments. The use of aggregated data reduces each participant to a single observation, addressing independence. The experimental design generally ensures the treatments themselves are additive, with independent effects on the response.
+
+Parametric methods also require a normal distribution of data *within each treatment group*. As noted in the original assessment of the learning data, the overall TCT dataset exhibits skewness and kurtosis, suggesting deviations from a normal distribution. This must be revisited with group wise testing of the aggregated data. By averaging the observations and eliminating an outlier, the grouped data may better resemble a normal distribution.
+
+#### Check Model Assumptions
+
+A combination of quantitative and qualitative analysis is required to accurately assess normality of each treatment group. Statistical tests provide a formal but imperfect measure of the data's shape. Visual confirmation of the characteristic quantile-quantile (Q-Q) plot provides further support for the claim. @tbl-learn-norm-tct tabulates the results of the D'Agostino skewness test, Anscombe-Glynn kurtosis test, and the Shapiro-Wilk normality test. In each case, the null hypothesis ($H_0$) for these tests assumes that the data follows the characteristics of a normal distribution. Therefore, low p-values indicate evidence against $H_0$, suggesting that the data deviates from normality in the tested aspect.
+
+```{r def-tab-norm}
+# Function to tabulate normality test results for each treatment group
+tabulate_normality_tests <-
+  function(data, treatment_col, value_col) {
+    levels <- levels(data[[treatment_col]])
+    all_levels <- c("ALL", levels)
+
+    results <- map(all_levels, function(level) {
+      if (level == "ALL") {
+        data_subset <- data |> pull(!!sym(value_col))
+      } else {
+        data_subset <-
+          data |>
+          filter((!!sym(treatment_col)) == level) |>
+          pull(!!sym(value_col))
+      }
+
+      if (length(data_subset) > 0) {
+        # Ensure there's data to process
+        skew_test <- moments::agostino.test(data_subset)
+        kurtosis_test <- moments::anscombe.test(data_subset)
+        normality_test <- shapiro.test(data_subset)
+
+        tibble(
+          Group = level,
+          Skewness = paste(
+            round(skew_test$statistic[1], 2),
+            round(skew_test$p.value, 3),
+            sep = ", "
+          ),
+          Kurtosis = paste(
+            round(kurtosis_test$statistic[1], 2),
+            round(kurtosis_test$p.value, 3),
+            sep = ", "
+          ),
+          Normality = paste(
+            round(normality_test$statistic, 2),
+            round(normality_test$p.value, 3),
+            sep = ", "
+          )
+        )
+      } else {
+        tibble(
+          Group = level,
+          Skewness = NA,
+          Kurtosis = NA,
+          Normality = NA
+        )
+      }
+    }) |> bind_rows()
+
+    # Ensure the desired order, converting Group to a factor
+    results <- results |>
+      mutate(Group = factor(Group, levels = c("ALL", "MR", "AR", "PWI", "PAR"))) |>
+      filter(!is.na(Group)) |>
+      arrange(Group)
+
+    results
+  }
+```
+
+```{r tbl-learn-norm-tct}
+#| tbl-cap: "Summary of TCT Test Statistics, p-Values for Normality Assessment"
+#|
+tct_norm <- tabulate_normality_tests(learn_agg_out, "treatment", "avg_tct_adj")
+tct_norm |> gt()
+```
+
+From this we see that only PWI fails the normality test (p=0.021), despite showing marginally non-significant skewness (p=0.058). Similarly, MR exhibits significant positive skew (p=0.021) but the Shapiro-Wilk test gives evidence of normality (p=0.084). Both AR and PAR are consistent in confirming normality, though PAR's slightly positive skew is marginally non-significant (p=0.068).
+
+::: content-hidden
+TODO: eliminate hard-coded values in text
+:::
+
+To reconcile these findings for MR and PWI, and confirm those for AR and PAR, the set of four Q-Q plots in @fig-qq-h1a were generated. Observations for normal data should fall along or near the line, within the shaded confidence interval. These plots show that PAR and AR both meet the expectations of normality. The MR group mostly aligns with the line, except for a single point in the right tail. This aligns with the skewness and kurtosis test results and provides insufficient evidence to reject normality. On the other hand, the PWI group diverges substantially from the line, with several points leaving the confidence interval. This supports the statistical evidence that the PWI data is not normally distributed.
+
+```{r fig-qq-h1a}
+#| fig-cap: Q-Q Plots of Learning Times by Treatment
+#| fig-height: 3.5
+
+p <- qq_plot_patchwork(learn_agg_out, x_var = "avg_tct_adj", by_var = "treatment")
+
+p + plot_annotation(title = "Quantile-Quantile Plots of TCT Treatment Data",
+                    subtitle = "PWI Data is the Most Uncharacteristic of Normality")
+
+```
+
+Given the minor deviations from normality, particularly for the PWI group, a non-parametric approach was adopted. This provides a reliable and straightforward approach for hypothesis testing for data that are non-normal or heteroscedastic (having unequal variances). This decision also avoids the complexities associated with transformation pipelines, ensuring robust statistical conclusions while maintaining the interpretability of the original data.
+
+#### Analysis
+
+@fig-h1a-plot shows the resulting comparison of average TCT within each treatment group. It combines elements of violin, scatter, and box plots to provide a comprehensive portrayal of the data. Treatment differences were analyzed using the Kruskal-Wallis test by ranks. Its test statistic, $H$, approximately follows a $\chi^{2}_{k-1}$ distribution, where $k$ is the number of groups. Here, $\chi^{2}_{Kruskal-Wallis}(3)=25.9$, with a p-value of 1.0e-5. These results indicate a statistically significant difference between groups. The effect size of this difference is $\hat{\epsilon}^{2}_{rank}=0.5$, with $CI_{95\%}\:[0.3,1.0]$, indicating a moderate to large treatment effect where 50% of the variance in TCT can be explained by the difference in groups. Together, these results provide strong evidence of overall differences in TCT that are both statistically and practically significant.
+
+::: content-hidden
+TODO: fix hard-coded numbers
+:::
+
+```{r fig-h1a-plot}
+#| fig-cap: Task Completion Time Differences by Treatment
+#| fig-height: 6
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+h1a_plot <- ggstatsplot::ggbetweenstats(
+  data = learn_agg_out,
+  x = treatment,
+  y = avg_tct_adj,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "TCT Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  results.subtitle = FALSE,
+  subtitle = "Significant Differences Identified between 'Fast' (PWI, PAR) and 'Slow' (AR, MR) Groups using Dunn's Test, Holm-adjusted post-hoc",
+  digits = 2,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+h1a_plot
+
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.9", italic(p) == 
+#     "1.0e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~ 
+#     "[" * "0.3", "1.0" * "]", italic("n")["obs"] == "53")
+```
+
+::: content-hidden
+TODO: check all in text values after setting standard seed before all ggbetween stats calls - see comment in code above
+:::
+
+Pairwise comparisons were conducted post-hoc using Dunn's non-parametric test for Kruskal-type ranked data. Holm's adjustment for multiple comparisons was preferred over the often cited Bonferroni method, which tends to be too conservative. The results show that PWI and PAR are both significantly faster than AR and MR, with all p-values less than 0.01.
+
+```{r test-power-sim}
+k <- length(unique(learn_agg_out$treatment))
+n <- round(nrow(learn_agg_out) / k)
+epsilon_sq <- 0.5
+
+# Estimate post-hoc power
+posthoc_power <- posthoc_power_analysis(n, k, epsilon_sq, sig_level = 0.05, num_simulations = 1000)
+```
+
+A post-hoc simulation was run to validate these results by estimating the statistical power. Power analysis measures the effectiveness of a statistical test in detecting true differences when they exist. High power (typically 0.8 or above) suggests that the test is appropriate for the given data and experimental conditions, therefore supporting factual decision-making. The simulation repeatedly applies the Kruskal-Wallis test to data generated based on the observed mean and effect size, and resulting power is the proportion of tests that correctly reject the null hypothesis. The outcome of `r posthoc_power` (`r posthoc_power * 100`% power), while uncommon, suggests that, for the conditions of this experiment (n=53, an average of 13.25 samples in each of the four groups, $\hat{\epsilon}^{2}=0.5$, and $\alpha = 0.05$), the test is extremely effective at detecting the observed differences. The combination of a large effect size and a reasonable sample size is largely attributable to this value, which offers great confidence in the validity of the test results.
+
+#### Conclusion
+
+Based on this thorough analysis of the data and validation of the methods, it is concluded that sufficient statistical evidence exists to accept $H_{1a}$: average task completion time varies by treatment. Specifically, the PWI and PAR instructional methods are both equivalent and faster than AR and MR, which are also equivalent to one another.
+
+### $H_{1b}$: Learning Rates
+
+::: content-hidden
+TODO: this is now H1b - change the methods section to match
+:::
+
+```{r prep-h1b-data}
+# disaggregated data required for rate of change of tct
+# create data
+learn_h1b <- learn |>
+  filter(participant != 1063) |>
+  rename(tct = car_elapsed_time_adj)
+
+# mutate
+learn_h1b <- learn_h1b |>
+  group_by(participant) |>
+  mutate(
+    seq = row_number(),
+    treatment = factor(as.character(treatment))
+  ) |>
+  ungroup() |>
+  select(participant, treatment, seq, tct, uce)
+
+#glimpse(learn_h1b)
+```
+
+The second hypothesis of the learning phase:
+$$H_{1b}\textrm{: Learning rates vary with treatment}$$
+
+will be tested by comparing how TCT changes with each repetition of the task based on treatment. Decreased TCT is used as a measure of the learning effect, so a change in TCT over time is a proxy for learning rate.
+
+#### Applicable Statistical Methods
+
+It is tempting to assess this using aggregated data as before. For example, the average change in TCT per task completed might give suitable measure. For clarity, this can be expressed as:
+
+$$\textstyle{\frac{1}{N} \sum_{i=1}^{N} \frac{TCT_{i1} - TCT_{ij}}{j}}$$ {#eq-naive}
+
+where $N$ is the total number of participants, $j$ is the number of tasks completed by participant $i$, and $TCT_{ij}$ is the TCT of participant $i$ for task $j$. This metric can be compared by group using the approach employed by $H_{1a}$, as seen in @fig-h1b-naive. The results show that there is a significant difference in groups (p < 0.001), with small to moderate effect size $\hat{\epsilon}^{2}_{rank}=0.2$. Significant pairwise differences were identified between PAR and both AR (p=0.029) and MR (p=0.040).
+
+```{r agg-h1b-data}
+pd <- learn_h1b |>
+  group_by(participant) |>
+  summarize(
+    treatment = first(treatment),
+    first_tct = first(tct),
+    last_tct = last(tct),
+    num_tasks = n(),
+    measure = (first_tct - last_tct) / num_tasks
+  ) |>
+  ungroup()
+```
+
+```{r fig-h1b-naive}
+#| fig-cap: Naive method
+#| fig-height: 5
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+p <- ggstatsplot::ggbetweenstats(
+  data = pd,
+  x = treatment,
+  y = measure,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "Avg Change in TCT per Task by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  # results.subtitle = FALSE,
+  subtitle = "Significant Differences Identified between Groups using Dunn's Test, Holm-adjusted post-hoc",
+  digits = 2,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+p
+
+```
+
+While this method offers initial insights and highlights significant differences in learning rates across treatment groups, it has crucial limitations. Aggregating data by participant and within treatments masks both between and within-participant variability, discarding important nuances in learning rates. By ignoring the repeated measures nature of the data it fails to capture how learning rate changes over time, and how that differs between individuals. It also does not account for imbalanced repeated measures, which may lead to biased estimates. By reducing the number of observations, it may also limit the statistical power of the test. Finally, this method does not account for the non-linear nature of change in TCT over time, further limiting the validity of these findings. These simplifying assumptions may be reasonable for a gross estimate of overall differences, e.g., average TCT, but they are not appropriate for an in-depth analysis of the rate and change of learning in the presence of individual and treatment effects.
+
+*note: relatively low effect size and wide CI suggests this may not be adequate*
+
+For analysis of this sort, particularly where repeated measures are nested within each group and participant variation is an important consideration, mixed-effects models are often used. These models provide a thorough and accurate analysis by accounting for individual differences in learning rates and leveraging all available repeated measures data. This approach preserves data granularity, explicitly models the dynamic aspect of learning, and is specifically designed to handle imbalanced data. It increases the statistical power and flexibility to detect effects and interactions in a complex data structure, and it can also account for non-linear response data. Overall, mixed-effects models provide a robust framework for examining the interaction between treatment and learning effect over time.
+
+The general form of a suitable mixed-effects model can be expressed as:
+
+$$
+\textstyle{
+y_{ij}=(\beta_0+U_{0j})+(\beta_1+U_{1j})(SEQ_{ij})+\epsilon_{ij}
+}
+$$ {#eq-lme1}
+
+where:
+
+- $i$ and $j$ are the indices for each observation and participant, respectively.
+- $\beta_0$ is the overall intercept, a baseline value of $y$.
+- $U_{0j}$ is the participant variation on the intercept.
+- $\beta_1$ is the overall slope.
+- $U_{1j}$ is the participant variation on the slope.
+- $SEQ_{ij}$ is the time value associated with each observation $i$ of participant $j$.
+- $\epsilon_{ij}$ represents the residuals for each observation---variation not accounted for by the model.
+
+This formulation allows for random intercepts, $(\beta_0+U_{0j})$, and slopes $(\beta_1+U_{1j})$, each based on individual differences per participants $U_j$. In the context of this analysis those can be interpreted as individual starting points (intercept) and learning rates (slope). This is visualized in @fig-h1b-rsri, where the black lines indicate the best fit within each group, $(\beta_0+\beta_1(SEQ_{ij}))$, and colored lines show the same for each participant.
+
+```{r fig-h1b-rsri}
+#| fig-cap: Random slopes and intercepts model visualized.
+#| fig-height: 4
+#| warning: false
+
+ggplot(learn_h1b, aes(x = seq, y = tct)) +
+  geom_point(
+    aes(fill = as.factor(participant)),
+    pch = 21,
+    size = 1,
+    stroke = 0.5
+  ) +
+  stat_smooth(
+    aes(group = participant, col = as.factor(participant)),
+    se = FALSE,
+    method = "lm",
+    lwd = 0.5
+  ) +
+  stat_smooth(
+    aes(group = treatment),
+    col = "black",
+    se = FALSE,
+    method = "lm",
+    lwd = 1
+  ) +
+  facet_wrap( ~ treatment) +
+  scale_x_continuous(breaks = c(0:12)) +
+  labs(
+    title = "Completion Time in Seconds for each Completed Task",
+    subtitle = "Linear fits for participants (color) vary from group averages (black)",
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_bw(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      legend.position = "none",
+    )
+```
+
+learning is inherently non-linear, exponential decay
+try curvilinear approximation - linear model with quadratic term
+
+```{r fig-h1b-qrsri}
+#| fig-cap: Quadratic random slopes and intercepts model visualized.
+#| fig-height: 4
+#| warning: false
+
+learn_h1b |>
+  # filter(treatment == "MR") |>
+ggplot(aes(x = seq, y = tct)) +
+  geom_point(
+    aes(fill = as.factor(participant)),
+    pch = 21,
+    size = 1,
+    stroke = 0.5
+  ) +
+  stat_smooth(
+    aes(group = participant, col = as.factor(participant)),
+    formula=y~x+I(x^2),
+    se = FALSE,
+    method = "lm",
+    lwd = 0.5
+  ) +
+  stat_smooth(
+    aes(group = treatment),
+    formula=y~x+I(x^2),
+    col = "black",
+    se = FALSE,
+    method = "lm",
+    lwd = 1
+  ) +
+  facet_wrap( ~ treatment) +
+  scale_x_continuous(breaks = c(0:12)) +
+  labs(
+    title = "Completion Time in Seconds for each Completed Task",
+    subtitle = "Linear fits for participants (color) vary from group averages (black)",
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_bw(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      legend.position = "none",
+    )
+```
+
+#### Unconditional Models of Time
+
+first fit a model that is independent of the predictor (treatment); depends only on time (sequence) - try sequence of models with increasing complexity
+
+have to use Max Likelihood (not REML) in order to compare results
+
+```{r h1b-fit-uncond}
+# transform seq to float from 0 to 1
+md <- learn_h1b |>
+  mutate(seq.fp = (seq - 1) / (max(seq) - 1))
+
+# summary(md$seq.fp)
+
+# random intercept
+m1 <- lmer(tct ~ 1 + (1 | participant), data = md, REML = F)
+# fixed slope, random intercept
+m2 <- lmer(tct ~ 1 + seq.fp + (1 | participant), data = md, REML = F)
+# random slope, random intercept
+m3 <- lmer(tct ~ 1 + seq.fp + (1 + seq.fp | participant), data = md, REML = F)
+# quadratic random slope, random intercept
+m4 <- lmer(
+    tct ~ 1 + seq.fp + I(seq.fp ^ 2) + (1 + seq.fp + I(seq.fp ^ 2) | participant),
+    data = md, REML = F
+)
+```
+
+note: all time and slope outputs will now be in terms of 0 to 1, where 1 = `r max(learn_h1b$seq)` (should be 11). For example, task 1 is now 0.0909 and a slope of -354 per unit is equal to -354 / 11 = -32.2 per task.
+
+```{r h1b-anova-uncond}
+# compare the unconditional models
+anova(m1, m2, m3, m4)
+```
+
+AIC preferred over Wald's test of deviance (p-val) as it penalizes added parameters to reduce overfitting. Trades parameters (model complexity) for improved fit.
+
+additional comparisons
+
+```{r h1b-comp-uncond}
+# warning for m2 = m3
+cp <- compare_performance(m1, m2, m3, m4)
+display(cp, layout = "vertical")
+```
+
+m2 and m3 are equivalent
+both methods agree, based on AIC, AICc, BIC, R2c, RMSE, Sigma
+best model is m4 - quadratic random slope, random intercept
+
+inspect fit of some participants in selected treatments
+
+```{r h1b-insp-cond}
+# use the best model
+m <- m4
+
+md$pred <- fitted(m)  # back-transform here if necessary
+first10 <- md |>
+  filter(treatment == "PAR")
+
+max_tct = max(first10$tct) + 10
+
+ggplot(first10, aes(x = seq.fp, y = tct)) + 
+  geom_point(fill="grey", pch=21, size=2, stroke=1.25) + 
+  geom_line(aes(group=participant)) + facet_wrap(~participant, ncol=5)+
+  scale_x_continuous(name = "Task Number") + 
+  scale_y_continuous(name = "TCT",limits=c(0,max_tct))+
+  geom_line(aes(y=pred), col=base_color, lwd=1.5) 
+
+```
+
+look at model summary
+
+```{r h1b-sum-uncond}
+summary(m)
+```
+
+all fixed effects are significant
+
+::: content-hidden
+
+TODO: check model assumptions / validity
+these results are not great
+
+```{r eval=FALSE}
+ps <- plot(check_model(m, panel = F))
+```
+
+```{r eval=FALSE}
+binned_residuals(m)
+check_outliers(m)
+check_overdispersion(m)
+
+check_autocorrelation(m)
+check_heteroscedasticity(m)
+check_homogeneity(m)
+check_normality(m)
+check_residuals(m)
+```
+
+:::
+
+#### Conditional Models and Hypothesis Testing
+
+Add fixed treatment effect to best fit from above - does it improve the model? Use estimated slopes and intercepts to understand relationship between time, sequence, treatment, and TCT.
+
+using treatment and interactions with `seq` and `seq ^ 2`
+
+```{r h1b-fit-cond}
+# conditional models based on m4 (quadratic random slope and random intercept)
+# introduce treatment and interactions as fixed effects
+cm1 <- lmer(
+    tct ~ 
+      1 + seq.fp * treatment + I(seq.fp ^ 2) * treatment + 
+      (1 + seq.fp + I(seq.fp ^ 2) | participant),
+    data = md, REML = F
+)
+
+```
+
+does the conditional model differ from / improve fit? testing for treatment effect
+
+```{r}
+anova(m, cm1)
+```
+
+28 point reduction in AIC, significant improvement
+
+inspect model results
+
+```{r h1b-anova-cond}
+anova(cm1)
+```
+
+rough interpretation:
+
+- all fixed effects are significant
+- TCT changes with task iteration (seq.fp)
+- TCT varies by group (treatment)
+- Rate of change of TCT changes by task iteration (seq.fp)
+- The effect of iteration (seq.fp) differs by group (treatment)
+- The rate of change of TCT differs by group (treatment)
+
+From Chet, after confirming above, elaborating:
+
+- Task Iteration Effect $(\text{seq.fp})$: TCT significantly decreases as task iterations increase, indicating learning over time (p < 0.001).
+- Treatment Effect: Baseline TCT varies significantly by treatment group, demonstrating that different treatments have distinct initial impacts on task completion time (p < 0.001).
+- Non-Linear Task Iteration Effect (Quadratic Term $(I(\text{seq.fp}^2))): The rate of change in TCT is non-linear and significantly changes with task iterations (p < 0.001).
+- Interaction Effects:
+  - $\text{seq.fp} \times \text{treatment}$: The impact of task iterations on TCT significantly differs across treatment groups (p = 0.005), indicating that treatments influence how quickly participants improve over iterations.
+  - $I(\text{seq.fp}^2) \times \text{treatment}$: The non-linear rate of change in TCT also varies significantly by treatment (p = 0.017), suggesting that the treatments affect the curvature of the learning trajectory.
+  
+These results highlight the importance of both linear and quadratic terms in modeling learning rates and emphasize the varying effects of different treatments on TCT dynamics over time. The significant interactions underscore how treatments modulate not just the initial performance but also the improvement trajectories.
+
+```{r h1b-sum-cond}
+summary(cm1)
+```
+
+rough interpretation:
+- (Intercept), seq.fp, and I(seq.fp^2) are all significant and give the initial TCT value, initial slope, and rate of change of slope for the reference treatment, AR
+- treatmentMR/PWI/PAR give the change in intercept from AR; only PWI and PAR are significant ("reliably different")
+- seq.fp:treatmentMR/PWI/PAR give the treatment level difference from the initial slope; only interactions with PWI and PAR are significant
+- treatmentMR/PWI/PAR:I(seq.fp^2) gives the treatment level difference from the rate of change of slope; only PWI and PAR are signficant
+
+from this we can see that AR and MR are roughly equivalent in all regards, and both PWI and PAR are significantly different from them in all measures. it does not provide sufficient information to ascertain the differences between MR, PWI, and PAR
+
+compared to AR, these differences are significant:
+- PWI and PAR start faster (lower baseline intercept)
+- PWI and PAR start learning slower (positive seq.fp:treatment values)
+- PWI and PAR improve learning faster (negative treatment:I(seq.fp^2) values)
+
+interpretation of above:
+- the first suggests PWI and PAR are more intuitive than AR
+- the second aligns with the intuition that learning rate is related to the difference in understanding, i.e. lower initial task times give lower learning potential to the asymptote (proficiency), so the rate is lower
+- the third observation seems counterintuitive - despite slower initial learning, the PWI and PAR reduce task completion times more per iteration
+
+This counterintuitive trend highlights the deep insights derived from advanced modeling and underscores the importance of considering both initial performance and subsequent learning trajectories when evaluating instructional methods.
+
+The learning for PWI and PAR might follow a sigmoidal curve, where there's slow initial improvement that accelerates rapidly as participants become more familiar with the task. This can happen if the initial hurdles are high, but once overcome, participants experience more significant gains.
+
+PWI and PAR participants might spend more time initially adapting to a new, potentially more complex instruction method. Once they adapt, they leverage this understanding more effectively, leading to faster improvements.
+
+The instructional methods for PWI and PAR might be inherently more effective in the long run, even if they take longer to grasp initially. These methods might impart skills that lead to compounded improvements over time.
+
+I'm reminded of OH's comment: 'learning takes effort' - perhaps the advanced instructional techniques are too helpful, to the point of diminishing the learning. Where PWI and PAR require greater participant engagement in the task, which requires greater effort initially but that investment pays off with better overall understanding.
+
+Early challenges encourage deeper cognitive processing, which fosters a better overall understanding despite the initial slower progress. The concept of "desirable difficulties" in learning theory posits that learning tasks should be challenging enough to promote deeper cognitive engagement but not so difficult that they become discouraging. PWI and PAR might embody this principle by requiring more effort initially, which results in more substantial long-term gains.
+
+Chet's Revised Interpretation:
+
+Initial Performance:
+
+PWI and PAR participants start with lower baseline TCT, suggesting these methods are more intuitive or easier to grasp initially.
+Effort and Engagement:
+
+Advanced instructional techniques like AR might not challenge participants enough initially, leading to faster initial gains but slower long-term improvement.
+PWI and PAR require greater initial effort, aligning with the participant insight that "learning takes effort." This investment of effort requires deeper cognitive engagement, which ultimately pays off.
+Learning Trajectories:
+
+Initial Slow Learning: PWI and PAR participants initially learn slower because more cognitive effort and engagement are required.
+Accelerated Improvement: Over time, the effort invested initially by PWI and PAR participants results in faster learning, leading to greater reductions in TCT per iteration.
+Integration of Insight:
+
+This model aligns with learning theories suggesting that greater initial effort and engagement foster deeper understanding and long-term gains in proficiency. The comment "learning takes effort" encapsulates the necessity of active engagement, which may explain why participants eventually achieve faster reductions in TCT despite slower initial learning.
+
+Summary:
+
+PWI and PAR methods promote greater initial effort and cognitive engagement, leading to deeper learning and accelerated improvement over time.
+While these methods may initially show slower learning rates, the effort invested results in faster long-term TCT reductions, demonstrating the importance of desirable difficulties in instructional design.
+
+Summarized Interpretation with Concept Integration:
+
+Initial Performance:
+
+Lower Baseline TCT: PWI and PAR start with lower initial TCT values, suggesting these methods are more naturally intuitive.
+Effort and Engagement:
+
+Desirable Difficulty: These methods incorporate a level of difficulty that requires greater cognitive effort initially, which is essential for deep learning.
+Zone of Proximal Development: PWI and PAR engage participants within their ZPD, challenging them sufficiently to enhance skill acquisition over time.
+Learning Trajectories:
+
+Initial Slower Learning: Slower initial learning rates for PWI and PAR participants reflect the necessary investment in overcoming early challenges.
+Accelerating Improvement: Over time, the learning rate accelerates as participants gain proficiency, aligning with the principles of Flow Theory where optimal challenge and skill balance lead to deeper engagement and faster learning improvements.
+Conclusion and Insight:
+The integration of educational theories with model outputs provides a comprehensive explanation for the observed learning patterns:
+
+PWI and PAR methods require initial higher efforts (desirable difficulty) but lead to better long-term understanding and faster TCT reductions.
+AR and MR methods may offer quicker, easier starts but do not sustain the accelerated improvement seen with PWI and PAR.
+Closing Thoughts:
+
+This nuanced interpretation underscores the importance of instructional design that balances initial challenge with long-term learning benefits, leveraging the principles of desirable difficulty, ZPD, and Flow Theory for optimal educational outcomes.
+
+pairwise comparisons of intercept, seq, and seq^2 effect using emmeans
+
+```{r h1b-pw-cond}
+em_int <- emmeans::emmeans(cm1, ~ treatment)
+em_slope <- emmeans::emmeans(cm1, ~ treatment | seq.fp)
+em_quad <- emmeans::emmeans(cm1, ~ treatment | I(seq.fp ^ 2))
+
+pw_int <- pairs(em_int, adjust = "holm")
+pw_slope <- pairs(em_slope, adjust = "holm")
+pw_quad <- pairs(em_quad, adjust = "holm")
+
+summary(pw_int)
+summary(pw_slope)
+summary(pw_quad)
+```
+
+in each case, all contrasts are significant except for AR-MR and PWI-PAR
+
+visualize predictions...
+
+```{r h1b-plot-cond}
+library(ggplot2)
+
+# Predicted values for different seq.fp levels
+seq_levels <- unique(md$seq.fp)
+predicted_vals <- expand.grid(treatment = levels(md$treatment), seq.fp = seq_levels)
+predicted_vals$pred_tct <- predict(cm1, newdata = predicted_vals, re.form = NA)
+
+# Plot with both predicted lines and actual data points
+ggplot(predicted_vals, aes(x = seq.fp, y = pred_tct, color = treatment, group = treatment)) +
+  geom_line() +
+  geom_point(data = md, aes(x = seq.fp, y = tct, color = treatment, alpha = 0.4)) +
+  labs(title = "Predicted TCT across Task Iterations by Treatment", x = "Task Iteration (seq.fp)", y = "Predicted TCT") +
+  facet_wrap(~ treatment) +
+  theme_minimal()
+```
+
+model is overfitting / extrapolating beyond data
+obviously TCT should not rapidly increase after 3-6 iterations of the task
+BUT - model performance is only a measure of residuals (y error) of predicted vs real data, so the up trend only matters where there is existing data - min impact on AR, max on PWI
+
+sufficient evidence for now to go with this model, understanding its limitations, but let's try other things - limits of model fit undermine model comparisons since we're comparing models of the data now, not the data itself
+
+further attempts to address this with:
+
+- explored inverse, cubic, logarithmic, logistic, and trigonometric terms as alternative to quadratic / spline in the random slopes; random intercepts LME
+- attempted a non-linear mixed effects model based on exponential decay
+- fit the model with valid subsets of data with balanced iterations, e.g. the first n observations for all participants that completed that many tasks
+
+no success - worse results, convergence problems
+
+but important to get good model fit as that is what we are comparing now, not the data itself - another layer of abstraction
+
+continuing efforts with spline, bayesian methods moved to `h1b_mod_select.qmd`
+
+::: content-hidden
+
+#### Old Material
+
+This formulation captures individual variability by allowing each participant to have a different initial TCT (intercept). It accounts for variations in TCT due to differences between participants (random effects) and within each participant's repeated measures (residuals). This design naturally incorporates all sources of participant-level variation, including imbalances due to the differing number of tasks completed by each participant, thereby addressing the data's inherent non-independence.
+
+Variations of this model were fit using the residual maximum likelihood method (REML), as implemented by the `lmer` function from the `{lme4}` package. To address issues related to the non-linear nature of TCT, which follows an exponential decay pattern commonly observed in learning outcomes, models were fit to response variables transformed by log, square-root, and inverse (i.e., $1/\text{tct}$) functions. The results were then compared using the `compare_performance` function from the `{performance}` package. @tbl-h1b-results summarizes the results.
+
+|Metric         |      `log(tct)` |     `sqrt(tct)` |  `inverse(tct)` |
+|:--------------|:---------------:|:---------------:|:---------------:|
+|R2 (cond.)     |            0.72 |            0.70 |            0.71 |
+|R2 (marg.)     |            0.39 |            0.36 |            0.39 |
+|ICC            |            0.54 |            0.53 |            0.52 |
+|RMSE           |            0.20 |            1.03 |        2.32e-03 |
+|Sigma          |            0.22 |            1.13 |        2.54e-03 |
+
+: Comparison of Model Performance Metrics {#tbl-h1b-results .striped}
+
+The values of ICC and $R^2$ (both conditional and marginal) are comparable across the three transformations. However, the inverse response resulted in substantially lower root mean square error (RMSE) and Sigma ($\sigma$), which represent the average and standard deviation of the residuals, respectively. With prediction errors that are both lower overall and have less variance, the inverse-transformed response, shown in @fig-inverse-tct, results in the best model performance.
+
+```{r fig-inverse-tct}
+#| fig-cap: Inverse transformation of the response
+#| fig-height: 3.5
+#| warning: false
+
+# Create a data frame with the original and inverse transformed TCT values
+pd <- learn_h1b |>
+  mutate(inverse_tct = 1 / tct)
+
+# Plot for tct
+plot_tct <- ggplot(pd, aes(x = seq, y = tct, color = treatment)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "loess", se = FALSE) +
+  labs(
+    title = "TCT vs. Sequence",
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(size = 9, face = "bold"),
+    legend.position = "none",
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    # axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
+  )
+
+# Plot for inverse(tct)
+plot_inverse_tct <- ggplot(pd, aes(x = seq, y = inverse_tct, color = treatment)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "loess", se = FALSE) +
+  labs(
+    title = "Inverse(TCT) vs. Sequence",
+    x = element_blank(),
+    y = element_blank()
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(size = 9, face = "bold"),
+    legend.position = "none",
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    # axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
+  )
+
+# Display the plots
+plot_tct + plot_inverse_tct +
+  plot_annotation(
+    title = "Task Completion Time and Inverse",
+    subtitle = "Inverse transformation of TCT gives best model performance"
+  )
+```
+
+:::
+
+#### Check Model Assumptions
+
+#### Analysis
+
+#### Conclusion
 
 
-#### Average Error Count per Car
+### $H_{1c}$: Average Error Count per Car
 
-#### Learning Rates
+```{r prep-h1c-data}
+# create data
+learn_h1c <- learn |>
+  filter(participant != 1063) |>
+  rename(tct = car_elapsed_time_adj) |>
+  group_by(participant) |>
+  mutate(
+    seq = row_number(),
+    treatment = factor(as.character(treatment))
+  ) |>
+  summarize(
+    treatment = first(treatment),
+    avg_uce = mean(uce, na.rm = T)
+  )
+
+glimpse(learn_h1c)
+```
+
+The third and final hypothesis of the learning phase:
+$$H_{1b}\textrm{: Average error count per car varies with treatment}$$ 
+
+tests a different aspect of learning. Lower error rates signal a higher quality of learning outcomes. Combined with the previous measures of efficiency (TCT) and learning rate (change in TCT per task), it provides a balanced view of training performance.
+
+#### Applicable Statistical Methods
+
+as with TCT, UCE data is unbalanced, not independent, probably not normally distributed; additionally, it is not continuous data, but counted values. all of these have implications for the statistical method used
+
+however, none of this invalidates non-parametric statistical tests of aggregated (average UCE per car) data, which addresses the independence issue
+
+#### Analysis
+
+KW non-parametric test conducted, as seen in @fig-h1c-plot.
+
+```{r fig-h1c-plot}
+#| fig-cap: Differences in Average Uncorrected Error per Task by Treatment
+#| fig-height: 5
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+ggstatsplot::ggbetweenstats(
+  data = learn_h1c,
+  x = treatment,
+  y = avg_uce,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "Avg UCE per Task by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  results.subtitle = FALSE,
+  subtitle = "Significant Differences Identified between PWI and others using Dunn's Test, Holm-adjusted post-hoc",
+  digits = 2,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.5", italic(p) == 
+#     "1.2e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~ 
+#     "[" * "0.3", "1.0" * "]", italic("n")["obs"] == "53")
+```
+
+Results confirm significant treatment effect. Large differences in the overall mean are observed, along with some floor effects in the augmented treatments. Post-hoc tests confirm the significance of observed differences, showing that the error rate is significantly larger in the PWI condition than in all other treatments.
+
+```{r h1c-validation}
+co <- check_outliers(learn_h1c$avg_uce, method = c("zscore_robust", "iqr"))
+
+# use co as boolean mask to get relevant participants
+co_res <- learn_h1c[as.vector(co), ]
+
+# tabulates the number of tasks completed by outlier participants
+car_counts <- learn |>
+  filter(participant %in% co_res$participant) |> 
+  group_by(participant) |> 
+  summarize(count = n()
+)
+
+# col_to_string(co_res, participant)
+# col_to_string(co_res, avg_uce, digits = 1)
+
+# check test results without outliers
+without_outliers <- learn_h1c[!learn_h1c$participant %in% co_res$participant, ]
+kt_h1b_no_outliers <- kruskal.test(avg_uce ~ treatment, data = without_outliers)
+```
+
+KW is a robust test that does not assume normality or homogeneity of variances. It can be sensitive to the presence of outliers, three of which were detected in the UCE data based on a combination of IQR and Z-score. Participants `r col_to_string(co_res, participant)` were all assigned to the PWI treatment and averaged `r col_to_string(co_res, avg_uce, digits = 1)` errors per task, respectively. A second Kruskal-Wallis test of the data without those outliers showed the difference remained significant (p=`r fmt_p_val(kt_h1b_no_outliers$p.val)`). Based on this it is concluded that the outliers are not impacting the test result.
+
+While this method was deemed insufficient for capturing the nuances of learning rate analysis, it is appropriate for comparing average error counts.
+
+#### Conclusions
+
+$H_{1c}$ is accepted - all augmented instruction methods result in error rates that are drastically lower in magnitude than PWI, the statistical significance of which is confirmed. 
+note the floor effects
+
+further analysis using a generalized linear mixed model with poisson or negative binomial distribution for count data could be used to better account for participant variation but that seems unnecessary given the strong differences observed here
 
 ::: content-hidden
 MAYBE: learning add. analysis
 
 ### Additional Analyses
 
+- number of cars completed - to paint a complete picture of individual performance, e.g. 1056 completed 7 cars with an average of 11.3 errors on each - inverse correlation between TCT and UCE?
+- error rate of change?!
+- balanced scorecard of efficiency, learning rate, quality?
 - what treatment group had the highest percentage of "qualified operators" at the end of the 10-min session?
 
 #### Error Types
@@ -1366,11 +2363,9 @@ MAYBE: learning add. analysis
 
 ### Descriptive Statistics
 
-### Hypothesis Testing
+### $H_{2a}$: Overall Equipment Effectiveness
 
-#### Overall Equipment Effectiveness (H2a)
-
-#### Paper Work Instruction References (H2b)
+### $H_{2b}$: Paper Work Instruction References
 
 ::: content-hidden
 TODO: recall add. analysis
@@ -1392,9 +2387,7 @@ TODO: recall add. analysis
 
 ### Descriptive Statistics
 
-### Hypothesis Testing
-
-#### Change in OEE (H3a)
+### $H_{3a}$: Change in OEE
 
 ::: content-hidden
 TODO: retention add. analysis

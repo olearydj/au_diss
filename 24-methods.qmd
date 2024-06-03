@@ -245,7 +245,7 @@ MAYBE: discuss construct validity, claim these are
 
 As constructs, learning, recall, and retention cannot be directly measured. For this study, they are operationalized through a variety of commonly-used measures. Learning is measured by how quickly a participant progresses towards the level of proficiency expected of a qualified operator. Specifically, it is a function of the dependent variables quality (uncorrected error count and type) and performance (task completion time). It can also be measured by the participant's reliance on PWI consultation (PWI count and duration) during the second experiment. Recall is assessed by how well participants can perform the task after the learning phase, without additional instructional support. This can be observed through the same quality and performance measures as learning. Finally, retention is measured by re-testing recall some time after the initial training, without further exposure to the task or instructional materials.
 
-#### Calculated Measures
+#### Calculated Measures {#sec-calc-meas}
 
 Each of the identified constructs can also be assessed using a variety of calculated measures, including Learning Rate (LR), Transfer Effectiveness Ratio (TER), and Overall Equipment Effectiveness (OEE). LR is a measure of the rate of change of learning and can be calculated in a number of ways. TER quantifies the value of time spent training [@roscoe1971incre; @kaplan2021effec], based on the amount of time required to reach certain training outcomes with ($Y_c$) and without ($Y_x$) augmentation, as seen in @eq-ter.
 
@@ -308,7 +308,7 @@ The first group of hypotheses are designed to test the effect of each treatment 
 >
 > *How does each IMT affect performance during the learning phase?*
 >
-> $$H_{1a}\textrm{: Average time per car varies with treatment}$$ $$H_{1b}\textrm{: Average error count per car varies with treatment}$$ $$H_{1c}\textrm{: Learning rates vary with treatment}$$
+> $$H_{1a}\textrm{: Average time per car varies with treatment}$$ $$H_{1b}\textrm{: Learning rates vary with treatment}$$ $$H_{1c}\textrm{: Average error count per car varies with treatment}$$
 
 To better understand those results, additional analysis considers the treatment effect on error types, task completion rate, and first-task performance. Finally, treatment groups are investigated to determine which had the highest percentage of "qualified operators" at the end of the 10-min session. This is assessed relative to expected performance metrics, including OEE and takt time.
 

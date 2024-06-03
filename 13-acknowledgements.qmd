@@ -5,6 +5,11 @@
 \addcontentsline{toc}{chapter}{Acknowledgements}
 ```
 
+> *Research is what I'm doing when I don't know what I'm doing.*
+
+I've lived this definition of research, commonly attributed to Wernher von Braun, on and off for the better part of four years now. That would not have been possible without the support and encouragement of many people, several of which I'd like to acknowledge here.
+
+
 I would like to thank...
 
 ::: content-hidden

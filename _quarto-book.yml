@@ -10,9 +10,10 @@ book:
     - 23-prob_statement.qmd
     - 24-methods.qmd
     - 25-results.qmd
-    - 25a-h1a.qmd
-    - 25b-h1b.qmd
-    - 25c-h1c.qmd
+  # - 25a-h1a.qmd
+  # - 25b-h1b.qmd
+  # - 25c-h1c.qmd
+    - 25d-h2.qmd
     - 26-conclusions.qmd
     - 27-colophon.qmd
     - 28-references.qmd
