@@ -326,9 +326,10 @@ The second group of hypotheses aim to evaluate the residual impact of each treat
 >
 > *How does each IMT affect performance during the recall phase?*
 >
-> $$H_{2a}\textrm{: OEE varies with treatment}$$ $$H_{2b}\textrm{: Total duration of PWI references varies with treatment}$$
+> $$H_{2a}\textrm{: OEE varies with treatment}$$
+$$H_{2b}\textrm{: PWI reliance varies with treatment}$$
 
-In contrast with the RQ1 analyses, which focused on the learning *progress*, these hypotheses are designed to assess the training *results*. OEE was chosen as the primary measure due to its practical relevance in answering "Did the training work?" It effectively quantifies the participants' ability to utilize acquired skills under conditions that mimic real-world expectations, where both speed and accuracy are crucial.
+In contrast with the RQ1 analyses, which focused on the learning *progress*, these hypotheses are designed to assess the training *effectiveness*. OEE was chosen as the primary measure due to its practical relevance in answering "Did the training work?" It concisely quantifies the participants' ability to utilize acquired skills under conditions that mimic real-world expectations, where both speed and accuracy are crucial. For the purpose of this analysis, reliance will be measured by the number of times a participant refers to the printed instructions, and the duration of each.
 
 Subsequent analyses will investigate the primary drivers of OEE (efficiency vs. quality) and PWI reference duration (frequency and length of references). Additional exploration into error types, task completion rate, first-task performance, and ongoing learning rate may also provide additional insight into the nuances of recall performance across treatment types.
 

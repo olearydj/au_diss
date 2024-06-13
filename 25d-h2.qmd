@@ -10,6 +10,8 @@ library(patchwork)
 library(car)
 library(boot)
 library(gt)
+library(paletteer)
+library(english)
 
 # library(pwr)
 # library(emmeans)
@@ -28,6 +30,11 @@ load("shared.RData")
 ```
 
 ```{r recall-data}
+
+# drop outlier from source
+res_f <- res_f |> 
+  filter(participant != 1063)
+
 recall <- res_f |>
   filter(
     phase == 2,
@@ -59,7 +66,9 @@ recall <- recall |>
       coalesce(system_event_tot_time, 0),
     tot_usr_adj = coalesce(repair_event_tot_time, 0),
     tot_adj = tot_sys_adj + tot_usr_adj,
-    car_elapsed_time_adj = car_elapsed_time - tot_adj
+    car_elapsed_time_adj = car_elapsed_time - tot_adj,
+    pwi_event_count = replace_na(pwi_event_count, 0),
+    pwi_event_tot_time = replace_na(pwi_event_tot_time, 0)
   )
 
 
@@ -139,7 +148,7 @@ is designed to determine if the instructional method has an impact on overall pe
 
 #### Descriptive Statistics
 
-```{r make-report}
+```{r make-h2a-report}
 # report descriptive stats for cet and uce
 h2a_rpt <- oee_data |>
   select(prod, qual, oee_100) |>
@@ -166,9 +175,9 @@ The calculated measures are summarized below:
 
 `r h2a_rpt_list`
 
-As this is aggregated data, there is one observation for each participant, and no missing values. Productivity and quality are slightly skewed right (0.22) and left (-0.28), respectively. Kurtosis measures suggest that productivity is close to normal (1.18), but quality has a flatter distribution (-1.94). Productivity exhibits relatively low variability and similar mean (0.83) and median (0.82), suggesting consistency among participants. For quality, the median (1.00) and its absolute deviation (MAD = 0.00) show that many participants achieved perfect quality during recall. However, the range (0, 1) and high standard deviation (0.48) relative to its mean (0.57) indicates considerable variability, where some participants produce only defective assemblies. Note that quality is essentially a discrete variable, as it can only take on values of $n/4$, where $n = 0, 1, \dots, 4$, corresponding to each of the four task iterations.
+As this is aggregated data, there is one observation for each participant, and no missing values. Productivity and quality are slightly skewed right (0.20) and left (-0.25), respectively. Kurtosis measures suggest that productivity is close to normal (1.28), but quality has a flatter distribution (-1.96). Productivity exhibits relatively low variability and similar mean (0.84) and median (0.82), suggesting consistency among participants. For quality, the median (1.00) and its absolute deviation (MAD = 0.00) show that many participants achieved perfect quality during recall. However, the range (0, 1) and high standard deviation (0.49) relative to its mean (0.56) indicates considerable variability. In fact, several participants produced *only* defective assemblies. Note that quality is essentially a discrete variable, as it can only take on values of $n/4$, where $n = 0, 1, \dots, 4$, corresponding to each of the four task iterations.
 
-OEE shows a notably asymmetric distribution with a mean of 0.48 and a higher median of 0.62, indicating a significant number of low values dragging down the mean. A high concentration of zeros are observed in the OEE histogram, @fig-oee-hist, suggesting that many participants experience zero effectiveness, presumably due to high defect rates. The standard deviation (sd = 0.42) and median absolute deviation (MAD = 0.56) reflect substantial variability in effectiveness across participants. Despite the approximately symmetric skewness (-0.09), the range (0 to 1.14) indicates diverse effectiveness levels, from complete failures to high performance. These findings highlight the variability in participants' abilities to achieve consistent and effective output.
+OEE shows a notably asymmetric distribution with a mean of 0.48 and a higher median of 0.62, indicating a significant number of low values dragging down the mean. A high concentration of zeros are observed in the OEE histogram, @fig-oee-hist, suggesting that many participants experience zero effectiveness due to high defect rates. The standard deviation (sd = 0.43) and median absolute deviation (MAD = 0.58) reflect substantial variability in effectiveness across participants. Despite the approximately symmetric skewness (-0.07), the range (0 to 1.14) indicates diverse effectiveness levels, from complete failures to high performance. These findings highlight the variability in participants' abilities to achieve consistent and effective output.
 
 ```{r fig-oee-hist}
 #| fig-cap: Histogram of Overall Equipment Effectiveness in Recall
@@ -208,7 +217,7 @@ lt_oee_treat  <- leveneTest(oee_100 ~ treatment, data = oee_data)
 pv <- lt_oee_treat$`Pr(>F)`[1]
 ```
 
-Results from the Shapiro-Wilk test provide further evidence against the normality hypothesis for OEE, both overall (p `r fmt_p_val(shapiro.test(oee_data$oee_100)$p.value)`) and by treatment (p < 0.05 in all cases). Q-Q plots in @fig-qq-h2a suggest that OEE is close to normally distributed for all augmented treatments, but PWI is clearly not. No outliers were detected in the OEE data based on the Z-score test. Finally, Levene's test indicated no significant heterogeneity of variance between treatment groups (`r fmt_p_val(pv)`).
+Results from the Shapiro-Wilk test provide further evidence against the normality hypothesis for OEE, both overall (p `r fmt_p_val(shapiro.test(oee_data$oee_100)$p.value)`) and by treatment (p < 0.05 in all cases). Q-Q plots in @fig-qq-h2a suggest that OEE is close to normally distributed for all augmented treatments, but PWI is clearly not. No outliers were detected in the OEE data based on the Z-score test. Finally, Levene's test indicated no significant heterogeneity of variance between treatment groups (`r fmt_p_val(pv)`). These findings again dictate a non-parametric approach to testing $H_{2a}$.
 
 ```{r fig-qq-h2a}
 #| fig-cap: Q-Q Plots of OEE by Treatment
@@ -222,10 +231,8 @@ p + plot_annotation(title = "Quantile-Quantile Plots of OEE Treatment Data",
 
 #### Analysis
 
-These findings again dictate a non-parametric approach to testing $H_{2a}$.
-
 ```{r fig-h2a-plot}
-#| fig-cap: OEE Differences by Treatment
+#| fig-cap: $H_{2a}$ Test - OEE Differences by Treatment
 #| fig-height: 5
 #| warning: false
 
@@ -264,9 +271,9 @@ h2a_plot <- ggstatsplot::ggbetweenstats(
 
 h2a_plot
 
-# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "9.99", italic(p) == 
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "9.79", italic(p) == 
 #     "0.02", widehat(epsilon)["ordinal"]^2 == "0.19", CI["95%"] ~ 
-#     "[" * "0.08", "1.00" * "]", italic("n")["obs"] == "54")
+#     "[" * "0.08", "1.00" * "]", italic("n")["obs"] == "53")
 ```
 
 ```{r test-oee-power}
@@ -280,9 +287,9 @@ oee_power <- posthoc_power_analysis(
 )
 ```
 
-In @fig-h2a-plot, group-wise significant differences are found (p = 0.02), with with small to moderate effect size $\hat{\epsilon}^{2}_{rank}=0.19$ and a broad $CI_{95\%}\:[0.08,1.0]$. Pair-wise tests show only PWI and PAR are significantly different (p = 0.02). A post-hoc simulation was performed to assess the power of the analysis. The result of `r round(oee_power * 100, 1)`% indicates the analysis had sufficient power to detect significant differences, thereby supporting the reliability of the findings.
+In @fig-h2a-plot, group-wise significant differences are found (p = 0.02), with with small to moderate effect size $\hat{\epsilon}^{2}_{rank}=0.19$ and a broad $CI_{95\%}\:[0.08,1.0]$. Pair-wise tests show only PWI and PAR are significantly different (p = 0.02). A post-hoc simulation was performed to assess the power of the analysis. The result of `r round(oee_power * 100, 1)`% indicates the analysis had sufficient power to detect significant differences, which supports the reliability of this result.
 
-```{r}
+```{r oee_summary}
 ost <- oee_data |>
   group_by(treatment) |> 
   summarize(
@@ -307,11 +314,15 @@ pr <- function(trt) {
 } 
 ```
 
-This result unexpectedly indicates that, despite substantial observed differences, the PWI, AR, and MR treatments have statistically equivalent OEE. High within-group variability likely contributes to this finding by obscuring genuine differences in group means. Kruskal-Wallis test is especially vulnerable to this effect due to its rank-based design and underlying assumptions. The ratio of interquartile range to overall range for PAR (`r pr("PAR")`), AR (`r pr("AR")`), and MR (`r pr("MR")`) treatments show that the central 50% of observations in each group is spread over more than half of its overall range. This wide variation can also be observed in the box plots of @fig-h2a-plot.
+::: content-hidden
+TODO: add table of oee data summarized by treatment
+:::
 
-Bootstrapping provided a complementary perspective for the analysis. This flexible technique samples with replacement to construct robust estimates of the distribution for various statistics, including means and their confidence intervals. Bootstrapping relies on the empirical distribution of the data to accurately capture variability with few assumptions. Additionally, the replication process effectively increases the sample size and statistical power of the analysis, enhancing the accuracy and reliability of its results.
+This unexpected result indicates that, despite substantial observed differences, the PWI, AR, and MR treatments have statistically equivalent OEE. High within-group variability likely contributes to this finding by obscuring genuine differences in group means. Kruskal-Wallis test is especially vulnerable to this effect due to its rank-based design and underlying assumptions. The ratio of interquartile range to overall range for PAR (`r pr("PAR")`), AR (`r pr("AR")`), and MR (`r pr("MR")`) treatments show that the central 50% of observations in each group is spread over more than half of its overall range. This wide variation can also be observed in the box plots of @fig-h2a-plot.
 
-A bootstrap analysis with 10,000 resamples was used to estimate pairwise mean differences in OEE across all treatments. This process was replicated five times, and the results were averaged to determine grand means and related statistics. The results are tabulated in @tbl-bootstrap-res. Pairs where the 95% confidence interval does not include zero are marked as significant.
+Bootstrapping provides a complementary perspective for the analysis. This flexible technique samples with replacement to construct robust estimates of the distribution for various statistics, including means and their confidence intervals. Bootstrapping relies on the empirical distribution of the data to accurately capture variability with few assumptions. Additionally, the replication process effectively increases the sample size and statistical power of the analysis, enhancing the accuracy and reliability of its results.
+
+A bootstrap analysis with 10,000 resamples was used to estimate pairwise mean differences in OEE across all treatments. This process was replicated five times, and the results were averaged to determine grand means and related statistics. The results are tabulated in @tbl-bootstrap-oee. Pairs where the 95% confidence interval does not include zero are marked as significant.
 
 ```{r bootstrap-oee}
 # Define a function to calculate mean differences between two groups
@@ -431,7 +442,7 @@ for (i in 1:(length(treatments) - 1)) {
 }
 
 # Summarize results by Group1 and Group2
-summary_results <- pairwise_results |>
+h2a_boot_results <- pairwise_results |>
   filter(is.finite(Bias) & is.finite(Std_Error)) |> 
   group_by(Group1, Group2) |>
   # these are all grand means for all replications
@@ -458,10 +469,10 @@ summary_results <- pairwise_results |>
 ```
 
 
-```{r tbl-bootstrap-res}
-#| tbl-cap: this is the table caption
+```{r tbl-boot-oee}
+#| tbl-cap: $H_{2a}$ Bootstrap Analysis of Pairwise OEE Differences
 
-summary_results |>
+h2a_boot_results |>
   gt() |>
   tab_header(
     title = "OEE Differences by Treatment: Bootstrapped Estimates",
@@ -474,9 +485,9 @@ summary_results |>
     Diff_U = "Upper CI",
     Bias_mean = "Bias",
     Bias_sd = "sd_Bias",
-    SE_mean = "Standard Error",
+    SE_mean = "Std Error",
     SE_sd = "sd_SE",
-    Sig = "Significance"
+    Sig = "Sig"
   ) |>
   cols_merge(
     columns = c(Bias_mean, Bias_sd),
@@ -503,7 +514,7 @@ summary_results |>
   cols_align(align = "center") |> 
   tab_options(
     table.font.size = "smaller",
-    table.width = pct(90),
+    # table.width = pct(90),
     column_labels.font.weight = "bold",
     heading.title.font.weight = "bolder",
     heading.subtitle.font.size = px(13)
@@ -516,7 +527,7 @@ summary_results |>
   )
 ```
 
-This result supports the previous findings of significant overall differences in OEE, and between the PWI and PAR conditions ($CI_{95\%}\:[-0.798,-0.194]$). In addition, bootstrapping revealed significant differences between PWI and both the AR ($CI_{95\%}\:[-0.643,-0.149]$) and MR ($CI_{95\%}\:[-0.711,-0.158]$) groups. These results show that the OEE of PWI is substantially worse than all other treatments, with estimated differences of 0.512 (PAR), 0.412 (AR), and 0.448 (MR). The negligible bias values and low standard error across bootstrapped replicates reinforce the reliability of these findings.
+This result supports the previous findings of significant overall differences in OEE, as well as between the PWI and PAR conditions ($CI_{95\%}\:[-0.797,-0.197]$). In addition, bootstrapping revealed significant differences between PWI and both the AR ($CI_{95\%}\:[-0.651,-0.133]$) and MR ($CI_{95\%}\:[-0.706,-0.159]$) groups. These results show that the OEE of PWI is substantially lower than all other treatments, with estimated differences of 0.512 (PAR), 0.408 (AR), and 0.448 (MR). The negligible bias values and low standard error reported across bootstrapped replicates reinforce the reliability of these findings.
 
 ::: content-hidden
 MAYBE: look into factors underlying OEE
@@ -528,7 +539,7 @@ look at trends in recall - still learning?
 
 look at differences in OEE components by treatment
 
-```{r fig-oee-components}
+```{r fig-oee-components, eval=FALSE}
 # Plot of Productivity by Treatment
 plot_prod <- ggplot(oee_data, aes(x = treatment, y = prod)) +
   geom_boxplot() +
@@ -549,7 +560,7 @@ on average, each participant in the PWI treatment makes XXX UCEs, compared to a,
 
 are the differences in productivity, quality significantly different?
 
-```{r fig-oee-prod}
+```{r fig-oee-prod, eval=FALSE}
 #| fig-cap: Productivity Differences by Treatment
 #| fig-height: 6
 #| warning: false
@@ -590,7 +601,7 @@ prod_plot <- ggstatsplot::ggbetweenstats(
 prod_plot
 ```
 
-```{r fig-oee-qual}
+```{r fig-oee-qual, eval=FALSE}
 #| fig-cap: Quality Differences by Treatment
 #| fig-height: 6
 #| warning: false
@@ -635,141 +646,492 @@ qual_plot
 
 #### Conclusion
 
-As both approaches identified a significant treatment effect on OEE, there is ample evidence to accept $H_{2a}$. However, the conflicting pairwise analysis results must be reconciled. While the Kruskal-Wallis test only identified significant differences between the PWI and PAR treatments, subsequent bootstrapped analysis revealed additional differences between PWI and the AR and MR treatments. Considering the bootstrap method's advantages when faced with high between-group variance, limited sample size, and non-normally distributed data, the consistent mean differences and robust confidence intervals it produced provides compelling evidence that the observed differences are reliable. Ultimately, it is concluded that PAR, AR, and MR treatments all result in statistically significant and practically meaningful improvements in OEE compared to PWI, which was hampered by a high defect rate.
-
+As both approaches identified a significant treatment effect on OEE, there is ample evidence to accept $H_{2a}$: OEE does vary with instructional method. However, the conflicting pairwise analysis results must be reconciled. While the Kruskal-Wallis test only identified significant differences between the PWI and PAR treatments, subsequent bootstrapped analysis revealed additional differences between PWI and the AR and MR treatments. Considering the bootstrap method's advantages when faced with high between-group variance, limited sample size, and non-normally distributed data, the consistent mean differences and robust confidence intervals it produced provides compelling evidence that the observed differences are reliable. Ultimately, it is concluded that PAR, AR, and MR treatments all result in statistically significant and practically meaningful improvements in OEE compared to PWI, which was hampered by a high defect rate.
 
 ### $H_{2b}$: Paper Work Instruction References
 
-The second hypothesis of the recall phase:
-$$H_{2b}\textrm{: Total duration of PWI references varies with treatment}$$
+```{r h2b-data}
+recall_h2b <- recall |> 
+  mutate(
+    pwi_time_per_ref = ifelse(pwi_event_count > 0, pwi_event_tot_time / pwi_event_count, 0)
+  )
 
-maybe make this more general? PWI usage varies...?
-
-look at distribution of pwi count / time by treatment
-consider pwi count a measure of the frequency of uncertainty
-pwi time a measure of the depth of uncertainty
-
-look at distributions by treatment
-
-```{r fig-pwi-ref}
-plot_pwi_count <- ggplot(recall_agg, aes(x = treatment, y = avg_pwi_count)) +
-  geom_boxplot() +
-  labs(title = "Avg PWI Count by Treatment", y = element_blank(), x = element_blank())
-
-plot_pwi_time <- ggplot(recall_agg, aes(x = treatment, y = avg_pwi_time)) +
-  geom_boxplot() +
-  labs(title = "Avg PWI Time by Treatment", y = element_blank(), x = element_blank())
-
-# Combine the plots
-plot_combined <- plot_pwi_count + plot_pwi_time
-print(plot_combined)
+recall_h2b_agg <- recall_agg |> 
+  mutate(pwi_time_per_ref = ifelse(avg_pwi_count > 0, avg_pwi_time / avg_pwi_count, 0))
 ```
+
+The second hypothesis of the recall phase is designed to assess an alternative measure of training effectiveness:
+$$H_{2b}\textrm{: PWI reliance varies with treatment}$$
+
+Reliance is quantified by observing the number of times each participant refers to the paper work instructions, and the duration of each event. PWI count is considered a measure of the *frequency* of the participant's task uncertainty, while PWI time is associated with the *degree* of uncertainty experienced.
+
+#### Descriptive Statistics
+
+```{r make-h2b-report}
+#| warning: false
+
+# report descriptive stats for pwi count and pwi time
+h2b_rpt <- recall_h2b |>
+  select(pwi_event_count, pwi_event_tot_time, pwi_time_per_ref) |>
+  rename(
+    "PWI Count" = pwi_event_count,
+    "Total PWI Time" = pwi_event_tot_time,
+    "PWI Avg Time per Reference" = pwi_time_per_ref
+  ) |>
+  report::report() # options not working!
+
+# Extract and split the string by the pattern "\n - ", remove first line
+h2b_rpt_list <- strsplit(h2b_rpt[1], "\n  - ")[[1]][-1]
+
+# Add hyphen to first element and rejoin
+h2b_rpt_list[1] <- paste0("- ", h2b_rpt_list[1])
+h2b_rpt_list <- paste(h2b_rpt_list, collapse = "\n- ")
+h2b_rpt_list <- gsub(", 0 missing", "", h2b_rpt_list)
+h2b_rpt_list <- gsub("n = 212, ", "", h2b_rpt_list)
+
+# convert back into list of strings
+h2b_rpt_list <- strsplit(h2b_rpt_list, "\n")[[1]]
+
+# Calculate and test Spearman's correlation
+h2b_cor_test_spearman <- cor.test(recall_h2b$pwi_event_count, recall_h2b$pwi_event_tot_time, method = "spearman")
+
+# cat(h2b_rpt_list)
+```
+
+The data of interest are summarized below:
+
+`r paste(h2b_rpt_list[1:2], collapse = "\n")`
+
+The median and MAD of zero for both measures indicates that many participants did not refer to the instructions at all. However, despite relatively low mean values for count and total time (1.47 and 2.86, respectively), both exhibit substantial variability, with standard deviation of 4.12 and 9.43. High skewness (4.51, 5.64) and kurtosis (23.27, 36.73) values confirm their heavy right skew and long tails. These statistics suggest that, while most participants rarely referred to the instructions, a small number relied on them heavily.
+
+The similarity in these statistics suggests strong correlation, which Spearman's rank correlation test confirms (rho = `r round(h2b_cor_test_spearman$estimate,2)`, `r fmt_p_val(h2b_cor_test_spearman$p.value)`). This is natural and expected for two dependent measures, but must be accounted for. To do so, a composite measure of reliance was created by averaging the time per PWI reference for each participant over all four tasks. This approach accounts for the high correlation described while still incorporating both aspects of task uncertainty. Using an average measure also reduces within-- and therefore between--participant variance. This enables a traditional univariate approach to the comparison of means, simplifying both the analysis and interpretation of results. Variance and normality for this composite measure are improved across the board, but the overall character of the data is similar: low mean and high variance (Mean = 0.61, SD = 1.26), zero median and MAD, right-skewed (3.06) and long tails (kurtosis = 11.41). The distribution of average time per PWI reference is visualized in @fig-pwi-hist.
+
+Composite measure reduces variance and enables clearer comparative analysis
+
+```{r fig-pwi-hist}
+#| fig-cap: Histogram of PWI Reliance in Recall
+#| fig-height: 3.5
+#| warning: false
+#| message: false
+
+# # calculate bin widths based on theory... don't think any work well
+# x <- recall_h2b_agg$pwi_time_per_ref
+# bin_width_fd <- 2 * IQR(x, na.rm = TRUE) / (length(x[!is.na(x)])^(1/3))
+# bin_width_sturges <- (max(x) - min(x)) / (log2(length(x)) + 1)
+# bin_width_scott <- 3.5 * sd(x) / (length(x)^(1/3))
+
+recall_h2b_agg |>
+  ggplot(aes(x = pwi_time_per_ref)) +
+  geom_histogram(
+    fill = I(base_color),
+    alpha = 0.75,
+    color = outline_color,
+    binwidth = 0.5
+  ) +
+  labs(title = "Distribution of Avg Time per PWI Reference in Recall",
+       subtitle = "Reliance is strongly right-skewed with high variability and long tails",
+       x = element_blank(),
+       y = element_blank()) +
+  theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+    )
+```
+
+```{r}
+st_rely_all <- shapiro.test(recall_h2b_agg$pwi_time_per_ref)
+st_rely_treat <- by(recall_h2b_agg$pwi_time_per_ref, recall_h2b_agg$treatment, shapiro.test)
+
+lt_rely_treat  <- leveneTest(pwi_time_per_ref ~ treatment, data = recall_h2b_agg)
+lt_pv <- lt_rely_treat$`Pr(>F)`[1]
+```
+
+From the descriptive statistics and visualization, this data does not appear normal. This was tested using the Shapiro-Wilk test of normality for the overall data (`r fmt_p_val(st_rely_all$p.value)`) and within each treatment group. From this we find evidence that neither PWI (`r fmt_p_val(st_rely_treat$PWI$p.value)`) nor PAR (`r fmt_p_val(st_rely_treat$PAR$p.value)`) are normally distributed, but AR is (`r fmt_p_val(st_rely_treat$AR$p.value)`). MR shows marginal significance (`r fmt_p_val(st_rely_treat$MR$p.value)`) of non-normality. Visual inspection of the Q-Q plots for each treatment, provided in @fig-qq-h2b, supports these findings. Levene's test (`r fmt_p_val(lt_pv)`) confirms equal variance by treatment.
+
+```{r fig-qq-h2b}
+#| fig-cap: Q-Q Plots of PWI Reliance by Treatment
+#| fig-height: 3.5
+
+p <- qq_plot_patchwork(recall_h2b_agg, x_var = "pwi_time_per_ref", by_var = "treatment")
+
+p + plot_annotation(title = "Quantile-Quantile Plots of PWI Treatment Data",
+                    subtitle = "subtitle...")
+```
+
+```{r drop-h2b-outliers}
+outliers <- recall_h2b_agg |>
+  group_by(treatment) |>
+  mutate(
+    z_rely = abs((pwi_time_per_ref - mean(pwi_time_per_ref, na.rm = T))
+              / sd(pwi_time_per_ref, na.rm = T)),
+    z_count = abs((avg_pwi_count - mean(avg_pwi_count, na.rm = T))
+               / sd(avg_pwi_count, na.rm = T)),
+    z_time = abs((avg_pwi_time - mean(avg_pwi_time, na.rm = T))
+               / sd(avg_pwi_time, na.rm = T))
+  ) |>
+  filter(z_rely > 2.5 | z_count > 2.5 | z_time > 2.5) |> 
+  # filter(z_rely > 3.0 | z_count > 3.0 | z_time > 3.0) |> 
+  ungroup()
+
+recall_h2b_agg_out <- recall_h2b_agg |>
+  anti_join(outliers, by = "participant")
+```
+
+Outliers were identified within each treatment group for all measures of task uncertainty. Data for `r as.character(english(nrow(outliers)))` participants with Z-scores of 2.5 or higher are summarized in @tbl-h2b-outliers. These participants were removed from the primary analysis to ensure the data represents typical participant behavior and to maintain the integrity of the comparative analysis.
+
+```{r tbl-h2b-outliers}
+#| tbl-cap: Outliers in Measures of Reliance
+#| warning: false
+
+c_range = c(2.5, max(outliers |> select(starts_with("z_")), na.rm = T))
+# Define the custom subset of the palette (e.g., first half of the red_material palette)
+full_palette <- ggsci::pal_material("deep-orange")(10)
+subset_palette <- full_palette[5:10]       
+
+h2b_out_tbl <- outliers |> 
+  select(participant, treatment, z_count, z_time, z_rely) |> 
+  gt() |>
+  tab_header(
+    title = "|Z-scores| for Reliance Metrics of Participant Outliers",
+    subtitle = "Participants with |Z-score| >= 2.5 in reliance components"
+  ) |>
+  cols_label(
+    participant = "Participant",
+    treatment = "Treatment",
+    z_count = "Avg PWI Count / Task",
+    z_time = "Avg Total PWI Time / Task",
+    z_rely = "Avg Time / PWI Ref"
+  ) |>
+  fmt_number(
+    columns = c(z_rely, z_count, z_time),
+    decimals = 2
+  ) |>
+  cols_align(align = "center") |> 
+  tab_options(
+    table.font.size = "smaller",
+    # table.width = pct(90),
+    column_labels.font.weight = "bold",
+    heading.title.font.weight = "bolder",
+    heading.subtitle.font.size = px(13)
+  )
+  # data_color(
+  #   columns = starts_with("z_"),
+  #   method = "numeric",
+  #   domain = c_range,
+  #   palette = subset_palette,
+  #   # reverse = T,
+  #   na_color = "transparent"
+  # )
+
+h2b_out_tbl
+
+# Calculate mean PWI time per reference with and without outliers
+overall_mean_with_outliers <- mean(recall_h2b_agg$pwi_time_per_ref, na.rm = TRUE)
+overall_mean_without_outliers <- mean(recall_h2b_agg_out$pwi_time_per_ref, na.rm = TRUE)
+```
+
+::: content-hidden
+TODO: standardize outlier test methodology, including z-scores
+TODO: fix table coloring for PDF?
+:::
+
+```{r h2b-test-out}
+# does removing outliers change the normality or levene test results?
+
+st_rely_all_out <- shapiro.test(recall_h2b_agg_out$pwi_time_per_ref)
+st_rely_treat_out <- by(recall_h2b_agg_out$pwi_time_per_ref, recall_h2b_agg_out$treatment, shapiro.test)
+
+lt_rely_treat_out  <- leveneTest(pwi_time_per_ref ~ treatment, data = recall_h2b_agg_out)
+lt_pv_out <- lt_rely_treat_out$`Pr(>F)`[1]
+```
+
+
+```{r h2b-test-out-check, eval=FALSE}
+# Store the results in a data frame
+h2b_compare_out <- data.frame(
+  Test = c(
+    "Levene",
+    "SW: All", 
+    "SW: PWI",
+    "SW: PAR", 
+    "SW: AR", 
+    "SW: MR"
+  ),
+  p_all = c(
+    fmt_p_val(lt_pv),
+    fmt_p_val(st_rely_all$p.value),
+    fmt_p_val(st_rely_treat$PWI$p.value),
+    fmt_p_val(st_rely_treat$PAR$p.value),
+    fmt_p_val(st_rely_treat$AR$p.value),
+    fmt_p_val(st_rely_treat$MR$p.value)
+  ),
+  p_out = c(
+    fmt_p_val(lt_pv_out),
+    fmt_p_val(st_rely_all_out$p.value),
+    fmt_p_val(st_rely_treat_out$PWI$p.value),
+    fmt_p_val(st_rely_treat_out$PAR$p.value),
+    fmt_p_val(st_rely_treat_out$AR$p.value),
+    fmt_p_val(st_rely_treat_out$MR$p.value)
+  )
+)
+
+h2b_compare_out
+
+# as of 6/10 6:40pm...only change in significance at 0.05: Levene test
+#      Test     p_all     p_out
+# 1  Levene  p = 0.95  p = 0.01 becomes significant, variance differs w/out outliers
+# 2 SW: All p < 0.001 p < 0.001 not normal
+# 3 SW: PWI p < 0.001 p < 0.001 not normal
+# 4 SW: PAR p < 0.001 p = 0.004 not normal in either case
+# 5  SW: AR  p = 0.16  p = 0.12 normal
+# 6  SW: MR  p = 0.05  p = 0.05 borderline significance, no MR obs dropped
+```
+
+```{r h2b-comp-out-overall, eval=FALSE}
+# does removing the outliers significantly change the mean of the overall data?
+
+# Wilcoxon signed-rank test
+overall_wilcoxon <- wilcox.test(
+  recall_h2b_agg$pwi_time_per_ref,
+  recall_h2b_agg_out$pwi_time_per_ref,
+  exact = FALSE
+)
+
+print(overall_wilcoxon)
+
+# p-value = 0.5391, no significant difference in overall data
+```
+
+```{r h2b-comp-out-treat, eval=FALSE}
+# does removing the outliers significantly change the mean of any treatment group?
+
+# Function to compare means within each treatment group using Wilcoxon rank-sum test (unpaired)
+compare_by_treatment <- function(treatment) {
+  with_outliers <- recall_h2b_agg |> filter(treatment == !!treatment)
+  without_outliers <- recall_h2b_agg_out |> filter(treatment == !!treatment)
+
+  mean_with_outliers <- mean(with_outliers$pwi_time_per_ref, na.rm = TRUE)
+  mean_without_outliers <- mean(without_outliers$pwi_time_per_ref, na.rm = TRUE)
+  
+  test_result <- wilcox.test(
+    with_outliers$pwi_time_per_ref, without_outliers$pwi_time_per_ref, exact = FALSE
+  )
+
+  list(
+    treatment = treatment,
+    mean_with_outliers = mean_with_outliers,
+    mean_without_outliers = mean_without_outliers,
+    p_value = test_result$p.value,
+    test_result = test_result
+  )
+}
+
+# Apply the comparison function to each treatment group
+treatments <- levels(recall_h2b_agg$treatment)
+comparison_results <- lapply(treatments, compare_by_treatment)
+
+# Print results
+for (result in comparison_results) {
+  cat("Treatment:", result$treatment, "\n")
+  cat("  Mean with outliers:", result$mean_with_outliers, "\n")
+  cat("  Mean without outliers:", result$mean_without_outliers, "\n")
+  cat("  p-value:", result$p_value, "\n")
+  print(result$test_result)
+  cat("\n")
+}
+
+# all p-values > 0.49, not significantly difference within any treatment
+```
+
+Following their removal, the prior tests were re-run with no changes to those findings, except Levene's test, which reported significant difference in variance between groups (`r fmt_p_val(lt_pv_out)`). Additionally, the data with and without outliers were compared overall and by treatment group using the Wilcoxon signed-rank test. No significant differences were found in average PWI time per reference (p > 0.40 for all cases). It is concluded that, despite a reduction in the overall mean value from `r round(overall_mean_with_outliers, 2)` to `r round(overall_mean_without_outliers, 2)`, the character of the underlying data is not significantly different. Given that most treatments are not normally distributed, and variance differs between groups, a non-parametric approach is chosen for testing $H_{2b}$.
+
+#### Analysis
+
+```{r fig-h2b-out-kw}
+#| fig-cap: $H_{2b}$ Test - Average Time per PWI Reference by Treatment
+#| fig-height: 4
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+pwi_rely_plot <- ggstatsplot::ggbetweenstats(
+  data = recall_h2b_agg_out,
+  x = treatment,
+  y = pwi_time_per_ref,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "PWI Reliance by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  results.subtitle = FALSE,
+  subtitle = "No Significant Differences Identified between Groups using Dunn's Test, Holm-adjusted post-hoc",
+  digits = 2,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+pwi_rely_plot
+
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "7.8097", italic(p) == 
+#     "0.0501", widehat(epsilon)["ordinal"]^2 == "0.1662", CI["95%"] ~ 
+#     "[" * "0.0730", "1.0000" * "]", italic("n")["obs"] == "48")
+```
+
+Per @fig-h2b-out-kw...
+
+p = 0.0501 but no pair-wise differences detected, small effect size (0.17) with broad CI[95%] = 0.07, 1.0
+
+marginal p-value → investigate lack of significance with bootstrap methods
+
+```{r bootstrap-pwi}
+# Prepare data for bootstrap (assuming 'oee_data' contains 'OEE' and 'treatment')
+set.seed(42)  # overall results reproducible; will share starting point for rand
+pairwise_results <- recall_h2b_agg_out |> 
+  mutate(OEE = pwi_time_per_ref) |>
+  pairwise_tests()
+
+# Define treatment levels
+treatments <- levels(recall_h2b_agg_out$treatment)
+
+# Generate ordered pair levels
+ordered_pairs <- c()
+for (i in 1:(length(treatments) - 1)) {
+  for (j in (i + 1):length(treatments)) {
+    ordered_pairs <- c(ordered_pairs, paste(treatments[i], "-", treatments[j]))
+  }
+}
+
+# Summarize results by Group1 and Group2
+h2b_boot_results <- pairwise_results |>
+  filter(is.finite(Bias) & is.finite(Std_Error)) |> 
+  group_by(Group1, Group2) |>
+  # these are all grand means for all replications
+  summarise(
+    Diff = mean(Mean_Difference, na.rm = TRUE),
+    Diff_L = mean(CI_Lower, na.rm = TRUE),
+    Diff_U = mean(CI_Upper, na.rm = TRUE),
+    Bias_mean = mean(Bias, na.rm = TRUE),
+    Bias_sd = sd(Bias, na.rm = TRUE),
+    SE_mean = mean(Std_Error, na.rm = TRUE),
+    SE_sd = sd(Std_Error, na.rm = TRUE),
+    Sig = ifelse(
+      mean(CI_Lower > 0, na.rm = TRUE) | mean(CI_Upper < 0, na.rm = TRUE), "*", ""
+    ),
+    .groups = "drop"
+  ) |> 
+  mutate(
+    Pair = paste(Group1, Group2, sep = " - "),
+    Pair = factor(Pair, levels = ordered_pairs)
+  ) |> 
+  arrange(Pair) |> 
+  select(Pair, Diff:Sig)
+```
+
+
+```{r tbl-boot-pwi}
+#| tbl-cap: $H_{2b}$ Bootstrap Analysis of Pairwise PWI Differences
+
+h2b_boot_results |>
+  gt() |>
+  tab_header(
+    title = "Reliance Differences by Treatment: Bootstrapped Estimates",
+    subtitle = "Grand Mean (SD) Values from Five Replications of 10,000 Resamples"
+  ) |>
+  cols_label(
+    Pair = "Comparison",
+    Diff = "Difference",
+    Diff_L = "Lower CI",
+    Diff_U = "Upper CI",
+    Bias_mean = "Bias",
+    Bias_sd = "sd_Bias",
+    SE_mean = "Std Error",
+    SE_sd = "sd_SE",
+    Sig = "Sig"
+  ) |>
+  cols_merge(
+    columns = c(Bias_mean, Bias_sd),
+    pattern = "{1} ({2})"
+  ) |>
+  cols_merge(
+    columns = c(SE_mean, SE_sd),
+    pattern = "{1} ({2})"
+  ) |>
+  cols_merge(
+    columns = c(Diff_L, Diff_U),
+    pattern = "[{1}, {2}]"
+  ) |>
+  cols_label(
+    .list = c(
+      "Diff" = "Mean",
+      "Diff_L" = "95% CI"
+    )
+  ) |>
+  fmt_number(
+    # columns = c(Diff, Diff_L, Diff_U, Bias, SE),
+    decimals = 3
+  ) |>
+  cols_align(align = "center") |>
+  tab_options(
+    table.font.size = "smaller",
+    # table.width = pct(90),
+    column_labels.font.weight = "bold",
+    heading.title.font.weight = "bolder",
+    heading.subtitle.font.size = px(13)
+  ) |>
+  tab_footnote(
+    footnote = "Significance indicated where the confidence interval does not include zero.",
+    locations = cells_column_labels(
+      columns = c(Sig)
+    )
+  )
+```
+
+@tbl-boot-pwi shows significant differences between PWI - AR/MR, and PAR - AR/MR, all p-values substantially less than 0.05
+
+order of difference in avg PWI time per ref:
+
+- PWI baseline
+- PAR -0.03 lower
+- AR -0.99
+- MR -0.87
+
+together:
+
+( AR < MR ) < ( PAR < PWI )
+
+- AR/MR are statistically and practically (0.11) equivalent, with AR marginally better
+- AR/MR are statistically and practically (-0.95) lower than PWI/PAR
+- PWI/PAR are statistically and practically (-0.04) equivalent, where PAR is negligibly better
+
+AR and MR reduce reliance on reference instructions, suggesting they improve the learning outcome
+
+::: content-hidden
+#### Additional Analysis
+
+?underlying factors - time and count?
+
+:::
+
+#### Conclusions
 
 observations:
 
 - PWI confident, regardless of competence
 - PAR seems to be the best mix of confidence and competence - would it be better than simple error checking / prevention?
 
-
-
-non-parametric comparison of avg pwi count by treatment
-
-```{r fig-pwi-count}
-#| fig-cap: Avg PWI Count Differences by Treatment
-#| fig-height: 6
-#| warning: false
-
-# since ggstatsplot computes confidence intervals for the effect sizes
-# using bootstrapping, it is important to set a seed for reproducibility
-set.seed(42)
-
-pwi_count_plot <- ggstatsplot::ggbetweenstats(
-  data = recall_agg,
-  x = treatment,
-  y = avg_pwi_count,
-  type = "nonparametric",
-  xlab = "",
-  ylab = "",
-  title = "Avg PWI Count Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
-  # results.subtitle = FALSE,
-  subtitle = "Significant Differences Identified between Groups using Dunn's Test, Holm-adjusted post-hoc",
-  digits = 2,
-  # centrality.label.args = list(point.padding = 30),
-  ggtheme = theme_minimal(base_size = 10) +
-    theme(
-      plot.title.position = "plot",
-      plot.title = element_text(face = "bold"),
-      axis.text.y.right = element_blank(),
-      axis.ticks.y.right = element_blank(),
-      axis.text.x = element_text(color = "black")
-      # legend.position = "none",
-      # axis.text.y = element_blank(),
-      # axis.ticks.y = element_blank(),
-    ),
-  # remove side label
-  ggplot.component = list(
-      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
-    )
-)
-
-pwi_count_plot
-```
-
-there may be outliers in this data!
-drop, transform, or use robust statistical methods?
-
-same for avg pwi time
-
-```{r fig-pwi-time}
-#| fig-cap: Avg PWI Time Differences by Treatment
-#| fig-height: 6
-#| warning: false
-
-# since ggstatsplot computes confidence intervals for the effect sizes
-# using bootstrapping, it is important to set a seed for reproducibility
-set.seed(42)
-
-pwi_time_plot <- ggstatsplot::ggbetweenstats(
-  data = recall_agg,
-  x = treatment,
-  y = avg_pwi_time,
-  type = "nonparametric",
-  xlab = "",
-  ylab = "",
-  title = "Avg PWI Time Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
-  # results.subtitle = FALSE,
-  subtitle = "Significant Differences Identified between Groups using Dunn's Test, Holm-adjusted post-hoc",
-  digits = 2,
-  # centrality.label.args = list(point.padding = 30),
-  ggtheme = theme_minimal(base_size = 10) +
-    theme(
-      plot.title.position = "plot",
-      plot.title = element_text(face = "bold"),
-      axis.text.y.right = element_blank(),
-      axis.ticks.y.right = element_blank(),
-      axis.text.x = element_text(color = "black")
-      # legend.position = "none",
-      # axis.text.y = element_blank(),
-      # axis.ticks.y = element_blank(),
-    ),
-  # remove side label
-  ggplot.component = list(
-      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
-    )
-)
-
-pwi_time_plot
-```
-
-again, outliers!
-
-MANOVA to look at combined effect of count and time
-
-```{r}
-# MANOVA for average PWI count and average PWI time by treatment
-manova_model <- manova(cbind(avg_pwi_count, avg_pwi_time) ~ treatment, data = recall_agg)
-summary(manova_model)
-
-```
-
-no significant effect of treatment on pwi count or time
