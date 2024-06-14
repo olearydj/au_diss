@@ -1573,7 +1573,7 @@ p + plot_annotation(title = "Quantile-Quantile Plots of TCT Treatment Data",
 
 ```
 
-Given the minor deviations from normality, particularly for the PWI group, a non-parametric approach was adopted. This provides a reliable and straightforward approach for hypothesis testing for data that are non-normal or heteroscedastic (having unequal variances). This decision also avoids the complexities associated with transformation pipelines, ensuring robust statistical conclusions while maintaining the interpretability of the original data.
+Given the minor deviations from normality, particularly for the PWI group, a non-parametric approach was adopted. This provides a reliable and straightforward approach for hypothesis testing for data that are non-normal or heteroscedastic (having unequal variances). This decision also avoids the complexities associated with transformation pipelines, ensuring robust statistical results while maintaining the interpretability of the original data.
 
 #### Analysis
 
@@ -1645,9 +1645,9 @@ posthoc_power <- posthoc_power_analysis(n, k, epsilon_sq, sig_level = 0.05, num_
 
 A post-hoc simulation was run to validate these results by estimating the statistical power. Power analysis measures the effectiveness of a statistical test in detecting true differences when they exist. High power (typically 0.8 or above) suggests that the test is appropriate for the given data and experimental conditions, therefore supporting factual decision-making. The simulation repeatedly applies the Kruskal-Wallis test to data generated based on the observed mean and effect size, and resulting power is the proportion of tests that correctly reject the null hypothesis. The outcome of `r posthoc_power` (`r posthoc_power * 100`% power), while uncommon, suggests that, for the conditions of this experiment (n=53, an average of 13.25 samples in each of the four groups, $\hat{\epsilon}^{2}=0.5$, and $\alpha = 0.05$), the test is extremely effective at detecting the observed differences. The combination of a large effect size and a reasonable sample size is largely attributable to this value, which offers great confidence in the validity of the test results.
 
-#### Conclusion
+#### $H_{1a}$ Result
 
-Based on this thorough analysis of the data and validation of the methods, it is concluded that sufficient statistical evidence exists to accept $H_{1a}$: average task completion time varies by treatment. Specifically, the PWI and PAR instructional methods are both equivalent and faster than AR and MR, which are also equivalent to one another.
+Based on this thorough analysis of the data and validation of the methods, it is determined that sufficient statistical evidence exists to accept $H_{1a}$: average task completion time varies by treatment. Specifically, the PWI and PAR instructional methods are both equivalent and faster than AR and MR, which are also equivalent to one another.
 
 ### $H_{1b}$: Learning Rates
 
@@ -2223,7 +2223,7 @@ plot_tct + plot_inverse_tct +
 
 #### Analysis
 
-#### Conclusion
+#### $H_{1b}$ Results
 
 
 ### $H_{1c}$: Average Error Count per Car
@@ -2327,11 +2327,11 @@ without_outliers <- learn_h1c[!learn_h1c$participant %in% co_res$participant, ]
 kt_h1b_no_outliers <- kruskal.test(avg_uce ~ treatment, data = without_outliers)
 ```
 
-KW is a robust test that does not assume normality or homogeneity of variances. It can be sensitive to the presence of outliers, three of which were detected in the UCE data based on a combination of IQR and Z-score. Participants `r col_to_string(co_res, participant)` were all assigned to the PWI treatment and averaged `r col_to_string(co_res, avg_uce, digits = 1)` errors per task, respectively. A second Kruskal-Wallis test of the data without those outliers showed the difference remained significant (p=`r fmt_p_val(kt_h1b_no_outliers$p.val)`). Based on this it is concluded that the outliers are not impacting the test result.
+KW is a robust test that does not assume normality or homogeneity of variances. It can be sensitive to the presence of outliers, three of which were detected in the UCE data based on a combination of IQR and Z-score. Participants `r col_to_string(co_res, participant)` were all assigned to the PWI treatment and averaged `r col_to_string(co_res, avg_uce, digits = 1)` errors per task, respectively. A second Kruskal-Wallis test of the data without those outliers showed the difference remained significant (p=`r fmt_p_val(kt_h1b_no_outliers$p.val)`). Based on this it is determined that the outliers are not impacting the test result.
 
 While this method was deemed insufficient for capturing the nuances of learning rate analysis, it is appropriate for comparing average error counts.
 
-#### Conclusions
+#### $H_{1c}$ Results
 
 $H_{1c}$ is accepted - all augmented instruction methods result in error rates that are drastically lower in magnitude than PWI, the statistical significance of which is confirmed. 
 note the floor effects

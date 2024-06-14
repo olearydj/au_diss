@@ -12,6 +12,7 @@ library(boot)
 library(gt)
 library(paletteer)
 library(english)
+library(glue)
 
 # library(pwr)
 # library(emmeans)
@@ -644,9 +645,9 @@ qual_plot
 
 :::
 
-#### Conclusion
+#### $H_{2a}$ Result
 
-As both approaches identified a significant treatment effect on OEE, there is ample evidence to accept $H_{2a}$: OEE does vary with instructional method. However, the conflicting pairwise analysis results must be reconciled. While the Kruskal-Wallis test only identified significant differences between the PWI and PAR treatments, subsequent bootstrapped analysis revealed additional differences between PWI and the AR and MR treatments. Considering the bootstrap method's advantages when faced with high between-group variance, limited sample size, and non-normally distributed data, the consistent mean differences and robust confidence intervals it produced provides compelling evidence that the observed differences are reliable. Ultimately, it is concluded that PAR, AR, and MR treatments all result in statistically significant and practically meaningful improvements in OEE compared to PWI, which was hampered by a high defect rate.
+As both approaches identified a significant treatment effect on OEE, there is ample evidence to accept $H_{2a}$: OEE does vary with instructional method. However, the conflicting pairwise analysis results must be reconciled. While the Kruskal-Wallis test only identified significant differences between the PWI and PAR treatments, subsequent bootstrapped analysis revealed additional differences between PWI and the AR and MR treatments. Considering the bootstrap method's advantages when faced with high between-group variance, limited sample size, and non-normally distributed data, the consistent mean differences and robust confidence intervals it produced provides compelling evidence that the observed differences are reliable. Ultimately, it is determined that PAR, AR, and MR treatments all result in statistically significant and practically meaningful improvements in OEE compared to PWI, which was hampered by a high defect rate.
 
 ### $H_{2b}$: Paper Work Instruction References
 
@@ -702,14 +703,12 @@ The data of interest are summarized below:
 
 `r paste(h2b_rpt_list[1:2], collapse = "\n")`
 
-The median and MAD of zero for both measures indicates that many participants did not refer to the instructions at all. However, despite relatively low mean values for count and total time (1.47 and 2.86, respectively), both exhibit substantial variability, with standard deviation of 4.12 and 9.43. High skewness (4.51, 5.64) and kurtosis (23.27, 36.73) values confirm their heavy right skew and long tails. These statistics suggest that, while most participants rarely referred to the instructions, a small number relied on them heavily.
+Despite relatively low mean values for count and total time (1.47 and 2.86, respectively), both exhibit substantial variability, with standard deviation of 4.12 and 9.43. High skewness (4.51, 5.64) and kurtosis (23.27, 36.73) values confirm their heavy right skew and long tails. Together with a median and MAD of zero for both measures, these statistics suggest that most participants rarely referred to the instructions, but a small number relied on them heavily.
 
-The similarity in these statistics suggests strong correlation, which Spearman's rank correlation test confirms (rho = `r round(h2b_cor_test_spearman$estimate,2)`, `r fmt_p_val(h2b_cor_test_spearman$p.value)`). This is natural and expected for two dependent measures, but must be accounted for. To do so, a composite measure of reliance was created by averaging the time per PWI reference for each participant over all four tasks. This approach accounts for the high correlation described while still incorporating both aspects of task uncertainty. Using an average measure also reduces within-- and therefore between--participant variance. This enables a traditional univariate approach to the comparison of means, simplifying both the analysis and interpretation of results. Variance and normality for this composite measure are improved across the board, but the overall character of the data is similar: low mean and high variance (Mean = 0.61, SD = 1.26), zero median and MAD, right-skewed (3.06) and long tails (kurtosis = 11.41). The distribution of average time per PWI reference is visualized in @fig-pwi-hist.
-
-Composite measure reduces variance and enables clearer comparative analysis
+The statistical similarity between count and time suggests strong correlation, which Spearman's rank correlation test confirms (rho = `r round(h2b_cor_test_spearman$estimate,2)`, `r fmt_p_val(h2b_cor_test_spearman$p.value)`). This is natural and expected for two dependent measures, but must be accounted for. To do so, a composite measure of reliance was created by averaging the time per PWI reference for each participant over all four tasks. This approach eliminates the correlation described without diminishing either aspect of task uncertainty. Using a single measure also enables a traditional univariate approach to the comparison, which benefits from reductions to the within-- and between--participant variance due to averaging. Variance and normality for this composite measure are improved across the board, but the overall character of the data is similar: low mean and high variance (Mean = 0.61, SD = 1.26), zero median and MAD, right-skewed (3.06) and long tails (kurtosis = 11.41). The distribution of average time per PWI reference is visualized in @fig-pwi-hist.
 
 ```{r fig-pwi-hist}
-#| fig-cap: Histogram of PWI Reliance in Recall
+#| fig-cap: Histogram of Composite PWI Measure in Recall
 #| fig-height: 3.5
 #| warning: false
 #| message: false
@@ -728,7 +727,7 @@ recall_h2b_agg |>
     color = outline_color,
     binwidth = 0.5
   ) +
-  labs(title = "Distribution of Avg Time per PWI Reference in Recall",
+  labs(title = "Average Time per PWI Reference in Recall",
        subtitle = "Reliance is strongly right-skewed with high variability and long tails",
        x = element_blank(),
        y = element_blank()) +
@@ -747,7 +746,7 @@ lt_rely_treat  <- leveneTest(pwi_time_per_ref ~ treatment, data = recall_h2b_agg
 lt_pv <- lt_rely_treat$`Pr(>F)`[1]
 ```
 
-From the descriptive statistics and visualization, this data does not appear normal. This was tested using the Shapiro-Wilk test of normality for the overall data (`r fmt_p_val(st_rely_all$p.value)`) and within each treatment group. From this we find evidence that neither PWI (`r fmt_p_val(st_rely_treat$PWI$p.value)`) nor PAR (`r fmt_p_val(st_rely_treat$PAR$p.value)`) are normally distributed, but AR is (`r fmt_p_val(st_rely_treat$AR$p.value)`). MR shows marginal significance (`r fmt_p_val(st_rely_treat$MR$p.value)`) of non-normality. Visual inspection of the Q-Q plots for each treatment, provided in @fig-qq-h2b, supports these findings. Levene's test (`r fmt_p_val(lt_pv)`) confirms equal variance by treatment.
+From the descriptive statistics and visualization, this data does not appear normal. To confirm, the Shapiro-Wilk test of normality was administered for the overall data (`r fmt_p_val(st_rely_all$p.value)`) and within each treatment group. The results show that neither PWI (`r fmt_p_val(st_rely_treat$PWI$p.value)`) nor PAR (`r fmt_p_val(st_rely_treat$PAR$p.value)`) are normally distributed, but AR is (`r fmt_p_val(st_rely_treat$AR$p.value)`). MR shows marginal significance (`r fmt_p_val(st_rely_treat$MR$p.value)`) of non-normality. Visual inspection of the Q-Q plots for each treatment, provided in @fig-qq-h2b, supports these findings. Levene's test (`r fmt_p_val(lt_pv)`) confirms equal variance by treatment.
 
 ```{r fig-qq-h2b}
 #| fig-cap: Q-Q Plots of PWI Reliance by Treatment
@@ -778,7 +777,7 @@ recall_h2b_agg_out <- recall_h2b_agg |>
   anti_join(outliers, by = "participant")
 ```
 
-Outliers were identified within each treatment group for all measures of task uncertainty. Data for `r as.character(english(nrow(outliers)))` participants with Z-scores of 2.5 or higher are summarized in @tbl-h2b-outliers. These participants were removed from the primary analysis to ensure the data represents typical participant behavior and to maintain the integrity of the comparative analysis.
+Outliers were identified within each treatment group for each measure of task uncertainty. Data for `r as.character(english(nrow(outliers)))` participants with Z-scores of 2.5 or higher are summarized in @tbl-h2b-outliers. These participants were removed from the primary analysis to ensure the data represents typical participant behavior and to maintain the integrity of the comparative analysis.
 
 ```{r tbl-h2b-outliers}
 #| tbl-cap: Outliers in Measures of Reliance
@@ -799,9 +798,9 @@ h2b_out_tbl <- outliers |>
   cols_label(
     participant = "Participant",
     treatment = "Treatment",
-    z_count = "Avg PWI Count / Task",
-    z_time = "Avg Total PWI Time / Task",
-    z_rely = "Avg Time / PWI Ref"
+    z_count = "Count",  # "Avg PWI Count / Task"
+    z_time = "Time",  # "Avg Total PWI Time / Task"
+    z_rely = "Reliance" # "Avg Time / PWI Ref"
   ) |>
   fmt_number(
     columns = c(z_rely, z_count, z_time),
@@ -844,8 +843,11 @@ st_rely_treat_out <- by(recall_h2b_agg_out$pwi_time_per_ref, recall_h2b_agg_out$
 
 lt_rely_treat_out  <- leveneTest(pwi_time_per_ref ~ treatment, data = recall_h2b_agg_out)
 lt_pv_out <- lt_rely_treat_out$`Pr(>F)`[1]
-```
 
+h2b_group_sizes <- summary(recall_h2b_agg_out$treatment)
+h2b_gs_txt <- glue_collapse(glue("{h2b_group_sizes} {names(h2b_group_sizes)}"), ", ", last = ", and ")
+
+```
 
 ```{r h2b-test-out-check, eval=FALSE}
 # Store the results in a data frame
@@ -881,11 +883,11 @@ h2b_compare_out
 # as of 6/10 6:40pm...only change in significance at 0.05: Levene test
 #      Test     p_all     p_out
 # 1  Levene  p = 0.95  p = 0.01 becomes significant, variance differs w/out outliers
-# 2 SW: All p < 0.001 p < 0.001 not normal
-# 3 SW: PWI p < 0.001 p < 0.001 not normal
-# 4 SW: PAR p < 0.001 p = 0.004 not normal in either case
-# 5  SW: AR  p = 0.16  p = 0.12 normal
-# 6  SW: MR  p = 0.05  p = 0.05 borderline significance, no MR obs dropped
+# 2 SW: All p < 0.001 p < 0.001 n/c, not normal
+# 3 SW: PWI p < 0.001 p < 0.001 n/c, not normal
+# 4 SW: PAR p < 0.001 p = 0.004 n/c, not normal in either case
+# 5  SW: AR  p = 0.16  p = 0.12 n/c, normal
+# 6  SW: MR  p = 0.05  p = 0.05 n/c, borderline significance, no MR obs dropped
 ```
 
 ```{r h2b-comp-out-overall, eval=FALSE}
@@ -900,7 +902,7 @@ overall_wilcoxon <- wilcox.test(
 
 print(overall_wilcoxon)
 
-# p-value = 0.5391, no significant difference in overall data
+# p-value = 0.5391 n/c, no significant difference in overall data
 ```
 
 ```{r h2b-comp-out-treat, eval=FALSE}
@@ -941,12 +943,30 @@ for (result in comparison_results) {
   cat("\n")
 }
 
-# all p-values > 0.49, not significantly difference within any treatment
+# all p-values > 0.493 (PAR) n/c, not significantly difference within any treatment
 ```
 
-Following their removal, the prior tests were re-run with no changes to those findings, except Levene's test, which reported significant difference in variance between groups (`r fmt_p_val(lt_pv_out)`). Additionally, the data with and without outliers were compared overall and by treatment group using the Wilcoxon signed-rank test. No significant differences were found in average PWI time per reference (p > 0.40 for all cases). It is concluded that, despite a reduction in the overall mean value from `r round(overall_mean_with_outliers, 2)` to `r round(overall_mean_without_outliers, 2)`, the character of the underlying data is not significantly different. Given that most treatments are not normally distributed, and variance differs between groups, a non-parametric approach is chosen for testing $H_{2b}$.
+Several checks were then repeated to assess the impact of outlier removal. The Shapiro-Wilk test showed no change in significance for data overall or by treatment group. Levene's test, however, found significant difference in variance between groups (`r fmt_p_val(lt_pv_out)`) after the change. A Wilcoxon signed-rank test was applied to compare overall and group means with and without outliers. No significant differences were found in average PWI time per reference in the the full data set or by treatment group (p > 0.40 for all cases). It is determined that, despite a reduction in the overall mean value from `r round(overall_mean_with_outliers, 2)` to `r round(overall_mean_without_outliers, 2)`, the character of the underlying data is not significantly different. Given that most treatments are not normally distributed, and variance differs between groups, a non-parametric approach is chosen for testing $H_{2b}$. The total number of observations ($n = $`r nrow(recall_h2b_agg_out)`) and group size (`r h2b_gs_txt`) remains sufficient for these methods, though statistical power is reduced.
 
 #### Analysis
+
+Per @fig-h2b-out-kw, the Kruskal-Wallis test fails to find significant between-group differences for the average PWI reference duration.
+
+```{r test-oee-power}
+k <- length(unique(oee_data$treatment))
+n <- round(nrow(oee_data) / k)
+epsilon_sq <- 0.19
+
+# Estimate post-hoc power
+oee_power <- posthoc_power_analysis(
+  n, k, epsilon_sq, sig_level = 0.05, num_simulations = 1000
+)
+```
+
+In @fig-h2a-plot, group-wise significant differences are found (p = 0.02), with with small to moderate effect size $\hat{\epsilon}^{2}_{rank}=0.19$ and a broad $CI_{95\%}\:[0.08,1.0]$. Pair-wise tests show only PWI and PAR are significantly different (p = 0.02). A post-hoc simulation was performed to assess the power of the analysis. The result of `r round(oee_power * 100, 1)`% indicates the analysis had sufficient power to detect significant differences, which supports the reliability of this result.
+
+
+p = 0.0501 but no pair-wise differences detected, small effect size (0.17) with broad CI[95%] = 0.07, 1.0
 
 ```{r fig-h2b-out-kw}
 #| fig-cap: $H_{2b}$ Test - Average Time per PWI Reference by Treatment
@@ -965,7 +985,7 @@ pwi_rely_plot <- ggstatsplot::ggbetweenstats(
   xlab = "",
   ylab = "",
   title = "PWI Reliance by Treatment: Kruskal-Wallis non-parametric rank sum test",
-  results.subtitle = FALSE,
+  # results.subtitle = FALSE,
   subtitle = "No Significant Differences Identified between Groups using Dunn's Test, Holm-adjusted post-hoc",
   digits = 2,
   # centrality.label.args = list(point.padding = 30),
@@ -993,9 +1013,6 @@ pwi_rely_plot
 #     "[" * "0.0730", "1.0000" * "]", italic("n")["obs"] == "48")
 ```
 
-Per @fig-h2b-out-kw...
-
-p = 0.0501 but no pair-wise differences detected, small effect size (0.17) with broad CI[95%] = 0.07, 1.0
 
 marginal p-value → investigate lack of significance with bootstrap methods
 
@@ -1128,7 +1145,7 @@ AR and MR reduce reliance on reference instructions, suggesting they improve the
 
 :::
 
-#### Conclusions
+#### $H_{2b}$ Result
 
 observations:
 
