@@ -13,6 +13,8 @@ library(gt)
 library(paletteer)
 library(english)
 library(glue)
+library(modelsummary)
+library(tictoc)
 
 # library(pwr)
 # library(emmeans)
@@ -30,10 +32,166 @@ load("res_f.RData")
 load("shared.RData")
 ```
 
+```{r define-constants}
+TREATMENTS <- levels(res_f$treatment)
+
+ORDERED_PAIRS <- c()
+for (i in 1:(length(TREATMENTS) - 1)) {
+  for (j in (i + 1):length(TREATMENTS)) {
+    ORDERED_PAIRS <- c(ORDERED_PAIRS, paste(TREATMENTS[i], "-", TREATMENTS[j]))
+  }
+}
+```
+
+```{r def-boot-funcs}
+# Function to calculate differences between two groups based on a statistic
+stat_diff <- function(data, indices, group1, group2, column, stat_func) {
+  d <- data[indices, ]
+  stat_func(d[d$treatment == group1, column, drop = TRUE]) - 
+    stat_func(d[d$treatment == group2, column, drop = TRUE])
+}
+
+# Hodges-Lehmann Estimator - stat_func option
+hl_estimator <- function(x) {
+  n <- length(x)
+  pairwise_means <- outer(x, x, FUN = function(a, b) (a + b) / 2)
+  median(pairwise_means[lower.tri(pairwise_means, diag = TRUE)])
+}
+
+# Generalized function to perform bootstrap and get results
+bootstrap_stat_diff <- function(data, group1, group2, column, stat_func) {
+  # Define statistic function for bootstrap
+  stat_wrapper <- function(data, indices) {
+    stat_diff(data, indices, group1, group2, column, stat_func)
+  }
+
+  # Bootstrap with 10,000 replications
+  results <- boot(data = data, statistic = stat_wrapper, R = 10000)
+
+  # Get bootstrap confidence intervals
+  ci <- boot.ci(results, type = "perc")
+
+  # Create a summary of bootstrap results
+  summary <- list(
+    original = results$t0,
+    bias = mean(results$t) - results$t0,
+    std_error = sd(results$t),
+    ci_lower = ci$percent[4],
+    ci_upper = ci$percent[5]
+  )
+
+  return(summary)
+}
+
+# Function to perform multiple replications of the bootstrap
+multiple_bootstrap <- function(data, group1, group2, column, stat_func, num_reps = 10) {
+  all_results <- replicate(num_reps,
+    {
+      bootstrap_stat_diff(data, group1, group2, column, stat_func)
+    },
+    simplify = FALSE
+  )
+
+  # Aggregate or summarize results across replications
+  results_list <- lapply(1:num_reps, function(i) {
+    res <- all_results[[i]]
+    list(
+      Replication = i,
+      original = res$original,
+      bias = res$bias,
+      std_error = res$std_error,
+      ci_lower = res$ci_lower,
+      ci_upper = res$ci_upper
+    )
+  })
+
+  return(do.call(rbind, results_list))
+}
+
+
+# Generalized pairwise tests function to capture results for each replication
+bootstrap_pairs <- function(data, column, stat_func, num_reps = 5) {
+  set.seed(42)
+  cat("+++ Starting bootstrap for", CUR_STAT, "of", column, "...\n")
+  msg = paste("+++ Bootstrap for", column, CUR_STAT, "complete")
+  tic(msg)
+  results <- data.frame(
+    Group1 = character(),
+    Group2 = character(),
+    Replication = numeric(),
+    Mean_Difference = numeric(),
+    Bias = numeric(),
+    Std_Error = numeric(),
+    CI_Lower = numeric(),
+    CI_Upper = numeric(),
+    Sig = character(),
+    stringsAsFactors = FALSE
+  )
+
+  for (i in 1:(length(TREATMENTS) - 1)) {
+    for (j in (i + 1):length(TREATMENTS)) {
+      group1 <- TREATMENTS[i]
+      group2 <- TREATMENTS[j]
+
+      # Perform bootstrap test
+      test_results <- multiple_bootstrap(data, group1, group2, column, stat_func, num_reps)
+
+      # Add results to the dataframe
+      for (k in 1:num_reps) {
+        rep_result <- test_results[k, ]
+        results <- rbind(results, data.frame(
+          Group1 = group1,
+          Group2 = group2,
+          Replication = rep_result$Replication,
+          Mean_Difference = rep_result$original,
+          Bias = rep_result$bias,
+          Std_Error = rep_result$std_error,
+          CI_Lower = rep_result$ci_lower,
+          CI_Upper = rep_result$ci_upper,
+          Sig = ifelse(rep_result$ci_lower > 0 | rep_result$ci_upper < 0, "*", "")
+        ))
+      }
+    }
+  }
+
+  toc()
+  return(results)
+}
+
+# Function to summarize pairwise results
+summarize_pairwise_results <- function(pairwise_results) {
+    result_summary <- pairwise_results |>
+    filter(is.finite(Bias) & is.finite(Std_Error)) |>
+    group_by(Group1, Group2) |>
+    # summarize across all replications
+    summarise(
+      Diff = mean(Mean_Difference, na.rm = TRUE),
+      Diff_L = mean(CI_Lower, na.rm = TRUE),
+      Diff_U = mean(CI_Upper, na.rm = TRUE),
+      Bias_mean = mean(Bias, na.rm = TRUE),
+      Bias_sd = sd(Bias, na.rm = TRUE),
+      SE_mean = mean(Std_Error, na.rm = TRUE),
+      SE_sd = sd(Std_Error, na.rm = TRUE),
+      Sig = ifelse(
+        mean(CI_Lower > 0, na.rm = TRUE) | mean(CI_Upper < 0, na.rm = TRUE), "*", ""
+      ),
+      .groups = "drop"
+    ) |>
+    mutate(
+      Pair = paste(Group1, Group2, sep = " - "),
+      Pair = factor(Pair, levels = ORDERED_PAIRS)
+    ) |>
+    arrange(Pair) |>
+    select(Pair, Diff:Sig)
+  
+  return(result_summary)
+}
+```
+
 ```{r recall-data}
 
 # drop outlier from source
-res_f <- res_f |> 
+res_f <- res_f |>
   filter(participant != 1063)
 
 recall <- res_f |>
@@ -80,8 +238,8 @@ changes <- recall |>
 # what were the source of these in recall, which is PWI only?
 # hololens menu popping up inadvertantly - lost time dismissing it
 
-total_tasks_completed <- dim(recall)[1] # 216
-total_tasks_adjusted <- dim(changes)[1] # 2
+total_tasks_completed <- nrow(recall) # 212
+total_tasks_adjusted <- nrow(changes) # 2
 
 recall <- recall |>
   select(
@@ -94,13 +252,46 @@ recall <- recall |>
     tot_sys_adj,
     tot_usr_adj
   )
+
+# Wrapper function to run bootstrap pairs for each stat function and combine the results
+run_bootstrap_tests <- function(data, column, stat_funcs) {
+  results <- map_dfr(names(stat_funcs), function(stat_name) {
+    stat_func <- stat_funcs[[stat_name]]
+    
+    # set global for current stat
+    assign("CUR_STAT", stat_name, envir = .GlobalEnv)
+    
+    # Perform bootstrap pairs
+    pairwise_results <- bootstrap_pairs(data, column = column, stat_func = stat_func)
+
+    # Summarize the results
+    summary_results <- summarize_pairwise_results(pairwise_results)
+
+    # Add the statistic column
+    summary_results <- summary_results |> 
+      mutate(Stat = stat_name)
+
+    return(summary_results)
+  })
+  
+  # Ensure 'Stat' column correctly placed
+  results <- results |> 
+    select(Pair, Stat, Diff:Sig)
+  
+  return(results)
+}
+
+# set global flag variable used for logging current statistic
+CUR_STAT <- NULL
 ```
 
 ```{r make-h2a-data}
 # calculate OEE from filtered res_f data
 oee_data <- res_f |>
-  filter(phase == 2,
-         car_outcome == "complete",) |>
+  filter(
+    phase == 2,
+    car_outcome == "complete",
+  ) |>
   group_by(participant) |>
   summarize(
     treatment = first(treatment),
@@ -130,9 +321,12 @@ recall_agg <- recall |>
     treatment = first(treatment),
     tot_pwi_count = sum(pwi_event_count, na.rm = TRUE),
     tot_pwi_time = sum(pwi_event_tot_time, na.rm = TRUE),
-    task_num = n(),
+    task_num = n()
+  ) |> 
+  mutate(
     avg_pwi_count = tot_pwi_count / task_num,
-    avg_pwi_time = tot_pwi_time / task_num
+    avg_pwi_time = tot_pwi_time / task_num,
+    pwi_time_per_ref_agg = ifelse(avg_pwi_count > 0, avg_pwi_time / avg_pwi_count, 0)
   )
 ```
 
@@ -193,18 +387,20 @@ oee_data |>
     alpha = 0.75,
     color = outline_color
   ) +
-  labs(title = "Distribution of OEE Values",
-       subtitle = "High defect rates have an obvious effect on effectiveness",
-       x = element_blank(),
-       y = element_blank()) +
+  labs(
+    title = "Distribution of OEE Values",
+    subtitle = "High defect rates have an obvious effect on effectiveness",
+    x = element_blank(),
+    y = element_blank()
+  ) +
   theme_minimal(base_size = 10) +
-    theme(
-      plot.title.position = "plot",
-      plot.title = element_text(face = "bold"),
-    )
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold"),
+  )
 ```
 
-```{r}
+```{r oee-tests}
 st_oee_treat <- by(oee_data$oee_100, oee_data$treatment, shapiro.test)
 
 # no outliers are detected (output nrow = 0)
@@ -214,7 +410,7 @@ outliers <- oee_data |>
   filter(abs(z_oee) > 3) |>
   nrow()
 
-lt_oee_treat  <- leveneTest(oee_100 ~ treatment, data = oee_data)
+lt_oee_treat <- leveneTest(oee_100 ~ treatment, data = oee_data)
 pv <- lt_oee_treat$`Pr(>F)`[1]
 ```
 
@@ -226,8 +422,10 @@ Results from the Shapiro-Wilk test provide further evidence against the normalit
 
 p <- qq_plot_patchwork(oee_data, x_var = "oee_100", by_var = "treatment")
 
-p + plot_annotation(title = "Quantile-Quantile Plots of OEE Treatment Data",
-                    subtitle = "PWI effectiveness is not normally distributed")
+p + plot_annotation(
+  title = "Quantile-Quantile Plots of OEE Treatment Data",
+  subtitle = "PWI effectiveness is not normally distributed"
+)
 ```
 
 #### Analysis
@@ -266,14 +464,14 @@ h2a_plot <- ggstatsplot::ggbetweenstats(
     ),
   # remove side label
   ggplot.component = list(
-      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
-    )
+    ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+  )
 )
 
 h2a_plot
 
-# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "9.79", italic(p) == 
-#     "0.02", widehat(epsilon)["ordinal"]^2 == "0.19", CI["95%"] ~ 
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "9.79", italic(p) ==
+#     "0.02", widehat(epsilon)["ordinal"]^2 == "0.19", CI["95%"] ~
 #     "[" * "0.08", "1.00" * "]", italic("n")["obs"] == "53")
 ```
 
@@ -284,7 +482,8 @@ epsilon_sq <- 0.19
 
 # Estimate post-hoc power
 oee_power <- posthoc_power_analysis(
-  n, k, epsilon_sq, sig_level = 0.05, num_simulations = 1000
+  n, k, epsilon_sq,
+  sig_level = 0.05, num_simulations = 1000
 )
 ```
 
@@ -292,7 +491,7 @@ In @fig-h2a-plot, group-wise significant differences are found (p = 0.02), with 
 
 ```{r oee_summary}
 ost <- oee_data |>
-  group_by(treatment) |> 
+  group_by(treatment) |>
   summarize(
     mean = mean(oee_100, na.rm = T),
     sd = sd(oee_100, na.rm = T),
@@ -309,10 +508,11 @@ ost <- oee_data |>
 
 # Extract the iqr_ratio for PAR
 pr <- function(trt) {
-  iqr_r <- ost |> filter(treatment == trt) |> 
+  iqr_r <- ost |>
+    filter(treatment == trt) |>
     pull(iqr_ratio)
   return(round(iqr_r, 2))
-} 
+}
 ```
 
 ::: content-hidden
@@ -325,155 +525,28 @@ Bootstrapping provides a complementary perspective for the analysis. This flexib
 
 A bootstrap analysis with 10,000 resamples was used to estimate pairwise mean differences in OEE across all treatments. This process was replicated five times, and the results were averaged to determine grand means and related statistics. The results are tabulated in @tbl-bootstrap-oee. Pairs where the 95% confidence interval does not include zero are marked as significant.
 
+
 ```{r bootstrap-oee}
-# Define a function to calculate mean differences between two groups
-mean_diff <- function(data, indices, group1, group2) {
-  d <- data[indices, ]
-  mean(d$OEE[d$treatment == group1]) - mean(d$OEE[d$treatment == group2])
-}
+stat_funcs <- list(
+  Mean = mean,
+  Median = median,
+  HL_Est = hl_estimator
+)
 
-# Function to perform bootstrap and get results
-bootstrap_mean_diff <- function(data, group1, group2) {
-  # Define statistic function for bootstrap
-  stat_func <- function(data, indices) {
-    mean_diff(data, indices, group1, group2)
-  }
-  
-  # Bootstrap with 10,000 replications
-  results <- boot(data = data, statistic = stat_func, R = 10000)
-  
-  # Get bootstrap confidence intervals
-  ci <- boot.ci(results, type = "perc")
-  
-  # Create a summary of bootstrap results
-  summary <- list(
-    original = results$t0,
-    bias = mean(results$t) - results$t0,
-    std_error = sd(results$t),
-    ci_lower = ci$percent[4],
-    ci_upper = ci$percent[5]
-  )
-  
-  return(summary)
-}
+# Run the wrapper function
+h2a_oee_boot_res <- run_bootstrap_tests(
+  oee_data,
+  column = "oee_100", 
+  stat_funcs = stat_funcs
+)
 
-# Function to perform multiple replications of the bootstrap
-multiple_bootstrap <- function(data, group1, group2, num_reps = 10) {
-  all_results <- replicate(num_reps, {
-    bootstrap_mean_diff(data, group1, group2)
-  }, simplify = FALSE)
-  
-  # Aggregate or summarize results across replications
-  results_list <- lapply(1:num_reps, function(i) {
-    res <- all_results[[i]]
-    list(
-      Replication = i,
-      original = res$original,
-      bias = res$bias,
-      std_error = res$std_error,
-      ci_lower = res$ci_lower,
-      ci_upper = res$ci_upper
-    )
-  })
-  
-  return(do.call(rbind, results_list))
-}
-
-# Pairwise tests to capture results for each replication
-pairwise_tests <- function(data, num_reps = 5) {
-  treatments <- levels(data$treatment)
-  results <- data.frame(
-    Group1 = character(),
-    Group2 = character(),
-    Replication = numeric(),
-    Mean_Difference = numeric(),
-    Bias = numeric(),
-    Std_Error = numeric(),
-    CI_Lower = numeric(),
-    CI_Upper = numeric(),
-    Sig = character(),
-    stringsAsFactors = FALSE
-  )
-  
-  for (i in 1:(length(treatments) - 1)) {
-    for (j in (i + 1):length(treatments)) {
-      group1 <- treatments[i]
-      group2 <- treatments[j]
-      
-      # Perform bootstrap test
-      # test_result <- bootstrap_mean_diff(data, group1, group2)
-      test_results <- multiple_bootstrap(data, group1, group2, num_reps)
-      
-      # Add results to the dataframe
-      for (k in 1:num_reps) {
-        rep_result <- test_results[k, ]
-        results <- rbind(results, data.frame(
-          Group1 = group1,
-          Group2 = group2,
-          Replication = rep_result$Replication,
-          Mean_Difference = rep_result$original,
-          Bias = rep_result$bias,
-          Std_Error = rep_result$std_error,
-          CI_Lower = rep_result$ci_lower,
-          CI_Upper = rep_result$ci_upper,
-          Sig = ifelse(rep_result$ci_lower > 0 | rep_result$ci_upper < 0, "*", "")
-        ))
-      }
-    }
-  }
-  
-  return(results)
-}
-
-# Prepare data for bootstrap (assuming 'oee_data' contains 'OEE' and 'treatment')
-set.seed(42)  # overall results reproducible; will share starting point for rand
-pairwise_results <- oee_data |> 
-  mutate(OEE = oee_100) |>
-  pairwise_tests()
-
-# Define treatment levels
-treatments <- levels(oee_data$treatment)
-
-# Generate ordered pair levels
-ordered_pairs <- c()
-for (i in 1:(length(treatments) - 1)) {
-  for (j in (i + 1):length(treatments)) {
-    ordered_pairs <- c(ordered_pairs, paste(treatments[i], "-", treatments[j]))
-  }
-}
-
-# Summarize results by Group1 and Group2
-h2a_boot_results <- pairwise_results |>
-  filter(is.finite(Bias) & is.finite(Std_Error)) |> 
-  group_by(Group1, Group2) |>
-  # these are all grand means for all replications
-  summarise(
-    Diff = mean(Mean_Difference, na.rm = TRUE),
-    Diff_L = mean(CI_Lower, na.rm = TRUE),
-    Diff_U = mean(CI_Upper, na.rm = TRUE),
-    Bias_mean = mean(Bias, na.rm = TRUE),
-    Bias_sd = sd(Bias, na.rm = TRUE),
-    SE_mean = mean(Std_Error, na.rm = TRUE),
-    SE_sd = sd(Std_Error, na.rm = TRUE),
-    Sig = ifelse(
-      mean(CI_Lower > 0, na.rm = TRUE) | mean(CI_Upper < 0, na.rm = TRUE), "*", ""
-    ),
-    .groups = "drop"
-  ) |> 
-  mutate(
-    Pair = paste(Group1, Group2, sep = " - "),
-    Pair = factor(Pair, levels = ordered_pairs)
-  ) |> 
-  arrange(Pair) |> 
-  select(Pair, Diff:Sig)
-
+h2a_oee_boot_res
 ```
 
-
-```{r tbl-boot-oee}
+```{r tbl-boot-oee, eval=FALSE}
 #| tbl-cap: $H_{2a}$ Bootstrap Analysis of Pairwise OEE Differences
 
-h2a_boot_results |>
+h2a_boot_oee_mean_summary |>
   gt() |>
   tab_header(
     title = "OEE Differences by Treatment: Bootstrapped Estimates",
@@ -493,33 +566,33 @@ h2a_boot_results |>
   cols_merge(
     columns = c(Bias_mean, Bias_sd),
     pattern = "{1} ({2})"
-  ) |> 
+  ) |>
   cols_merge(
     columns = c(SE_mean, SE_sd),
     pattern = "{1} ({2})"
-  ) |> 
+  ) |>
   cols_merge(
     columns = c(Diff_L, Diff_U),
     pattern = "[{1}, {2}]"
-  ) |> 
+  ) |>
   cols_label(
     .list = c(
       "Diff" = "Mean",
       "Diff_L" = "95% CI"
     )
-  ) |> 
+  ) |>
   fmt_number(
     # columns = c(Diff, Diff_L, Diff_U, Bias, SE),
     decimals = 3
   ) |>
-  cols_align(align = "center") |> 
+  cols_align(align = "center") |>
   tab_options(
     table.font.size = "smaller",
     # table.width = pct(90),
     column_labels.font.weight = "bold",
     heading.title.font.weight = "bolder",
     heading.subtitle.font.size = px(13)
-  ) |> 
+  ) |>
   tab_footnote(
     footnote = "Significance indicated where the confidence interval does not include zero.",
     locations = cells_column_labels(
@@ -595,8 +668,8 @@ prod_plot <- ggstatsplot::ggbetweenstats(
     ),
   # remove side label
   ggplot.component = list(
-      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
-    )
+    ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+  )
 )
 
 prod_plot
@@ -636,8 +709,8 @@ qual_plot <- ggstatsplot::ggbetweenstats(
     ),
   # remove side label
   ggplot.component = list(
-      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
-    )
+    ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+  )
 )
 
 qual_plot
@@ -652,32 +725,35 @@ As both approaches identified a significant treatment effect on OEE, there is am
 ### $H_{2b}$: Paper Work Instruction References
 
 ```{r h2b-data}
-recall_h2b <- recall |> 
+recall_h2b <- recall |>
   mutate(
-    pwi_time_per_ref = ifelse(pwi_event_count > 0, pwi_event_tot_time / pwi_event_count, 0)
+    pwi_time_per_ref_all = ifelse(
+      pwi_event_count > 0,
+      pwi_event_tot_time / pwi_event_count,
+      0
+    )
   )
 
-recall_h2b_agg <- recall_agg |> 
-  mutate(pwi_time_per_ref = ifelse(avg_pwi_count > 0, avg_pwi_time / avg_pwi_count, 0))
+recall_h2b_agg <- recall_agg
 ```
 
-The second hypothesis of the recall phase is designed to assess an alternative measure of training effectiveness:
+The second hypothesis of the recall phase assesses an alternative measure of training effectiveness:
 $$H_{2b}\textrm{: PWI reliance varies with treatment}$$
 
-Reliance is quantified by observing the number of times each participant refers to the paper work instructions, and the duration of each event. PWI count is considered a measure of the *frequency* of the participant's task uncertainty, while PWI time is associated with the *degree* of uncertainty experienced.
+Reliance is quantified by the number of times each participant refers to the paper work instructions (PWI count), and the duration of each event (PWI time). PWI count is considered a measure of the *frequency* of the participant's task uncertainty, while PWI time is associated with the *degree* of uncertainty experienced.
 
 #### Descriptive Statistics
 
 ```{r make-h2b-report}
 #| warning: false
 
-# report descriptive stats for pwi count and pwi time
+# report descriptive stats for pwi count and pwi time (for each car, n = 212)
 h2b_rpt <- recall_h2b |>
-  select(pwi_event_count, pwi_event_tot_time, pwi_time_per_ref) |>
+  select(pwi_event_count, pwi_event_tot_time, pwi_time_per_ref_all) |>
   rename(
-    "PWI Count" = pwi_event_count,
-    "Total PWI Time" = pwi_event_tot_time,
-    "PWI Avg Time per Reference" = pwi_time_per_ref
+    "PWI Count per Task" = pwi_event_count,
+    "Total PWI Time per Task" = pwi_event_tot_time,
+    "PWI Avg Time per Reference" = pwi_time_per_ref_all
   ) |>
   report::report() # options not working!
 
@@ -696,16 +772,34 @@ h2b_rpt_list <- strsplit(h2b_rpt_list, "\n")[[1]]
 # Calculate and test Spearman's correlation
 h2b_cor_test_spearman <- cor.test(recall_h2b$pwi_event_count, recall_h2b$pwi_event_tot_time, method = "spearman")
 
-# cat(h2b_rpt_list)
+# print(h2b_rpt_list[1:2])
 ```
 
-The data of interest are summarized below:
+::: content-hidden
+MAYBE: replace with table, e.g.:
+
+```r
+datasummary(
+  Heading("Participant Avg Reference Count per Task") * avg_pwi_count +
+    Heading("Participant Avg Reference Duration per Task") * avg_pwi_time +
+    Heading("Overall Avg Duration per PWI Reference") * pwi_time_per_ref_agg ~
+    Mean + SD + Min + Median + Max,
+  # title = "this is the title",
+  # notes = c("this is a note"),
+  data = recall_h2b_agg,
+  align = "lccccc",
+  output = "kableExtra"
+)
+```
+:::
+
+Overall statistics for the measures of interest (n = `r nrow(recall_h2b)`) are summarized below:
 
 `r paste(h2b_rpt_list[1:2], collapse = "\n")`
 
-Despite relatively low mean values for count and total time (1.47 and 2.86, respectively), both exhibit substantial variability, with standard deviation of 4.12 and 9.43. High skewness (4.51, 5.64) and kurtosis (23.27, 36.73) values confirm their heavy right skew and long tails. Together with a median and MAD of zero for both measures, these statistics suggest that most participants rarely referred to the instructions, but a small number relied on them heavily.
+Despite low mean values for count and total time (1.47 and 2.86, respectively), both exhibit substantial variability, with standard deviations of 4.12 and 9.43. High skewness (4.51 for count, 5.64 for time) and kurtosis (23.27, 36.73) confirm their strong right skew and heavy tails. Together with a median and MAD of zero for both measures, these statistics suggest that many participants rarely referred to the instructions, but a small number relied on them heavily.
 
-The statistical similarity between count and time suggests strong correlation, which Spearman's rank correlation test confirms (rho = `r round(h2b_cor_test_spearman$estimate,2)`, `r fmt_p_val(h2b_cor_test_spearman$p.value)`). This is natural and expected for two dependent measures, but must be accounted for. To do so, a composite measure of reliance was created by averaging the time per PWI reference for each participant over all four tasks. This approach eliminates the correlation described without diminishing either aspect of task uncertainty. Using a single measure also enables a traditional univariate approach to the comparison, which benefits from reductions to the within-- and between--participant variance due to averaging. Variance and normality for this composite measure are improved across the board, but the overall character of the data is similar: low mean and high variance (Mean = 0.61, SD = 1.26), zero median and MAD, right-skewed (3.06) and long tails (kurtosis = 11.41). The distribution of average time per PWI reference is visualized in @fig-pwi-hist.
+The statistical similarity between count and time suggests a high correlation, confirmed by Spearman's rank correlation test (rho = `r round(h2b_cor_test_spearman$estimate,2)`, `r fmt_p_val(h2b_cor_test_spearman$p.value)`). This is natural and expected for two dependent measures, but must be accounted for. To do so, a composite measure of reliance was created by averaging the time per PWI reference for each participant, over all four tasks. This approach eliminates the correlation described without diminishing either aspect of task uncertainty. Using a single measure also enables a traditional univariate approach to the comparison, which benefits from reductions to the within-- and between--participant variance due to averaging. The distribution of average time per PWI reference is visualized in @fig-pwi-hist.
 
 ```{r fig-pwi-hist}
 #| fig-cap: Histogram of Composite PWI Measure in Recall
@@ -714,63 +808,67 @@ The statistical similarity between count and time suggests strong correlation, w
 #| message: false
 
 # # calculate bin widths based on theory... don't think any work well
-# x <- recall_h2b_agg$pwi_time_per_ref
+# x <- recall_h2b_agg$pwi_time_per_ref_agg
 # bin_width_fd <- 2 * IQR(x, na.rm = TRUE) / (length(x[!is.na(x)])^(1/3))
 # bin_width_sturges <- (max(x) - min(x)) / (log2(length(x)) + 1)
 # bin_width_scott <- 3.5 * sd(x) / (length(x)^(1/3))
 
 recall_h2b_agg |>
-  ggplot(aes(x = pwi_time_per_ref)) +
+  ggplot(aes(x = pwi_time_per_ref_agg)) +
   geom_histogram(
     fill = I(base_color),
     alpha = 0.75,
     color = outline_color,
     binwidth = 0.5
   ) +
-  labs(title = "Average Time per PWI Reference in Recall",
-       subtitle = "Reliance is strongly right-skewed with high variability and long tails",
-       x = element_blank(),
-       y = element_blank()) +
+  labs(
+    title = "Average Time per PWI Reference in Recall",
+    subtitle = "Reliance is strongly right-skewed with high variability and long tails",
+    x = element_blank(),
+    y = element_blank()
+  ) +
   theme_minimal(base_size = 10) +
-    theme(
-      plot.title.position = "plot",
-      plot.title = element_text(face = "bold"),
-    )
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold"),
+  )
 ```
 
-```{r}
-st_rely_all <- shapiro.test(recall_h2b_agg$pwi_time_per_ref)
-st_rely_treat <- by(recall_h2b_agg$pwi_time_per_ref, recall_h2b_agg$treatment, shapiro.test)
+```{r h2b_tests}
+st_rely_all <- shapiro.test(recall_h2b_agg$pwi_time_per_ref_agg)
+st_rely_treat <- by(recall_h2b_agg$pwi_time_per_ref_agg, recall_h2b_agg$treatment, shapiro.test)
 
-lt_rely_treat  <- leveneTest(pwi_time_per_ref ~ treatment, data = recall_h2b_agg)
+lt_rely_treat <- leveneTest(pwi_time_per_ref_agg ~ treatment, data = recall_h2b_agg)
 lt_pv <- lt_rely_treat$`Pr(>F)`[1]
 ```
 
-From the descriptive statistics and visualization, this data does not appear normal. To confirm, the Shapiro-Wilk test of normality was administered for the overall data (`r fmt_p_val(st_rely_all$p.value)`) and within each treatment group. The results show that neither PWI (`r fmt_p_val(st_rely_treat$PWI$p.value)`) nor PAR (`r fmt_p_val(st_rely_treat$PAR$p.value)`) are normally distributed, but AR is (`r fmt_p_val(st_rely_treat$AR$p.value)`). MR shows marginal significance (`r fmt_p_val(st_rely_treat$MR$p.value)`) of non-normality. Visual inspection of the Q-Q plots for each treatment, provided in @fig-qq-h2b, supports these findings. Levene's test (`r fmt_p_val(lt_pv)`) confirms equal variance by treatment.
+From the descriptive statistics and visualization, this data does not appear normal. To confirm, the Shapiro-Wilk test was administered for the overall data (`r fmt_p_val(st_rely_all$p.value)`) and within each treatment group. The results show that neither PWI (`r fmt_p_val(st_rely_treat$PWI$p.value)`) nor PAR (`r fmt_p_val(st_rely_treat$PAR$p.value)`) are normally distributed, but AR is (`r fmt_p_val(st_rely_treat$AR$p.value)`), and MR shows marginal evidence (`r fmt_p_val(st_rely_treat$MR$p.value)`) of non-normality. Visual inspection of the Q-Q plots for each treatment, provided in @fig-qq-h2b, supports these findings. Levene's test (`r fmt_p_val(lt_pv)`) confirms equal variance by treatment.
 
 ```{r fig-qq-h2b}
 #| fig-cap: Q-Q Plots of PWI Reliance by Treatment
 #| fig-height: 3.5
 
-p <- qq_plot_patchwork(recall_h2b_agg, x_var = "pwi_time_per_ref", by_var = "treatment")
+p <- qq_plot_patchwork(recall_h2b_agg, x_var = "pwi_time_per_ref_agg", by_var = "treatment")
 
-p + plot_annotation(title = "Quantile-Quantile Plots of PWI Treatment Data",
-                    subtitle = "subtitle...")
+p + plot_annotation(
+  title = "Quantile-Quantile Plots of PWI Treatment Data",
+  subtitle = "subtitle..."
+)
 ```
 
 ```{r drop-h2b-outliers}
 outliers <- recall_h2b_agg |>
   group_by(treatment) |>
   mutate(
-    z_rely = abs((pwi_time_per_ref - mean(pwi_time_per_ref, na.rm = T))
-              / sd(pwi_time_per_ref, na.rm = T)),
+    z_rely = abs((pwi_time_per_ref_agg - mean(pwi_time_per_ref_agg, na.rm = T))
+    / sd(pwi_time_per_ref_agg, na.rm = T)),
     z_count = abs((avg_pwi_count - mean(avg_pwi_count, na.rm = T))
-               / sd(avg_pwi_count, na.rm = T)),
+    / sd(avg_pwi_count, na.rm = T)),
     z_time = abs((avg_pwi_time - mean(avg_pwi_time, na.rm = T))
-               / sd(avg_pwi_time, na.rm = T))
+    / sd(avg_pwi_time, na.rm = T))
   ) |>
-  filter(z_rely > 2.5 | z_count > 2.5 | z_time > 2.5) |> 
-  # filter(z_rely > 3.0 | z_count > 3.0 | z_time > 3.0) |> 
+  filter(z_rely > 2.5 | z_count > 2.5 | z_time > 2.5) |>
+  # filter(z_rely > 3.0 | z_count > 3.0 | z_time > 3.0) |>
   ungroup()
 
 recall_h2b_agg_out <- recall_h2b_agg |>
@@ -783,13 +881,13 @@ Outliers were identified within each treatment group for each measure of task un
 #| tbl-cap: Outliers in Measures of Reliance
 #| warning: false
 
-c_range = c(2.5, max(outliers |> select(starts_with("z_")), na.rm = T))
+c_range <- c(2.5, max(outliers |> select(starts_with("z_")), na.rm = T))
 # Define the custom subset of the palette (e.g., first half of the red_material palette)
 full_palette <- ggsci::pal_material("deep-orange")(10)
-subset_palette <- full_palette[5:10]       
+subset_palette <- full_palette[5:10]
 
-h2b_out_tbl <- outliers |> 
-  select(participant, treatment, z_count, z_time, z_rely) |> 
+h2b_out_tbl <- outliers |>
+  select(participant, treatment, z_count, z_time, z_rely) |>
   gt() |>
   tab_header(
     title = "|Z-scores| for Reliance Metrics of Participant Outliers",
@@ -798,15 +896,15 @@ h2b_out_tbl <- outliers |>
   cols_label(
     participant = "Participant",
     treatment = "Treatment",
-    z_count = "Count",  # "Avg PWI Count / Task"
-    z_time = "Time",  # "Avg Total PWI Time / Task"
+    z_count = "Count", # "Avg PWI Count / Task"
+    z_time = "Time", # "Avg Total PWI Time / Task"
     z_rely = "Reliance" # "Avg Time / PWI Ref"
   ) |>
   fmt_number(
     columns = c(z_rely, z_count, z_time),
     decimals = 2
   ) |>
-  cols_align(align = "center") |> 
+  cols_align(align = "center") |>
   tab_options(
     table.font.size = "smaller",
     # table.width = pct(90),
@@ -814,20 +912,20 @@ h2b_out_tbl <- outliers |>
     heading.title.font.weight = "bolder",
     heading.subtitle.font.size = px(13)
   )
-  # data_color(
-  #   columns = starts_with("z_"),
-  #   method = "numeric",
-  #   domain = c_range,
-  #   palette = subset_palette,
-  #   # reverse = T,
-  #   na_color = "transparent"
-  # )
+# data_color(
+#   columns = starts_with("z_"),
+#   method = "numeric",
+#   domain = c_range,
+#   palette = subset_palette,
+#   # reverse = T,
+#   na_color = "transparent"
+# )
 
 h2b_out_tbl
 
 # Calculate mean PWI time per reference with and without outliers
-overall_mean_with_outliers <- mean(recall_h2b_agg$pwi_time_per_ref, na.rm = TRUE)
-overall_mean_without_outliers <- mean(recall_h2b_agg_out$pwi_time_per_ref, na.rm = TRUE)
+overall_mean_with_outliers <- mean(recall_h2b_agg$pwi_time_per_ref_agg, na.rm = TRUE)
+overall_mean_without_outliers <- mean(recall_h2b_agg_out$pwi_time_per_ref_agg, na.rm = TRUE)
 ```
 
 ::: content-hidden
@@ -838,10 +936,10 @@ TODO: fix table coloring for PDF?
 ```{r h2b-test-out}
 # does removing outliers change the normality or levene test results?
 
-st_rely_all_out <- shapiro.test(recall_h2b_agg_out$pwi_time_per_ref)
-st_rely_treat_out <- by(recall_h2b_agg_out$pwi_time_per_ref, recall_h2b_agg_out$treatment, shapiro.test)
+st_rely_all_out <- shapiro.test(recall_h2b_agg_out$pwi_time_per_ref_agg)
+st_rely_treat_out <- by(recall_h2b_agg_out$pwi_time_per_ref_agg, recall_h2b_agg_out$treatment, shapiro.test)
 
-lt_rely_treat_out  <- leveneTest(pwi_time_per_ref ~ treatment, data = recall_h2b_agg_out)
+lt_rely_treat_out <- leveneTest(pwi_time_per_ref_agg ~ treatment, data = recall_h2b_agg_out)
 lt_pv_out <- lt_rely_treat_out$`Pr(>F)`[1]
 
 h2b_group_sizes <- summary(recall_h2b_agg_out$treatment)
@@ -854,10 +952,10 @@ h2b_gs_txt <- glue_collapse(glue("{h2b_group_sizes} {names(h2b_group_sizes)}"), 
 h2b_compare_out <- data.frame(
   Test = c(
     "Levene",
-    "SW: All", 
+    "SW: All",
     "SW: PWI",
-    "SW: PAR", 
-    "SW: AR", 
+    "SW: PAR",
+    "SW: AR",
     "SW: MR"
   ),
   p_all = c(
@@ -895,8 +993,8 @@ h2b_compare_out
 
 # Wilcoxon signed-rank test
 overall_wilcoxon <- wilcox.test(
-  recall_h2b_agg$pwi_time_per_ref,
-  recall_h2b_agg_out$pwi_time_per_ref,
+  recall_h2b_agg$pwi_time_per_ref_agg,
+  recall_h2b_agg_out$pwi_time_per_ref_agg,
   exact = FALSE
 )
 
@@ -913,11 +1011,12 @@ compare_by_treatment <- function(treatment) {
   with_outliers <- recall_h2b_agg |> filter(treatment == !!treatment)
   without_outliers <- recall_h2b_agg_out |> filter(treatment == !!treatment)
 
-  mean_with_outliers <- mean(with_outliers$pwi_time_per_ref, na.rm = TRUE)
-  mean_without_outliers <- mean(without_outliers$pwi_time_per_ref, na.rm = TRUE)
-  
+  mean_with_outliers <- mean(with_outliers$pwi_time_per_ref_agg, na.rm = TRUE)
+  mean_without_outliers <- mean(without_outliers$pwi_time_per_ref_agg, na.rm = TRUE)
+
   test_result <- wilcox.test(
-    with_outliers$pwi_time_per_ref, without_outliers$pwi_time_per_ref, exact = FALSE
+    with_outliers$pwi_time_per_ref_agg, without_outliers$pwi_time_per_ref_agg,
+    exact = FALSE
   )
 
   list(
@@ -930,8 +1029,7 @@ compare_by_treatment <- function(treatment) {
 }
 
 # Apply the comparison function to each treatment group
-treatments <- levels(recall_h2b_agg$treatment)
-comparison_results <- lapply(treatments, compare_by_treatment)
+comparison_results <- lapply(TREATMENTS, compare_by_treatment)
 
 # Print results
 for (result in comparison_results) {
@@ -946,27 +1044,9 @@ for (result in comparison_results) {
 # all p-values > 0.493 (PAR) n/c, not significantly difference within any treatment
 ```
 
-Several checks were then repeated to assess the impact of outlier removal. The Shapiro-Wilk test showed no change in significance for data overall or by treatment group. Levene's test, however, found significant difference in variance between groups (`r fmt_p_val(lt_pv_out)`) after the change. A Wilcoxon signed-rank test was applied to compare overall and group means with and without outliers. No significant differences were found in average PWI time per reference in the the full data set or by treatment group (p > 0.40 for all cases). It is determined that, despite a reduction in the overall mean value from `r round(overall_mean_with_outliers, 2)` to `r round(overall_mean_without_outliers, 2)`, the character of the underlying data is not significantly different. Given that most treatments are not normally distributed, and variance differs between groups, a non-parametric approach is chosen for testing $H_{2b}$. The total number of observations ($n = $`r nrow(recall_h2b_agg_out)`) and group size (`r h2b_gs_txt`) remains sufficient for these methods, though statistical power is reduced.
+Several checks were then repeated to assess the impact of outlier removal. The Shapiro-Wilk test showed no change in significance for data overall or by treatment group. Levene's test, however, found significant difference in variance between groups (`r fmt_p_val(lt_pv_out)`) after the change. A Wilcoxon signed-rank test was applied to compare overall and group means with and without outliers. No significant differences were found in average PWI time per reference in the the full data set or by treatment group (p > 0.40 for all cases). It is determined that, despite a reduction in the overall mean value from `r round(overall_mean_with_outliers, 2)` to `r round(overall_mean_without_outliers, 2)`, the character of the underlying data is not significantly different. Given that most treatments are not normally distributed, and variance differs between groups, a non-parametric approach is chosen for testing $H_{2b}$. The total number of observations (n = `r nrow(recall_h2b_agg_out)`) and group sizes (`r h2b_gs_txt`) remain sufficient for these methods, though statistical power is reduced.
 
 #### Analysis
-
-Per @fig-h2b-out-kw, the Kruskal-Wallis test fails to find significant between-group differences for the average PWI reference duration.
-
-```{r test-oee-power}
-k <- length(unique(oee_data$treatment))
-n <- round(nrow(oee_data) / k)
-epsilon_sq <- 0.19
-
-# Estimate post-hoc power
-oee_power <- posthoc_power_analysis(
-  n, k, epsilon_sq, sig_level = 0.05, num_simulations = 1000
-)
-```
-
-In @fig-h2a-plot, group-wise significant differences are found (p = 0.02), with with small to moderate effect size $\hat{\epsilon}^{2}_{rank}=0.19$ and a broad $CI_{95\%}\:[0.08,1.0]$. Pair-wise tests show only PWI and PAR are significantly different (p = 0.02). A post-hoc simulation was performed to assess the power of the analysis. The result of `r round(oee_power * 100, 1)`% indicates the analysis had sufficient power to detect significant differences, which supports the reliability of this result.
-
-
-p = 0.0501 but no pair-wise differences detected, small effect size (0.17) with broad CI[95%] = 0.07, 1.0
 
 ```{r fig-h2b-out-kw}
 #| fig-cap: $H_{2b}$ Test - Average Time per PWI Reference by Treatment
@@ -980,7 +1060,7 @@ set.seed(42)
 pwi_rely_plot <- ggstatsplot::ggbetweenstats(
   data = recall_h2b_agg_out,
   x = treatment,
-  y = pwi_time_per_ref,
+  y = pwi_time_per_ref_agg,
   type = "nonparametric",
   xlab = "",
   ylab = "",
@@ -1002,66 +1082,51 @@ pwi_rely_plot <- ggstatsplot::ggbetweenstats(
     ),
   # remove side label
   ggplot.component = list(
-      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
-    )
+    ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+  )
 )
 
 pwi_rely_plot
 
-# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "7.8097", italic(p) == 
-#     "0.0501", widehat(epsilon)["ordinal"]^2 == "0.1662", CI["95%"] ~ 
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "7.8097", italic(p) ==
+#     "0.0501", widehat(epsilon)["ordinal"]^2 == "0.1662", CI["95%"] ~
 #     "[" * "0.0730", "1.0000" * "]", italic("n")["obs"] == "48")
 ```
+
+```{r test-pwi-power}
+k <- length(unique(recall_h2b_agg_out$treatment))
+n <- round(nrow(recall_h2b_agg_out) / k)
+epsilon_sq <- 0.17
+
+# Estimate post-hoc power
+pwi_power <- posthoc_power_analysis(
+  n, k, epsilon_sq,
+  sig_level = 0.05, num_simulations = 1000
+)
+```
+
+Per @fig-h2b-out-kw, despite a nominal p-value (0.05) the Kruskal-Wallis test fails to identify significant between-group differences for the average PWI reference duration. A small effect size $\hat{\epsilon}^{2}_{rank}=0.17$ with broad $CI_{95\%}\:[0.07,1.0]$, along with a post-hoc power simulation (`r round(pwi_power * 100, 1)`%) all support this result.
 
 
 marginal p-value → investigate lack of significance with bootstrap methods
 
 ```{r bootstrap-pwi}
-# Prepare data for bootstrap (assuming 'oee_data' contains 'OEE' and 'treatment')
-set.seed(42)  # overall results reproducible; will share starting point for rand
-pairwise_results <- recall_h2b_agg_out |> 
-  mutate(OEE = pwi_time_per_ref) |>
-  pairwise_tests()
+stat_funcs <- list(
+  Mean = mean,
+  Median = median,
+  HL_Est = hl_estimator
+)
 
-# Define treatment levels
-treatments <- levels(recall_h2b_agg_out$treatment)
+h2b_pwi_boot_res <- run_bootstrap_tests(
+  recall_h2b_agg_out,
+  column = "pwi_time_per_ref_agg", 
+  stat_funcs = stat_funcs
+)
 
-# Generate ordered pair levels
-ordered_pairs <- c()
-for (i in 1:(length(treatments) - 1)) {
-  for (j in (i + 1):length(treatments)) {
-    ordered_pairs <- c(ordered_pairs, paste(treatments[i], "-", treatments[j]))
-  }
-}
-
-# Summarize results by Group1 and Group2
-h2b_boot_results <- pairwise_results |>
-  filter(is.finite(Bias) & is.finite(Std_Error)) |> 
-  group_by(Group1, Group2) |>
-  # these are all grand means for all replications
-  summarise(
-    Diff = mean(Mean_Difference, na.rm = TRUE),
-    Diff_L = mean(CI_Lower, na.rm = TRUE),
-    Diff_U = mean(CI_Upper, na.rm = TRUE),
-    Bias_mean = mean(Bias, na.rm = TRUE),
-    Bias_sd = sd(Bias, na.rm = TRUE),
-    SE_mean = mean(Std_Error, na.rm = TRUE),
-    SE_sd = sd(Std_Error, na.rm = TRUE),
-    Sig = ifelse(
-      mean(CI_Lower > 0, na.rm = TRUE) | mean(CI_Upper < 0, na.rm = TRUE), "*", ""
-    ),
-    .groups = "drop"
-  ) |> 
-  mutate(
-    Pair = paste(Group1, Group2, sep = " - "),
-    Pair = factor(Pair, levels = ordered_pairs)
-  ) |> 
-  arrange(Pair) |> 
-  select(Pair, Diff:Sig)
+h2b_pwi_boot_res
 ```
 
-
-```{r tbl-boot-pwi}
+```{r tbl-boot-pwi, eval=FALSE}
 #| tbl-cap: $H_{2b}$ Bootstrap Analysis of Pairwise PWI Differences
 
 h2b_boot_results |>
@@ -1137,6 +1202,7 @@ together:
 - PWI/PAR are statistically and practically (-0.04) equivalent, where PAR is negligibly better
 
 AR and MR reduce reliance on reference instructions, suggesting they improve the learning outcome
+
 
 ::: content-hidden
 #### Additional Analysis
