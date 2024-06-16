@@ -15,6 +15,9 @@ library(english)
 library(glue)
 library(modelsummary)
 library(tictoc)
+library(parallel)
+library(doParallel)
+library(foreach)
 
 # library(pwr)
 # library(emmeans)
@@ -22,7 +25,6 @@ library(tictoc)
 # library(moments)
 # library(ggpubr)
 ```
-
 
 ```{r load-stuff}
 # load results data
@@ -41,16 +43,12 @@ for (i in 1:(length(TREATMENTS) - 1)) {
     ORDERED_PAIRS <- c(ORDERED_PAIRS, paste(TREATMENTS[i], "-", TREATMENTS[j]))
   }
 }
+
+# set global flag variable used for logging current statistic
+CUR_STAT <- NULL
 ```
 
 ```{r def-boot-funcs}
-# Function to calculate differences between two groups based on a statistic
-stat_diff <- function(data, indices, group1, group2, column, stat_func) {
-  d <- data[indices, ]
-  stat_func(d[d$treatment == group1, column, drop = TRUE]) - 
-    stat_func(d[d$treatment == group2, column, drop = TRUE])
-}
-
 # Hodges-Lehmann Estimator - stat_func option
 hl_estimator <- function(x) {
   n <- length(x)
@@ -60,16 +58,53 @@ hl_estimator <- function(x) {
 
 # Generalized function to perform bootstrap and get results
 bootstrap_stat_diff <- function(data, group1, group2, column, stat_func) {
+  # cat("Starting bootstrap_stat_diff for", group1, "vs", group2, "\n")
+  
+  stat_diff <- function(data, indices, group1, group2, column, stat_func) {
+    # static_counter <- 0
+    # static_counter <- static_counter + 1
+    # cat("stat_diff called for the", static_counter, "time for this resample\n")
+
+    d <- data[indices, ]
+    g1_data <- d[d$treatment == group1, column, drop = TRUE]
+    g2_data <- d[d$treatment == group2, column, drop = TRUE]
+    
+    # cat(group1, "-", paste(sprintf("%.2f", g1_data), collapse = " "), "\n")
+    # cat(group2, "-", paste(sprintf("%.2f", g2_data), collapse = " "), "\n")
+
+    # cat(
+    #   "Subset sizes: ", group1, "=", length(g1_data), ", ",
+    #   group2, "=", length(g2_data), "\n"
+    # )
+    
+    stat_func(g1_data) - stat_func(g2_data)
+  }
+
   # Define statistic function for bootstrap
   stat_wrapper <- function(data, indices) {
     stat_diff(data, indices, group1, group2, column, stat_func)
   }
 
-  # Bootstrap with 10,000 replications
-  results <- boot(data = data, statistic = stat_wrapper, R = 10000)
+  set.seed(42)  # Set seed right before boot call
+  
+  # browser()
+
+  results <- boot(
+    data = data,
+    statistic = stat_wrapper,
+    R = 10000,
+    strata = data$treatment,
+    # parallel = "multicore"
+  )
+  
+  # cat("\nBootstrap results for", group1, "vs", group2, ":\n")
+  # print(results)
 
   # Get bootstrap confidence intervals
   ci <- boot.ci(results, type = "perc")
+  
+  # cat("\n\nConfidence intervals for", group1, "vs", group2, ":\n")
+  # print(ci)
 
   # Create a summary of bootstrap results
   summary <- list(
@@ -80,21 +115,70 @@ bootstrap_stat_diff <- function(data, group1, group2, column, stat_func) {
     ci_upper = ci$percent[5]
   )
 
+  # cat("Returning summary for", group1, "vs", group2, "\n")
   return(summary)
 }
 
 # Function to perform multiple replications of the bootstrap
-multiple_bootstrap <- function(data, group1, group2, column, stat_func, num_reps = 10) {
-  all_results <- replicate(num_reps,
-    {
-      bootstrap_stat_diff(data, group1, group2, column, stat_func)
-    },
-    simplify = FALSE
-  )
+multiple_bootstrap <- function(data, group1, group2, column, stat_func, num_reps) {
+  # cat("Starting multiple_bootstrap for", group1, "and", group2, "\n")
+  
+  # # original parallel implementation, results in invalid results
+  # all_results <- foreach(
+  #     i = 1:num_reps,
+  #     .combine = list,
+  #     .packages = c("boot", "dplyr"),
+  #     .errorhandling = "remove"  # was stop
+  #   ) %dopar% {
+  #     # cat("Starting replication", i, "\n")
+  #     tryCatch({
+  #       result <- bootstrap_stat_diff(data, group1, group2, column, stat_func)
+  #       # cat("Completed replication", i, "\n")
+  #       result
+  #     }, error = function(e) {
+  #       cat("*** Error in replication", i, ":", conditionMessage(e), "\n")
+  #       NULL
+  #     })
+  #   }
+  
+  # cat("Num reps =", num_reps, "\n")
+  
+  # working non-parallel implementation
+  all_results <- vector("list", num_reps)  # Initialize an empty list of the correct length
 
-  # Aggregate or summarize results across replications
-  results_list <- lapply(1:num_reps, function(i) {
+  for (i in 1:num_reps) {
+    # cat("\nStarting replication", i, "\n")
+    tryCatch({
+      result <- bootstrap_stat_diff(data, group1, group2, column, stat_func)
+      all_results[[i]] <- result
+    }, error = function(e) {
+      cat("*** Error in replication", i, ":", conditionMessage(e), "\n")
+      all_results[[i]] <- NULL
+    })
+  }
+
+  cat("Completed all replications. Number of results:", length(all_results), "\n")
+  
+  # Check for errors
+  errors <- sapply(all_results, is.null)
+  if (any(errors)) {
+    cat("*** Errors occurred during bootstrap for the following replications:\n")
+    cat(paste("Replication", which(errors), "\n", collapse = ""))
+  }
+  
+  # Process successful results
+  results_list <- lapply(seq_along(all_results), function(i) {
     res <- all_results[[i]]
+    if (is.null(res)) {
+      cat("*** Warning: Missing result for replication", i, "\n")
+      return(NULL)
+    }
+
+    if (!is.list(res) || !all(c("original", "bias", "std_error", "ci_lower", "ci_upper") %in% names(res))) {
+      cat("*** Warning: Invalid result for replication", i, "\n")
+      return(NULL)
+    }
+
     list(
       Replication = i,
       original = res$original,
@@ -105,9 +189,16 @@ multiple_bootstrap <- function(data, group1, group2, column, stat_func, num_reps
     )
   })
 
+  results_list <- results_list[!sapply(results_list, is.null)]
+
+  if (length(results_list) == 0) {
+    stop("*** No valid results were produced. ***")
+  }
+
+  cat("Processed", length(results_list), "valid results.\n")
+
   return(do.call(rbind, results_list))
 }
-
 
 # Generalized pairwise tests function to capture results for each replication
 bootstrap_pairs <- function(data, column, stat_func, num_reps = 5) {
@@ -132,12 +223,16 @@ bootstrap_pairs <- function(data, column, stat_func, num_reps = 5) {
     for (j in (i + 1):length(TREATMENTS)) {
       group1 <- TREATMENTS[i]
       group2 <- TREATMENTS[j]
+      
+      cat("Starting bootstrap for", group1, "vs", group2, "\n")
 
       # Perform bootstrap test
       test_results <- multiple_bootstrap(data, group1, group2, column, stat_func, num_reps)
+      
+      # cat("Completed bootstrap for", group1, "vs", group2, "\n")
 
       # Add results to the dataframe
-      for (k in 1:num_reps) {
+      for (k in 1:nrow(test_results)) {
         rep_result <- test_results[k, ]
         results <- rbind(results, data.frame(
           Group1 = group1,
@@ -186,6 +281,35 @@ summarize_pairwise_results <- function(pairwise_results) {
   
   return(result_summary)
 }
+
+# Wrapper function to run bootstrap pairs for each stat function and combine the results
+run_bootstrap_tests <- function(data, column, stat_funcs) {
+  results <- map_dfr(names(stat_funcs), function(stat_name) {
+    stat_func <- stat_funcs[[stat_name]]
+    
+    # set global for current stat
+    assign("CUR_STAT", stat_name, envir = .GlobalEnv)
+    
+    # Perform bootstrap pairs
+    pairwise_results <- bootstrap_pairs(data, column = column, stat_func = stat_func)
+
+    # Summarize the results
+    summary_results <- summarize_pairwise_results(pairwise_results)
+
+    # Add the statistic column
+    summary_results <- summary_results |> 
+      mutate(Stat = stat_name)
+
+    return(summary_results)
+  })
+  
+  # Ensure 'Stat' column correctly placed
+  results <- results |> 
+    select(Pair, Stat, Diff:Sig)
+  
+  return(results)
+}
+
 ```
 
 ```{r recall-data}
@@ -252,37 +376,6 @@ recall <- recall |>
     tot_sys_adj,
     tot_usr_adj
   )
-
-# Wrapper function to run bootstrap pairs for each stat function and combine the results
-run_bootstrap_tests <- function(data, column, stat_funcs) {
-  results <- map_dfr(names(stat_funcs), function(stat_name) {
-    stat_func <- stat_funcs[[stat_name]]
-    
-    # set global for current stat
-    assign("CUR_STAT", stat_name, envir = .GlobalEnv)
-    
-    # Perform bootstrap pairs
-    pairwise_results <- bootstrap_pairs(data, column = column, stat_func = stat_func)
-
-    # Summarize the results
-    summary_results <- summarize_pairwise_results(pairwise_results)
-
-    # Add the statistic column
-    summary_results <- summary_results |> 
-      mutate(Stat = stat_name)
-
-    return(summary_results)
-  })
-  
-  # Ensure 'Stat' column correctly placed
-  results <- results |> 
-    select(Pair, Stat, Diff:Sig)
-  
-  return(results)
-}
-
-# set global flag variable used for logging current statistic
-CUR_STAT <- NULL
 ```
 
 ```{r make-h2a-data}
@@ -525,21 +618,39 @@ Bootstrapping provides a complementary perspective for the analysis. This flexib
 
 A bootstrap analysis with 10,000 resamples was used to estimate pairwise mean differences in OEE across all treatments. This process was replicated five times, and the results were averaged to determine grand means and related statistics. The results are tabulated in @tbl-bootstrap-oee. Pairs where the 95% confidence interval does not include zero are marked as significant.
 
+```{r}
+# Split the oee_100 vector by treatment group
+oee_data_split <- split(oee_data$oee_100, oee_data$treatment)
 
-```{r bootstrap-oee}
+# Print the values for each treatment group
+for (treatment in names(oee_data_split)) {
+  cat(treatment, ": ", sep = "")
+  cat(paste(sprintf("%.2f", oee_data_split[[treatment]]), collapse = ", "), "\n")
+}
+```
+
+
+```{r bootstrap-oee, eval=FALSE}
+# registerDoParallel(cores = parallel::detectCores())
+
 stat_funcs <- list(
   Mean = mean,
   Median = median,
   HL_Est = hl_estimator
 )
 
-# Run the wrapper function
 h2a_oee_boot_res <- run_bootstrap_tests(
   oee_data,
   column = "oee_100", 
   stat_funcs = stat_funcs
 )
 
+h2a_oee_boot_res
+save(h2a_oee_boot_res, file = "h2a_oee_boot_res.RData")
+```
+
+```{r}
+load("h2a_oee_boot_res.RData")
 h2a_oee_boot_res
 ```
 
@@ -1110,7 +1221,7 @@ Per @fig-h2b-out-kw, despite a nominal p-value (0.05) the Kruskal-Wallis test fa
 
 marginal p-value → investigate lack of significance with bootstrap methods
 
-```{r bootstrap-pwi}
+```{r bootstrap-pwi, eval=FALSE}
 stat_funcs <- list(
   Mean = mean,
   Median = median,
@@ -1123,6 +1234,12 @@ h2b_pwi_boot_res <- run_bootstrap_tests(
   stat_funcs = stat_funcs
 )
 
+h2b_pwi_boot_res
+save(h2b_pwi_boot_res, file = "h2b_pwi_boot_res.RData")
+```
+
+```{r}
+load("h2b_pwi_boot_res.RData")
 h2b_pwi_boot_res
 ```
 
