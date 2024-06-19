@@ -335,13 +335,17 @@ Subsequent analyses will investigate the primary drivers of OEE (efficiency vs. 
 
 #### Retention Phase Hypotheses
 
-Phase three of the study is designed to assess the residual impact of each treatment on retention. This describes the "stickiness" of the learning and is measured by testing recall several weeks post-intervention. No additional training is provided in the meantime.
+Phase three of the study is designed to assess the residual impact of each treatment on retention. This describes the durability of the learning and is measured by testing recall several weeks post-intervention. No additional training is provided in the meantime.
 
 > **H3: Retention**
 >
 > *How does each IMT affect performance during the retention phase?*
 >
 > $$H_{3a}\textrm{: Change in OEE varies with treatment}$$
+
+::: contents-hidden
+TODO: update this hypothesis
+:::
 
 Here we look at the change in operator performance since the recall experiment. We expect performance to degrade for all treatments, but are interested to find if there are significant differences in the magnitude of change based on the instructional method. Both absolute and percentage change will be tested, and the primary driver of OEE identified as before.
 
@@ -475,13 +479,13 @@ The second session took place in the Lean Lab several weeks after the learning a
 
 Based on the number of trials in the first session, the maximum anticipated turnout during this 4-hour event was 40. That suggested a traffic rate of 10 to 15 participants per hour, implying a conservative maximum duration of 3 minutes per trial. This necessarily limited the scope and complexity of the experiment.
 
-This experiment was designed to assess longer-term benefits of the original intervention. Each participant was asked to build a single car from memory, without additional instruction. They were asked to prioritize (1) completing the assembly correctly and (2) finish within the station takt time of 60 seconds. Task completion time was collected, but a generous 2-minute time limit was imposed in the interest of expediency. Compensation was awarded as described in @sec-comp.
+This experiment was designed to assess longer-term benefits of the original intervention. Each participant was asked to build a single car from memory, without additional instruction. They were asked to prioritize (1) completing the assembly correctly and (2) finish within the station takt time of 60 seconds. Task completion time was collected, but a generous 3-minute time limit was imposed in the interest of expediency. Compensation was awarded as described in @sec-comp.
 
-The interval between the original intervention and this session varied for each participant. This variable time gap, which could range from one to 11 weeks, will be a consideration during analysis.
+The interval between the original intervention and this session varied for each participant. This variable time gap, which could range from one to seven weeks, will be a consideration during analysis.
 
 #### Second Session Data Collection {#sec-s2data}
 
-As in the first session, the emphasis was on minimizing the amount of manual data collection required. Each trial was recorded using a compact forehead-mounted video camera. Task completion time and error count, along with any essential observations, were documented. The completed car was also photographed, ensuring that the timer and notes were visible in the frame.
+As in the first session, the emphasis was on minimizing the amount of manual data collection required. Each trial was recorded using only a compact forehead-mounted video camera. Task completion time and error count, along with any essential observations, were documented. The completed car was also photographed, ensuring that the timer and notes were visible in the frame.
 
 ![Sample Retention Result Photo](images/24-RetentionRes.png){width="5in"}
 
