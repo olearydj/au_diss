@@ -12,6 +12,8 @@ library(glue)
 library(car)
 library(performance)
 library(patchwork)
+library(pscl)
+
 ```
 
 ```{r load-data}
@@ -68,8 +70,19 @@ h3_data <- h3_data |>
   mutate(
     incr_tct = tct - last_2_avg_tct,
     incr_uce = uce - last_2_avg_uce,
+    # for alternative measure, percent change per day - abandoned
+    # pcpd_tct = incr_tct / last_2_avg_tct / gap,
+    # pcpd_uce = incr_uce / last_2_avg_uce / gap,
+    # work around Inf and NA values...
+    # pcpd_uce_adj = case_when(
+    #   incr_uce == 0 & last_2_avg_uce == 0 ~ 0.0,
+    #   incr_uce > 0 & last_2_avg_uce == 0 ~ incr_uce,
+    #   incr_uce == 0 & last_2_avg_uce > 0 ~ -last_2_avg_uce,
+    #   incr_uce > 0 & last_2_avg_uce > 0 ~ (incr_uce / last_2_avg_uce)
+    # ) / gap,
+    # pcpd_uce_adj_bias = pcpd_uce_adj - pcpd_uce,
     treatment = factor(treatment, levels = c("PWI", "PAR", "AR", "MR"), ordered = T)
-  ) |>
+  ) |> 
   select(participant, treatment, gap, tct, uce, incr_tct, incr_uce, comment)
 
 # long version
@@ -86,14 +99,14 @@ The final phase of this study is designed to test the durability of the training
 
 [^25d-h3-1]: This limit was never reached.
 
-### $H_{3a}$: Overall Equipment Effectiveness
+### $H_{3}$: Change in TCT and UCE since Recall
 
 The one hypothesis tested during the retention phase:
-$$H_{3a}\textrm{: Learning retention varies with treatment}$$
+$$H_{3}\textrm{: Learning retention varies with treatment}$$
 
 is designed to determine if the instructional methods have an impact on the durability of training for up to two months. When originally planned, this analysis would utilize the change in OEE from recall to retention.
 
-It was later realized that the way in which OEE assesses task quality as pass / fail based on a single defect is problematic. Each participant only performed one replication of the retention task, where errors are expected. However, minor errors may not indicate a complete lack of retention. The combination of these factors leads to unstable binary outcomes that make it impractical to draw reliable conclusions about retention when using OEE. Instead, retention is assessed by studying the relationships between treatment and gap (the number of days since the original training), and the increase in TCT and UCE during that time.
+It was later realized that the way in which OEE assesses task quality as pass / fail based on a single defect is problematic. Each participant only performed one replication of the retention task, where errors are expected. However, minor errors may not indicate a complete lack of retention. The combination of these factors leads to unstable binary outcomes that make it impractical to draw reliable conclusions about retention when using OEE. Instead, retention is assessed by studying the relationships between treatment and gap (the number of days since the original training), and the increase in TCT and UCE during that time. These are treated as $H_{3a}$ and $H_{3b}$ for the increases in TCT and UCE, respectively.
 
 #### Descriptive Statistics
 
@@ -104,9 +117,9 @@ h3_group_sizes <- summary(h3_data$treatment)
 h3_gs_txt <- glue_collapse(glue("{h3_group_sizes} {names(h3_group_sizes)}"), ", ", last = ", and ")
 ```
 
-Each of the `r num_par` participants completed one task, for which the two measures were observed. The four treatments were relatively evenly represented (`r h3_gs_txt`) and the gap between recall and retention ranged from 3 to 44 days (mean 21.58, SD 13.06, median 20.5). @tbl-h3-ss summarizes the descriptive statistics for TCT, UCE, and their increases.
+Each of the `r num_par` participants completed one task, for which the two measures were observed. The four treatments were relatively evenly represented (`r h3_gs_txt`) and the gap between recall and retention ranged from 3 to 44 days (mean 21.58, SD 13.06, median 20.5). @tbl_h3_ss summarizes the descriptive statistics for TCT, UCE, and their increases.
 
-```{r tbl-h3-ss}
+```{r tbl_h3_ss}
 #| tbl-cap: "Summary Statistics for Dependent Variables, H3 Retention"
 
 datasummary(
@@ -114,17 +127,15 @@ datasummary(
     + Heading("Uncorrected Errors (n)") * uce
     + Heading("Increase in TCT (s)") * incr_tct 
     + Heading("Increase in UCE (n)") * incr_uce ~ 
-    Mean + SD + Min + Median + Max
+    Mean + SD + Min + Median + Max,
   data = h3_data,
   output = "kableExtra"
 )
 ```
 
-A variety of measures were considered to establish the baseline of performance during recall, including the mean, weighted average, 75th percentile, average of last two tasks, and last value for TCT and UCE. Ultimately, it was decided that an average of TCT / UCE over the last two task results was the most suitable measure of "typical" performance. Given the limited number of replications during recall, this approach balances recency, reflecting the most recent performance trends, with stability, limiting the influence of a single result.
+A variety of measures were considered to establish the baseline of performance during recall, including the mean, weighted average, 75th percentile, average of last two tasks, and last value for TCT and UCE. Ultimately, it was decided that an average of TCT / UCE over the last two task results was the most suitable measure of "typical" performance. Given the limited number of replications during recall, this approach balances recency with stability, reflecting the most recent performance trends while limiting the influence of a single result.
 
-As seen in @fig-h3-boxplot, the median increases in TCT appear similar across all treatments, with PWI and AR slightly higher than PAR and MR. Considerable variation exists within each treatment group, with MR exhibiting the most consistent values, while PWI and AR have greater variability and potential outliers. The increase in UCE is more clearly differentiated by treatment, with median steadily decreasing from AR to PAR, PWI, and MR. Variance is similar in the PWI-PAR and AR-MR pairs, with PWI and PAR both exhibiting significantly less than AR and MR. The overlapping IQR of increase in TCT suggests a lack of significant treatment effect. Overlap is less promise in UCE increase, giving evidence of some significant differences. Note that all treatments experienced positive increases in both TCT and UCE. The lone exception is the increase in UCE for MR, with a median of zero.
-
-For "incr_uce" (increase in UCE), there are clear differences between treatments. MR has the highest median value, followed by AR and PAR, while PWI has the lowest median. The box sizes for MR, AR, and PAR are larger than for PWI, indicating greater variability in those treatments. PWI has a compact box and no visible outliers, suggesting more consistent and lower "incr_uce" values compared to the other treatments.
+As seen in @fig-h3-boxplot, the median increases in TCT appear similar across all treatments, with PWI and AR slightly higher than PAR and MR. Considerable variation exists within each treatment group, with MR exhibiting the most consistent values, while PWI and AR have greater variability and potential outliers. The increase in UCE is more clearly differentiated by treatment, with median steadily decreasing from AR to PAR, PWI, and MR. Variance is similar in the PWI-PAR and AR-MR pairs, with PWI and PAR both exhibiting significantly less than AR and MR. The overlapping IQR of increase in TCT suggests a lack of significant treatment effect. Overlap is less prominent in UCE increase, giving some evidence of treatment effect. Note that positive increases were consistent for both TCT and UCE. The lone exception is the increase in UCE for MR, with a median of zero.
 
 ```{r fig-h3-boxplot}
 #| fig-cap: "Variation of Response Variables by Treatment"
@@ -144,77 +155,79 @@ h3_data_long |>
           axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-check model assumptions:
+#### Check Model Assumptions
 
-```{r h3_mod_check}
-# check model assumptions
+The observed values for the increase in TCT (iTCT) and UCE (iUCE) are all independent. Each response will be analyzed separately, as a function of treatment and gap. A simple comparison of means like Kruskal-Wallis is insufficient for two predictors, and model-based methods are required. When testing continuous variables like iTCT, a linear regression model (LM) of the form `iTCT ~ treatment +/* gap` is appropriate. iUCE, on the other hand, is a discrete variable (error count) with insufficient sample size to approximate a normal distribution. A generalized linear model (GLM) with similar form and Poisson or Negative Binomial distribution is commonly used in this situation.
 
+```{r h3_iTCT_check}
+# check linear model assumptions for iTCT
+
+# normality
 h3_st_tct_all <- shapiro.test(h3_data$incr_tct)
-h3_st_tct_treat <- by(h3_data$incr_tct, h3_data$treatment, shapiro.test)
+h3_st_tct_all_pv <- fmt_p_val(h3_st_tct_all$p.value)
 
+fmt_ps_above <- function(data, resp_col, treat_col) {
+  st_res <- by(data[[resp_col]], data[[treat_col]], shapiro.test)
+  p_vals <- sapply(st_res, function(result) result$p.value)
+  low_pv <- min(p_vals)
+  return(paste0("p >= ", round(low_pv, digits = 3)))
+}
+
+h3_st_tct_treat_pvs <- fmt_ps_above(h3_data, "incr_tct", "treatment")
+
+# homogeneity of variance, aka homoscedasticity
 h3_lt_tct <- leveneTest(incr_tct ~ treatment, data = h3_data)
-h3_lt_pv <- h3_lt_tct$`Pr(>F)`[1]
-
-h3_st_uce_all <- shapiro.test(h3_data$incr_uce)
-h3_st_uce_treat <- by(h3_data$incr_uce, h3_data$treatment, shapiro.test)
-
-h3_lt_uce <- leveneTest(incr_tct ~ treatment, data = h3_data)
-h3_lt_pv <- h3_lt_uce$`Pr(>F)`[1]
-
+h3_lt_tct_pv <- fmt_p_val(h3_lt_tct$`Pr(>F)`[1])
 ```
 
-all and by treatment incr_tct is normal
-
-variance homogeneous in for both incr tct and uce
-
-uce evidence of non-normality overall and in MR treatment - check graph
+The assumptions of a GLM, including linearity, mean-variance relationship, and zero-inflation, are assessed after fitting the model. Meanwhile, to confirm the iTCT data meets the normal requirements of a LM, normality, homoscedasticity, and linearity must be checked. A Shapiro-Wilk test suggests the data is normal overall (`r h3_st_tct_all_pv`) and within treatment groups (`r h3_st_tct_treat_pvs` for all). The Q-Q plots of @fig-qq-h3-tct fail to provide strong counter-evidence, validating the normality requirement. Furthermore, the Levene test finds no evidence of heteroscedasticity (`r h3_lt_tct_pv`).
 
 ```{r fig-qq-h3-tct}
-#| fig-cap: Q-Q Plots of Increase in UCE by Treatment
+#| fig-cap: Q-Q Plots of Increase in TCT by Treatment
 #| fig-height: 3.5
 
-p <- qq_plot_patchwork(h3_data, x_var = "incr_uce", by_var = "treatment")
+# QQ plot more important for checking SW false negatives (high p-value but non-normal
+# appearance) than false positives (low p-value but normal appearance) → trust but verify
+# the SW results, look for strong counter evidence
+
+p <- qq_plot_patchwork(h3_data, x_var = "incr_tct", by_var = "treatment")
 
 p + plot_annotation(
-  title = "Quantile-Quantile Plots of Incr UCE Treatment Data",
+  title = "Quantile-Quantile Plots of Incr TCT Treatment Data",
   subtitle = "Data appears normally distributed"
 )
 ```
 
-QQ plot more important for checking SW false negatives (high p-value but non-normal appearance) than false positives (low p-value but normal appearance) → trust but verify the SW results, look for strong counter evidence
+To test the linearity assumption, a graph of iTCT vs gap was constructed for each treatment. The scatter plots in @fig-h3-iTCT-lin show some support for linearity, though the limited data makes it difficult to judge. Additional evidence may come from the model residual plots. Until then, this is sufficient. In summary, the model assumptions are met: iTCT is continuous and linear, with independent observations, and all treatment groups are normal, with homogeneous variance.
 
-PWI, PAR, and AR have high SW pvals (0.11, 0.72, 0.83) and the Q-Q plots don't provide strong evidence to the contrary. This is a false negative test. Note that though PWI and PAR are similar to MR which SW found non-normal, we side with the SW test.
-
-SW pval for MR is 0.03729 (reject hypothesis of normality), and the Q-Q plot again fails to provide strong counter-evidence, so we accept SW
-
-@fig-h3-incr-vs-gap shows relationship between increase in TCT/UCE vs gapp
-
-```{r fig-h3-incr-vs-gap}
-#| fig-cap: "Average Increase in TCT and UCE vs Gap"
+```{r fig-h3-iTCT-lin}
+#| fig-cap: "Average Gap vs Increase in TCT by Treatment"
+#| message: false
 
 h3_data_long |> 
-  filter(
-    variable %in% c("incr_tct", "incr_uce")
-  ) |> 
+  filter(variable == "incr_tct") |> 
   ggplot(aes(x = gap, y = value, color = variable)) +
     geom_point(alpha = 0.4) +
     geom_smooth(method = "lm", se = FALSE, aes(color = variable), linetype = "solid") +
-    labs(title = "Scatter Plot of Change in TCT and UCE vs Gap",
+    labs(title = "Scatter Plot of Gap vs Change in TCT",
+         subtitle = "Some support for linearity, limited by available data",
          x = "Gap (days)",
          y = "Value") +
     theme_minimal() +
     scale_color_manual(values = c("incr_tct" = "blue", "incr_uce" = "red"), 
-                       labels = c("Incr TCT", "Incr UCE"))
+                       labels = c("Incr TCT", "Incr UCE")) +
+    facet_wrap(~ treatment)
 
 ```
 
-appears linear
-
-outliers?
-
-use multivariate outlier detection scheme based on mahalanobis distance to identify anomalous increases in the context of gap. e.g. an incr_uce of 7 at gap of 5 might be an outlier but the same incr_uce at gap of 40 woudl not be
+::: content-hidden
+TODO: check that all graphs are described using "Y vs X" convention
+:::
 
 ```{r}
+
+# Given that both models assume a relationship between gap and the response variable, a multivariate outlier detection scheme based on Mahalanobis Distance is deemed appropriate. This will identify anomalous increases in iTCT / iUCE in the context of their associated gap values. For example, an iUCE of 7 at a gap of 5 might be typical, but the same iUCE might fall well below the norm with a gap of 40. A multivariate approach provides that level of nuanced assessment.
+
 # Function to calculate Mahalanobis Distance
 calc_mahalanobis <- function(df, response, predictor) {
   data <- as.matrix(df[, c(response, predictor)])
@@ -249,29 +262,39 @@ uce_outliers <- h3_data |>
   ungroup()
 
 
-# nrow(tct_outliers) = 0
-# nrow(uce_outliers) = 0
+# nrow(tct_outliers)
+# nrow(uce_outliers)
+# none in either
+
+# check_outliers(h3_data, method = c("zscore", "iqr", "mahalanobis"))
+# none found
+```
+
+As a final step prior to analysis, both iTCT and iUCE are tested for outliers using a combination of Z-score, IQR, and multivariate (Mahalanobis Distance) methods. None were detected by any test.
+
+#### $H_{3a}$: Increase in TCT vs Gap and Treatment
+
+To begin assessing the effect of instructional method on retention, the relationship between iUCE and gap, visualized in @fig-h3-tct, is considered. A pair of linear regression models (LMs) were fit, both using iTCT as the response, with gap and treatment as predictors. One specified additive terms and the other included interactions between gap and treatment.
+
+```{r fig-h3-tct}
+#| fig-cap: "Increase in Task Completion Time vs Gap by Treatment"
+#| fig-subcap: "Something clever"
+#| message: false
+
+ggplot(data = h3_data, aes(x = gap, y = incr_tct, color = treatment)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(aes(x = gap, y = incr_tct), method = "lm", se = TRUE, color = "black") +
+  labs(
+    title = "iTCT vs gap by Treatment",
+    x = "Gap (days)",
+    y = "Increase in Uncorrected Error Count",
+    color = "Treatment"
+  ) +
+  theme_minimal()
 
 ```
 
-No outliers in either incr_tct or incr_uce at alpha 0.05
-
-Increase in TCT is continuous and linear, with independent observations. All treatment groups are normal and exibit homogeneous variance. No outliers detected. Use linear model to consider both gap and treatment.
-
-Increase in UCE is linear with independent observations and homogeneous variance with no outliers, but not normal (MR), or continuous (counted). Use poisson or negative binomial regression.
-
-simple means test (e.g. Kruskal-Wallis) insufficent for gap + treatment
-
-#### Analysis
-
-apply principle of parsimony - suggests choosing the simplest model that adequately explains the data
-
-##### Gap and Treatment vs Incr TCT
-
-test increase in TCT, using an average of last two results from recall
-
 ```{r h3_lm_incr_tct}
-
 # create version of data with unordered factor for treatment to improve
 # interpretability of contrasts
 h3_data_unordered <- h3_data |> 
@@ -281,55 +304,161 @@ h3_data_unordered <- h3_data |>
 
 m1_tct_add <- lm(incr_tct ~ gap + treatment, data = h3_data_unordered)
 m2_tct_int <- lm(incr_tct ~ gap * treatment, data = h3_data_unordered)
-m3_tct_qadd <- lm(incr_tct ~ gap + I(gap^2) + treatment, data = h3_data_unordered)
 
-summary(m1_tct_add)
-summary(m2_tct_int)
-summary(m3_tct_qadd)
-
-compare_performance(m1_tct_add, m2_tct_int, m3_tct_qadd, rank = T)
+cp_tct <- compare_performance(m1_tct_add, m2_tct_int, metrics = "common", rank = F)
 ```
 
-gap and gap interaction terms determine the slopes (change per day of gap), intercept and treatment-specific effects determine the intercept (baseline performance)
+A comparison of model performance statistics are summarized in @tbl_tct_modperf. Columns for the model name and type are followed by Akaike (AIC) and Bayesian (BIC) Information Criterion  and corresponding weights, standard and adjusted R-squared (R2), and the Root Mean Squared Error (RMSE). AIC and BIC are, respectively, frequentist and Bayesian measures of the amount of information lost by a model when approximating the true data generating process. Both account for the number and relevance of predictors, and lower scores are better. AIC/BIC weights represent the relative likelihood of each model being the most accurate of those considered.
 
-> The linear model m1_tct_add was used to assess the effects of gap and treatment on incr_tct. The analysis revealed that the variable gap is statistically significant with an estimate of 1.1631 ((p = 0.0117)). This positive association indicates that as gap increases, incr_tct also tends to increase. The coefficients for the treatment levels, namely treatmentMR ((b = -4.6250, p = 0.7621)), treatmentPAR ((b = 6.6918, p = 0.6592)), and treatmentPWI ((b = 3.3771, p = 0.8061)), were not statistically significant.
->
->Overall, the model accounts for approximately 35.77% of the variance in incr_tct ((R^2 = 0.3577), (\text{Adjusted } R^2 = 0.2224)), with a residual standard error of 24.61. The overall model approached statistical significance with an (F)-statistic of 2.645 on 4 and 19 degrees of freedom, resulting in a p-value of 0.06561. Although this p-value is slightly above the conventional threshold of 0.05, it remains close, suggesting potential significance.
->
-> Given the marginal p-value, it is important to interpret these findings with cautious optimism. The significance of the gap variable is notable and suggests that variations in gap are meaningful in predicting incr_tct. Furthermore, the sample size's potential influence on the statistical power indicates that a larger sample could provide additional insights and possibly strengthen the confidence in these results. Additionally, model performance comparisons indicate that m1_tct_add achieves a higher performance score (71.43%) compared to the interaction (m2_tct_int) and quadratic additive (m3_tct_qadd) models, making it favorable based on model fit metrics and simplicity.
->
-> In conclusion, the gap variable emerges as a significant predictor in the additive model, while the treatment effects were non-significant. The marginal significance of the model p-value suggests that further validation with a larger sample size and additional diagnostics would be prudent to confirm these findings and ensure robustness.
+```{r tbl_tct_modperf}
+#| tbl-cap: "Model Performance Results"
 
-interpretation: model 1 approaching significance (p = 0.06), still shows only gap is significant; no treatment effect on increase in TCT
+display(cp_tct)
+```
+In this comparison, both AIC and BIC strongly prefer the additive model. While the R2 of the model with interactions is higher, the additive model scores a higher R2 adj., where complexity is penalized. Despite a slightly higher RMSE, the additive model outperforms based on the principle of parsimony, which favors the least complex model that effectively explains the data. Details for the additive model are summarized in @tbl_tct_modsum. The intercept represents the mean iTCT for the reference treatment (AR), with a gap of zero. The treatment coefficients (MR, PAR, PWI) indicate the difference in mean iTCT between each treatment and AR, assuming the same gap value. Since there are no interaction terms in the model, the effect of gap on iTCT is constant across all treatments.
 
-validate TCT model
+```{r tbl_tct_modsum}
+#| tbl-cap: "Increase in TCT LM"
 
-```{r}
+# summary(m1_tct_add)
+# modelsummary(m1_tct_add)
 
-# plot(check_model(m1_tct_add, panel = F))
-check_model(m1_tct_add, check = "qq")
-# check_model(m1_tct_add, check = "vif")
+# m1_tct_add |> 
+#   tidy() |> 
+#   knitr::kable(
+#     # format = "latex",
+#     booktabs = TRUE,
+#     escape = FALSE,
+#     caption = "Increase in TCT LM"
+#   ) |> 
+#   kableExtra::kable_styling(
+#     latex_options = c("scale_down", "hold_position", "striped"),
+#     font_size = 11
+#   )
 
-# Shapiro-Wilk test
+# parameters::model_parameters(m1_tct_add) |> display(digits = 3, p_digits = 4, ci_digits = 2)
+
+m1_tct_add_mp <- parameters::model_parameters(m1_tct_add)
+
+# Function to add significance stars
+add_significance_stars <- function(p_value) {
+  if (p_value < 0.001) {
+    "***"
+  } else if (p_value < 0.01) {
+    "**"
+  } else if (p_value < 0.05) {
+    "*"
+  } else if (p_value < 0.1) {
+    "."
+  } else {
+    ""
+  }
+}
+
+# Apply the function to add significance stars
+m1_tct_add_mp  |> 
+  mutate(Sig = sapply(p, add_significance_stars)) |> 
+  rename(`Est Coef` = Coefficient) |> 
+  display(digits = 3, p_digits = 4, ci_digits = 2)
+
+```
+
+Only the gap predictor is statistically significant, with an estimated coefficient of 1.163 (p = 0.0117), indicating that iTCT increases with gap at a rate of approximately 1.16 seconds per day, which is practically significant. The coefficients for the treatment levels are not statistically significant, which implies that the observed differences in iTCT between the treatments may not be robust or replicable. This result must be interpreted with care, as the overall model fit is marginal. Gap and treatment together account for only about 36% of the variance in iTCT ($R^2$ = 0.358 and adjusted $R^2 = 0.222$). The p-value for the F-statistic of 2.645 on 4 and 19 degrees of freedom is 0.0656. At the conventional threshold of 0.05, this fails to reject the null hypothesis that all regression coefficients except the intercept are zero. Together, these results provide only limited evidence that the predictors collectively contribute to explaining the variability in iTCT, with gap making the only significant contribution. Further validation with a larger sample size and additional diagnostics would be prudent to confirm these findings and ensure robustness.
+
+```{r tct-mod-diag}
 m1_tct_st <- shapiro.test(resid(m1_tct_add))
 m1_tct_st_pv <- fmt_p_val(m1_tct_st$p.value)
 
 vif_values <- vif(m1_tct_add)
+vif_gap <- round(vif_values["gap","GVIF^(1/(2*Df))"], 2)
+vif_treat <- round(vif_values["treatment","GVIF^(1/(2*Df))"], 2)
 ```
 
-SW (`r m1_tct_st_pv`) indicates residuals are normally distributed. Despite some deviance from the reference line, especially in the right tail, most points are distributed on or near the line. This supports the SW findings that residuals are approximately normally distributed.
+To validate this model a number of checks were performed. A Shapiro-Wilk test
+indicates residuals are normally distributed (`r m1_tct_st_pv`). The Q-Q plot of the residuals in @fig-tct-mod-qq shows most points are on or near the reference line, despite some deviance in the right tail. The second plot in the figure shows the residuals are scattered randomly around the axis without clear curvature or other systematic deviations. This provides good support for the LM's linearity assumption within the limits of the available data. The variance inflation values for gap (`r vif_gap`) and treatment (`r vif_treat`) are both near 1, indicating very low multicollinearity. These results confirm the model is valid.
 
-vif values for both gap and treatment are close to 1, indicating very low multicollinearity
+```{r fig-tct-mod-qq}
+#| fig-cap: "This is the figure"
+ps <- plot(check_model(m1_tct_add, panel = F))
 
-all model assumptions met and result diagnostics check out
+# QQ - normality of residuals; NCV - linearity via residuals vs fitted values
+ps$QQ / ps$NCV
+
+```
+
+::: content-hidden
 
 > For the chosen models (m1_tct_add for TCT and m2_uce_nb for UCE), you could create marginal effects plots to visualize the predicted values of TCT and UCE across different levels of gap and treatment. These plots can provide a more intuitive understanding of the model results and the magnitude of the effects.
 
 > Since you mentioned that the interaction model (m2_tct_int) for TCT was not the best-performing one, it might still be informative to visualize the interaction between gap and treatment using an interaction plot. This plot could help identify any potential patterns or trends in the relationship between gap and treatment, even if the interaction terms are not statistically significant.
 
-##### Gap and Treatment vs Incr UCE
+> Consider conducting power analysis to determine the sample size needed to detect significant treatment effects, given the observed effect sizes and variability. This could inform the planning of future studies or replication efforts.
 
-test increase to UCE
+consider effect size...
+
+```{r eval=FALSE}
+# effect size for overall model and each parameter
+effectsize::eta_squared(m1_tct_add)
+
+# effect size between groups
+emm <- emmeans(m1_tct_add, ~ treatment)
+pairwise_comparisons <- pairs(emm)
+
+# Calculate Cohen's d for each pairwise comparison
+# small about 0.2, med about 0.5, large about 0.8
+cohen_d_values <- eff_size(pairwise_comparisons, sigma = sigma(m1_tct_add), edf = df.residual(m1_tct_add))
+
+# Display the results with Cohen's d
+print(cohens_d_values)
+```
+
+interpretation:
+- no statistically significant pairs ("not statistically reliable results")
+- AR-MR *medium* effect size
+- AR-PAR *large* effect size. AR tends to have lower values than PAR.
+- AR-PWI *medium* effect size. AR tends to have lower values than PWI.
+- MR-PAR *very large* effect size. MR tends to have much lower values than PAR.
+- MR-PWI *large* effect size. MR tends to have lower values than PWI.
+- PAR-PWI *medium* effect size. PAR tends to have higher values than PWI.
+
+effect size measures the magnitude of the difference, regardless of sample size
+
+medium to large effect sizes (Cohen's (d), suggesting noticeable differences in mean values between treatment levels; if large effect is real it is likely meaningful
+
+p-value a measure of "statistical reliability"
+
+small sample sizes → large standard errors → large p-values even in the presence of large effect size
+
+high variability increases standard error
+
+in short, the effect size suggests there may be strong influence but the p-values are high because there isn't enough data to convince us of the effect
+
+power analysis
+:::
+
+#### $H_{3b}$: Gap and Treatment vs Incr UCE
+
+Continuing the analysis of $H_{3}$, the second measure of learning retention, iUCE, is tested. A pair of generalized linear models were fit using a Poisson distribution. As before, gap and treatment were the predictors, and iUCE the response. One model includes only the main effects of the predictors, while the other also include their interactions. The relationship between iUCE and gap is visualized in @fig-h3-uce, which includes a linear regression with confidence intervals for the full dataset.
+
+```{r fig-h3-uce}
+#| fig-cap: "Increase in Uncounted Errors vs Gap by Treatment"
+#| fig-subcap: "Something clever"
+#| message: false
+
+ggplot(data = h3_data, aes(x = gap, y = incr_uce, color = treatment)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(aes(x = gap, y = incr_uce), method = "lm", se = TRUE, color = "black") +
+  labs(
+    title = "incr_uce vs gap by Treatment",
+    x = "Gap (days)",
+    y = "Increase in Uncorrected Error Count (incr_uce)",
+    color = "Treatment"
+  ) +
+  theme_minimal()
+
+```
+
+Because the Poisson distribution is used to model count data, it requires all non-negative integer values for the response variable. Sincce iUCE was measured from the average of the last two values during recall, some observations do not meet that requirement--all are positive but some are not integers. To correct for this without altering the relative differences between observations, iUCE was doubled prior to the model fit. When interpreting the model results, the coefficients and other estimates will be on the scale of the doubled iUCE and should be halved to interpret them on the original scale.
 
 ```{r h3_model_pm}
 # to ensure all uce values are integers, double incr_uce
@@ -339,112 +468,328 @@ h3_data_unordered_uce_xf <- h3_data_unordered |>
   mutate(incr_uce = 2 * incr_uce)
 
 # Fit Poisson regression model
-m1_uce_poisson <- glm(incr_uce ~ treatment, data = h3_data_unordered_uce_xf, family = poisson())
-m2_uce_poisson <- glm(incr_uce ~ gap, data = h3_data_unordered_uce_xf, family = poisson())
-m3_uce_poisson <- glm(incr_uce ~ gap + treatment, data = h3_data_unordered_uce_xf, family = poisson())
-m4_uce_poisson <- glm(incr_uce ~ gap * treatment, data = h3_data_unordered_uce_xf, family = poisson())
+m1_uce_poisson <- glm(incr_uce ~ gap + treatment, data = h3_data_unordered_uce_xf, family = poisson())
+m2_uce_poisson <- glm(incr_uce ~ gap * treatment, data = h3_data_unordered_uce_xf, family = poisson())
 
-compare_performance(m1_uce_poisson, m2_uce_poisson, m3_uce_poisson, m4_uce_poisson, rank = T)
-
-# Summary of Poisson regression
-summary(m3_uce_poisson)
-
+cp_uce_pm <- compare_performance(m1_uce_poisson, m2_uce_poisson, metrics = "common", rank = F)
 ```
+
+```{r tbl_uce_modperf_pm}
+#| tbl-cap: "Model Performance Results"
+
+display(cp_uce_pm)
+```
+
+A comparison of model performance statistics are summarized in @tbl_uce_modperf_pm. The columns for AIC, BIC, and RMSE are as previously described. The standard and adjusted $R^2$ terms are replaced with Nagelkerke's $R^2$. This is the equivalent measure for GLMs with count data outcomes, and is interpreted in the same manner. The second model includes interactions of gap and treatment. It performs better on AIC, BIC, and RMSE metrics, and has the same $R^2$ value, indicating that the additional model complexity provides a substantially better fit.
 
 ```{r h3_mod_pm_val}
 # validate poisson model
 
-sum(residuals(m3_uce_poisson, "pearson")^2) / df.residual(m3_uce_poisson)
-pchisq(deviance(m3_uce_poisson), df.residual(m3_uce_poisson), lower.tail = FALSE)
-check_model(m3_uce_poisson, check = "qq")
+h3_m2_disp <- sum(residuals(m2_uce_poisson, "pearson")^2) / df.residual(m2_uce_poisson)
 
-par(mfrow = c(2, 2))
-plot(m3_uce_poisson)
+pearson_chisq <- sum(residuals(m2_uce_poisson, "pearson")^2)
+h3_m2_disp_pval <- fmt_p_val(pchisq(pearson_chisq, df.residual(m2_uce_poisson), lower.tail = FALSE))
 
-library(pscl)
-
-zeroinfl.test <- zeroinfl(incr_uce ~ gap + treatment | 1, data = h3_data_unordered_uce_xf)
-summary(zeroinfl.test)
+# fit zero inflation model and extract p-value for overall fit (intercept)
+h3_m2_zo <- zeroinfl(incr_uce ~ gap + treatment | 1, data = h3_data_unordered_uce_xf)
+h3_m2_zo_sum <- summary(h3_m2_zo)
+h3_m2_zo_sum_coef <- h3_m2_zo_sum$coefficients$zero
+h3_m2_zo_pval <- round(h3_m2_zo_sum_coef["(Intercept)", "Pr(>|z|)"], 3)
 
 ```
 
-overdispersion - use negative binomial
+Despite these results, post-hoc validation steps reveal conflicts with the model assumptions. Dispersion is measured at `r round(h3_m2_disp, 2)` (`r h3_m2_disp_pval`), which is both substantially larger than 1.0 and statistically significant. This indicates overdispersion, a condition where the observed variance is greater than that predicted by the model. A second test found that zero inflation is present (p = `r h3_m2_zo_pval`), indicating that the count of zero values in the data is greater than the model expects. Both violate the assumptions of the Poisson-based model, and prompt the switch to the Negative Binomial (NB) distribution, which accounts for overdispersion. Based on these findings, Zero-Inflated Negative Binomal (ZINB) equivalents are included for comparison.
 
 ```{r h3_model_nb}
+#| warning: false
+#| message: false
+
 # requires MASS package, which installed but not loaded because it masks dplyr::select!
 
-m1_uce_nb <- MASS::glm.nb(incr_uce ~ treatment, data = h3_data_unordered_uce_xf)
-m2_uce_nb <- MASS::glm.nb(incr_uce ~ gap, data = h3_data_unordered_uce_xf)
-m3_uce_nb <- MASS::glm.nb(incr_uce ~ gap + treatment, data = h3_data_unordered_uce_xf)
-m4_uce_nb <- MASS::glm.nb(incr_uce ~ gap * treatment, data = h3_data_unordered_uce_xf)
+m1_uce_nb_add <- MASS::glm.nb(incr_uce ~ gap + treatment, data = h3_data_unordered_uce_xf)
+m2_uce_nb_int <- MASS::glm.nb(incr_uce ~ gap * treatment, data = h3_data_unordered_uce_xf)
+m3_uce_zinb_add <- zeroinfl(incr_uce ~ gap + treatment | 1, dist = "negbin", data = h3_data_unordered_uce_xf)
+m4_uce_zinb_int <- zeroinfl(incr_uce ~ gap * treatment | 1, dist = "negbin", data = h3_data_unordered_uce_xf)
 
-compare_performance(m1_uce_nb, m2_uce_nb, m3_uce_nb, m4_uce_nb, rank = T)
+cp_uce_nb <- compare_performance(
+  m1_uce_nb_add, m2_uce_nb_int, m3_uce_zinb_add, m4_uce_zinb_int, metrics = c("AIC", "BIC", "RMSE"), rank = F
+)
+```
 
-# Summary of the Negative Binomial model
-summary(m3_uce_nb)
+```{r tbl_uce_modperf_nb}
+#| tbl-cap: "Model Performance Results"
+
+display(cp_uce_nb)
+```
+
+As seen in @tbl_uce_modperf_nb, both ZINB options (model 3 and 4) strongly outperform the NB alternatives in terms of AIC and BIC. While model 4 (with predictor interactions) has a slightly lower AIC, the main effects version (model 3) shows substantially better BIC and RMSE. Based on this, the additive ZINB model, which provides the best balance of model complexity, fit, and predictive power, is selected.
+
+```{r tbl_uce_modsum}
+#| tbl-cap: "ZINB Model Summary"
+
+m3_uce_zinb_add_mp <- parameters::model_parameters(m3_uce_zinb_add, exponentiate = T)
+
+# Separate the count model coefficients (fixed effects)
+mp_c <- m3_uce_zinb_add_mp  |> 
+  filter(Component == "conditional")
+
+# Define function to custom format p-values
+format_p_values <- function(p_value) {
+  if (p_value < 0.001) {
+    "< 0.001"
+  } else {
+    round(p_value, 4)
+  }
+}
+
+# Apply the function to add significance stars
+mp_c  |> 
+  mutate(
+    Sig = sapply(p, add_significance_stars),
+    # reverse 2 x iUCE transformation
+    `Adj Coef` = Coefficient / 2,
+    Parameter = sub("count_", "", Parameter),
+    p = sapply(p, format_p_values)
+  ) |> 
+  rename(`Est Coef` = Coefficient) |> 
+  display(digits = 3, ci_digits = 2)
 
 ```
 
-m3_uce_nb is best performer with treatment
+Details for the main effects of the ZINB model are summarized in @tbl_uce_modsum. The parameters for this model must be interpreted differently than in the previous linear model. In a GLM, the response is log-transformed, resulting in exponentiated coefficients for predictors. As a consequence, the effects are *multiplicative* rather than additive. The intercept represents the expected log count of the response variable when all predictors are at their reference levels. The predictor coefficients then represent the multiplicative effects on the expected count compared to the baseline.
 
-gap and PWI are significant
+To ease interpretation, the values for estimated coefficients and standard errors are exponentiated in this table, revering the log transform applied by the NB model fit. This adjustment puts the coefficients in the original 2x scale that was used to ensure integer values for the response. Additionally, the "Adj Coef" column reverses the 2 x iUCE transform, allowing interpretation in the observed scale. Importantly, these transformations do not alter the multiplicative nature of GLM results.
 
-results must be transformed back into the original scale, accounting for the log transform (nb model) and 2 x UCE to guarantee integers = $\frac{\exp(\text{value})}{2}$
+Here, the intercept (`r fmt_p_val(mp_c$p[1])`), gap (`r fmt_p_val(mp_c$p[2])`), and PWI treatment effect (`r fmt_p_val(mp_c$p[5])`) are all statistically significant. The adjusted intercept value indicates that baseline performance for the reference treatment level (AR) and a gap of zero is 3.354 errors. The adjusted gap coefficient indicates that the expected error count increases by 0.516 per day for the AR treatment. The effect of other treatments is multiplicative. This implies that the gap coefficient for PWI is changed by a *factor* of 0.197. These relationships can be interpreted as follows:
 
-so gap is `r exp(0.07403) / 2` and PWI is `r exp(-1.27577) / 2` on the original scale of error count
+\begin{align}
+\text{iUCE}_{\text{AR}} &= 3.354 + (0.516 \times \text{gap}) \label{eq:m3-uce-ar} \\
+\text{iUCE}_{\text{PWI}} &= 3.354 + (0.516 \times \text{gap}) \times 0.197 \label{eq:m3-uce-pwi} \\
+&= 3.354 + (0.102 \times \text{gap}) \notag
+\end{align}
 
-validate
 
-```{r}
-# Check for overdispersion
-overdispersion_nb <- sum(residuals(m3_uce_nb, "pearson")^2) / df.residual(m3_uce_nb)
-overdispersion_nb
+```{r calc-glm-uce-pval}
 
-# Standard Diagnostic Plots
-par(mfrow = c(2, 2))
-plot(m3_uce_nb)
+# Calculate overall p-value by comparing logLik of m3 with a null (intercept only) version
+null_model <- zeroinfl(incr_uce ~ 1 | 1, dist = "negbin", data = h3_data_unordered_uce_xf)
 
-# Compare Observed vs Fitted Values
-fitted_vals <- fitted(m3_uce_nb)
-ggplot(h3_data_unordered_uce_xf, aes(x = fitted_vals, y = incr_uce)) +
+logLik_null <- logLik(null_model)
+logLik_full <- logLik(m3_uce_zinb_add)
+
+# Compute the likelihood-ratio statistic
+LR_stat <- -2 * (logLik_null - logLik_full)
+
+# Degrees of freedom is the difference in number of parameters between full and null models
+df <- attr(logLik_full, "df") - attr(logLik_null, "df")
+
+# Calculate Pseudo R^2 for m3_uce_zinb_add
+invisible(capture.output({
+  pseudo_r2 <- pscl::pR2(m3_uce_zinb_add)  
+})) 
+
+r2ML <- pseudo_r2["r2ML"]  # Cox and Snell's R2
+r2CU <- pseudo_r2["r2CU"]  # Nagelkerke's R2
+
+# Extract p-values for theta and zif from model
+# these test if dispersion (theta) and zero-inflation (zif) are properly accounted for
+m3_uce_zinb_add_pv <- as.numeric(pchisq(LR_stat, df, lower.tail = FALSE))
+
+nimb_sum <- summary(m3_uce_zinb_add)
+
+nimb_theta_pv <- nimb_sum$coefficients$count["Log(theta)", "Pr(>|z|)"]
+
+nimb_zif_pv <- nimb_sum$coefficients$zero["(Intercept)", "Pr(>|z|)"]
+
+```
+
+PAR and MR are statistically equivalent to AR, despite estimated differences that are meaningful if real. To assess the overall model fit, it is compared with a null (intercept only) version of the model using the likelihood-ratio statistic and a $\chi^2$ distribution. The result (`r fmt_p_val(m3_uce_zinb_add_pv)`) confirms that gap and treatment effects have significant explanatory power. Nagelkerke's $R^2$ suggests that the model explains about `r round(r2CU * 100, 2)`% of iUCE's observed variance. Additionally, the model output confirms that both dispersion ($\theta$, `r fmt_p_val(nimb_theta_pv)`) and zero-inflation (`r fmt_p_val(nimb_zif_pv)`) were present and properly accounted for, validating the model selection process. Finally, @fig-m3-uce-pr shows that, despite a few notable high points, the residuals lack sequential patterns, clustering, or other systematic trends. This randomness provides further evidence that the model is adequately capturing most of the structure in the data. Together, these findings give confidence in the model results.
+
+```{r fig-m3-uce-pr}
+#| fig-cap: "Pearson Residuals"
+#| warning: false
+
+# Extract Pearson residuals into data frame for plotting
+residuals <- residuals(m3_uce_zinb_add, type = "pearson")
+residuals_df <- data.frame(Index = 1:length(residuals), Residuals = residuals)
+
+ggplot(residuals_df, aes(x = Index, y = Residuals)) +
   geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  labs(x = "Fitted Values", y = "Observed Values (incr_uce)", title = "Observed vs Fitted Values")
-
-# Check for Zero-Inflation
-zeroinfl_nb <- zeroinfl(incr_uce ~ gap + treatment, dist = "negbin", data = h3_data_unordered_uce_xf)
-summary(zeroinfl_nb)
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed", size = 1) +
+  ggtitle("Pearson Residuals") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5)
+  ) +
+  labs(x = "Index", y = "Pearson Residuals")
 
 ```
 
-- Overdispersion: The Negative Binomial model resolves overdispersion (ratio close to 1).
-- Diagnostic Plots: Residuals indicate a reasonable model fit without obvious patterns. The QQ-plot shows slight deviation at the tails, which is acceptable.
-- Model Selection: m2_uce_nb model with gap as a predictor has the lowest AIC and BIC, suggesting it is the best fit.
-- Zero-Inflation: No significant zero-inflation component is detected, but there is a near-significant impact of gap.
 
-treatment effect → pairwise test
+::: content-hidden
 
-```{r}
+> Given the discrete nature of UCE and the use of negative binomial regression, it could be informative to visualize the distribution of UCE across different levels of gap and treatment using bar plots or histograms. This visualization can help assess the fit of the negative binomial model and identify any potential overdispersion or zero-inflation issues.
+
+To further explore the treatment effects, a pairwise test of estimated marginal means was conducted.
+
+```{r eval=FALSE}
 # for model 3
-emmeans(
-  m3_uce_nb,
+m3_uce_emm <- emmeans(
+  m3_uce_zinb_add,
   pairwise ~ treatment,
   adjust = "holm",
   type = "response"  # default for linear regression model
 )
+
+m3_uce_emm
 ```
 
-TODO: interpret above. is it ok to do emmeans on 2 x UCE? why no significance?
+no significant pair-wise differences but estimated contrasts may be meaningful (note: still in log(2*iUCE) here!); conflicts with finding of PWI significance in omnibus test
 
-> Given the discrete nature of UCE and the use of negative binomial regression, it could be informative to visualize the distribution of UCE across different levels of gap and treatment using bar plots or histograms. This visualization can help assess the fit of the negative binomial model and identify any potential overdispersion or zero-inflation issues.
+consider: effect size, statistical power
 
+check effect size...
 
+```{r eval=FALSE}
+# no direct way to calculate effect size for overall model
+# overall effect size approximated by Nagelkerke's R2
 
-## $H_{3a}$ Result
+## manually calculated pairwise Cohen's-d
 
-limited evidence of treatment effect on durability of learning, with only AR-PWI significant for increase in UCE; reject $H_{3}$, only gap shows consistent and strong effect on retention, as is expected
+# create named vector of means
+emm <- tidy(m3_uce_emm$emmeans)
+means <- setNames(emm$estimate, emm$treatment)
+ses <- setNames(emm$std.error, emm$treatment)
 
-overall, small sample sizes limit power so interpretation / generalizability should take that into consideration
+# Calculate Cohen's d manually
+calculate_cohens_d <- function(mean1, se1, mean2, se2) {
+  sd1 <- se1 * sqrt(2)
+  sd2 <- se2 * sqrt(2)
+  pooled_sd <- sqrt((sd1^2 + sd2^2) / 2)
+  d <- (mean1 - mean2) / pooled_sd
+  return(d)
+}
+
+# Pairwise comparisons
+effects <- combn(names(means), 2, function(x) {
+  mean1 <- means[x[1]]
+  se1 <- ses[x[1]]
+  mean2 <- means[x[2]]
+  se2 <- ses[x[2]]
+  
+  d <- calculate_cohens_d(mean1, se1, mean2, se2)
+  
+  return(data.frame(
+    comparison = paste(x[1], "-", x[2]),
+    cohen_d = d
+  ))
+})
+
+# Convert results to a data frame
+effects_df <- do.call(rbind, effects)
+print(effects_df)
+```
+
+- PWI treatment shows consistently large differences compared to AR, MR, and PAR treatments, indicating a substantially different impact.
+- There are moderate to large differences between AR vs. MR and MR vs. PAR.
+- The effect sizes suggest that these differences, especially the large ones, could be of practical or clinical importance despite the lack of statistical significance post-adjustment.
+
+low sample size limits reliability of results, despite high effect sizes
+confirm with power analysis
+
+explored alternative measure - percentage change per day - no new findings
+
+```{r eval=FALSE}
+
+# quick and dirty outlier removal
+outliers <- as.data.frame(check_outliers(h3_data$pcpd_tct))$Outlier
+
+# five identified, create boolean mask
+mask <- as.logical(outliers)
+
+set.seed(42)
+
+h3_data |> 
+  # remove outliers
+  filter(!mask) |> 
+  ggstatsplot::ggbetweenstats(
+    x = treatment,
+    y = pcpd_tct,
+    type = "nonparametric",
+    xlab = "",
+    ylab = "",
+    title = ": Kruskal-Wallis non-parametric rank sum test",
+    # results.subtitle = FALSE,
+    subtitle = "Significant Differences Identified between PWI and PAR Groups using Dunn's Test, Holm-adjusted post-hoc",
+    digits = 2,
+    # centrality.label.args = list(point.padding = 30),
+    ggtheme = theme_minimal(base_size = 10) +
+      theme(
+        plot.title.position = "plot",
+        plot.title = element_text(face = "bold"),
+        axis.text.y.right = element_blank(),
+        axis.ticks.y.right = element_blank(),
+        axis.text.x = element_text(color = "black")
+        # legend.position = "none",
+        # axis.text.y = element_blank(),
+        # axis.ticks.y = element_blank(),
+      ),
+    # remove side label
+    ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+  )
+```
+
+```{r eval=FALSE}
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+# outlier method above found none
+# this data is also normally distributed
+
+ggstatsplot::ggbetweenstats(
+  data = h3_data,
+  x = treatment,
+  y = pcpd_uce_adj,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = ": Kruskal-Wallis non-parametric rank sum test",
+  # results.subtitle = FALSE,
+  subtitle = "Significant Differences Identified between PWI and PAR Groups using Dunn's Test, Holm-adjusted post-hoc",
+  digits = 2,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+    ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+  )
+)
+```
+
+:::
+
+## $H_{3}$ Result
+
+No statistically significant evidence was found for the effect of instructional method on the increase in TCT over the retention interval. Treatment coefficients for the linear model suggested meaningful differences exist, but that could not be substantiated with the limited data available. The overall model fit was marginal and was not improved by including interaction effects for the gap and treatment predictors. Therefore, $H_{3a}$ is rejected for a lack of evidence in support of the claim that learning retention varies with treatment.
+
+A significant treatment effect on the increase in UCE over time was identified using a zero-inflated negative binomial GLM. Specifically, the PWI method showed a significantly lower rate of error increase compared to the reference AR method. As with the TCT analysis, other treatment coefficients suggest that a meaningful effect may exist, but did not reach the traditional threshold of 95% confidence. Despite these limited findings, the model was statistically significant overall. Sufficient evidence does exist to validate $H_{3b}$'s broad claim that the change in error rate over time varies by treatment.
+
+Overall, the implications for $H_{3}$ are mixed, with the UCE model providing stronger evidence for an effect of instructional method on retention than the TCT model. This difference suggests that time-based performance improvements may not be as sensitive to instructional methods as error rates. While it has little impact on this study, identifying gap is a significant predictor for both iTCT and iUCE is logical and expected, as retention naturally declines over time.
+
+Given the limitations of the study (small sample size, single retention test, variable gap), it would be prudent to interpret these findings as preliminary evidence for the hypothesis, rather than a definitive confirmation. To strengthen these conclusions, further research with larger samples and more repeated measures would be valuable to increase the power to detect treatment effects and estimate them more precisely.
 
 ::: content-hidden
 
@@ -452,5 +797,8 @@ is gap washing away other effects? better to have more data, all with same (smal
 
 limitations - for model based methods did not use cross validation or other methods to train and test on different data, prevent leakage and overfitting
 
+limitations - small sample size, imbalanced groups, single retention test, variable gap
+
 consider using an alternative variation of OEE where quality is a percentage of bricks installed correctly - pass / fail at the step level not part
+
 :::
