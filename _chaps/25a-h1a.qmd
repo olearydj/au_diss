@@ -3,6 +3,7 @@
 ```{r load-libs}
 #| warning: false
 
+library(here)
 library(tidyverse)
 library(pwr)
 library(emmeans)
@@ -17,7 +18,7 @@ library(ggstatsplot)
 
 ```{r load-data}
 # Load objects from the file
-load("rdata/learn.RData")
+load(here("rdata", "learn.RData"))
 ```
 
 #### Average Time per Car
@@ -256,13 +257,14 @@ print(p)
 
 ```
 
-```{r}
+```{r eval=FALSE}
+# moved elsewhere?
 save(
   tabulate_normality_tests,
   qq_plot_patchwork,
   simulate_kruskal_power,
   posthoc_power_analysis,
-  file = "rdata/h1a.RData"
+  file = here("rdata", "h1a.RData")
 )
 ```
 

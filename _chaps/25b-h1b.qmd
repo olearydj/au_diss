@@ -3,6 +3,7 @@
 ```{r load-libs}
 #| warning: false
 
+library(here)
 library(tidyverse)
 library(pwr)
 library(emmeans)
@@ -17,10 +18,10 @@ library(ggstatsplot)
 
 ```{r load-data}
 # Load data objects from the file
-load("rdata/learn.RData")
+load(here("rdata", "learn.RData"))
 
 # load functions from h1a
-load("rdata/h1a.RData")
+load(here("rdata", "h1a.RData"))
 ```
 
 
@@ -764,8 +765,9 @@ ggplot(df, aes(x = x, y = y)) +
 
 ```
 
+stop automatic builds here - the next cell crashes
 
-```{r}
+```{r eval=FALSE}
 # conditional models based on m4 (quadratic random slope and random intercept)
 # introduce treatment and interactions as fixed effects
 cm2 <- lmer(
@@ -808,7 +810,7 @@ ggplot(predicted_vals, aes(x = seq.fp, y = pred_tct, color = treatment, group = 
 
 most treatments only average 3-4 iterations
 
-```{r}
+```{r eval=FALSE}
 # Step 1: Calculate the maximum seq.fp for each participant within each treatment group
 max_seq_per_participant <- md |>
   group_by(treatment, participant) |>
@@ -833,7 +835,7 @@ tried using splines (didn't fit) and polynomial forms. 2nd order polynomial is e
 should I train on a subset of the data? iterations 1-3, or 1-4?
 try a range and compare the results?
 
-```{r}
+```{r eval=FALSE}
 # # Create subsets with different maximum iteration sequences
 # subsets <- list(
 #   md1 = md |> filter(seq <= 3),
@@ -890,7 +892,7 @@ only md1 thru 3 are viable - have all treatments represented
 md1 is relatively balanced, the groups in 2 and 3 are dominated by PWI and PAR
 md1 won't fit - num of observations less than number of random effects
 
-```{r}
+```{r eval=FALSE}
 models <- list()
 for (i in 2:3) {
   subset_data <- subsets[[paste0("md", i)]]
@@ -920,7 +922,7 @@ print(model_summaries_df)
 ```
 
 
-```{r}
+```{r eval=FALSE}
 m <- models$rcm3
 anova(m)
 summary(m)
@@ -939,7 +941,7 @@ summary(pw_slope)
 summary(pw_quad)
 ```
 
-```{r}
+```{r eval=FALSE}
 md3 <- subsets$md3
 
 # Predicted values for different seq.fp levels
@@ -968,7 +970,7 @@ where:
 - $\delta$ is the rate of change
 - $t$ is time
 
-```{r}
+```{r eval=FALSE}
 library(nlme)
 set.seed(42)
 
@@ -988,7 +990,7 @@ Doesn't converge.
 
 Try to use splines to control overfitting.
 
-```{r}
+```{r eval=FALSE}
 md$spline02 <- ifelse(
   md$seq.fp > 0.2,
   md$seq.fp - 0.2,

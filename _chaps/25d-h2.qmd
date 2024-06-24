@@ -1,7 +1,10 @@
+# H2 Results
+
 ```{r load-libs}
 #| warning: false
 #| message: false
 
+library(here)
 library(tidyverse)
 library(ggstatsplot)
 library(lmerTest)
@@ -28,10 +31,10 @@ library(foreach)
 
 ```{r load-stuff}
 # load results data
-load("rdata/res_f.RData")
+load(here("rdata", "res_f.RData"))
 
 # load shared objects
-load("rdata/shared.RData")
+load(here("rdata", "shared.RData"))
 ```
 
 ```{r define-constants}
@@ -432,7 +435,7 @@ recall <- recall |>
     tot_usr_adj
   )
 
-save(recall, file = "rdata/recall.RData")
+save(recall, file = here("rdata", "recall.RData"))
 ```
 
 ```{r make-h2a-data}
@@ -693,13 +696,13 @@ h2a_oee_boot_res <- run_bootstrap_tests(
 )
 
 h2a_oee_boot_res
-save(h2a_oee_boot_res, file = "rdata/h2a_oee_boot_res.RData")
+save(h2a_oee_boot_res, file = here("rdata", "h2a_oee_boot_res.RData"))
 ```
 
 ```{r tbl-boot-oee}
 #| tbl-cap: $H_{2a}$ Bootstrap Analysis of Pairwise OEE Differences
 
-load("rdata/h2a_oee_boot_res.RData")
+load(here("rdata", "h2a_oee_boot_res.RData"))
 
 title <- "Significant OEE Differences in Centrality: Bootstrapped Estimates"
 subtitle <- "Five Replications of 10,000 Resamples for Mean, Median, and the Hodges-Lehmann Estimator"
@@ -1232,13 +1235,13 @@ h2b_pwi_boot_res <- run_bootstrap_tests(
 )
 
 h2b_pwi_boot_res
-save(h2b_pwi_boot_res, file = "rdata/h2b_pwi_boot_res.RData")
+save(h2b_pwi_boot_res, file = here("rdata", "h2b_pwi_boot_res.RData"))
 ```
 
 ```{r tbl-boot-pwi}
 #| tbl-cap: $H_{2b}$ Bootstrap Analysis of Pairwise PWI Differences
 
-load("rdata/h2b_pwi_boot_res.RData")
+load(here("rdata", "h2b_pwi_boot_res.RData"))
 title <- "Significant Reliance Differences in Centrality: Bootstrapped Estimates"
 subtitle <- "Five Replications of 10,000 Resamples for Mean, Median, and the Hodges-Lehmann Estimator"
 create_boot_summary_table(h2b_pwi_boot_res, title = title, subtitle = subtitle)

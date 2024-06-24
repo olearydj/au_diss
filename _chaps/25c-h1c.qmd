@@ -3,6 +3,7 @@
 ```{r load-libs}
 #| warning: false
 
+library(here)
 library(tidyverse)
 library(pwr)
 library(emmeans)
@@ -17,10 +18,10 @@ library(ggstatsplot)
 
 ```{r load-data}
 # Load data objects from the file
-load("rdata/learn.RData")
+load(here("rdata", "learn.RData"))
 
 # load functions from h1a
-load("rdata/h1a.RData")
+load(here("rdata", "h1a.RData"))
 ```
 
 ```{r}
