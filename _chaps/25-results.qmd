@@ -107,7 +107,7 @@ qq_plot_patchwork <-
     # Arrange the plots in a 2x2 grid using patchwork
     plot_layout <-
       (plots[[1]] + plots[[2]]) / (plots[[3]] + plots[[4]])
-    
+
     return(plot_layout)
   }
 
@@ -117,7 +117,7 @@ fmt_p_val <- function(p_value, alpha = 0.05) {
   # if (p_value > alpha) {
   #   return(paste0("> ", alpha))
   # }
-  
+
   if (p_value < 0.001) {
     return("p < 0.001")
   }
@@ -126,49 +126,50 @@ fmt_p_val <- function(p_value, alpha = 0.05) {
   if (p_value < 0.01) {
     return(paste0("p = ", round(p_value, digits = 3)))
   }
-  
+
   return(paste0("p = ", round(p_value, digits = 2)))
 }
 
 # Function to calculate power for Kruskal-Wallis test via simulation
 simulate_kruskal_power <- function(
-    n, k, effect_size, sig_level = 0.05, num_simulations = 1000
-    ) {
-    set.seed(42)
-    p_values <- numeric(num_simulations)
-    for (i in 1:num_simulations) {
-      # Simulate data for each group with an effect size
-      data <- data.frame(value = unlist(lapply(1:k, function(x)
-        rnorm(n, mean = x * effect_size))),
-        group = gl(k, n))
-      # Perform Kruskal-Wallis test
-      p_values[i] <- kruskal.test(value ~ group, data = data)$p.value
-    }
-    # Proportion of tests rejecting null hypothesis gives power estimate
-    power <- mean(p_values < sig_level)
-    return(power)
+    n, k, effect_size, sig_level = 0.05, num_simulations = 1000) {
+  set.seed(42)
+  p_values <- numeric(num_simulations)
+  for (i in 1:num_simulations) {
+    # Simulate data for each group with an effect size
+    data <- data.frame(
+      value = unlist(lapply(1:k, function(x) {
+        rnorm(n, mean = x * effect_size)
+      })),
+      group = gl(k, n)
+    )
+    # Perform Kruskal-Wallis test
+    p_values[i] <- kruskal.test(value ~ group, data = data)$p.value
   }
+  # Proportion of tests rejecting null hypothesis gives power estimate
+  power <- mean(p_values < sig_level)
+  return(power)
+}
 
 # Function to run post-hoc power analysis based on observed epsilon squared
 posthoc_power_analysis <- function(
-    n, k, observed_effect_size, sig_level = 0.05, num_simulations = 1000
-    ) {
-    # Convert epsilon squared back to standard effect size approximation for simulation
-    std_effect_size <- sqrt(observed_effect_size / (1 - observed_effect_size))
-    
-    # Use simulation to estimate power as before
-    power <- simulate_kruskal_power(
-      n, k, std_effect_size, sig_level, num_simulations
-    )
-    return(power)
+    n, k, observed_effect_size, sig_level = 0.05, num_simulations = 1000) {
+  # Convert epsilon squared back to standard effect size approximation for simulation
+  std_effect_size <- sqrt(observed_effect_size / (1 - observed_effect_size))
+
+  # Use simulation to estimate power as before
+  power <- simulate_kruskal_power(
+    n, k, std_effect_size, sig_level, num_simulations
+  )
+  return(power)
 }
 
 # convert a column of a table into a string with the format "a, b, and c"
 # numbers are rounded to the specified number of digits
 col_to_string <- function(data, column, digits = 2) {
   data |>
-    mutate({{column}} := round({{column}}, digits)) |>
-    pull({{column}}) |>
+    mutate({{ column }} := round({{ column }}, digits)) |>
+    pull({{ column }}) |>
     str_c(collapse = ", ") |>
     (\(x) sub(", ([^,]+)$", ", and \\1", x))()
 }
@@ -177,7 +178,7 @@ col_to_string <- function(data, column, digits = 2) {
 ```{r save-shared}
 # saving for use elsewhere
 save(
-  qq_plot_patchwork, 
+  qq_plot_patchwork,
   fmt_p_val,
   simulate_kruskal_power,
   posthoc_power_analysis,
@@ -749,7 +750,7 @@ vc_tbl |>
   as_kable_extra(
     booktabs = TRUE,
     escape = FALSE,
-    #linesep = "\\addlinespace",
+    # linesep = "\\addlinespace",
   ) |>
   kableExtra::kable_styling(
     latex_options = c("scale_down"),
@@ -956,7 +957,7 @@ mv_tbl |>
   as_kable_extra(
     booktabs = TRUE,
     escape = FALSE,
-    #linesep = "\\addlinespace",
+    # linesep = "\\addlinespace",
   ) |>
   kableExtra::kable_styling(
     latex_options = c("scale_down"),
@@ -1239,7 +1240,7 @@ t |>
   as_kable_extra(
     booktabs = TRUE,
     escape = FALSE,
-    #linesep = "\\addlinespace",
+    # linesep = "\\addlinespace",
   ) |>
   kableExtra::kable_styling(
     latex_options = c("scale_down"),
@@ -1456,11 +1457,12 @@ learn_agg_out <- learn_agg |> filter(participant != 1063)
 ```{r save-learn-data}
 # save learn objects with types, etc. as binary data file for external analysis
 save(
-  learn, 
-  learn_agg_out, 
+  learn,
+  learn_agg_out,
   outline_color,
   base_color,
-  file = here("rdata", "learn.RData"))
+  file = here("rdata", "learn.RData")
+)
 ```
 
 
@@ -1569,8 +1571,10 @@ To reconcile these findings for MR and PWI, and confirm those for AR and PAR, th
 
 p <- qq_plot_patchwork(learn_agg_out, x_var = "avg_tct_adj", by_var = "treatment")
 
-p + plot_annotation(title = "Quantile-Quantile Plots of TCT Treatment Data",
-                    subtitle = "PWI Data is the Most Uncharacteristic of Normality")
+p + plot_annotation(
+  title = "Quantile-Quantile Plots of TCT Treatment Data",
+  subtitle = "PWI Data is the Most Uncharacteristic of Normality"
+)
 
 ```
 
@@ -1618,14 +1622,14 @@ h1a_plot <- ggstatsplot::ggbetweenstats(
     ),
   # remove side label
   ggplot.component = list(
-      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
-    )
+    ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+  )
 )
 
 h1a_plot
 
-# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.9", italic(p) == 
-#     "1.0e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~ 
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.9", italic(p) ==
+#     "1.0e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~
 #     "[" * "0.3", "1.0" * "]", italic("n")["obs"] == "53")
 ```
 
@@ -1673,7 +1677,7 @@ learn_h1b <- learn_h1b |>
   ungroup() |>
   select(participant, treatment, seq, tct, uce)
 
-#glimpse(learn_h1b)
+# glimpse(learn_h1b)
 ```
 
 The second hypothesis of the learning phase:

@@ -51,7 +51,7 @@ Similar methodology will be applied to testing the second hypothesis associated 
 $$H_{1b}\textrm{: Average error count per car varies with treatment.}$$
 
 ```{r learn-norm-uce}
-##| tbl-cap: "Summary of UCE Test Statistics, p-Values for Normality Assessment"
+## | tbl-cap: "Summary of UCE Test Statistics, p-Values for Normality Assessment"
 
 uce_norm <- tabulate_normality_tests(learn_agg_out, "treatment", "avg_uce")
 # uce_norm |> gt()
@@ -69,8 +69,10 @@ TODO: correct hard-coded values in text
 
 p <- qq_plot_patchwork(learn_agg_out, x_var = "avg_uce", by_var = "treatment")
 
-p + plot_annotation(title = "Quantile-Quantile Plots of UCE Treatment Data",
-                    subtitle = "observation")
+p + plot_annotation(
+  title = "Quantile-Quantile Plots of UCE Treatment Data",
+  subtitle = "observation"
+)
 
 ```
 
@@ -111,15 +113,15 @@ h1c_plot <- ggstatsplot::ggbetweenstats(
     ),
   # remove side label
   ggplot.component = list(
-      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
-    )
+    ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+  )
 )
 
 h1c_res <- ggstatsplot::extract_stats(h1c_plot)
 h1c_plot
 
-# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.5", italic(p) == 
-#     "1.2e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~ 
+# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.5", italic(p) ==
+#     "1.2e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~
 #     "[" * "0.3", "1.0" * "]", italic("n")["obs"] == "53")
 ```
 

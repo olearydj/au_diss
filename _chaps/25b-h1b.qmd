@@ -92,21 +92,26 @@ Here is a plot of smoothed TCT data by treatment:
 #| warning: false
 
 # Plot smoothed TCT data by treatment
-ggplot(learn_h1b,
-       aes(
-         x = seq,
-         y = tct,
-         color = treatment,
-         group = participant
-       )) +
+ggplot(
+  learn_h1b,
+  aes(
+    x = seq,
+    y = tct,
+    color = treatment,
+    group = participant
+  )
+) +
   # geom_line(aes(group = participant), alpha = 0.3) +
   geom_smooth(aes(group = treatment),
-              method = "loess",
-              se = FALSE,
-              size = 1) +
-  labs(title = "Learning Curves by Treatment",
-       x = "Task Number",
-       y = "Task Completion Time (TCT)") +
+    method = "loess",
+    se = FALSE,
+    size = 1
+  ) +
+  labs(
+    title = "Learning Curves by Treatment",
+    x = "Task Number",
+    y = "Task Completion Time (TCT)"
+  ) +
   theme_minimal()
 
 ```
@@ -118,7 +123,7 @@ Here is the output of a model fit based on non-standardized data:
 ```{r h1b-lmer-model-1}
 #| warning: false
 
-#library(lme4)
+# library(lme4)
 library(broom.mixed)
 library(lmerTest)
 
@@ -128,10 +133,10 @@ learn_h1b$treatment <- factor(as.character(learn_h1b$treatment))
 # Fit the mixed-effects model with interaction effects
 # use the overloaded version of lmer from lmerTest to get CI, p-vals
 h1b_mod_lmer <- lmerTest::lmer(
-    tct ~ treatment * seq + (1 + seq | participant),
-    data = learn_h1b,
-    control = lmerControl(optimizer = "bobyqa")
-  )
+  tct ~ treatment * seq + (1 + seq | participant),
+  data = learn_h1b,
+  control = lmerControl(optimizer = "bobyqa")
+)
 
 # Summary of the model to understand fixed and random effects
 h1b_mod_sum <- summary(h1b_mod_lmer)
@@ -191,10 +196,10 @@ learn_h1b_std <- learn_h1b |>
   )
 
 h1b_mod_lmer_std <- lmerTest::lmer(
-    tct ~ treatment * seq + (1 + seq | participant),
-    data = learn_h1b_std,
-#    control = lmerControl(optimizer = "bobyqa")
-  )
+  tct ~ treatment * seq + (1 + seq | participant),
+  data = learn_h1b_std,
+  #    control = lmerControl(optimizer = "bobyqa")
+)
 
 summary(h1b_mod_lmer_std)
 ```
@@ -207,7 +212,7 @@ Several tests are run to confirm the model quality:
 
 ```{r}
 ## model tests
-# normality of residuals 
+# normality of residuals
 mr <- resid(h1b_mod_lmer_std)
 qqnorm(mr)
 qqline(mr)
@@ -296,21 +301,21 @@ Continued evaluation by comparing with simpler models:
 # compare alternative models
 # baseline, as formulated above
 m1 <- lmerTest::lmer(tct ~ treatment * seq + (1 + seq | participant),
-    data = learn_h1b,
-    control = lmerControl(optimizer = "bobyqa")
-  )
+  data = learn_h1b,
+  control = lmerControl(optimizer = "bobyqa")
+)
 
 # random intercept only
 m2 <- lmerTest::lmer(tct ~ treatment * seq + (1 | participant),
-    data = learn_h1b,
-    control = lmerControl(optimizer = "bobyqa")
-  )
+  data = learn_h1b,
+  control = lmerControl(optimizer = "bobyqa")
+)
 
 # fixed intercept, random slope
 m3 <- lmerTest::lmer(tct ~ treatment * seq + (seq | participant),
-    data = learn_h1b,
-    control = lmerControl(optimizer = "bobyqa")
-  )
+  data = learn_h1b,
+  control = lmerControl(optimizer = "bobyqa")
+)
 
 AIC(m1, m2, m3)
 ```
@@ -416,8 +421,8 @@ d <- learn_h1b |>
   mutate(
     tct_diff = ifelse(
       is.na(lag(tct)),
-      tct - start_tct,  # For t = 1, calculate difference from estimated TCT(t=0) directly
-      tct - lag(tct)    # For subsequent tasks, difference from the previous task
+      tct - start_tct, # For t = 1, calculate difference from estimated TCT(t=0) directly
+      tct - lag(tct) # For subsequent tasks, difference from the previous task
     )
   ) |>
   ungroup()
@@ -443,8 +448,8 @@ ggstatsplot::ggbetweenstats(
   xlab = "",
   ylab = "",
   title = "rate of change in tct by treatment",
-  #results.subtitle = FALSE,
-  #pairwise.display = "all",
+  # results.subtitle = FALSE,
+  # pairwise.display = "all",
   subtitle = "Significant Pairwise Differences Identified between 'Fast' (PWI, PAR) and 'Slow' (AR, MR) Groups using Dunn's Test, Holm-adjusted post-hoc",
   digits = 2,
   # centrality.label.args = list(point.padding = 30),
@@ -461,8 +466,8 @@ ggstatsplot::ggbetweenstats(
     ),
   # remove side label
   ggplot.component = list(
-      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
-    )
+    ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+  )
 )
 ```
 
@@ -517,10 +522,10 @@ glimpse(d2)
 # Fit the mixed-effects model with interaction effects
 # use the overloaded version of lmer from lmerTest to get CI, p-vals
 m <- lmerTest::lmer(
-    tct_diff ~ treatment + seq + (1 | participant),
-    data = d2,
-    control = lmerControl(optimizer = "bobyqa")
-  )
+  tct_diff ~ treatment + seq + (1 | participant),
+  data = d2,
+  control = lmerControl(optimizer = "bobyqa")
+)
 
 summary(m)
 ```
@@ -544,13 +549,16 @@ To attempt to address these issues, further changes were made to:
 ggplot(d, aes(x = seq, y = tct_diff, group = participant, color = treatment)) +
   geom_line(alpha = 0.2) +
   geom_smooth(aes(group = treatment),
-              method = "loess",
-              se = FALSE,
-              size = 1) +
+    method = "loess",
+    se = FALSE,
+    size = 1
+  ) +
   theme_minimal() +
-  labs(title = "Participant Learning Progressions",
-       x = "Task Sequence",
-       y = "TCT Differences")
+  labs(
+    title = "Participant Learning Progressions",
+    x = "Task Sequence",
+    y = "TCT Differences"
+  )
 ```
 
 Here is one such attempt, using simplified implementation of diffs:
@@ -577,7 +585,7 @@ summary(ms)
 # Calculate ICC
 as.numeric(VarCorr(ms)$participant[1]) /
   (as.numeric(VarCorr(ms)$participant[1]) +
-     as.numeric(attr(VarCorr(ms), "sc") ^ 2))
+    as.numeric(attr(VarCorr(ms), "sc")^2))
 ```
 
 This shows an improvement in the participant variance, but no significant treatment effects. RE stats indicate that intercept and slope are 100% inversely correlated. ICC of 0.81 suggests substantial participant-level variability.
@@ -601,15 +609,17 @@ d <- learn_h1b |>
 # include Start TCT in Total Improvement Calculation
 d <- d |>
   group_by(participant) |>
-  mutate(max_tct = max(c(tct, start_tct)),
-         min_tct = min(tct),
-         tot_imp = max_tct - min_tct) |>
+  mutate(
+    max_tct = max(c(tct, start_tct)),
+    min_tct = min(tct),
+    tot_imp = max_tct - min_tct
+  ) |>
   ungroup()
 
 # normalize tct_diff by tot_imp
 d <- d |>
-  mutate(tct_diff_norm = tct_diff / tot_imp) |>  # Normalize the differences
-  filter(!is.na(tct_diff_norm))   # Ensure there are no NA values
+  mutate(tct_diff_norm = tct_diff / tot_imp) |> # Normalize the differences
+  filter(!is.na(tct_diff_norm)) # Ensure there are no NA values
 
 # View the transformed data
 glimpse(d)
@@ -630,7 +640,7 @@ ggstatsplot::ggbetweenstats(
   xlab = "",
   ylab = "",
   title = "rate of change in tct by treatment",
-  #results.subtitle = FALSE,
+  # results.subtitle = FALSE,
   pairwise.display = "all",
   subtitle = "Significant Pairwise Differences Identified between 'Fast' (PWI, PAR) and 'Slow' (AR, MR) Groups using Dunn's Test, Holm-adjusted post-hoc",
   digits = 2,
@@ -648,8 +658,8 @@ ggstatsplot::ggbetweenstats(
     ),
   # remove side label
   ggplot.component = list(
-      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
-    )
+    ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+  )
 )
 
 ```
@@ -684,10 +694,10 @@ summary(fem)
 # Fit the mixed-effects model with interaction effects
 # use the overloaded version of lmer from lmerTest to get CI, p-vals
 h1b_mod_diffs <- lmerTest::lmer(
-    tct_diff_norm ~ treatment + seq + (1 + seq | participant),
-    data = d,
-    control = lmerControl(optimizer = "bobyqa")
-  )
+  tct_diff_norm ~ treatment + seq + (1 + seq | participant),
+  data = d,
+  control = lmerControl(optimizer = "bobyqa")
+)
 
 summary(h1b_mod_diffs)
 ```
@@ -708,21 +718,21 @@ curve based on quadratic component `seq.fp ^ 2`
 need more logarithmic characteristics
 
 ```{r}
-sl = sequence(11) / 11
+sl <- sequence(11) / 11
 
 pd <- tibble(seq.fp = sl) |>
   mutate(
-    ls = 0.25*log(seq.fp),
+    ls = 0.25 * log(seq.fp),
     t = atan(sl),
     es = exp(seq.fp),
-    ss = seq.fp ^ 2
-)
+    ss = seq.fp^2
+  )
 
 pd |>
   ggplot() +
   geom_line(aes(x = seq.fp, y = t, color = "blue"))
-  # geom_line(aes(x = seq.fp, y = es, color = "red")) +
-  # geom_line(aes(x = seq.fp, y = ss, color = "green"))
+# geom_line(aes(x = seq.fp, y = es, color = "red")) +
+# geom_line(aes(x = seq.fp, y = ss, color = "green"))
 
 ```
 
@@ -743,11 +753,13 @@ x_values <- seq(0, 1, length.out = 100)
 transformed_values <- lt(x_values, L = 0.5, k = 10, x0 = 0)
 
 df <- data.frame(x = x_values, y = transformed_values)
-ggplot(df, aes(x = x, y = y)) + 
-  geom_line() + 
-  labs(title = "transformation tester", 
-       x = "x", 
-       y = "Transformed x") +
+ggplot(df, aes(x = x, y = y)) +
+  geom_line() +
+  labs(
+    title = "transformation tester",
+    x = "x",
+    y = "Transformed x"
+  ) +
   theme_minimal()
 
 ```
@@ -757,17 +769,17 @@ ggplot(df, aes(x = x, y = y)) +
 # conditional models based on m4 (quadratic random slope and random intercept)
 # introduce treatment and interactions as fixed effects
 cm2 <- lmer(
-    tct ~ 
-      1 + seq.fp * treatment + I(lt(seq.fp)) * treatment + 
-      (1 + seq.fp + I(lt(seq.fp)) | participant),
-    data = md, REML = F
+  tct ~
+    1 + seq.fp * treatment + I(lt(seq.fp)) * treatment +
+    (1 + seq.fp + I(lt(seq.fp)) | participant),
+  data = md, REML = F
 )
 
 cm3 <- lmer(
-    tct ~ 
-      1 + seq.fp * treatment +  
-      (1 + seq.fp | participant),
-    data = md, REML = F
+  tct ~
+    1 + seq.fp * treatment +
+    (1 + seq.fp | participant),
+  data = md, REML = F
 )
 
 cm <- cm3
@@ -787,7 +799,7 @@ ggplot(predicted_vals, aes(x = seq.fp, y = pred_tct, color = treatment, group = 
   geom_line() +
   geom_point(data = md, aes(x = seq.fp, y = tct, color = treatment, alpha = 0.4)) +
   labs(title = "Predicted TCT across Task Iterations by Treatment", x = "Task Iteration (seq.fp)", y = "Predicted TCT") +
-  facet_wrap(~ treatment) +
+  facet_wrap(~treatment) +
   theme_minimal()
 ```
 
@@ -800,12 +812,12 @@ most treatments only average 3-4 iterations
 # Step 1: Calculate the maximum seq.fp for each participant within each treatment group
 max_seq_per_participant <- md |>
   group_by(treatment, participant) |>
-  summarize(max_seq_fp = max(seq.fp), .groups = 'drop')
+  summarize(max_seq_fp = max(seq.fp), .groups = "drop")
 
 # Step 2: Calculate the mean of these maximum values for each treatment group
 avg_max_seq_per_treatment <- max_seq_per_participant |>
   group_by(treatment) |>
-  summarize(avg_max_seq = mean(max_seq_fp), .groups = 'drop')
+  summarize(avg_max_seq = mean(max_seq_fp), .groups = "drop")
 
 # Output the result
 print(avg_max_seq_per_treatment)
@@ -834,7 +846,7 @@ try a range and compare the results?
 # Determine the number of iterations each participant has completed
 participant_iterations <- md |>
   group_by(participant) |>
-  summarize(max_iterations = max(seq), .groups = 'drop')
+  summarize(max_iterations = max(seq), .groups = "drop")
 
 # Function to filter data sets by minimum number of iterations
 subset_by_iterations <- function(data, min_iterations) {
@@ -861,7 +873,7 @@ subsets <- list(
 summarize_participants <- function(subset_data) {
   subset_data |>
     group_by(treatment) |>
-    summarize(num_participants = n_distinct(participant), .groups = 'drop')
+    summarize(num_participants = n_distinct(participant), .groups = "drop")
 }
 
 # Create a list to store the summary tables
@@ -883,17 +895,20 @@ models <- list()
 for (i in 2:3) {
   subset_data <- subsets[[paste0("md", i)]]
   print(paste0("fitting model: ", i))
-  tryCatch({
-    models[[paste0("rcm", i)]] <- lmer(
-      tct ~ 
-        1 + seq.fp * treatment + I(seq.fp ^ 2) * treatment + 
-        (1 + seq.fp + I(seq.fp ^ 2) | participant),
-      data = subset_data, REML = F
-    )
-  }, error = function(e) {
-    print(paste0("Error fitting model ", i, ": ", e$message))
-    models[[paste0("rcm", i)]] <- NULL
-  })
+  tryCatch(
+    {
+      models[[paste0("rcm", i)]] <- lmer(
+        tct ~
+          1 + seq.fp * treatment + I(seq.fp^2) * treatment +
+          (1 + seq.fp + I(seq.fp^2) | participant),
+        data = subset_data, REML = F
+      )
+    },
+    error = function(e) {
+      print(paste0("Error fitting model ", i, ": ", e$message))
+      models[[paste0("rcm", i)]] <- NULL
+    }
+  )
 }
 
 library(broom.mixed)
@@ -911,9 +926,9 @@ anova(m)
 summary(m)
 r2(m)
 
-em_int <- emmeans::emmeans(m, ~ treatment)
+em_int <- emmeans::emmeans(m, ~treatment)
 em_slope <- emmeans::emmeans(m, ~ treatment | seq.fp)
-em_quad <- emmeans::emmeans(m, ~ treatment | I(seq.fp ^ 2))
+em_quad <- emmeans::emmeans(m, ~ treatment | I(seq.fp^2))
 
 pw_int <- pairs(em_int, adjust = "holm")
 pw_slope <- pairs(em_slope, adjust = "holm")
@@ -958,12 +973,13 @@ library(nlme)
 set.seed(42)
 
 em <- nlme(tct ~ a + b * exp(d * seq.fp),
-           data = md,
-           fixed = a + b + d ~ 1,
-           random = list(a ~ 1, d ~ 1),
-           groups = ~ participant,
-           start = c(60, -60, -1),
-           na.action = na.omit)
+  data = md,
+  fixed = a + b + d ~ 1,
+  random = list(a ~ 1, d ~ 1),
+  groups = ~participant,
+  start = c(60, -60, -1),
+  na.action = na.omit
+)
 ```
 
 Doesn't converge.
@@ -979,7 +995,7 @@ md$spline02 <- ifelse(
   0
 )
 
-plot(y=md$spline02, x=md$seq.fp)
+plot(y = md$spline02, x = md$seq.fp)
 
 cms <- lmer(
   tct ~
@@ -989,8 +1005,8 @@ cms <- lmer(
 )
 
 # cm1 <- lmer(
-#     tct ~ 
-#       1 + seq.fp * treatment + I(seq.fp ^ 2) * treatment + 
+#     tct ~
+#       1 + seq.fp * treatment + I(seq.fp ^ 2) * treatment +
 #       (1 + seq.fp + I(seq.fp ^ 2) | participant),
 #     data = md, REML = F
 # )

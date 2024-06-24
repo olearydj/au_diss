@@ -115,7 +115,8 @@ Estimated marginal means for pairwise comparison:
 
 ```{r}
 emmeans_tct <- emmeans::emmeans(
-  m3, pairwise ~ treatment, type = "response"
+  m3, pairwise ~ treatment,
+  type = "response"
 )
 
 summary(emmeans_tct)
@@ -197,9 +198,11 @@ emmeans_df <- emmeans_df %>%
 p <-
   ggplot(learn_h1a, aes(x = treatment, y = tct, fill = treatment)) +
   geom_violin(trim = FALSE, alpha = 0.5) +
-  geom_jitter(width = 0.1,
-              size = 2,
-              alpha = 0.5) +
+  geom_jitter(
+    width = 0.1,
+    size = 2,
+    alpha = 0.5
+  ) +
   stat_summary(
     fun = median,
     geom = "point",
@@ -237,7 +240,8 @@ p <-
       x = contrast,
       y = max(learn_h1a$tct) + 20,
       label = paste("p =", format(
-        p.value, digits = 2, scientific = TRUE
+        p.value,
+        digits = 2, scientific = TRUE
       ))
     ),
     vjust = -0.5,
@@ -254,10 +258,11 @@ print(p)
 
 ```{r}
 save(
-  tabulate_normality_tests, 
+  tabulate_normality_tests,
   qq_plot_patchwork,
   simulate_kruskal_power,
   posthoc_power_analysis,
-  file = "rdata/h1a.RData")
+  file = "rdata/h1a.RData"
+)
 ```
 

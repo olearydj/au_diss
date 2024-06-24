@@ -47,7 +47,7 @@ car_results |>
     x = "Treatment",
     y = "Car Elapsed Time (seconds)"
   )
-    
+
 ```
 
 ```{r}
@@ -64,7 +64,7 @@ print(time_anova_summary)
 ```{r}
 #| label: tukey-et-by-treat
 
-p_value = time_anova_summary[[1]]$`Pr(>F)`[1]
+p_value <- time_anova_summary[[1]]$`Pr(>F)`[1]
 if (p_value < 0.05) {
   time_post_hoc <- TukeyHSD(time_anova_result)
   print(time_post_hoc)
@@ -109,7 +109,7 @@ car_results |>
     x = "Treatment",
     y = "Count"
   )
-    
+
 ```
 
 ```{r}
@@ -124,7 +124,7 @@ print(error_anova_summary)
 ```{r}
 #| label: tukey-uce-by-treat
 
-p_value = error_anova_summary[[1]]$`Pr(>F)`[1]
+p_value <- error_anova_summary[[1]]$`Pr(>F)`[1]
 if (p_value < 0.05) {
   error_post_hoc <- TukeyHSD(error_anova_result)
   print(error_post_hoc)
@@ -165,8 +165,10 @@ Very important realization here - NA is **not** a good replacement for 0 values 
 #| label: boxplot-pwi-ref-by-treat
 
 pwi_ref_count_data <- car_results |>
-  filter(phase == 2,
-         car_outcome == "complete") |>
+  filter(
+    phase == 2,
+    car_outcome == "complete"
+  ) |>
   mutate(pwi_event_count = ifelse(is.na(pwi_event_count), 0, pwi_event_count))
 
 pwi_ref_count_data |>
@@ -177,7 +179,7 @@ pwi_ref_count_data |>
     x = "Treatment",
     y = "Count"
   )
-    
+
 ```
 
 ```{r}
@@ -193,7 +195,7 @@ print(pwi_ref_anova_summary)
 ```{r}
 #| label: tukey-pwi-ref-by-treat
 
-p_value = pwi_ref_anova_summary[[1]]$`Pr(>F)`[1]
+p_value <- pwi_ref_anova_summary[[1]]$`Pr(>F)`[1]
 if (p_value < 0.05) {
   pwi_ref_post_hoc <- TukeyHSD(pwi_ref_anova_result)
   print(pwi_ref_post_hoc)
@@ -222,8 +224,10 @@ A pattern similar to what was observed for the PWI references is observed, inclu
 #| label: boxplot-pwi-dur-by-treat
 
 pwi_ref_dur_data <- car_results |>
-  filter(phase == 2,
-         car_outcome == "complete") |>
+  filter(
+    phase == 2,
+    car_outcome == "complete"
+  ) |>
   mutate(pwi_event_tot_time = ifelse(is.na(pwi_event_tot_time), 0, pwi_event_tot_time))
 
 pwi_ref_dur_data |>
@@ -234,7 +238,7 @@ pwi_ref_dur_data |>
     x = "Treatment",
     y = "Time (seconds)"
   )
-    
+
 ```
 
 ```{r}
@@ -250,7 +254,7 @@ print(pwi_tot_time_anova_summary)
 ```{r}
 #| label: tukey-pwi-dur-by-treat
 
-p_value = pwi_tot_time_anova_summary[[1]]$`Pr(>F)`[1]
+p_value <- pwi_tot_time_anova_summary[[1]]$`Pr(>F)`[1]
 if (p_value < 0.05) {
   pwi_tot_time_post_hoc <- TukeyHSD(pwi_tot_time_anova_result)
   print(pwi_tot_time_post_hoc)
@@ -276,12 +280,14 @@ Load System Usability and TLX scores.
 sus_scores <- read_xlsx(
   "./data/combined_results.xlsx",
   na = c("", "N/A"),
-  sheet = "system usability scores")
+  sheet = "system usability scores"
+)
 
 tlx_scores <- read_xlsx(
   "./data/combined_results.xlsx",
   na = c("", "N/A"),
-  sheet = "tlx scores")
+  sheet = "tlx scores"
+)
 ```
 
 ### System Usability Scores (SUS)
@@ -337,7 +343,7 @@ print(sus_anova_summary)
 ```{r}
 #| label: tukey-sus-by-treat
 
-p_value = sus_anova_summary[[1]]$`Pr(>F)`[1]
+p_value <- sus_anova_summary[[1]]$`Pr(>F)`[1]
 if (p_value < 0.05) {
   post_hoc <- TukeyHSD(sus_anova_result)
   print(sus_post_hoc)
@@ -401,7 +407,7 @@ print(tlx_anova_summary)
 ```{r}
 #| label: tukey-tlx-ty-treat
 
-p_value = tlx_anova_summary[[1]]$`Pr(>F)`[1]
+p_value <- tlx_anova_summary[[1]]$`Pr(>F)`[1]
 if (p_value < 0.05) {
   post_hoc <- TukeyHSD(tlx_anova_result)
   print(tlx_post_hoc)
@@ -415,7 +421,7 @@ if (p_value < 0.05) {
 ```{r}
 #| label: car-time-trends
 
-plot_data <- car_results |> 
+plot_data <- car_results |>
   filter(phase == 1, car_outcome == "complete") |>
   group_by(participant, treatment) |>
   arrange(sequence) |>
@@ -424,16 +430,16 @@ plot_data <- car_results |>
   arrange(participant, car_number) |>
   mutate(treatment = factor(treatment, levels = c("PWI", "PAR", "AR", "MR")))
 
-plot_data |> 
+plot_data |>
   ggplot(aes(x = as.factor(car_number), y = car_elapsed_time)) +
-    geom_boxplot() +
-    geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
-    labs(
-      title = "Car Elapsed Time by Car Number for Phase 1",
-      x = "Car Number",
-      y = "Elapsed Time (seconds)"
-    ) +
-    facet_wrap(~ treatment, ncol = 1)
+  geom_boxplot() +
+  geom_jitter(width = 0.2, alpha = 0.5, color = base_color) +
+  labs(
+    title = "Car Elapsed Time by Car Number for Phase 1",
+    x = "Car Number",
+    y = "Elapsed Time (seconds)"
+  ) +
+  facet_wrap(~treatment, ncol = 1)
 
 ```
 
@@ -446,16 +452,20 @@ $$y(t) = a + b \times e^{-ct}$$
 ```{r}
 # Function to fit nls model and return tidy summary
 fit_model <- function(df) {
-  fit <- tryCatch({
-    nls(car_elapsed_time ~ a + b * exp(-c * car_number),
+  fit <- tryCatch(
+    {
+      nls(car_elapsed_time ~ a + b * exp(-c * car_number),
         start = list(a = 200, b = 1000, c = 0.1), # Initial guesses
-        data = df)
-  }, error = function(e) {
-    print(paste("Error fitting model for treatment:", unique(df$treatment)[1]))
-    print(e)
-    return(NULL)
-  })
-  
+        data = df
+      )
+    },
+    error = function(e) {
+      print(paste("Error fitting model for treatment:", unique(df$treatment)[1]))
+      print(e)
+      return(NULL)
+    }
+  )
+
   if (!is.null(fit)) {
     tidy_fit <- tidy(fit)
     tidy_fit$treatment <- unique(df$treatment)[1]
@@ -466,7 +476,7 @@ fit_model <- function(df) {
 }
 
 # Apply the function to each treatment group and collate results
-results <- plot_data |> 
+results <- plot_data |>
   (\(df) split(df, df$treatment))() |>
   map_df(fit_model, .id = "treatment")
 
