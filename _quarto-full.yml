@@ -23,23 +23,23 @@ book:
   date: today
   chapters:
     - index.qmd
-    - 21-intro.qmd
-    - 22-lit_review.qmd
-    - 23-prob_statement.qmd
-    - 24-methods.qmd
-    - 25-results.qmd
-    - 26-conclusions.qmd
-    - 27-colophon.qmd
-    - 28-references.qmd
+    - _chaps/21-intro.qmd
+    - _chaps/22-lit_review.qmd
+    - _chaps/23-prob_statement.qmd
+    - _chaps/24-methods.qmd
+    - _chaps/25-results.qmd
+    - _chaps/26-conclusions.qmd
+    - _chaps/27-colophon.qmd
+    - _chaps/28-references.qmd
   appendices:
-    - 31a-irb.qmd
-    - 32b-contributions.qmd
-    - 33c-s1conduct.qmd
-    - 34d-s2conduct.qmd
-    - 35e-videotools.qmd
-    - 36f-videoproc.qmd
-    - 37g-datadict.qmd
-    - 38h-dataorg.qmd
+    - _apps/31a-irb.qmd
+    - _apps/32b-contributions.qmd
+    - _apps/33c-s1conduct.qmd
+    - _apps/34d-s2conduct.qmd
+    - _apps/35e-videotools.qmd
+    - _apps/36f-videoproc.qmd
+    - _apps/37g-datadict.qmd
+    - _apps/38h-dataorg.qmd
 
 bibliography: references.bib
 csl: "csl/apa7.csl"

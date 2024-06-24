@@ -17,7 +17,7 @@ library(ggstatsplot)
 
 ```{r load-data}
 # Load objects from the file
-load("learn.RData")
+load("rdata/learn.RData")
 ```
 
 #### Average Time per Car
@@ -258,6 +258,6 @@ save(
   qq_plot_patchwork,
   simulate_kruskal_power,
   posthoc_power_analysis,
-  file = "h1a.RData")
+  file = "rdata/h1a.RData")
 ```
 

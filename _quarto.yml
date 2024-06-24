@@ -1,12 +1,49 @@
-## base for partial PDF builds
+## base for full PDF builds
 ## copy to _quarto.yml,
-## select desired chapters in _quarto-chap.yml,
-## and run: quarto render --to pdf --profile chap
+## will render all chapters and appendicies per _quarto-book.yml,
+## and run: quarto render --to pdf --profile book
+
+# credit: uses titlepages v1 academic-static templates
 
 project:
+### Project reference: https://quarto.org/docs/reference/projects/options.html
+# Main
+  ## not used for filename:
+  title: "Project Title"
   type: book
   output-dir: manuscript
+# Other: Preview, Serve
 
+book:
+### Book reference: https://quarto.org/docs/reference/projects/books.html
+# Book-specific project options
+  title: "Augmented vs. Traditional Instruction in Manufacturing Assembly"
+  subtitle: "An Affordance-Based, Multi-Modal Assessment of Learning, Recall, and Retention"
+  author: "Danny J. O'Leary"
+  date: today
+  chapters:
+    - index.qmd
+    - _chaps/21-intro.qmd
+    - _chaps/22-lit_review.qmd
+    - _chaps/23-prob_statement.qmd
+    - _chaps/24-methods.qmd
+    - _chaps/25-results.qmd
+    - _chaps/26-conclusions.qmd
+    - _chaps/27-colophon.qmd
+    - _chaps/28-references.qmd
+  appendices:
+    - _apps/31a-irb.qmd
+    - _apps/32b-contributions.qmd
+    - _apps/33c-s1conduct.qmd
+    - _apps/34d-s2conduct.qmd
+    - _apps/35e-videotools.qmd
+    - _apps/36f-videoproc.qmd
+    - _apps/37g-datadict.qmd
+    - _apps/38h-dataorg.qmd
+
+bibliography: references.bib
+csl: "csl/apa7.csl"
+editor: source
 fig-width: 7
 fig-height: 5
 fig-align: "center"
@@ -20,6 +57,10 @@ execute:
   warning: true     # show warnings
   # include: not used, controls inclusion of both code and output (T/F);
   # combination of echo and results settings
+
+# all fenced code blocks
+code-link: true
+code-copy: true
 
 format:
   html:
@@ -39,7 +80,7 @@ format:
     code-fold: true
   # custom css
     css: "css/custom.css"
-    
+  
   pdf:
   ### PDF reference: https://quarto.org/docs/reference/formats/pdf.html
   # Title & Author - see book options
@@ -49,9 +90,14 @@ format:
     output-file: "dissertation"
     output-ext: "pdf"
   # Table of Contents
-    toc: false
-    lof: false
-    lot: false
+    toc: true
+    toc-depth: 3
+    toc-title: "Table of Contents"
+    lof: true
+    lot: true
+  # Hypperref
+    hyperrefoptions: 
+      - "linktoc=all"
   # Numbering
     number-sections: true
     number-depth: 2
@@ -73,6 +119,13 @@ format:
     linkcolor: "DodgerBlue4"
     filecolor: "Turquoise3"
     citecolor: "DarkOliveGreen4"
+  # Citations
+    link-citations: true
+    cite-method: "biblatex"
+    biblio-style: "apa"
+    biblatexoptions: 
+      - "backend=biber"
+      - "backref=true"
   # Layout
     documentclass: scrbook
     classoption: 
@@ -96,7 +149,7 @@ format:
     # include-in-header:
   # Metadata
   # Rendering
-    # template: tex/template.tex
+    template: tex/template.tex
     # template-partials: 
-    # keep-tex: true
+    keep-tex: true
 

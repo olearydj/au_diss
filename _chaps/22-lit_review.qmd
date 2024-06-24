@@ -48,7 +48,7 @@ The resulting set of publications was used to seed a secondary search using a co
 
 [^22-lit_review-9]: Litmaps: <https://www.litmaps.com/>
 
-![Discovering Relevant Sources in Litmaps](images/22-LitMaps.png){#fig-litmaps width="6in"}
+![Discovering Relevant Sources in Litmaps](/images/22-LitMaps.png){#fig-litmaps width="6in"}
 
 Broadly speaking, these tools link papers based on citation trees, bibliographic coupling, analysis of the citation statement, and other sophisticated methods. From their original findings, users can interactively traverse connected papers in graph and/or timeline view, focus on specific authors or collaborators, and otherwise refine the search. Abstracts and links to the papers are available throughout the process to guide exploration.
 
@@ -164,7 +164,7 @@ Cognitive load theory and flow theory offer additional insights about balancing 
 
 Together, these theories inform a cohesive approach to instructional design for augmented training methods. As depicted in @fig-idforar, instructional design should be based on Active Learning Theories and informed by Cognitive Load Theory, while applying Educational Best Practices. Active learning theories are comprised of experiential and constructivist components, along with related theories of cognition, embodiment, and flow.
 
-![Instructional Design for Augmented Training Methods](images/22-IDforAR.png){#fig-idforar}
+![Instructional Design for Augmented Training Methods](/images/22-IDforAR.png){#fig-idforar}
 
 ## Barriers to Adoption in Manufacturing
 
@@ -186,11 +186,11 @@ Upon closer review, two cases were later found less relevant than originally und
 
 @gonzalez-franco2017immer examines the effectiveness of MR against traditional training in manufacturing. As seen in @fig-gonzalez, the study uniquely employed an OST HMD setup to facilitate a face-to-face training where participants and instructors collaborated using a virtual model of an aircraft maintenance door. Twenty-four employees of the institution, without prior manufacturing knowledge, were recruited for this between-groups study. Knowledge retention tests and practical application assessments were used to determine the effectiveness and knowledge transfer. Analysis unexpectedly revealed that no significant differences were found in knowledge retention and interpretation scores between the MR and traditional methods. Task times did increase for MR training, attributed to the complexity of and user inexperience with HMDMR. The research highlights a unique capability of MR as equivalent training tool that can support, not replace some forms of face-to-face training in the future.
 
-![Experimental Setup from @gonzalez-franco2017immer](images/22-GonzalezSetup.png){#fig-gonzalez width="5in"}
+![Experimental Setup from @gonzalez-franco2017immer](/images/22-GonzalezSetup.png){#fig-gonzalez width="5in"}
 
 @chu2020compa investigates the comparative effectiveness of instructional methods for assembling models of traditional Chinese architecture. The between-groups study recruited 48 engineering students to compare traditional paper instructions with a 3D viewer and an AR-assisted system. Each treatment was designed to include a progression of instructional affordances, as seen in @fig-chu, based on validated paper-based instructions. Despite this, paper methods were associated with the most part-fetching errors, suggesting they lacked the necessary clarity. The AR system showed a trend towards reducing assembly errors and improved the accuracy of component placement, albeit at the expense of longer assembly times. Participants indicated a preference for the interactive features of AR, but a comparison of TLX responses showed no significant difference in perceived workload. The authors conclude that while AR has the potential to support complex manual assembly, the longer assembly times suggest areas for improvement in AR-assisted systems, such as reducing part confirmation time and addressing user fatigue. They also emphasize the importance of well-designed instructional content and user interaction methods in AR-assisted assembly systems, as these factors can significantly impact assembly performance and user experience.
 
-![Progression of Instructional Affordances from @chu2020compa](images/22-Chu.png){#fig-chu width="5in"}
+![Progression of Instructional Affordances from @chu2020compa](/images/22-Chu.png){#fig-chu width="5in"}
 
 @buttner2020augme investigates the efficacy of projection-based AR systems compared to personalized training and paper manuals for industrial assembly work training. The between-groups study simulated assembly tasks using a fischertechnik construction kit. Training cycles, training time, error rates after 24 hours and 1 week, and quiz scores were tracked across 24 participants without prior AR experience. Personalized training outpaced both projection-based AR and traditional paper manuals in immediate learning efficiency. While AR systems somewhat improved training efficiency by preventing systematic mislearning through immediate feedback, they did not significantly outperform other methods in terms of training speed or long-term recall precision. The approach emphasized impact on the learning process--—training efficiency (rate of skill acquisition) and sustainability (recall and retention)—--over immediate task performance metrics like error rates and task completion time. The authors conclude that while projection-based AR can prevent mislearning, it does not offer significant benefits over paper manuals. They suggest exploring ways to incorporate aspects of personalized, adaptive training into AR systems to potentially improve training efficiency.
 
@@ -209,9 +209,9 @@ TODO: review tense of all verbs, esp. here - havard assess, assesses, assessed?
 @wang2021role investigated the effectiveness of user-centered AR instruction in improving assembly performance and reducing cognitive workload compared to traditional 2D paper-based instruction. The study recruited 30 participants with an engineering background but no prior AR experience. Each were given the task of locating the centroid of a triangle, which they completed for both treatments. The crossover design of this study counterbalanced the order of conditions to help control for learning effect. As seen in @fig-wang, AR instructions were delivered through a projected display system, while a HL2 was used to collect eye-tracking data. Assembly time, error rates, and NASA-TLX scores were also measured. Results showed significantly faster completion times, fewer errors, and lower cognitive workload for the AR condition. The authors conclude that augmented instruction, when designed to meet users' cognitive needs, enhances spatial understanding and task performance for novices.
 
 ::: {#fig-wang layout-ncol="2"}
-![Projected AR System Configuration](images/22-Wang21Setup.png){#fig-wang-a}
+![Projected AR System Configuration](/images/22-Wang21Setup.png){#fig-wang-a}
 
-![User's View of AR Operation](images/22-Wang21AR.png){#fig-wang-b}
+![User's View of AR Operation](/images/22-Wang21AR.png){#fig-wang-b}
 
 Experimental Setup from @wang2021role
 :::
@@ -253,7 +253,7 @@ Only three studies evaluated usability using standardized instruments, with most
 
 @havard2021case suggests that the benefits of AR may be more pronounced for complex tasks or in situations involving high operator turnover. However, @vanneste2020cogni found that the advantages of AR may diminish as operators gain experience with repeated task performance. @alves2022compa noted that "indirect AR," as pictured in @fig-alves, is a particularly promising and generally overlooked option.
 
-![Indirect AR from @alves2022compa](images/22-Alves.png){#fig-alves}
+![Indirect AR from @alves2022compa](/images/22-Alves.png){#fig-alves}
 
 ::: content-hidden
 TODO: improve image resolution

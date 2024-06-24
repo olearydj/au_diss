@@ -17,10 +17,10 @@ library(ggstatsplot)
 
 ```{r load-data}
 # Load data objects from the file
-load("learn.RData")
+load("rdata/learn.RData")
 
 # load functions from h1a
-load("h1a.RData")
+load("rdata/h1a.RData")
 ```
 
 ```{r}

@@ -3,6 +3,7 @@
 ```{r load-libs}
 #| message: false
 
+library(here)
 library(tidyverse)
 library(readxl)
 library(lmerTest)
@@ -18,19 +19,19 @@ library(pscl)
 
 ```{r load-data}
 p3_raw_data <- read_xlsx(
-  "./data/source/i1_h3.xlsx",
+  here("data", "source", "i1_h3.xlsx"),
   sheet = "p3"
 )
 
 # to join treatment and datetime of p1/2
 demographics <- read_xlsx(
-  "./data/combined_results.xlsx",
+  here("data", "combined_results.xlsx"),
   na = c("", "N/A"),
   sheet = "demographics"
 )
 
 # load shared objects
-load("shared.RData")
+load(here("rdata", "shared.RData"))
 ```
 
 
@@ -52,7 +53,7 @@ h3_data <- p3_raw_data |>
   filter(participant > 1010)
 
 # add average TCT and UCE for each participant from h2 data
-load("recall.RData")
+load(here("rdata", "recall.RData"))
 
 s2_perf <- recall |>
   rename(tct = car_elapsed_time_adj) |> 

@@ -26,9 +26,9 @@ These experiments were conducted in the Tiger Motors Lean Education Center[^24-m
 Participants acted as operators learning part of the Model T (SUV) assembly process. A completed SUV model is pictured in @fig-tmlec-b. This process has been repeated thousands of times in lean education courses without significant incident.
 
 ::: {#fig-tmlec layout-ncol="2"}
-![Conveyor and final assembly workstations](images/24-LegoLab.png){#fig-tmlec-a}
+![Conveyor and final assembly workstations](/images/24-LegoLab.png){#fig-tmlec-a}
 
-![Completed SUV model](images/24-SUVComplete.jpg){#fig-tmlec-b}
+![Completed SUV model](/images/24-SUVComplete.jpg){#fig-tmlec-b}
 
 Tiger Motors Lean Education Center and SUV Model
 :::
@@ -57,14 +57,14 @@ The Lean Lab assembly line consists of two manufacturing cells followed by a con
 
 The experiment is run at ST-8, which is located in the middle of the second manufacturing cell, flanked on either side by workstations six through ten. This arrangement is pictured in @fig-tmline.
 
-![Tiger Motors Assembly Line](images/24-LegoFloorplan.svg){#fig-tmline width="5in"}
+![Tiger Motors Assembly Line](/images/24-LegoFloorplan.svg){#fig-tmline width="5in"}
 
 All workstations in both cells are similarly equipped with work surface and trays for parts bins. Work instructions for both car models normally produced on the line are displayed above the bins. The bins are removable to facilitate part resupply, but their arrangement at each station is standardized and specified on the work instructions. @fig-st8 shows ST-8 and its bin layout.
 
 ::: {#fig-st8 layout-ncol="2"}
-![ST-8](images/24-WS8Landscape.png){#fig-st8-a}
+![ST-8](/images/24-WS8Landscape.png){#fig-st8-a}
 
-![Bin Layout](images/24-ST8Bins.png){#fig-st8-b}
+![Bin Layout](/images/24-ST8Bins.png){#fig-st8-b}
 
 Workstation Eight
 :::
@@ -81,7 +81,7 @@ Paper work instructions (PWI) are printed instructions traditionally used in man
 
 The process at workstation eight (ST-8) is a three step sequence in which 16 pieces, consisting of eight different part types, are affixed to the workpiece. The PWIs for this process are pictured in @fig-ws8instruct.
 
-![SUV assembly instructions for ST-8.](images/24-SUVWorkstation8.png){#fig-ws8instruct width="5in"}
+![SUV assembly instructions for ST-8.](/images/24-SUVWorkstation8.png){#fig-ws8instruct width="5in"}
 
 The instructions consist of one top-down view of the workpiece for each step, plus an isometric view of the ST-8 assembly. In each step, the car's prior state is shown in grey and new parts have the correct color. A sequence of parts is shown for each step, with the unique part number and quantity required. It is up to the operator to discern the correct placement of those parts from the diagram. Additional detail views are incorporated to each PWI where more clarity or detail are required. At the bottom center of each PWI a map of the workstation's parts bins depicts which are used in the task.
 
@@ -101,7 +101,7 @@ ST-8 is equipped with a PAR system by LightGuide[^24-methods-3] (LG), a Michigan
 
 Note that the Lean Lab's LightGuide system predates this study. Its specification, installation, setup, and configuration, along with the design and implementation of the instructional materials it uses at ST-8, were conducted by prior teams.
 
-![LG System Architecture. Source: LightGuide website](images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
+![LG System Architecture. Source: LightGuide website](/images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
 
 ::: content-hidden
 LATER: replace bold terms in LG system description
@@ -111,14 +111,14 @@ The system at ST-8 uses a **PROJECTOR MODEL** and **CAMERA MODEL** mounted above
 
 [^24-methods-4]: 80/20: <https://8020.net/>
 
-![ST-8 LG Installation](images/24-ST8LightGuide.png){#fig-st8lgs width="4in"}
+![ST-8 LG Installation](/images/24-ST8LightGuide.png){#fig-st8lgs width="4in"}
 
 To create a consistent user interface across all XR treatments, this study leveraged the LG's vision-based system for operator control. In this mode, an infrared time-of-flight camera provides a real-time depth map of the work area. This 2D video signal encodes the distance of objects from the camera as a color value at each pixel. That output, commonly known as a depth map, is processed using computer vision techniques to detect motion and identify any obstructions in the workspace. @fig-lgvision demonstrates the output of this system in a simulated operator interaction.
 
 ::: {#fig-lgvision layout-ncol="2"}
-![Demonstrating LG Vision](images/24-LGVisionDiego.png){#fig-lgvision-a}
+![Demonstrating LG Vision](/images/24-LGVisionDiego.png){#fig-lgvision-a}
 
-![LG Vision Input](images/24-LGVision.png){#fig-lgvision-b}
+![LG Vision Input](/images/24-LGVision.png){#fig-lgvision-b}
 
 LightGuide Vision System
 :::
@@ -128,9 +128,9 @@ With this information the LG can, for example, recognize the operator's hand pla
 The images below were grabbed from PAR trial recordings. @fig-parcap-a shows a side view of the workspace and @fig-parcap-b shows the same moment from the operator's perspective. Both images are cropped to focus on the work surface, but the operator view maintained the original aspect ratio with minimal cropping.
 
 ::: {#fig-parcap layout-ncol="2"}
-![PAR Side View](images/24-PARDemoSide.png){#fig-parcap-a}
+![PAR Side View](/images/24-PARDemoSide.png){#fig-parcap-a}
 
-![PAR Operator View](images/24-PARDemoHMD.png){#fig-parcap-b}
+![PAR Operator View](/images/24-PARDemoHMD.png){#fig-parcap-b}
 
 PAR in Operation
 :::
@@ -146,16 +146,16 @@ As detailed in the subsequent section on [System Development](#sysdev), Microsof
 [^24-methods-5]: HoloLens2: <https://www.microsoft.com/en-us/hololens>
 
 ::: {#fig-arcap layout-ncol="2"}
-![HMDAR Side View](images/24-ARDemoSide.png){#fig-arcap-a}
+![HMDAR Side View](/images/24-ARDemoSide.png){#fig-arcap-a}
 
-![HMDAR Operator View](images/24-ARDemoHMD.png){#fig-arcap-b}
+![HMDAR Operator View](/images/24-ARDemoHMD.png){#fig-arcap-b}
 
 HMDAR in Operation
 :::
 
 The instructional content for this treatment was intentionally designed to mirror that of the PAR system. By controlling for variables such as instructional content and task complexity, the study design allows for a direct comparison based on the distinct affordances of each technology—namely, the nature of their display and interface. This approach ensures that differences in operator experience and performance can be attributed most directly to the technological medium.
 
-![HMDAR at Pick Part 67](images/24-ARCompare.png){#fig-arcomp width="5in"}
+![HMDAR at Pick Part 67](/images/24-ARCompare.png){#fig-arcomp width="5in"}
 
 For comparison purposes, @fig-arcomp shows the HMDAR operator's view of the same instructions pictured in @fig-parcap for the PAR treatment. The two differ only in that the digital work instruction is placed on the operator's left in the HMDAR version to prevent overlap.
 
@@ -167,14 +167,14 @@ HMDMR eliminates the need for a fixture and allows the operator to rotate and/or
 
 Using model-based tracking, part placement indicators remain properly aligned with the workpiece, regardless of its position and orientation in space. This is demonstrated in @fig-mrmodtrack, where participant #1040 has rotated the workpiece approximately 45 degrees from its normal orientation to facilitate the installation of parts at the rear of the model. Note that the green part proxies and white placement arrows, all virtual, remain properly oriented.
 
-![HMDMR Tracks Model Orientation](images/24-MRModelTrackingCU.png){#fig-mrmodtrack width="5in"}
+![HMDMR Tracks Model Orientation](/images/24-MRModelTrackingCU.png){#fig-mrmodtrack width="5in"}
 
 @fig-mrcap provides a side and operator view of this treatment, and illustrates the lack of a fixture. Otherwise, the HMDMR treatment was unchanged from the HMDAR, allowing for direct comparisons of all treatments based only on the affordances of interest.
 
 ::: {#fig-mrcap layout-ncol="2"}
-![HMDMR Side View](images/24-MRDemoSide.png){#fig-mrcap-a}
+![HMDMR Side View](/images/24-MRDemoSide.png){#fig-mrcap-a}
 
-![HMDMR Operator View](images/24-MRDemoHMD.png){#fig-mrcap-b}
+![HMDMR Operator View](/images/24-MRDemoHMD.png){#fig-mrcap-b}
 
 HMDMR in Operation
 :::
@@ -405,11 +405,11 @@ As discussed in @sec-lrinstruments, the *NASA Task Load Index* [TLX, @hart2006tl
 
 The TLX is comprised of weighting and scoring processes that are repeated by participants upon task completion. First, to account for the subjective nature of workload, each factor is weighted by the participant. This *Sources of Workload Evaluation* is accomplished by having them indicate which element of each pair made the greatest contribution to their perceived workload. This is illustrated in @fig-tlxsow. For example, given the pair "Mental Demand or Effort," a participant would likely indicate *effort* for a task like lawn work, but *mental demand* for a philosophical debate. This is repeated for all fifteen possible combinations of the six factors.
 
-![Sources of Workload Evaluation](images/24-TLXsow.png){#fig-tlxsow width="5.5in"}
+![Sources of Workload Evaluation](/images/24-TLXsow.png){#fig-tlxsow width="5.5in"}
 
 Next, participants complete the *Workload Rating Scales* form to assess the magnitude of each factor for the given task. This uses a Likert-like [@likert1932techn] scale with 20 equal intervals and bipolar descriptors. No numeric values are given and participants are instructed to mark it freely. The mental demand rating scale shown in @fig-tlxwrs is representative.
 
-![Workload Rating Scale, Mental Demand](images/24-TLXwrs.png){#fig-tlxwrs width="5in"}
+![Workload Rating Scale, Mental Demand](/images/24-TLXwrs.png){#fig-tlxwrs width="5in"}
 
 The results of the TLX are expected to provide insight into the overall user experience for each treatment, along with how workload varies across treatments and what underlying factors contribute to both. This will aid in contextualizing the positive or negative influence that workload might have on learning outcomes.
 
@@ -417,7 +417,7 @@ The results of the TLX are expected to provide insight into the overall user exp
 
 As discussed in @sec-lrinstruments, the *System Usability Scale* is a widely used instrument designed to quickly and reliably assess the overall usability of a product or service. The SUS is composed of 10 questions that participants respond to according to their experience with the system. Each is ranked on a five point scale anchored by "Strongly Agree" and "Strongly Disagree" bipolar descriptors. Note that alternating items are reverse-scored to improve validity. A portion of the form used is shown in @fig-sus.
 
-![System Usability Scale, Questions 1-3 of 10](images/24-SUS.png){#fig-sus width="5.5in"}
+![System Usability Scale, Questions 1-3 of 10](/images/24-SUS.png){#fig-sus width="5.5in"}
 
 The SUS score is calculated by summing the scores of each question. For odd-numbered questions, the formula is the response value minus one; for even-numbered questions, it is five minus the response value. The total is then multiplied by 2.5:
 
@@ -456,16 +456,16 @@ Manual data collection was limited during the learning and recall experiments. E
 The majority of the data was collected from photographs and video recordings. For each participant, both experiments were recorded on a pair of cameras. One, integrated into the HL2, provided a clear view of the process from the participant's perspective. The other camera was positioned and oriented to record the entire work area from the operator's left, as seen in @fig-sidecam.
 
 ::: {#fig-sidecam layout-ncol="2"}
-![Side Camera Positioning](images/24-SideCam1.png){#fig-sidecam-a width="80%"}
+![Side Camera Positioning](/images/24-SideCam1.png){#fig-sidecam-a width="80%"}
 
-![Side Camera Orientation and FOV](images/24-SideCam2.png){#fig-sidecam-b width="80%"}
+![Side Camera Orientation and FOV](/images/24-SideCam2.png){#fig-sidecam-b width="80%"}
 
 Side Camera Setup
 :::
 
 Photos were also taken to provide a detailed, high-quality record of the results for each experiment, complementing the video data. This is exemplified by @fig-resphoto, which shows that participant #1053 completed three cars in the learning phase. The 4^th^ car pictured here is rotated to indicate that it was incomplete or retired when time expired. Laminated treatment slates are included in these photos to easily embed essential metadata.
 
-![Sample Learning Result Photo](images/24-ResPhoto.png){#fig-resphoto width="5in"}
+![Sample Learning Result Photo](/images/24-ResPhoto.png){#fig-resphoto width="5in"}
 
 Subsequent analyses, as detailed in @sec-analysis, confirmed the original results and extracted additional data related to timing, error type, PWI usage during recall, and more. While video review was time consuming, this approach allowed us to focus on administering the experiment correctly and carefully observing the participant without the distraction of data collection. This ultimately improved the accuracy and traceability of the results.
 
@@ -487,7 +487,7 @@ The interval between the original intervention and this session varied for each 
 
 As in the first session, the emphasis was on minimizing the amount of manual data collection required. Each trial was recorded using only a compact forehead-mounted video camera. Task completion time and error count, along with any essential observations, were documented. The completed car was also photographed, ensuring that the timer and notes were visible in the frame.
 
-![Sample Retention Result Photo](images/24-RetentionRes.png){width="5in"}
+![Sample Retention Result Photo](/images/24-RetentionRes.png){width="5in"}
 
 This single photo approach streamlined data collection during the event without compromising the integrity of the results. While the photos alone provide sufficient data for our primary analysis, the video recordings offer additional detail if desired.
 
@@ -515,9 +515,9 @@ Only the Magic Leap 2[^24-methods-7] design is similar. However, despite being r
 [^24-methods-7]: MagicLeap: <https://www.magicleap.com>
 
 ::: {#fig-hmdxrs layout-ncol="2"}
-![Microsoft HoloLens2. Source: Microsoft](images/24-HL2.png){#fig-hmdxrs-a}
+![Microsoft HoloLens2. Source: Microsoft](/images/24-HL2.png){#fig-hmdxrs-a}
 
-![Magic Leap 2. Source: Magic Leap](images/24-ML2.png){#fig-hmdxrs-b}
+![Magic Leap 2. Source: Magic Leap](/images/24-ML2.png){#fig-hmdxrs-b}
 
 HoloLens 2 and Magic Leap 2
 :::
@@ -526,7 +526,7 @@ Because the HL2 represented the state of the art in OST HMD enterprise XR device
 
 Unlike the LG, the HL2 is entirely self-contained, processing data from an array of sensors to enable six degree-of-freedom visual tracking, spatial mapping, gesture recognition, voice commands, hologram rendering, and optical compositing in real-time. @fig-hl2exp provides an exploded view of the HL2 components.
 
-![HoloLens 2 Exploded View. Source: Microsoft](images/24-HL2Exploded.png){#fig-hl2exp}
+![HoloLens 2 Exploded View. Source: Microsoft](/images/24-HL2Exploded.png){#fig-hl2exp}
 
 ### Software
 
@@ -634,7 +634,7 @@ Systems were configured with the Visual Studio 2019 integrated development envir
 
 All programming was done in C#, as required by Unity. C# is an object-oriented language with strong typing and simplified memory management. It has a familiar syntax that is similar to Java and C++, both of which influenced its design. This enabled the developers, all new to C#, to adapt with relative ease.
 
-![Development Workflow](images/24-HL2DevWorkflow.png){#fig-devwkflow width="5in"}
+![Development Workflow](/images/24-HL2DevWorkflow.png){#fig-devwkflow width="5in"}
 
 ::: content-hidden
 MAYBE: create an accurate image of HL/Unity/MRTK workflow to replace this one
@@ -659,7 +659,7 @@ The inter-dependencies between Unity, MRTK, and VS, each with their own packagin
 
 [^24-methods-19]: MRTK Tutorials: <https://learn.microsoft.com/en-us/training/modules/learn-mrtk-tutorials/>
 
-![Unity HoloLens2 Simulator](images/24-UnityHL2Sim.png){#fig-unityhl width="5in"}
+![Unity HoloLens2 Simulator](/images/24-UnityHL2Sim.png){#fig-unityhl width="5in"}
 
 ::: content-hidden
 MAYBE: get a better image of Unity HL2 simulator interface
@@ -699,7 +699,7 @@ For HMDAR tracking, we relied on VE's *Area Targets*[^24-methods-20] feature, an
 
 [^24-methods-20]: Vuforia Area Targets: <https://developer.vuforia.com/library/environments/area-targets>
 
-![HoloLens Spatial Mapping](images/24-HLSpatialMap.png){#fig-spatmap width="5in"}
+![HoloLens Spatial Mapping](/images/24-HLSpatialMap.png){#fig-spatmap width="5in"}
 
 ::: content-hidden
 MAYBE: replace with image of spatial mapping from study
@@ -712,9 +712,9 @@ The 3D model is created offline, first by scanning the area with the Vuforia Cre
 [^24-methods-21]: Vuforia Creator App: <https://developer.vuforia.com/library/tools/creator-app>
 
 ::: {#fig-areatgt layout-ncol="2"}
-![Vuforia Creator App](images/24-VEScan.png){#fig-areatgt-a}
+![Vuforia Creator App](/images/24-VEScan.png){#fig-areatgt-a}
 
-![Area Target in Unity](images/24-VEUnity.png){#fig-areatgt-b width="85%"}
+![Area Target in Unity](/images/24-VEUnity.png){#fig-areatgt-b width="85%"}
 
 Vuforia Area Target Processing
 :::
@@ -750,9 +750,9 @@ LeoCAD's design adheres to LEGO design principles, ensuring that the way parts a
 @fig-leocad-a is a screenshot of the LeoCAD interface, highlighting some of its capabilities. Both LDraw and LeoCAD are unofficial, open source, community run, multi-platform tools that are free to use.
 
 ::: {#fig-leocad layout-ncol="2"}
-![LeoCAD Interface Screenshot](images/24-LeoCAD.png){#fig-leocad-a width="95%"}
+![LeoCAD Interface Screenshot](/images/24-LeoCAD.png){#fig-leocad-a width="95%"}
 
-![Model Target Constructed in LeoCAD](images/24-ModelTarget.png){#fig-leocad-b width="95%"}
+![Model Target Constructed in LeoCAD](/images/24-ModelTarget.png){#fig-leocad-b width="95%"}
 
 LeoCAD UI and Model Target
 :::
@@ -777,7 +777,7 @@ A fundamental consideration in the success of any collaborative development effo
 
 Implementing accurate and robust tracking for the AR/MR applications posed additional challenges beyond the selection and integration of another third-party framework (Vuforia Engine). Area-based tracking was mildly sensitive to the surface properties of some materials and workstation configuration changes, requiring some additional care in setup. In particular, the exterior of the fixture had to be masked with painter's tape to limit the reflectance of its milled aluminum surfaces. These detractions were more than offset by the overall robustness of the method, which all but guaranteed nearly instant acquisition of tracking from the rich set of provided features.
 
-![Fixture Masked to Reduce Reflectance](images/24-FixtureMask.png){#fig-fixture width="5in"}
+![Fixture Masked to Reduce Reflectance](/images/24-FixtureMask.png){#fig-fixture width="5in"}
 
 The inherent complexity of MR also led to less reliable tracking and increased instability in that treatment. When tracking is interrupted the system is unable to place virtual objects in the scene. The user experiences this as a "drop-out," where everything disappears from their field of view. Once tracking is reacquired, the virtual objects return. In rare cases of extreme instability, this cycle could cause the system to crash or require a reset. As described in @sec-dropouts, the frequency, duration, and impact of these events varied, and was accounted for.
 
@@ -797,7 +797,7 @@ This section will outline all participant recruitment, selection, benefits, and 
 
 A convenience sample of participants were recruited from the Auburn University community using digital and printed promotions around campus, the graduate school mailing list, and outreach in various undergraduate engineering classrooms. The later focused on freshman and sophomore engineering students in Industrial & Systems Engineering, as they are accessible and most likely to meet all requirements. @fig-recruit exemplifies the recruiting materials, approved copies of which are included in [Appendix A, IRB Documentation](#app-irb).
 
-![Digital recruitment flyer distributed on campus monitors.](images/24-RecruitSlideV3.png){#fig-recruit width="5in"}
+![Digital recruitment flyer distributed on campus monitors.](/images/24-RecruitSlideV3.png){#fig-recruit width="5in"}
 
 Potential participants in the first investigation were screened for exclusion based on their age (under 19) or a tendency to motion sickness. Additionally, they were screened for experience with head-mounted or projected AR devices using gesture based controls. This does not exclude those having experience with VR headsets like META's Occulus product line, which is relatively common among the target population, but utilize traditional input devices.[^24-methods-28] Finally, any candidate that had previously participated in a manufacturing simulation at the Tiger Motors Lean Education Center was excluded. This controlled for prior experience with the assembly task, as part of INSY 5800/6800 or otherwise.
 
@@ -1006,7 +1006,7 @@ The responsibilities of each role vary throughout the session as described below
 
 Daily preparation for the study involves careful setup across three roles. The PI ensures the schedule and trial documents are ready, workstations and PCs are prepared and operational, and camera equipment is correctly configured and tested. The SI handles the specifics of the trial setup, including treatment slates, car checks, and part inventories, while coordinating with additional support staff. TS focuses on maintaining the software, streaming setup, and hardware sanitation. Together, the team ensures a controlled environment ready for trials.
 
-![The Battle Wagon](images/24-BattleWagon.png){#fig-cart width="5in"}
+![The Battle Wagon](/images/24-BattleWagon.png){#fig-cart width="5in"}
 
 The PI is also responsible for returning the lab it its original condition at the end of each day. Post-session procedures include resetting all cell two workstations, powering down equipment, cleaning and sanitizing the lab, turning off lights, and securing the premises. Additionally, batteries and memory cards are tended to, and consent forms securely stored. Both setup and tear-down were facilitated by the rolling cart adopted for this study (@fig-cart), affectionately known as the "battle wagon."
 
@@ -1014,7 +1014,7 @@ The PI is also responsible for returning the lab it its original condition at th
 
 Workstations seven through nine are configured for the first session as seen in @fig-wssetup1. The numbered positions indicate the flow of work in process (WIP) through the system. Assemblies begin at (1) and move, sequentially, to ST-8 (2). When a car is completed or retired (due to breakage considered irreparable by the participant), it is moved to either the green (3a) or red tray (3b), respectively. WIP at (3a) and (3b) is promptly collected and moved to (4) for inspection, after which they are moved to the results tray (not represented). Video recording and HL2 performance are monitored via the PC and iPad represented. This figure is not to scale but does effectively convey the approach used.
 
-![Workstation Configuration for Session 1](images/24-Setup.svg){#fig-wssetup1 width="5in"}
+![Workstation Configuration for Session 1](/images/24-Setup.svg){#fig-wssetup1 width="5in"}
 
 The flow of WIP is facilitated by the SI, who is responsible for collecting and inspecting finished assemblies, recording results, and related tasks. The PI is focused on interactions with the participant and recording observations about their performance. The TS manages the HL2 system and acts as a secondary observer. In addition to these primary duties, all team members collaborated effectively to ensure the successful conduct of this study. This division of labor is summarized in @tbl-resp.
 
@@ -1033,9 +1033,9 @@ The flow of WIP is facilitated by the SI, who is responsible for collecting and 
 At the start of each day, ST-7 through 9 are cleared and configured as described above. Ten pre-built assemblies are positioned to the participant's left, at position (1). The construction of all ST-7 inventory is carefully verified against ST-7 standards, as pictured in @fig-st8wip, to ensure an accurate starting point for all ST-8 tasks. A completed ST-8 assembly is also pictured for comparison.
 
 ::: {#fig-st8wip layout-ncol="2"}
-![ST-7 Complete Assembly](images/24-ST8Start.png){#fig-st8wip-a width="95%"}
+![ST-7 Complete Assembly](/images/24-ST8Start.png){#fig-st8wip-a width="95%"}
 
-![ST-8 Complete Assembly](images/24-ST8End.png){#fig-st8wip-b width="95%"}
+![ST-8 Complete Assembly](/images/24-ST8End.png){#fig-st8wip-b width="95%"}
 
 Start and End Configurations for ST-8 Assemblies
 :::
@@ -1103,7 +1103,7 @@ Participants are instructed to engage in a brief practice session during which t
 
 The assigned task, timeline, priorities (as outlined in @sec-learning), and workflow (as outlined in @sec-workflow) are described. Recording is then initiated on both cameras and participants are asked to view the treatment slate (see @fig-slate) while recording and alignment are re-checked. This also serves to mark the start of both videos with essential details that might help avoid confusion later. A 10-minute timer in view of the participant and both cameras is initiated, and they begin building with the aid of their IMT. Data is collected during the experiment as described in @sec-s1data.
 
-![Laminated Treatment Slate](images/24-TrialSlate.png){#fig-slate width="5in"}
+![Laminated Treatment Slate](/images/24-TrialSlate.png){#fig-slate width="5in"}
 
 #### Intermission and Reset
 
@@ -1112,9 +1112,9 @@ At the conclusion of the first experiment recordings are stopped and the partici
 During this intermission, the research team records the learning results and resets the workstation for the next experiment. Four pre-built assemblies are put into inventory at ST-7, and any models built in the previous experiment are recycled to that standard. Photos of the results tray and reset inventory are taken to document the process and results.
 
 ::: {#fig-st8docs layout-ncol="2"}
-![Results Tray](images/24-ST8LearnResults.png){#fig-st8docs-a width="100%"}
+![Results Tray](/images/24-ST8LearnResults.png){#fig-st8docs-a width="100%"}
 
-![Recall Setup](images/24-ST8RecallSetup.png){#fig-st8docs-b width="100%"}
+![Recall Setup](/images/24-ST8RecallSetup.png){#fig-st8docs-b width="100%"}
 
 Documenting Results and Setup
 :::
@@ -1147,7 +1147,7 @@ Twelve different start times were offered, one every 15-minutes between noon and
 
 Prior to the event, the Lean Lab was arranged as depicted in @fig-party. Ongoing demonstrations for attendees would require the LG system at ST-8. Consequently, the retention experiment was relocated to ST-3, a similarly configured workstation in work cell #1. This choice ensured that the experience at ST-3 would most closely mimic ST-8, thus controlling for the effects of the change.
 
-![Lab Arrangement for Second Session](images/24-PartyPlan.svg){#fig-party}
+![Lab Arrangement for Second Session](/images/24-PartyPlan.svg){#fig-party}
 
 Experiments and demos from the collaborating study were conducted at ST-5 and 10, respectively.
 
@@ -1327,7 +1327,7 @@ For each participant, two composite videos are created, one from footage of thei
 
 For each participant experiment, a single three-pane video was created in Filmora, as demonstrated by @fig-threepane. The two stacked views on the left provide the first-person view captured by the HL2 (top) and a zoomed-in view from the side camera, centered on the fixture (bottom). The right-hand pane provides a wider angle version of the same side camera footage. All three views are manually synchronized by tagging corresponding events and sliding the clips to align those markers, matching the observed action. Before exporting the result, the Filmora project is saved.
 
-![Frame of Composite Video from Learning Trial, PAR Treatment](images/24-ThreePane.png){#fig-threepane}
+![Frame of Composite Video from Learning Trial, PAR Treatment](/images/24-ThreePane.png){#fig-threepane}
 
 The output was rendered by Filmora in the MP4 video format with full HD resolution (1920x1080) at 30 frames per second, using H.264 compression. This was then resized to 720p (1280x720) by Handbrake. The final file size is reduced to about 20mb / minute from multiple gigabytes of source material. This greatly increases the responsiveness the annotation experience without significantly degrading visual quality.
 
@@ -1430,7 +1430,7 @@ MAYBE: include some / all reports in appendix or online?
 Complete reports can be reviewed...
 :::
 
-![Portion of Participant #1001's Report, Obsidian Screenshot](images/24-Report.png){#fig-report width="70%"}
+![Portion of Participant #1001's Report, Obsidian Screenshot](/images/24-Report.png){#fig-report width="70%"}
 
 From the top, this report includes metadata (collapsed for brevity), clickable link to the video, list of PI's observations, and summaries of performance (subclip) and event (other) markers. The instantaneous event markers included here provide valuable added context. For example, we can see that a breakage was corrected during the third car, likely contributing to its increased duration.
 

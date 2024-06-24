@@ -3,6 +3,7 @@
 ```{r load-libs}
 #| message: false
 
+library(here)
 library(tidyverse)
 library(readxl)
 library(gt)
@@ -25,13 +26,13 @@ library(tools)
 ```{r load-data}
 
 car_results <- read_xlsx(
-  "./data/combined_results.xlsx",
+  here("data", "combined_results.xlsx"),
   na = c("", "N/A"),
   sheet = "car results"
 )
 
 demographics <- read_xlsx(
-  "./data/combined_results.xlsx",
+  here("data", "combined_results.xlsx"),
   na = c("", "N/A"),
   sheet = "demographics"
 )
@@ -184,7 +185,7 @@ save(
   base_color,
   outline_color,
   custom_theme,
-  file = "shared.RData"
+  file = here("rdata", "shared.RData")
 )
 ```
 
@@ -1024,7 +1025,7 @@ res_f <- car_results |>
 
 ```{r save-results-data}
 # saving for use in broken out recall and retention analysis files
-save(res_f, file = "res_f.RData")
+save(res_f, file = here("rdata", "res_f.RData"))
 ```
 
 ```{r learn-data}
@@ -1459,7 +1460,7 @@ save(
   learn_agg_out, 
   outline_color,
   base_color,
-  file = "learn.RData")
+  file = here("rdata", "learn.RData"))
 ```
 
 

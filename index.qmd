@@ -29,9 +29,9 @@ TODO: eliminate blank page for pdf version
 \renewcommand\raggedchapter{\centering}
 ```
 
-{{< include 11-titlepage.qmd >}}
-{{< include 12-abstract.qmd >}}
-{{< include 13-acknowledgements.qmd >}}
+{{< include _front/11-titlepage.qmd >}}
+{{< include _front/12-abstract.qmd >}}
+{{< include _front/13-acknowledgements.qmd >}}
 
 
 <!-- Moved here from toc.tex -->
