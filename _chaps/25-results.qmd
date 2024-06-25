@@ -13,6 +13,12 @@ library(xtable)
 library(broom)
 library(report)
 library(tools)
+
+library(emmeans)
+library(performance)
+library(lmerTest)
+
+
 # library(ggtext)
 # library(glue) now included with tidyverse as str_glue
 # library(gridExtra)
@@ -273,6 +279,18 @@ ggplot(daily_counts, aes(x = trial_date)) +
     position = "right",
     limits = c(0, 100)
   ) +
+  # Add annotation
+  annotate("text", 
+           x = as.Date("2023-02-28"), y = 30, 
+           label = "Pilot Study (n=8)", 
+           color = "red", hjust = 0.5,
+           size = 3.5
+  ) +
+  annotate("segment", 
+           x = as.Date("2023-02-10"), xend = as.Date("2023-03-15"), 
+           y = 25, yend = 25, 
+           color = "red", arrow = arrow(ends = "both", length = unit(0.1, "cm"))
+  ) +
   labs(
     title = "First Session Progress",
     subtitle = subtitle,
@@ -284,31 +302,10 @@ ggplot(daily_counts, aes(x = trial_date)) +
 
 Only eight trials were run before March 16th. That period was treated as a pilot study, during which the research team was trained, administration methods were refined, the self-service onboarding system was deployed, and version 2.1 of our IRB application was approved. Most significantly, the intake process was adjusted to collect more demographic data, increase the role of the TLX and SUS instruments, and gather BCS data for a companion study.
 
-Otherwise, only minor tweaks were made during the pilot to streamline the experiment's administration. Although the changes outlined above were not believed to have a material effect on the results, the data collected during the pilot were omitted from further analysis. Following the pilot, steady progress was made until the completion of the study's first session on April 27th.
-
-The second session was conducted during the end of study event on *XXX*. *YYY* of the study's original participants volunteered to attend and complete the Retention experiment.
+Otherwise, only minor tweaks were made during the pilot to streamline the experiment's administration. Although the changes outlined above were not believed to have a material effect on the results, the data collected during the pilot were omitted from further analysis. Following the pilot, steady progress was made until the completion of the study's first session on April 27th. The second session was conducted during the end of study event on April 29th. Twenty-four of the study's original participants volunteered to attend and complete the Retention experiment.
 
 ::: content-hidden
-TODO: complete above paragraph about second session.
-:::
-
-::: content-hidden
-MAYBE: perform analysis to evaluate differences between pilot and main group
-
-Pilot Study Comparison
-- Compare the key measures (e.g., performance, workload, usability) between the pilot study (n=8) and main study (n=54) participants
-- Use descriptive statistics and visualizations to present these comparisons
-- Discuss any notable similarities or differences between the two groups
-
-Statistical Power and Sample Size Considerations
-- Present the results of statistical power analyses based on the observed effect sizes and the planned statistical tests
-- Discuss the adequacy of the sample size for detecting meaningful effects
-- Consider the potential impact of including or excluding the pilot study data on the statistical power and precision of the estimates
-- sample size calculation / justification: power analysis, practical considerations, precedent
-
-Decision on Pilot Study Inclusion
-- Based on the findings from 5.2.3 and 5.2.4, make a decision on whether to include the pilot study data in the main analysis
-- Clearly report your decision and rationale, considering factors such as data comparability, study design modifications, and statistical power
+MAYBE: any elaboration required for the second session?
 :::
 
 ## Analysis of Participant Demographics
@@ -892,7 +889,7 @@ educ_plot / (lego_plot + manuf_plot) +
 
 ### Multivariate Analysis
 
-In order to assess the equivalence of treatment groups and validate the random assignment that is assumed by most analysis to follow, Age, Gender, Lego experience, and Education were compared across treatment groups. These variables were selected for their meaningful variation and potential relevance to the outcomes of interest. Other notable variables, including Ethnicity and Country of Origin were considered less critical due to their skewed distributions and small subgroup sizes.
+In order to assess the equivalence of treatment groups and validate the random assignment that is assumed by most statistical analysis, Age, Gender, Lego experience, and Education were compared across treatment groups. These variables were selected for their meaningful variation and potential relevance to the outcomes of interest. Other notable variables, including Ethnicity and Country of Origin were considered less critical due to their skewed distributions and small subgroup sizes.
 
 ```{r make-mv-table}
 
@@ -966,46 +963,7 @@ mv_tbl |>
 
 ```
 
-::: content-hidden
-MAYBE: wrap gtsummary calls in a function that saves an svg to project
-and inserts embedding so that all original formatting is preserved?
-could they still be labeled as tables?
-:::
-
 The high p-values for Age, `r inline_text(mv_tbl, variable = age, column = "p.value")`; Gender, `r inline_text(mv_tbl, variable = gender, column = "p.value")`; Lego, `r inline_text(mv_tbl, variable = lego, column = "p.value")`; and Education, `r inline_text(mv_tbl, variable = lego, column = "p.value")` indicate that these observed characteristics are not strongly associated with treatment groupings. This result validates the group randomization effort, mitigating the influence of confounding variables, and reducing bias in the data. It is essential to the validity of most of the statistical tests employed by this study, which assume sample independence.
-
-::: content-hidden
-MAYBE: further analysis to show that:
-- nums
-  - height (0.11)
-- cats
-  - country (0.085)
-  - lenses (0.063)
-- ords
-  - manuf exp (0.046)
-
-may be significant (p-val)
-used the following code to test all demographics
-
-``` text
-# test significance of treatment groups
-trt <- demo_f |>
-  select(treatment)
-
-# bind treatment for nums, ords (included in cats)
-cd <- bind_cols(ords, trt)
-
-cd |>
-  tbl_summary(
-      by = "treatment",
-      missing = "no",
-      statistic = list(
-        all_continuous() ~ "{mean} ({sd})"
-      )
-    ) |>
-    add_p()
-```
-:::
 
 ## Learning Phase Results
 
@@ -1034,7 +992,7 @@ learn <- res_f |>
   filter(
     phase == 1,
     car_outcome == "complete",
-    # hack to remove incorrectly labeled car
+    # hack to remove car incorrectly labeled as complete
     uid != "1048-P1-C5"
   ) |>
   select(
@@ -1067,15 +1025,11 @@ learn <- learn |>
 changes <- learn |>
   filter(car_elapsed_time != car_elapsed_time_adj)
 
-total_tasks_completed <- dim(learn)[1]
-total_tasks_adjusted <- dim(changes)[1]
+total_tasks_completed <- nrow(learn)
+total_tasks_adjusted <- nrow(changes)
 ```
 
-One final step of data preparation was taken to account for drop-outs and other system events, along with time spent making repairs. This lost time was deducted from measured task times to give a more accurate record of participant performance. `r total_tasks_adjusted` of `r total_tasks_completed` completed tasks (`r round(total_tasks_adjusted / total_tasks_completed * 100, 1)`%) were affected by this adjustment.
-
-::: content-hidden
-MAYBE: consider better quantifying the effect of these adjustments
-:::
+One final step of data preparation was taken to account for drop-outs and other system events, along with time spent making repairs. This lost time was deducted from measured task times to give a more accurate record of participant performance. `r stringr::str_to_sentence(as.character(english::as.english(total_tasks_adjusted)))` of `r total_tasks_completed` completed tasks (`r round(total_tasks_adjusted / total_tasks_completed * 100, 1)`%) were affected by this adjustment.
 
 ### Descriptive Statistics for Granular Data
 
@@ -1179,10 +1133,6 @@ cet_plot / uce_plot +
 
 Compared to TCT, with a coefficient of variation (CV) of `r round(cv_tct, 2)`, UCE shows substantially greater spread (CV=`r round(cv_uce, 2)`) and the presence of a floor effect. The later could potentially suggest limitations in the task's ability to capture a full range of participant performance. Further investigation is required to determine if this is due to task complexity or other factors.
 
-::: content-hidden
-MAYBE: discuss overdispersion of data, where sd^2 / mean > 1; this is true for both TCT and UCE - implications? better metrick than CV? more appropriate later in report, after agg / outliers?
-:::
-
 ### Aggregated Data
 
 ```{r agg-results}
@@ -1197,10 +1147,6 @@ learn_agg <- learn |>
   ) |>
   ungroup()
 ```
-
-::: content-hidden
-MAYBE: may need to add back other variables from learn into this agg table
-:::
 
 @tbl-agg-results-by-treat presents participant-level metrics, including the number of tasks completed along with the average TCT and UCE per task. In addition to the overall results, the data is broken out by assigned treatment group to allow for comparisons across conditions. Note that the statistics presented are the overall (aka "grand") mean and median values. That is, they are the average or middle values of all individual participant averages. This provides overall summary statistics for each treatment group that reflect the central tendency and variability among the average outcomes reported by participants within each group.
 
@@ -1248,7 +1194,7 @@ t |>
   )
 ```
 
-See @fig-perf-by-treat for a depiction of the grand means for all variables, with 95% confidence intervals for each. Observe that the previously noted variability and positive skew are also present in the grouped data, and some treatments like PWI may have prioritized speed over accuracy, or vice versa (e.g. AR).
+See @fig-perf-by-treat for a depiction of the grand means for all variables, with 95% confidence intervals for each. Observe that the previously noted variability and positive skew are also present in the grouped data, though both are less pronounced due to averaging effects. It appears that the PWI treatment group may have prioritized speed over accuracy.
 
 ```{r make-perf-data}
 # Reshape data to long format
@@ -1366,15 +1312,19 @@ ggplot(final_stats, aes(x = metric, y = normalized_mean, fill = treatment, label
 
 #### Assess outliers
 
-Given the level of variation and spread seen above, the presence of outliers was analyzed. Participant-level outliers within treatment groups were the focus, rather than individual data points across the entire dataset. This method helps ensure that outliers are identified relative to the specific context of each treatment, accounting for the corresponding variability.
+Given the level of variation and spread seen above, the presence of outliers was analyzed. Participant-level outliers within treatment groups were the focus, rather than individual data points across the entire dataset. This method identifies annomolous participant level contributions to treatment variability.
 
-Four different tests were used to assess each participant as an outlier in their treatment group: (1) Tukey's Fences at 1.5 times the IQR, (2) Tukey's Fences at 3.0 times the IQR, (3) outside the 5th and 95th percentiles, and (4) using the Mahalanobis distance. TCE and UCE were each tested separately using the first three methods. The fourth method is a multivariate test that considers TCE and UCE together. The results are summarized in @tbl-outlier-summary, for all participants that were identified by two or more tests.
-
-> A helpful heuristic is to distinguish between error outliers, interesting outliers, and random outliers (Leys et al. 2019). Error outliers are likely due to human error and should be corrected before data analysis. Interesting outliers are not due to technical error and may be of theoretical interest; it might thus be relevant to investigate them further even though they should be removed from the current analysis of interest. Random outliers are assumed to be due to chance alone and to belong to the correct distribution and, therefore, should be retained.
+Four different tests were used to assess each participant as an outlier in their treatment group: (1) Tukey's Fences at 1.5 times the IQR, (2) 2.5 times the Z-score, (3) outside the 5th and 95th percentiles, and (4) using the Mahalanobis distance. TCE and UCE were each tested separately using the first three methods. The fourth method is a multivariate test that considers TCE and UCE together. The results are summarized in @tbl-outlier-summary, for all participants that were identified by two or more tests.
 
 ```{r find-outliers}
+# Function to detect outliers in a vector using Z-score
+check_zscore <- function(x, threshold = 2.5) {
+  z_scores <- (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+  abs(z_scores) > threshold
+}
+
 # Function to detect outliers in a vector
-find_outliers <- function(x, mult) {
+check_iqr <- function(x, mult) {
   q1 <- quantile(x, 0.25, na.rm = TRUE)
   q3 <- quantile(x, 0.75, na.rm = TRUE)
   iqr <- q3 - q1
@@ -1395,10 +1345,10 @@ outlier_summary <- learn_agg |>
   group_by(treatment) |>
   mutate(
     # find 1.5 and 3x IQR outliers using Tukey method
-    out15_tct = find_outliers(avg_tct_adj, 1.5),
-    out15_uce = find_outliers(avg_uce, 1.5),
-    out30_tct = find_outliers(avg_tct_adj, 3.0),
-    out30_uce = find_outliers(avg_uce, 3.0),
+    out15_tct = check_iqr(avg_tct_adj, 1.5),
+    out15_uce = check_iqr(avg_uce, 1.5),
+    zs_25x_tct = check_zscore(avg_tct_adj, threshold = 2.5),
+    zs_25x_uce = check_zscore(avg_uce, threshold = 2.5),
     # find by 5th and 95th percentile
     pct_tct = avg_tct_adj < quantile(avg_tct_adj, 0.05, na.rm = TRUE) |
       avg_tct_adj > quantile(avg_tct_adj, 0.95, na.rm = TRUE),
@@ -1417,8 +1367,8 @@ outlier_summary <- learn_agg |>
     treatment = first(treatment),
     out15_tct = sum(out15_tct),
     out15_uce = sum(out15_uce),
-    out30_tct = sum(out30_tct),
-    out30_uce = sum(out30_uce),
+    zs25_tct = sum(zs_25x_tct),
+    zs25_uce = sum(zs_25x_uce),
     pct_tct = sum(pct_tct),
     pct_uce = sum(pct_uce),
     md_out = sum(md_out),
@@ -1447,7 +1397,7 @@ outlier_summary |>
 TODO: make this table prettier
 :::
 
-Further investigation of these seven participants showed that only 1063 experienced systematic problems that might warrant excluding their performance. The other participants were just relatively poor performers, with high TCT and/or UCE. Given the limited amount of data collected per treatment, it was decided to retain all but 1063's data for hypothesis testing.
+Further investigation of these four participants showed that only \#1063 experienced systematic problems that might warrant excluding their performance. The others were just poor performers, with unusually high overall TCT and/or UCE. Given the limited amount of data collected per treatment, it was decided to retain all but 1063's data for hypothesis testing, where additional outlier detection steps may be taken.
 
 ```{r drop-learn-outliers}
 # drop 1063
@@ -1468,12 +1418,6 @@ save(
 
 ### $H_{1a}$: Average Time per Car
 
-```{r load-h1a-libs}
-library(emmeans)
-library(performance)
-library(lmerTest)
-```
-
 The first hypothesis of the learning phase:
 $$H_{1a}\textrm{: Average task completion time varies with treatment}$$
 
@@ -1481,7 +1425,7 @@ will be tested by comparing the average TCT of each treatment group to understan
 
 #### Applicable Statistical Methods
 
-Methods based on one-way ANOVA, including Fisher's or Welch's parametric methods and their non-parametric equivalent, Kruskal-Wallis' test by ranks, are commonly used for such comparisons. All assume independence of observations additivity of treatments. The use of aggregated data reduces each participant to a single observation, addressing independence. The experimental design generally ensures the treatments themselves are additive, with independent effects on the response.
+Methods based on one-way ANOVA, including Fisher's or Welch's parametric methods and their non-parametric equivalent, Kruskal-Wallis' test by ranks, are commonly used for such comparisons. All assume observations are independent and treatment effects are additive. The use of aggregated data reduces each participant to a single observation, addressing independence. The experimental design generally ensures the treatments themselves are additive, with independent effects on the response.
 
 Parametric methods also require a normal distribution of data *within each treatment group*. As noted in the original assessment of the learning data, the overall TCT dataset exhibits skewness and kurtosis, suggesting deviations from a normal distribution. This must be revisited with group wise testing of the aggregated data. By averaging the observations and eliminating an outlier, the grouped data may better resemble a normal distribution.
 
@@ -1578,11 +1522,11 @@ p + plot_annotation(
 
 ```
 
-Given the minor deviations from normality, particularly for the PWI group, a non-parametric approach was adopted. This provides a reliable and straightforward approach for hypothesis testing for data that are non-normal or heteroscedastic (having unequal variances). This decision also avoids the complexities associated with transformation pipelines, ensuring robust statistical results while maintaining the interpretability of the original data.
+Given these deviations from normality, particularly for the PWI group, a non-parametric approach was adopted. This provides a reliable and straightforward approach for hypothesis testing for data that are non-normal or heteroscedastic (have unequal variances). This decision also ensures robust statistical results in the scale of the original data, easing interpretation.
 
 #### Analysis
 
-@fig-h1a-plot shows the resulting comparison of average TCT within each treatment group. It combines elements of violin, scatter, and box plots to provide a comprehensive portrayal of the data. Treatment differences were analyzed using the Kruskal-Wallis test by ranks. Its test statistic, $H$, approximately follows a $\chi^{2}_{k-1}$ distribution, where $k$ is the number of groups. Here, $\chi^{2}_{Kruskal-Wallis}(3)=25.9$, with a p-value of 1.0e-5. These results indicate a statistically significant difference between groups. The effect size of this difference is $\hat{\epsilon}^{2}_{rank}=0.5$, with $CI_{95\%}\:[0.3,1.0]$, indicating a moderate to large treatment effect where 50% of the variance in TCT can be explained by the difference in groups. Together, these results provide strong evidence of overall differences in TCT that are both statistically and practically significant.
+@fig-h1a-plot shows the resulting comparison of average TCT within each treatment group. It combines elements of violin, scatter, and box plots to provide a comprehensive portrayal of the data. Treatment differences were analyzed using the Kruskal-Wallis test by ranks. Its test statistic, $H$, approximately follows a $\chi^{2}_{k-1}$ distribution, where $k$ is the number of groups. Here, $\chi^{2}_{Kruskal-Wallis}(3)=25.9$, with a p-value of less than 0.001. These results indicate a statistically significant difference between groups. The effect size of this difference is $\hat{\varepsilon}^{2}_{rank}=0.5$, with $CI_{95\%}\:[0.4,1.0]$, indicating a moderate to large treatment effect where 50% of the variance in TCT can be explained by the difference in groups. Together, these results provide strong evidence of overall differences in TCT that are both statistically and practically significant.
 
 ::: content-hidden
 TODO: fix hard-coded numbers
@@ -1605,7 +1549,7 @@ h1a_plot <- ggstatsplot::ggbetweenstats(
   xlab = "",
   ylab = "",
   title = "TCT Differences by Treatment: Kruskal-Wallis non-parametric rank sum test",
-  results.subtitle = FALSE,
+  # results.subtitle = FALSE,
   subtitle = "Significant Differences Identified between 'Fast' (PWI, PAR) and 'Slow' (AR, MR) Groups using Dunn's Test, Holm-adjusted post-hoc",
   digits = 2,
   # centrality.label.args = list(point.padding = 30),
@@ -1627,15 +1571,7 @@ h1a_plot <- ggstatsplot::ggbetweenstats(
 )
 
 h1a_plot
-
-# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.9", italic(p) ==
-#     "1.0e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~
-#     "[" * "0.3", "1.0" * "]", italic("n")["obs"] == "53")
 ```
-
-::: content-hidden
-TODO: check all in text values after setting standard seed before all ggbetween stats calls - see comment in code above
-:::
 
 Pairwise comparisons were conducted post-hoc using Dunn's non-parametric test for Kruskal-type ranked data. Holm's adjustment for multiple comparisons was preferred over the often cited Bonferroni method, which tends to be too conservative. The results show that PWI and PAR are both significantly faster than AR and MR, with all p-values less than 0.01.
 
@@ -1648,11 +1584,11 @@ epsilon_sq <- 0.5
 posthoc_power <- posthoc_power_analysis(n, k, epsilon_sq, sig_level = 0.05, num_simulations = 1000)
 ```
 
-A post-hoc simulation was run to validate these results by estimating the statistical power. Power analysis measures the effectiveness of a statistical test in detecting true differences when they exist. High power (typically 0.8 or above) suggests that the test is appropriate for the given data and experimental conditions, therefore supporting factual decision-making. The simulation repeatedly applies the Kruskal-Wallis test to data generated based on the observed mean and effect size, and resulting power is the proportion of tests that correctly reject the null hypothesis. The outcome of `r posthoc_power` (`r posthoc_power * 100`% power), while uncommon, suggests that, for the conditions of this experiment (n=53, an average of 13.25 samples in each of the four groups, $\hat{\epsilon}^{2}=0.5$, and $\alpha = 0.05$), the test is extremely effective at detecting the observed differences. The combination of a large effect size and a reasonable sample size is largely attributable to this value, which offers great confidence in the validity of the test results.
+A post-hoc simulation was run to validate these results by estimating the statistical power. Power analysis measures the effectiveness of a statistical test in detecting true differences when they exist. High power (typically 0.8 or above) suggests that the test is appropriate for the given data and experimental conditions, therefore supporting factual decision-making. The simulation repeatedly applies the Kruskal-Wallis test to data generated based on the observed mean and effect size, and resulting power is the proportion of tests that correctly reject the null hypothesis. The outcome of `r posthoc_power` (`r posthoc_power * 100`% power), while uncommon, suggests that, for the conditions of this experiment (n=53, an average of 13.25 samples in each of the four groups, $\hat{\varepsilon}^{2}=0.5$, and $\alpha = 0.05$), the test is extremely effective at detecting the observed differences. The combination of a large effect size and a reasonable sample size is largely attributable to this value, which offers great confidence in the validity of the test results.
 
 #### $H_{1a}$ Result
 
-Based on this thorough analysis of the data and validation of the methods, it is determined that sufficient statistical evidence exists to accept $H_{1a}$: average task completion time varies by treatment. Specifically, the PWI and PAR instructional methods are both equivalent and faster than AR and MR, which are also equivalent to one another.
+Based on analysis of the data and validation of the methods, it is determined that sufficient statistical evidence exists to accept $H_{1a}$: average task completion time varies by treatment. Specifically, the PWI and PAR instructional methods are both equivalent and faster than AR and MR, which are also equivalent to one another.
 
 ### $H_{1b}$: Learning Rates
 
@@ -1672,7 +1608,7 @@ learn_h1b <- learn_h1b |>
   group_by(participant) |>
   mutate(
     seq = row_number(),
-    treatment = factor(as.character(treatment))
+    # treatment = factor(as.character(treatment))
   ) |>
   ungroup() |>
   select(participant, treatment, seq, tct, uce)
@@ -1687,28 +1623,28 @@ will be tested by comparing how TCT changes with each repetition of the task bas
 
 #### Applicable Statistical Methods
 
-It is tempting to assess this using aggregated data as before. For example, the average change in TCT per task completed might give suitable measure. For clarity, this can be expressed as:
+It is tempting to assess this using aggregated data as before. For example, the average change in TCT between consecutive tasks completed might give suitable measure. For clarity, this can be expressed as follows for each participant, $j$:
 
-$$\textstyle{\frac{1}{N} \sum_{i=1}^{N} \frac{TCT_{i1} - TCT_{ij}}{j}}$$ {#eq-naive}
+$$\overline{\Delta TCT_{j}} = \frac{\sum_{i=1}^{N-1} (TCT_{i+1} - TCT_i)}{N - 1}$$ {#eq-naive}
 
-where $N$ is the total number of participants, $j$ is the number of tasks completed by participant $i$, and $TCT_{ij}$ is the TCT of participant $i$ for task $j$. This metric can be compared by group using the approach employed by $H_{1a}$, as seen in @fig-h1b-naive. The results show that there is a significant difference in groups (p < 0.001), with small to moderate effect size $\hat{\epsilon}^{2}_{rank}=0.2$. Significant pairwise differences were identified between PAR and both AR (p=0.029) and MR (p=0.040).
+where $N$ is the total number of tasks completed by participant $j$, and $i$ indexes each of the $N-1$ differences in TCT. This metric can be compared by group using the approach employed by $H_{1a}$, as seen in @fig-h1b-naive. The results show that there is a significant difference in groups (p = 0.002), with small to moderate effect size $\hat{\varepsilon}^{2}_{rank}=0.29$. Significant pairwise differences were identified between PWI and both AR (p=0.027) and MR (p=0.039) as well as PAR and the same (AR p=0.015, MR p=0.025). 
 
 ```{r agg-h1b-data}
 pd <- learn_h1b |>
   group_by(participant) |>
   summarize(
     treatment = first(treatment),
-    first_tct = first(tct),
-    last_tct = last(tct),
     num_tasks = n(),
-    measure = (first_tct - last_tct) / num_tasks
+    avg_change = mean(diff(tct))  # This calculates the average of consecutive differences
   ) |>
   ungroup()
+
 ```
+
 
 ```{r fig-h1b-naive}
 #| fig-cap: Naive method
-#| fig-height: 5
+#| fig-height: 6
 #| warning: false
 
 # since ggstatsplot computes confidence intervals for the effect sizes
@@ -1718,14 +1654,14 @@ set.seed(42)
 p <- ggstatsplot::ggbetweenstats(
   data = pd,
   x = treatment,
-  y = measure,
+  y = avg_change,
   type = "nonparametric",
   xlab = "",
   ylab = "",
   title = "Avg Change in TCT per Task by Treatment: Kruskal-Wallis non-parametric rank sum test",
   # results.subtitle = FALSE,
   subtitle = "Significant Differences Identified between Groups using Dunn's Test, Holm-adjusted post-hoc",
-  digits = 2,
+  digits = 3,
   # centrality.label.args = list(point.padding = 30),
   ggtheme = theme_minimal(base_size = 10) +
     theme(
@@ -1750,34 +1686,38 @@ p
 
 While this method offers initial insights and highlights significant differences in learning rates across treatment groups, it has crucial limitations. Aggregating data by participant and within treatments masks both between and within-participant variability, discarding important nuances in learning rates. By ignoring the repeated measures nature of the data it fails to capture how learning rate changes over time, and how that differs between individuals. It also does not account for imbalanced repeated measures, which may lead to biased estimates. By reducing the number of observations, it may also limit the statistical power of the test. Finally, this method does not account for the non-linear nature of change in TCT over time, further limiting the validity of these findings. These simplifying assumptions may be reasonable for a gross estimate of overall differences, e.g., average TCT, but they are not appropriate for an in-depth analysis of the rate and change of learning in the presence of individual and treatment effects.
 
-*note: relatively low effect size and wide CI suggests this may not be adequate*
-
 For analysis of this sort, particularly where repeated measures are nested within each group and participant variation is an important consideration, mixed-effects models are often used. These models provide a thorough and accurate analysis by accounting for individual differences in learning rates and leveraging all available repeated measures data. This approach preserves data granularity, explicitly models the dynamic aspect of learning, and is specifically designed to handle imbalanced data. It increases the statistical power and flexibility to detect effects and interactions in a complex data structure, and it can also account for non-linear response data. Overall, mixed-effects models provide a robust framework for examining the interaction between treatment and learning effect over time.
 
-The general form of a suitable mixed-effects model can be expressed as:
+The general form of a suitable linear mixed-effects model that expresses TCT as a function of task sequence, ignoring treatment effects, is:
 
 $$
 \textstyle{
-y_{ij}=(\beta_0+U_{0j})+(\beta_1+U_{1j})(SEQ_{ij})+\epsilon_{ij}
+TCT_{ij}=(\beta_0+U_{0j})+(\beta_1+U_{1j})(SEQ_{ij})+\varepsilon_{ij}
 }
 $$ {#eq-lme1}
 
 where:
 
 - $i$ and $j$ are the indices for each observation and participant, respectively.
-- $\beta_0$ is the overall intercept, a baseline value of $y$.
+- $\beta_0$ is the overall intercept, a baseline value of $TCT$.
 - $U_{0j}$ is the participant variation on the intercept.
 - $\beta_1$ is the overall slope.
 - $U_{1j}$ is the participant variation on the slope.
-- $SEQ_{ij}$ is the time value associated with each observation $i$ of participant $j$.
-- $\epsilon_{ij}$ represents the residuals for each observation---variation not accounted for by the model.
+- $SEQ_{ij}$ is the time value associated with each observation $i$ of participant $j$, i.e. the task number.
+- $\varepsilon_{ij}$ represents the residuals for each observation---variation not accounted for by the model.
 
-This formulation allows for random intercepts, $(\beta_0+U_{0j})$, and slopes $(\beta_1+U_{1j})$, each based on individual differences per participants $U_j$. In the context of this analysis those can be interpreted as individual starting points (intercept) and learning rates (slope). This is visualized in @fig-h1b-rsri, where the black lines indicate the best fit within each group, $(\beta_0+\beta_1(SEQ_{ij}))$, and colored lines show the same for each participant.
+This formulation allows for random intercepts, $(\beta_0+U_{0j})$, and slopes $(\beta_1+U_{1j})$, each based on individual differences per participants $U_j$. In the context of this analysis those can be interpreted as individual starting points (intercept) and learning rates (slope). While @eq-lme1 makes it easy to understand how participant-level variation contributes to both slope and intercept, it is more commonly formulated as:
+
+$$
+TCT_{ij} = (\beta_0 + \beta_1 SEQ_{ij}) + (U_{0j} + U_{1j}SEQ_{ij}) + \varepsilon_{ij}
+$$ {#eq-lme2}
+
+where the terms are rearranged to differentiate *fixed* and *random* effects. The first term corresponds to group-level fixed-effects ($\beta_i$) while the second captures the random-effects of between- and within-participant variation ($U_j$). This is visualized in @fig-h1b-rsri, where the completion time for each task iteration is shown in all treatment groups. Black lines indicate the best fit within each group, the fixed-effect term, and colored lines show the same for each participant, reflecting the random-effect term.
 
 ```{r fig-h1b-rsri}
 #| fig-cap: Random slopes and intercepts model visualized.
 #| fig-height: 4
-#| warning: false
+#| message: false
 
 ggplot(learn_h1b, aes(x = seq, y = tct)) +
   geom_point(
@@ -1815,8 +1755,11 @@ ggplot(learn_h1b, aes(x = seq, y = tct)) +
     )
 ```
 
-learning is inherently non-linear, exponential decay
-try curvilinear approximation - linear model with quadratic term
+Using linear mixed effect models (LMEs) to assess treatment effect is a two-step process. First, a model using task number as the only predictor is fit to the data, including both fixed and random effects. Because this model is independent of the predictor of interest (treatment), it is referred to as the *unconditioned* model. Once selected and validated, this acts as a baseline for comparison with more complex models that incorporate the treatment effects. These so-called *conditioned* models are compared with the baseline to see which, if any, improve the model fit. Finally, the parameters of the model that best explains the data are interpreted to quantify the relationships between time, treatment, and the response. The following sections will elaborate on each step of this process.
+
+#### Unconditional Models of Time
+
+To find an unconditional model that best fits the data, several options of increasing complexity will be considered. In the model selection process, it is important to consider that learning is an inherently non-linear process. Typically, TCT starts high and decreases with each training iteration, but the rate of decrease is not constant. The pattern often resembles exponential decay, with rapid initial improvement followed by more gradual changes. When working with an LME, quadratic terms can be used to create a curvilinear approximation of this effect. This is depicted in @fig-h1b-qrsri, where each line is fit using a quadratic term for sequence: $TCT \approx \beta_{0} + \beta_{1}SEQ + \beta_{2}SEQ^2$. The result appears to improve both participant and overall fit compared to the previous linear formulation.
 
 ```{r fig-h1b-qrsri}
 #| fig-cap: Quadratic random slopes and intercepts model visualized.
@@ -1851,7 +1794,7 @@ ggplot(aes(x = seq, y = tct)) +
   scale_x_continuous(breaks = c(0:12)) +
   labs(
     title = "Completion Time in Seconds for each Completed Task",
-    subtitle = "Linear fits for participants (color) vary from group averages (black)",
+    subtitle = "Curvilinear fits for participants (color) vary from group averages (black)",
     x = element_blank(),
     y = element_blank()
   ) +
@@ -1863,11 +1806,32 @@ ggplot(aes(x = seq, y = tct)) +
     )
 ```
 
-#### Unconditional Models of Time
+Seven models of increasing complexity were fit, as summarized in @tbl-h1b-fit-unconod. This table adopts the model formulation notation used by many R modeling packages, including `lmer`, which is used here. A fixed overall intercept is specified for all models with the first term (`1`). Random effects are described within the parentheses of the last term. Terms to the right of the bar (`|`) are grouping variables, and those to its left specify the random intercept and coefficients. Terms between the intercept and random effects, outside the parentheses, are fixed effects with constant coefficients. For brevity, Sequence and Participant terms have been abbreviated in this table as `s` and `p`, respectively. The "XF" column describes the non-linear transformation employed (quadratic or log), and "SE" identifies the sequence effect. SE is "Fixed" where SEQ is included only as a fixed effect, and "Both" where it also appears in the random effect.
 
-first fit a model that is independent of the predictor (treatment); depends only on time (sequence) - try sequence of models with increasing complexity
+| **\#** | **Model Formulation in `{lmer}` Notation**       | **XF** |  **SE**   |
+| :----: | ------------------------------------------------ | :----: | :-------: |
+|   1    | 1 + (1 \| p)                                     |  None  |   None    |
+|   2    | 1 + s + (1 \| p)                                 |  None  |   Fixed   |
+|   3    | 1 + s + (1 + s \| p)                             |  None  |   Both    |
+|   4    | 1 + s + s^2 + (1 + s + s^2 \| p)                 |  Quad  |   Both    |
+|   5    | 1 + log(s + 1) + (1 \| p)                        |  Log   |   Fixed   |
+|   6    | 1 + log(s + 1) + (1 + log(s + 1) \| p)           |  Log   |   Both    |
+|   7    | 1 + s + log(s + 1) + (1 + s + log(s + 1) \| p)   |  Log   |   Both    |
 
-have to use Max Likelihood (not REML) in order to compare results
+: Model Summary {#tbl-h1b-fit-unconod .striped}
+
+For example, model 4 has a fixed overall intercept (`1`) with additional fixed effects for `s` and `s^2`. Its random effects (`1 + s + s^2 \| p`) can be interpreted as random intercepts and slopes for `s` and `s^2` for each participant. This can be expressed in the previous mathematical notation as:
+
+\begin{align}
+TCT_{ij} =\:  &(\beta_{0} + \beta_1 SEQ_{ij} + \beta_2 SEQ_{ij}^2) \label{eq:h1b-m4} \\
+&+ (U_{0j} + U_{1j} SEQ_{ij} + U_{2j} SEQ_{ij}^2) + \varepsilon_{ij}
+\end{align}
+
+Prior to fitting, the sequence predictor was transformed from discrete integers to continuous values in the range [0, 1] using `(SEQ - 1) / (max(SEQ) - 1)`. This is common practice to prevent numerical issues, aid model convergence, and to make the results easier to interpret and generalize.
+
+The models were fit using maximum likelihood estimation (rather than the default restricted maximum likelihood) to enable valid comparisons between models with different fixed effects structures. Fitting was accomplished using the overloaded version of `lme4::lmer` from `{lmerTest}`, which adds p-values for fixed effects using Satterthwaite's method. The results were compared using `performance` from `{compare_performance}`, the output of which is summarized in @tbl-h1b-modperf-unc. 
+
+Columns include Akaike (AIC) and Bayesian (BIC) Information Criterion, conditional and marginal $R^2$, Interclass Correlation Coefficient (ICC), and Root Mean Squared Error (RMSE). AIC and BIC are, respectively, frequentist and Bayesian measures of the amount of information lost by a model when approximating the true data generating process. Both account for the number and relevance of predictors, and lower scores are better. $R^2_{cond}$ represents the variance explained by both fixed and random effects, while $R^2_{marg}$ only accounts for the fixed effects. ICC measures the proportion of total variance that is accounted for by the grouping of data. In this context, high ICC values suggest that a larger portion of the variability in TCT is due to differences *between* participants, not within (i.e., across task iterations). Finally, RMSE is a measure of the average magnitude of the model's prediction error (residuals).
 
 ```{r h1b-fit-uncond}
 # transform seq to float from 0 to 1
@@ -1887,57 +1851,174 @@ m4 <- lmer(
     tct ~ 1 + seq.fp + I(seq.fp ^ 2) + (1 + seq.fp + I(seq.fp ^ 2) | participant),
     data = md, REML = F
 )
+# log-transformed time; fixed slope, random intercept
+m5 <- lmer(tct ~ 1 + log(seq.fp + 1) + (1 | participant), data = md, REML = F)
+# log-transformed time; random slope, random intercept
+m6 <- lmer(tct ~ 1 + log(seq.fp + 1) + (1 + log(seq.fp + 1) | participant), data = md, REML = F)
+# linear and log-transformed time; fixed slope, random intercept
+m7 <- lmer(
+    tct ~ 1 + seq.fp + log(seq.fp + 1) + (1 + seq.fp + log(seq.fp + 1) | participant),
+    data = md, REML = F
+)
+
+cp_h1b_uc <- compare_performance(m1, m2, m3, m4, m5, m6, m7, metrics = "common", rank = F)
 ```
 
-note: all time and slope outputs will now be in terms of 0 to 1, where 1 = `r max(learn_h1b$seq)` (should be 11). For example, task 1 is now 0.0909 and a slope of -354 per unit is equal to -354 / 11 = -32.2 per task.
+```{r tbl-h1b-modperf-unc}
+#| tbl-cap: "Model Performance Results"
 
-```{r h1b-anova-uncond}
-# compare the unconditional models
-anova(m1, m2, m3, m4)
+cp_h1b_uc |> 
+  select(Name, AIC, BIC, R2_conditional, R2_marginal, ICC, RMSE) |> 
+  display()
 ```
 
-AIC preferred over Wald's test of deviance (p-val) as it penalizes added parameters to reduce overfitting. Trades parameters (model complexity) for improved fit.
+The result of this comparison shows that m7 outperforms the other options in most measures, with the lowest AIC, BIC, and RMSE. Approximately 94% of the variance in TCT can be explained by this model ($R^2_{cond}$), of which only 28% is due to its fixed effects ($R^2_{marg}$). The high ICC (0.91) indicates that a large proportion of the total variance is due to differences between participants, suggesting that individual variation is a crucial factor in the model.
 
-additional comparisons
 
-```{r h1b-comp-uncond}
-# warning for m2 = m3
-cp <- compare_performance(m1, m2, m3, m4)
-display(cp, layout = "vertical")
+```{r}
+residuals_m7 <- residuals(m7)
+
+# Shapiro-Wilk test for normality
+m7_st <- shapiro.test(residuals_m7)
+m7_st_pv <- m7_st$p.value
+
+# Custom function for heteroscedasticity test
+hetero_test <- function(model) {
+  res <- residuals(model)
+  fit <- fitted(model)
+  aux_model <- lm(I(res^2) ~ fit)
+  bp_statistic <- summary(aux_model)$r.squared * length(res)
+  p_value <- 1 - pchisq(bp_statistic, df = 1)
+  return(list(statistic = bp_statistic, p.value = p_value))
+}
+
+# Apply the test
+m7_het <- hetero_test(m7)
+m7_het_pv <- m7_het$p.value
+
+# DHARMa diagnostics
+sim_m7 <- DHARMa::simulateResiduals(m7)
+
+invisible(capture.output({
+  m7_dharma <- DHARMa::testResiduals(sim_m7, plot = FALSE)
+}))
+
+# Extract individual test results
+m7_ks <- m7_dharma$uniformity
+m7_disp <- m7_dharma$dispersion
+m7_out <- m7_dharma$outliers
+
+m7_ks_pv <- m7_ks$p.value
+m7_disp_pv <- m7_disp$p.value
+m7_out_pv <- m7_out$p.value
 ```
 
-m2 and m3 are equivalent
-both methods agree, based on AIC, AICc, BIC, R2c, RMSE, Sigma
-best model is m4 - quadratic random slope, random intercept
+Validation of m7 confirmed the normality of residuals (Shapiro-Wilk test, `r fmt_p_val(m7_st_pv)`), with significant heteroscedasticity (`r fmt_p_val(m7_het_pv)`). Traditional QQ plots of the raw residuals do not properly account for the hierarchical structure and non-independence of mixed effect models, leading to overly optimistic results. The `{DHARMa}` package was specifically designed to address this problem by comparing observed residuals to a large number of simulations from the fitted model. This technique provides a more robust and accurate representation of model accuracy. Diagnostics produced by `testResiduals` indicate deviation from the expected distribution of residuals (Kolmogorov-Smirnov test, `r fmt_p_val(m7_ks_pv)`) without significant dispersion issues (`r fmt_p_val(m7_disp_pv)`) or outliers (`r fmt_p_val(m7_out_pv)`). Visual inspection of residual plots confirmed these findings (@fig-m7-dharma).
 
-inspect fit of some participants in selected treatments
+```{r fig-m7-dharma}
+#| fig-cap: Residual Plots
+
+DHARMa::plotQQunif(sim_m7, testDispersion = F, testUniformity = F, testOutliers = F)
+```
+
+Given these minor deviations from model assumptions, the model was refit using a robust linear mixed model designed to mitigate those issues and ensure reliable inference. Robust LMs (RLMs) use techniques such as M-estimation or MM-estimation to reduce the influence of outliers and high-leverage observations. They also employ weighted estimation to account for unequal variances (heteroscedasticity). This approach makes RLMs less sensitive to violations of normality assumptions in both fixed and random effects, and more resistant to departures from other common assumptions of linear mixed models. As a result, RLMs typically provide more stable and accurate parameter estimates when dealing with non-ideal data conditions. The result from `robustlmm::rlmer` is compared with the original fit in @tbl-h1b-m7-comp.
+
+```{r fit-m7r}
+#| warning: false
+#| message: false
+
+# robust fit of m7
+m7r <- robustlmm::rlmer(
+    tct ~ 1 + seq.fp + log(seq.fp + 1) + (1 + seq.fp + log(seq.fp + 1) | participant),
+    data = md, REML = F
+)
+
+cp_h1b_uc_r <- compare_performance(m7, m7r, metrics = "common", rank = T)
+
+# validate result
+m7r_het <- hetero_test(m7r)
+m7r_het_pv <- m7r_het$p.value
+
+residuals_m7r <- residuals(m7r)
+
+# Shapiro-Wilk test for normality
+m7r_st <- shapiro.test(residuals_m7r)
+m7r_st_pv <- m7r_st$p.value
+
+```
+
+```{r tbl-h1b-m7-comp}
+#| tbl-cap: "Model Performance Results"
+
+cp_h1b_uc_r |> 
+  select(!Model) |> 
+  display()
+```
+
+These results, particularly the decrease in RMSE (`r round(cp_h1b_uc_r$RMSE[2], 2)`), indicate marginal improvement gains were achieved by the robust fit. However, the real benefit comes from improved model diagnostics. The robust model eliminates heteroscedasticity (`r fmt_p_val(m7r_het_pv)`) and down-weights extreme values as seen in @fig-m7r-resid. While the Shapiro-Wilk test still indicates non-normality of residuals (`r fmt_p_val(m7r_st_pv)`), this is less concerning for robust models, which are designed to perform well even when normality assumptions are violated.
+
+```{r fig-m7r-resid}
+#| fig-cap: Extreme values are assigned lower weights in robust model
+plot(m7r, which = 1)
+```
+As a final model validation @fig-h1b-rlm-pred shows the predictions generated by the robust model for the first five participants in each treatment. In this figure, the black circles and lines represent observed TCT values for each participant, while the colored curves represent the RLM's predictions. Each row corresponds to a different treatment group (AR, MR, PAR, PWI), and each subplot shows data for an individual participant. This visualization allows for a comparison between observed data and model predictions across different treatments and participants, and helps confirm that a good fit is obtained for a wide range of observation counts. 
 
 ```{r h1b-insp-cond}
-# use the best model
-m <- m4
+# Select the first 5 participants from each treatment
+m7r_sample <- md |>
+  mutate(pred = fitted(m7r)) |> 
+  group_by(treatment) |>
+  arrange(participant) |>
+  filter(participant %in% unique(participant)[1:5]) |>
+  ungroup() |> 
+  mutate(facet_label = paste(treatment, participant, sep = " - "))
 
-md$pred <- fitted(m)  # back-transform here if necessary
-first10 <- md |>
-  filter(treatment == "PAR")
-
-max_tct = max(first10$tct) + 10
-
-ggplot(first10, aes(x = seq.fp, y = tct)) + 
-  geom_point(fill="grey", pch=21, size=2, stroke=1.25) + 
-  geom_line(aes(group=participant)) + facet_wrap(~participant, ncol=5)+
-  scale_x_continuous(name = "Task Number") + 
-  scale_y_continuous(name = "TCT",limits=c(0,max_tct))+
-  geom_line(aes(y=pred), col=base_color, lwd=1.5) 
-
+# Set a consistent maximum for y-axis
+max_tct <- max(m7r_sample$tct) + 20
 ```
+
+
+```{r fig-h1b-rlm-pred}
+#| fig-cap: "Visualizing RLM model fit"
+
+ggplot(m7r_sample, aes(x = seq.fp, y = tct)) + 
+  geom_point(fill = "grey", pch = 21, size = 2, stroke = 1.25) + 
+  geom_line(aes(group = participant)) + 
+  geom_line(aes(y = pred, color = treatment), lwd = 1.5) +
+  facet_wrap(~ facet_label, ncol = 5) +
+  scale_y_continuous(limits = c(0, max_tct)) +
+  scale_color_brewer(palette = "Set1") +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank()
+  ) +
+  labs(
+    title = "Model Fit by Participant and Treatment",
+    subtitle = "RLM predictions for the first five participants in each treatment group"
+  )
+```
+
+
+```{r}
+parameters::model_parameters(m7r)
+```
+
+back transform seq.fp → seq = seq.fp x 10
+
+note: all time and slope outputs will now be in terms of 0 to 1, where 1 = `r max(learn_h1b$seq)` (should be 11). For example, task 1 is now 0.0909 and a slope of -354 per unit is equal to -354 / 11 = -32.2 per task.
 
 look at model summary
 
 ```{r h1b-sum-uncond}
-summary(m)
+summary(m7r)
 ```
 
 all fixed effects are significant
+
+
 
 ::: content-hidden
 
@@ -1968,7 +2049,7 @@ Add fixed treatment effect to best fit from above - does it improve the model? U
 
 using treatment and interactions with `seq` and `seq ^ 2`
 
-```{r h1b-fit-cond}
+```{r h1b-fit-cond, eval=FALSE}
 # conditional models based on m4 (quadratic random slope and random intercept)
 # introduce treatment and interactions as fixed effects
 cm1 <- lmer(
@@ -1982,7 +2063,7 @@ cm1 <- lmer(
 
 does the conditional model differ from / improve fit? testing for treatment effect
 
-```{r}
+```{r eval=FALSE}
 anova(m, cm1)
 ```
 
@@ -1990,7 +2071,7 @@ anova(m, cm1)
 
 inspect model results
 
-```{r h1b-anova-cond}
+```{r h1b-anova-cond, eval=FALSE}
 anova(cm1)
 ```
 
@@ -2014,7 +2095,7 @@ From Chet, after confirming above, elaborating:
   
 These results highlight the importance of both linear and quadratic terms in modeling learning rates and emphasize the varying effects of different treatments on TCT dynamics over time. The significant interactions underscore how treatments modulate not just the initial performance but also the improvement trajectories.
 
-```{r h1b-sum-cond}
+```{r h1b-sum-cond, eval=FALSE}
 summary(cm1)
 ```
 
@@ -2094,7 +2175,7 @@ This nuanced interpretation underscores the importance of instructional design t
 
 pairwise comparisons of intercept, seq, and seq^2 effect using emmeans
 
-```{r h1b-pw-cond}
+```{r h1b-pw-cond, eval=FALSE}
 em_int <- emmeans::emmeans(cm1, ~ treatment)
 em_slope <- emmeans::emmeans(cm1, ~ treatment | seq.fp)
 em_quad <- emmeans::emmeans(cm1, ~ treatment | I(seq.fp ^ 2))
@@ -2112,7 +2193,7 @@ in each case, all contrasts are significant except for AR-MR and PWI-PAR
 
 visualize predictions...
 
-```{r h1b-plot-cond}
+```{r h1b-plot-cond, eval=FALSE}
 library(ggplot2)
 
 # Predicted values for different seq.fp levels
@@ -2167,7 +2248,7 @@ Variations of this model were fit using the residual maximum likelihood method (
 
 The values of ICC and $R^2$ (both conditional and marginal) are comparable across the three transformations. However, the inverse response resulted in substantially lower root mean square error (RMSE) and Sigma ($\sigma$), which represent the average and standard deviation of the residuals, respectively. With prediction errors that are both lower overall and have less variance, the inverse-transformed response, shown in @fig-inverse-tct, results in the best model performance.
 
-```{r fig-inverse-tct}
+```{r fig-inverse-tct, eval=FALSE}
 #| fig-cap: Inverse transformation of the response
 #| fig-height: 3.5
 #| warning: false
@@ -2233,7 +2314,7 @@ plot_tct + plot_inverse_tct +
 
 ### $H_{1c}$: Average Error Count per Car
 
-```{r prep-h1c-data}
+```{r prep-h1c-data, eval=FALSE}
 # create data
 learn_h1c <- learn |>
   filter(participant != 1063) |>
@@ -2266,7 +2347,7 @@ however, none of this invalidates non-parametric statistical tests of aggregated
 
 KW non-parametric test conducted, as seen in @fig-h1c-plot.
 
-```{r fig-h1c-plot}
+```{r fig-h1c-plot, eval=FALSE}
 #| fig-cap: Differences in Average Uncorrected Error per Task by Treatment
 #| fig-height: 5
 #| warning: false
@@ -2311,7 +2392,7 @@ ggstatsplot::ggbetweenstats(
 
 Results confirm significant treatment effect. Large differences in the overall mean are observed, along with some floor effects in the augmented treatments. Post-hoc tests confirm the significance of observed differences, showing that the error rate is significantly larger in the PWI condition than in all other treatments.
 
-```{r h1c-validation}
+```{r h1c-validation, eval=FALSE}
 co <- check_outliers(learn_h1c$avg_uce, method = c("zscore_robust", "iqr"))
 
 # use co as boolean mask to get relevant participants
@@ -2332,7 +2413,7 @@ without_outliers <- learn_h1c[!learn_h1c$participant %in% co_res$participant, ]
 kt_h1b_no_outliers <- kruskal.test(avg_uce ~ treatment, data = without_outliers)
 ```
 
-KW is a robust test that does not assume normality or homogeneity of variances. It can be sensitive to the presence of outliers, three of which were detected in the UCE data based on a combination of IQR and Z-score. Participants `r col_to_string(co_res, participant)` were all assigned to the PWI treatment and averaged `r col_to_string(co_res, avg_uce, digits = 1)` errors per task, respectively. A second Kruskal-Wallis test of the data without those outliers showed the difference remained significant (p=`r fmt_p_val(kt_h1b_no_outliers$p.val)`). Based on this it is determined that the outliers are not impacting the test result.
+KW is a robust test that does not assume normality or homogeneity of variances. It can be sensitive to the presence of outliers, three of which were detected in the UCE data based on a combination of IQR and Z-score. Participants *r col_to_string(co_res, participant)* were all assigned to the PWI treatment and averaged *r col_to_string(co_res, avg_uce, digits = 1)* errors per task, respectively. A second Kruskal-Wallis test of the data without those outliers showed the difference remained significant (p=*r fmt_p_val(kt_h1b_no_outliers$p.val)*). Based on this it is determined that the outliers are not impacting the test result.
 
 While this method was deemed insufficient for capturing the nuances of learning rate analysis, it is appropriate for comparing average error counts.
 

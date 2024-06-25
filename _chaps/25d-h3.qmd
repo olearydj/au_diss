@@ -308,7 +308,7 @@ m2_tct_int <- lm(incr_tct ~ gap * treatment, data = h3_data_unordered)
 cp_tct <- compare_performance(m1_tct_add, m2_tct_int, metrics = "common", rank = F)
 ```
 
-A comparison of model performance statistics are summarized in @tbl_tct_modperf. Columns for the model name and type are followed by Akaike (AIC) and Bayesian (BIC) Information Criterion  and corresponding weights, standard and adjusted R-squared (R2), and the Root Mean Squared Error (RMSE). AIC and BIC are, respectively, frequentist and Bayesian measures of the amount of information lost by a model when approximating the true data generating process. Both account for the number and relevance of predictors, and lower scores are better. AIC/BIC weights represent the relative likelihood of each model being the most accurate of those considered.
+A comparison of model performance statistics are summarized in @tbl_tct_modperf. Columns for the model name and type are followed by AIC, BIC, and their corresponding weights, standard and adjusted R-squared (R2), and the Root Mean Squared Error (RMSE). AIC/BIC weights represent the relative likelihood of each model being the most accurate of those considered.
 
 ```{r tbl_tct_modperf}
 #| tbl-cap: "Model Performance Results"
