@@ -17,7 +17,7 @@ library(tools)
 library(emmeans)
 library(performance)
 library(lmerTest)
-
+library(modelsummary)
 
 # library(ggtext)
 # library(glue) now included with tidyverse as str_glue
@@ -178,6 +178,39 @@ col_to_string <- function(data, column, digits = 2) {
     pull({{ column }}) |>
     str_c(collapse = ", ") |>
     (\(x) sub(", ([^,]+)$", ", and \\1", x))()
+}
+
+# display selected model parameters
+display_model_parameters <- function(model, type = "fixed", exp = F) {
+
+  # Function to add significance stars
+  add_significance_stars <- function(p_value) {
+    if (p_value < 0.001) {
+      "***"
+    } else if (p_value < 0.01) {
+      "**"
+    } else if (p_value < 0.05) {
+      "*"
+    } else if (p_value < 0.1) {
+      "."
+    } else {
+      ""
+    }
+  }
+
+  # Get model parameters
+  model_params <- parameters::model_parameters(model, exponentiate = exp)
+
+  # Separate the fixed effects
+  model_params_ef <- model_params |> 
+    filter(Effects == type)
+
+  # Create the table
+  result_table <- model_params_ef |> 
+    mutate(Sig = sapply(p, add_significance_stars)) |> 
+    select(-Group) 
+    
+  display(result_table, digits = 3, ci_digits = 2)
 }
 ```
 
@@ -1590,6 +1623,9 @@ A post-hoc simulation was run to validate these results by estimating the statis
 
 Based on analysis of the data and validation of the methods, it is determined that sufficient statistical evidence exists to accept $H_{1a}$: average task completion time varies by treatment. Specifically, the PWI and PAR instructional methods are both equivalent and faster than AR and MR, which are also equivalent to one another.
 
+
+\pagebreak
+
 ### $H_{1b}$: Learning Rates
 
 ::: content-hidden
@@ -1625,7 +1661,11 @@ will be tested by comparing how TCT changes with each repetition of the task bas
 
 It is tempting to assess this using aggregated data as before. For example, the average change in TCT between consecutive tasks completed might give suitable measure. For clarity, this can be expressed as follows for each participant, $j$:
 
-$$\overline{\Delta TCT_{j}} = \frac{\sum_{i=1}^{N-1} (TCT_{i+1} - TCT_i)}{N - 1}$$ {#eq-naive}
+$$
+\small{
+\overline{\Delta TCT_{j}} = \frac{\sum_{i=1}^{N-1} (TCT_{i+1} - TCT_i)}{N - 1}
+}
+$$ {#eq-naive}
 
 where $N$ is the total number of tasks completed by participant $j$, and $i$ indexes each of the $N-1$ differences in TCT. This metric can be compared by group using the approach employed by $H_{1a}$, as seen in @fig-h1b-naive. The results show that there is a significant difference in groups (p = 0.002), with small to moderate effect size $\hat{\varepsilon}^{2}_{rank}=0.29$. Significant pairwise differences were identified between PWI and both AR (p=0.027) and MR (p=0.039) as well as PAR and the same (AR p=0.015, MR p=0.025). 
 
@@ -1691,7 +1731,7 @@ For analysis of this sort, particularly where repeated measures are nested withi
 The general form of a suitable linear mixed-effects model that expresses TCT as a function of task sequence, ignoring treatment effects, is:
 
 $$
-\textstyle{
+\small{
 TCT_{ij}=(\beta_0+U_{0j})+(\beta_1+U_{1j})(SEQ_{ij})+\varepsilon_{ij}
 }
 $$ {#eq-lme1}
@@ -1709,7 +1749,9 @@ where:
 This formulation allows for random intercepts, $(\beta_0+U_{0j})$, and slopes $(\beta_1+U_{1j})$, each based on individual differences per participants $U_j$. In the context of this analysis those can be interpreted as individual starting points (intercept) and learning rates (slope). While @eq-lme1 makes it easy to understand how participant-level variation contributes to both slope and intercept, it is more commonly formulated as:
 
 $$
+\small{
 TCT_{ij} = (\beta_0 + \beta_1 SEQ_{ij}) + (U_{0j} + U_{1j}SEQ_{ij}) + \varepsilon_{ij}
+}
 $$ {#eq-lme2}
 
 where the terms are rearranged to differentiate *fixed* and *random* effects. The first term corresponds to group-level fixed-effects ($\beta_i$) while the second captures the random-effects of between- and within-participant variation ($U_j$). This is visualized in @fig-h1b-rsri, where the completion time for each task iteration is shown in all treatment groups. Black lines indicate the best fit within each group, the fixed-effect term, and colored lines show the same for each participant, reflecting the random-effect term.
@@ -1759,7 +1801,7 @@ Using linear mixed effect models (LMEs) to assess treatment effect is a two-step
 
 #### Unconditional Models of Time
 
-To find an unconditional model that best fits the data, several options of increasing complexity will be considered. In the model selection process, it is important to consider that learning is an inherently non-linear process. Typically, TCT starts high and decreases with each training iteration, but the rate of decrease is not constant. The pattern often resembles exponential decay, with rapid initial improvement followed by more gradual changes. When working with an LME, quadratic terms can be used to create a curvilinear approximation of this effect. This is depicted in @fig-h1b-qrsri, where each line is fit using a quadratic term for sequence: $TCT \approx \beta_{0} + \beta_{1}SEQ + \beta_{2}SEQ^2$. The result appears to improve both participant and overall fit compared to the previous linear formulation.
+To find an unconditional model that best fits the data, several options of increasing complexity will be considered. In the model selection process, it is important to consider that learning is an inherently non-linear process. Typically, TCT starts high and decreases with each training iteration, but the rate of decrease is not constant. The pattern often resembles exponential decay, with rapid initial improvement followed by more gradual changes. When working with an LME, quadratic terms can be used to create a curvilinear approximation of this effect. This is depicted in @fig-h1b-qrsri, where each line is fit using a quadratic term for sequence: $TCT \approx \beta_{0} + \beta_{1}SEQ + \beta_{2}SEQ^2$. The result appears provide an overall improvement to fit at both participant and treatment levels compared to the previous linear formulation.
 
 ```{r fig-h1b-qrsri}
 #| fig-cap: Quadratic random slopes and intercepts model visualized.
@@ -1806,7 +1848,7 @@ ggplot(aes(x = seq, y = tct)) +
     )
 ```
 
-Seven models of increasing complexity were fit, as summarized in @tbl-h1b-fit-unconod. This table adopts the model formulation notation used by many R modeling packages, including `lmer`, which is used here. A fixed overall intercept is specified for all models with the first term (`1`). Random effects are described within the parentheses of the last term. Terms to the right of the bar (`|`) are grouping variables, and those to its left specify the random intercept and coefficients. Terms between the intercept and random effects, outside the parentheses, are fixed effects with constant coefficients. For brevity, Sequence and Participant terms have been abbreviated in this table as `s` and `p`, respectively. The "XF" column describes the non-linear transformation employed (quadratic or log), and "SE" identifies the sequence effect. SE is "Fixed" where SEQ is included only as a fixed effect, and "Both" where it also appears in the random effect.
+Seven models of increasing complexity were fit, as summarized in @tbl-h1b-fit-uncond. This table adopts the model formulation notation used by many R modeling packages, including `lmer`, which is used here. A fixed overall intercept is specified for all models with the first term (`1`). Random effects are described within the parentheses of the last term, where terms to the right of the bar (`|`) are grouping variables, and those to its left specify the random intercept and coefficients. Terms between the intercept and random effects, outside the parentheses, are fixed effects with constant coefficients. For brevity, Sequence and Participant terms have been abbreviated in this table as `s` and `p`, respectively. The "XF" column describes the non-linear transformation employed (quadratic or log), and "SE" identifies the sequence effect. SE is "Fixed" where SEQ is included only as a fixed effect, and "Both" where it also appears in the random effect.
 
 | **\#** | **Model Formulation in `{lmer}` Notation**       | **XF** |  **SE**   |
 | :----: | ------------------------------------------------ | :----: | :-------: |
@@ -1818,61 +1860,119 @@ Seven models of increasing complexity were fit, as summarized in @tbl-h1b-fit-un
 |   6    | 1 + log(s + 1) + (1 + log(s + 1) \| p)           |  Log   |   Both    |
 |   7    | 1 + s + log(s + 1) + (1 + s + log(s + 1) \| p)   |  Log   |   Both    |
 
-: Model Summary {#tbl-h1b-fit-unconod .striped}
+: Model Summary {#tbl-h1b-fit-uncond .striped}
 
 For example, model 4 has a fixed overall intercept (`1`) with additional fixed effects for `s` and `s^2`. Its random effects (`1 + s + s^2 \| p`) can be interpreted as random intercepts and slopes for `s` and `s^2` for each participant. This can be expressed in the previous mathematical notation as:
 
 \begin{align}
+\small
 TCT_{ij} =\:  &(\beta_{0} + \beta_1 SEQ_{ij} + \beta_2 SEQ_{ij}^2) \label{eq:h1b-m4} \\
-&+ (U_{0j} + U_{1j} SEQ_{ij} + U_{2j} SEQ_{ij}^2) + \varepsilon_{ij}
+&+ (U_{0j} + U_{1j} SEQ_{ij} + U_{2j} SEQ_{ij}^2) + \varepsilon_{ij} \notag
 \end{align}
 
-Prior to fitting, the sequence predictor was transformed from discrete integers to continuous values in the range [0, 1] using `(SEQ - 1) / (max(SEQ) - 1)`. This is common practice to prevent numerical issues, aid model convergence, and to make the results easier to interpret and generalize.
+::: content-hidden
+TODO: small not working in aligned latex equation blocks
+:::
 
-The models were fit using maximum likelihood estimation (rather than the default restricted maximum likelihood) to enable valid comparisons between models with different fixed effects structures. Fitting was accomplished using the overloaded version of `lme4::lmer` from `{lmerTest}`, which adds p-values for fixed effects using Satterthwaite's method. The results were compared using `performance` from `{compare_performance}`, the output of which is summarized in @tbl-h1b-modperf-unc. 
+```{r h1b_mod_data}
+
+mdf <- learn_h1b |>
+  filter(seq <= 5) |> 
+  mutate(
+    seq.fp = (seq - 1) / (max(seq) - 1),
+    treatment = factor(treatment, ordered = FALSE),
+  )
+
+```
+
+Prior to fitting, the sequence predictor was transformed from discrete integers to continuous values in the range [0, 1]. This is common practice to prevent numerical issues, aid model convergence, and to make the results easier to interpret and generalize. Additionally, The treatment variable was converted to an unordered factor to remove any implied ranking among treatments that could bias the models. Treatment was originally ordered to ensure the PWI, PAR, AR, MR presentation of results in charts and tables. It has no predictive implications.
+
+Finally, only a subset of the data is used. As seen in @fig-h1b-rsri and @fig-h1b-qrsri, the number of task iterations completed in the allotted time varied substantially by treatment. Numerous attempts to fit the full dataset using various modeling techniques all resulted in significant overfitting, particularly after the fifth iteration where available observations decline rapidly and treatments become imbalanced (see @tbl-h1b-obs). The overfit models produced poor extrapolations that were not reflected in performance diagnostics, as these measures only compare observed and predicted values. To address this, it was decided to use data only from the first five task iterations, where all treatments are still reasonably represented. This cutoff was chosen as the best trade-off between available data and extrapolation quality, after considering earlier (four) and later (six) alternatives.
+
+```{r tbl-h1b-obs}
+#| tbl-cap: "Observations per Treatment for all recorded task iterations"
+table(learn_h1b$treatment, learn_h1b$seq)
+```
+
+Following those data transformations, the models were fit using maximum likelihood estimation (rather than the default restricted maximum likelihood) to enable valid comparisons between models with different fixed effects structures. Fitting was accomplished using the overloaded version of `lme4::lmer` from `{lmerTest}`, which adds p-values for fixed effects using Satterthwaite's method. The results were compared using `performance` from `{compare_performance}`, the output of which is summarized in @tbl-h1b-modperf-unc. 
 
 Columns include Akaike (AIC) and Bayesian (BIC) Information Criterion, conditional and marginal $R^2$, Interclass Correlation Coefficient (ICC), and Root Mean Squared Error (RMSE). AIC and BIC are, respectively, frequentist and Bayesian measures of the amount of information lost by a model when approximating the true data generating process. Both account for the number and relevance of predictors, and lower scores are better. $R^2_{cond}$ represents the variance explained by both fixed and random effects, while $R^2_{marg}$ only accounts for the fixed effects. ICC measures the proportion of total variance that is accounted for by the grouping of data. In this context, high ICC values suggest that a larger portion of the variability in TCT is due to differences *between* participants, not within (i.e., across task iterations). Finally, RMSE is a measure of the average magnitude of the model's prediction error (residuals).
 
 ```{r h1b-fit-uncond}
-# transform seq to float from 0 to 1
-md <- learn_h1b |>
-  mutate(seq.fp = (seq - 1) / (max(seq) - 1))
-
-# summary(md$seq.fp)
-
 # random intercept
-m1 <- lmer(tct ~ 1 + (1 | participant), data = md, REML = F)
+m1 <- lmer(tct ~ 1 + (1 | participant), data = mdf, REML = F)
 # fixed slope, random intercept
-m2 <- lmer(tct ~ 1 + seq.fp + (1 | participant), data = md, REML = F)
+m2 <- lmer(tct ~ 1 + seq.fp + (1 | participant), data = mdf, REML = F)
 # random slope, random intercept
-m3 <- lmer(tct ~ 1 + seq.fp + (1 + seq.fp | participant), data = md, REML = F)
+m3 <- lmer(tct ~ 1 + seq.fp + (1 + seq.fp | participant), data = mdf, REML = F)
 # quadratic random slope, random intercept
 m4 <- lmer(
     tct ~ 1 + seq.fp + I(seq.fp ^ 2) + (1 + seq.fp + I(seq.fp ^ 2) | participant),
-    data = md, REML = F
+    data = mdf, REML = F
 )
 # log-transformed time; fixed slope, random intercept
-m5 <- lmer(tct ~ 1 + log(seq.fp + 1) + (1 | participant), data = md, REML = F)
+m5 <- lmer(tct ~ 1 + log(seq.fp + 1) + (1 | participant), data = mdf, REML = F)
 # log-transformed time; random slope, random intercept
-m6 <- lmer(tct ~ 1 + log(seq.fp + 1) + (1 + log(seq.fp + 1) | participant), data = md, REML = F)
+m6 <- lmer(tct ~ 1 + log(seq.fp + 1) + (1 + log(seq.fp + 1) | participant), data = mdf, REML = F)
 # linear and log-transformed time; fixed slope, random intercept
 m7 <- lmer(
-    tct ~ 1 + seq.fp + log(seq.fp + 1) + (1 + seq.fp + log(seq.fp + 1) | participant),
-    data = md, REML = F
+    tct ~ 1 + (seq.fp) + log(seq.fp + 1) + (1 + (seq.fp) + log(seq.fp + 1) | participant),
+    data = mdf, REML = F
 )
+```
 
+
+```{r h1b-fit-uncond-load}
 cp_h1b_uc <- compare_performance(m1, m2, m3, m4, m5, m6, m7, metrics = "common", rank = F)
 ```
 
 ```{r tbl-h1b-modperf-unc}
 #| tbl-cap: "Model Performance Results"
 
-cp_h1b_uc |> 
-  select(Name, AIC, BIC, R2_conditional, R2_marginal, ICC, RMSE) |> 
+cp_h1b_uc |>
+  select(Name, AIC, BIC, R2_conditional, R2_marginal, ICC, RMSE) |>
   display()
 ```
 
-The result of this comparison shows that m7 outperforms the other options in most measures, with the lowest AIC, BIC, and RMSE. Approximately 94% of the variance in TCT can be explained by this model ($R^2_{cond}$), of which only 28% is due to its fixed effects ($R^2_{marg}$). The high ICC (0.91) indicates that a large proportion of the total variance is due to differences between participants, suggesting that individual variation is a crucial factor in the model.
+The result of this comparison shows that m7 outperforms the other options in most measures, with the lowest AIC, BIC, and RMSE. Approximately 95% of the variance in TCT can be explained by this model ($R^2_{cond}$), of which only 28% is due to its fixed effects ($R^2_{marg}$). The high ICC (0.93) indicates that a large proportion of the total variance is due to differences between participants, suggesting that individual variation is a crucial factor in the model. The resulting predictions are plotted in @fig-m7-pred.
+
+```{r fig-m7-pred}
+# Create a data frame for predictions
+pred_data <- data.frame(seq.fp = seq(0, 1, length.out = 100))
+
+# Generate predictions
+pred_data$TCT <- predict(m7, newdata = pred_data, re.form = NA)
+
+# Calculate confidence interval
+vcov_fixed <- vcov(m7)
+X <- model.matrix(~ seq.fp + log(seq.fp + 1), data = pred_data)
+se <- sqrt(diag(X %*% vcov_fixed %*% t(X)))
+pred_data$lower <- pred_data$TCT - 1.96 * se
+pred_data$upper <- pred_data$TCT + 1.96 * se
+
+# Create the plot
+ggplot(pred_data, aes(x = seq.fp, y = TCT)) +
+  geom_point(data = mdf, aes(y = tct), alpha = 0.3) +  # Add actual data points
+  geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2) +
+  geom_line(color = "blue") +
+  labs(title = "Predicted Learning Curve from Unconditioned Model (m7)",
+       x = "Standardized Task Sequence (SC)",
+       y = "Predicted Task Completion Time (seconds)") +
+  theme_minimal()
+```
+
+Even with the subset of data, we see that the log-based model begins to exhibit a slight upward trend after the fourth iteration, which defies learning theory, expectations, and the limited data from subsequent iterations. Model fits based on exponential and hyperbolic forms, which better align with theoretical learning curves, led to more promising predictions but were plagued by convergence issues, especially as additional terms were added to account for treatment and its interactions. This is a limitation of the study that originates primarily from the imbalanced experimental design employed by the learning phase.
+
+::: content-hidden
+MAYBE: try reducing the impact of the linear seq.fp term - divide it by 2?
+:::
+
+Inspecting the fixed effects parameters for m7, summarized in @tbl-m7-params, shows that all terms are significant. The intercept of 145.5 seconds establishes the baseline average performance for all participants on the first iteration. Estimated coefficients for the linear and log terms of sequence show that these terms compete for dominance, with the linear term increasing TCT at a rate of 246.5 seconds per unit of seq.fp, the continuous transformation of task iteration number. This is offset by the log term, which decreases TCT by 431.7 seconds per unit of $\log{(\text{seq.fp} + 1)}$. These coefficients represent the change in TCT for a one-unit change in their respective transformed sequence terms, resulting in a non-linear learning curve when combined. The strong negative correlation of -0.75 between the log term and intercept indicates that participants with higher initial TCT experience a stronger effect from the log term, which drives rapid initial improvement. In learning theory, this phenomenon is known as the *power law of practice*. It formalizes the idea that, all other things constant, the farther a learner starts from expected proficiency, the faster they will initially improve.
+
+```{r tbl-m7-params}
+#| tbl-cap: Fixed Effects Parameters for the Unconditioned RLM (m7)
+display_model_parameters(m7)
+```
 
 
 ```{r}
@@ -1913,7 +2013,7 @@ m7_disp_pv <- m7_disp$p.value
 m7_out_pv <- m7_out$p.value
 ```
 
-Validation of m7 confirmed the normality of residuals (Shapiro-Wilk test, `r fmt_p_val(m7_st_pv)`), with significant heteroscedasticity (`r fmt_p_val(m7_het_pv)`). Traditional QQ plots of the raw residuals do not properly account for the hierarchical structure and non-independence of mixed effect models, leading to overly optimistic results. The `{DHARMa}` package was specifically designed to address this problem by comparing observed residuals to a large number of simulations from the fitted model. This technique provides a more robust and accurate representation of model accuracy. Diagnostics produced by `testResiduals` indicate deviation from the expected distribution of residuals (Kolmogorov-Smirnov test, `r fmt_p_val(m7_ks_pv)`) without significant dispersion issues (`r fmt_p_val(m7_disp_pv)`) or outliers (`r fmt_p_val(m7_out_pv)`). Visual inspection of residual plots confirmed these findings (@fig-m7-dharma).
+Validation of m7 confirmed that the residuals exhibit equal variance (`r fmt_p_val(m7_het_pv)`), but are not normally distributed (Shapiro-Wilk test, `r fmt_p_val(m7_st_pv)`). Traditional QQ plots of the raw residuals do not properly account for the hierarchical structure and non-independence of mixed effect models, leading to overly optimistic results. The `{DHARMa}` package was specifically designed to address this problem by comparing observed residuals to a large number of simulations from the fitted model. This technique provides a more robust and accurate representation of model accuracy. Diagnostics produced by `testResiduals` indicate deviation from the expected distribution of residuals (Kolmogorov-Smirnov test, `r fmt_p_val(m7_ks_pv)`) without significant dispersion issues (`r fmt_p_val(m7_disp_pv)`) or outliers (`r fmt_p_val(m7_out_pv)`). Visual inspection of residual plots confirmed these findings (@fig-m7-dharma).
 
 ```{r fig-m7-dharma}
 #| fig-cap: Residual Plots
@@ -1921,52 +2021,83 @@ Validation of m7 confirmed the normality of residuals (Shapiro-Wilk test, `r fmt
 DHARMa::plotQQunif(sim_m7, testDispersion = F, testUniformity = F, testOutliers = F)
 ```
 
-Given these minor deviations from model assumptions, the model was refit using a robust linear mixed model designed to mitigate those issues and ensure reliable inference. Robust LMs (RLMs) use techniques such as M-estimation or MM-estimation to reduce the influence of outliers and high-leverage observations. They also employ weighted estimation to account for unequal variances (heteroscedasticity). This approach makes RLMs less sensitive to violations of normality assumptions in both fixed and random effects, and more resistant to departures from other common assumptions of linear mixed models. As a result, RLMs typically provide more stable and accurate parameter estimates when dealing with non-ideal data conditions. The result from `robustlmm::rlmer` is compared with the original fit in @tbl-h1b-m7-comp.
+Given these minor deviations from model assumptions, the model was refit using a robust linear mixed model designed to mitigate those issues and ensure reliable inference. Robust LMs (RLMs) use techniques such as M-estimation or MM-estimation to reduce the influence of high-leverage observations, and weighted estimation to equalize variance. This approach makes RLMs less sensitive to violations of normality assumptions in both fixed and random effects, and more resistant to departures from other common assumptions of linear mixed models. As a result, RLMs typically provide more stable and accurate parameter estimates when dealing with non-ideal data conditions.
 
-```{r fit-m7r}
+The result from `robustlmm::rlmer` is compared with the original fit in @tbl-h1b-m7-comp. Robust fits for two additional variations of m7 are also included. Both add the initial TCT as a predictor, first as a covariate, and then including interactions with the linear and log terms in the second. This was done to account for the impact of baseline performance on the model, as discussed above. As seen in @tbl-h1b-m7-comp, both models incorporating initial TCT (m7r_ti and m7r_ta) show much higher $R^2_{marg}$ values, indicating that initial performance explains a large portion of the fixed effects variance. The version with interactions also exhibits the best ICC and RMSE scores, suggesting it is the best choice for further development.
+
+```{r update-mdf}
+# First, calculate initial TCT for each participant
+mdf <- mdf |>
+  group_by(participant) |>
+  mutate(initial_tct = first(tct)) |>
+  ungroup()
+
+```
+
+```{r fit-m7r, eval=FALSE}
 #| warning: false
 #| message: false
 
 # robust fit of m7
 m7r <- robustlmm::rlmer(
     tct ~ 1 + seq.fp + log(seq.fp + 1) + (1 + seq.fp + log(seq.fp + 1) | participant),
-    data = md, REML = F
+    data = mdf, REML = F
 )
 
-cp_h1b_uc_r <- compare_performance(m7, m7r, metrics = "common", rank = T)
+# add initial_tct as covariate predictor
+m7r_ta <- robustlmm::rlmer(
+    tct ~ 1 + seq.fp + log(seq.fp + 1) + initial_tct + 
+         (1 + seq.fp + log(seq.fp + 1) | participant),
+    data = mdf, REML = FALSE
+)
 
-# validate result
-m7r_het <- hetero_test(m7r)
-m7r_het_pv <- m7r_het$p.value
+# add initial_tct as interactive predictor
+m7r_ti <- robustlmm::rlmer(
+    tct ~ 1 + seq.fp * initial_tct + log(seq.fp + 1) * initial_tct + 
+         (1 + seq.fp + log(seq.fp + 1) | participant),
+    data = mdf, REML = FALSE
+)
 
-residuals_m7r <- residuals(m7r)
-
-# Shapiro-Wilk test for normality
-m7r_st <- shapiro.test(residuals_m7r)
-m7r_st_pv <- m7r_st$p.value
-
+save(m7r, m7r_ta, m7r_ti, file = here("rdata", "h1b-fit-robust.RData"))
 ```
 
 ```{r tbl-h1b-m7-comp}
 #| tbl-cap: "Model Performance Results"
 
+load(file = here("rdata", "h1b-fit-robust.RData"))
+
+cp_h1b_uc_r <- compare_performance(m7, m7r, m7r_ta, m7r_ti, metrics = "common", rank = F)
+
 cp_h1b_uc_r |> 
-  select(!Model) |> 
+  select(Name, R2_conditional, R2_marginal, ICC, RMSE) |> 
   display()
 ```
 
-These results, particularly the decrease in RMSE (`r round(cp_h1b_uc_r$RMSE[2], 2)`), indicate marginal improvement gains were achieved by the robust fit. However, the real benefit comes from improved model diagnostics. The robust model eliminates heteroscedasticity (`r fmt_p_val(m7r_het_pv)`) and down-weights extreme values as seen in @fig-m7r-resid. While the Shapiro-Wilk test still indicates non-normality of residuals (`r fmt_p_val(m7r_st_pv)`), this is less concerning for robust models, which are designed to perform well even when normality assumptions are violated.
+```{r valid-m7r_ti}
+# validate result
+m7r_ti_het <- hetero_test(m7r_ti)
+m7r_ti_het_pv <- m7r_ti_het$p.value
 
-```{r fig-m7r-resid}
-#| fig-cap: Extreme values are assigned lower weights in robust model
-plot(m7r, which = 1)
+residuals_m7r_ti <- residuals(m7r_ti)
+
+# Shapiro-Wilk test for normality
+m7r_ti_st <- shapiro.test(residuals_m7r_ti)
+m7r_ti_st_pv <- m7r_ti_st$p.value
+
 ```
-As a final model validation @fig-h1b-rlm-pred shows the predictions generated by the robust model for the first five participants in each treatment. In this figure, the black circles and lines represent observed TCT values for each participant, while the colored curves represent the RLM's predictions. Each row corresponds to a different treatment group (AR, MR, PAR, PWI), and each subplot shows data for an individual participant. This visualization allows for a comparison between observed data and model predictions across different treatments and participants, and helps confirm that a good fit is obtained for a wide range of observation counts. 
+
+These results, particularly the decrease in RMSE (`r round(cp_h1b_uc_r$RMSE[4], 2)`), indicate meaningful performance gains were achieved by the robust fit. However, the real benefit comes from improved model diagnostics. The robust model reduces heteroscedasticity (`r fmt_p_val(m7r_ti_het_pv)`) and down-weights extreme values as seen in @fig-m7r_ti-resid. Fourty-one residuals and six random effects were affected, addressing potential outliers or overly influential observations. The low residual error achieved (SD = 4.26) aligns with the high $R^2_{cond}$ previously noted. While the Shapiro-Wilk test still indicates non-normality of residuals (`r fmt_p_val(m7r_ti_st_pv)`), this is less concerning for robust models, which are designed to perform well even when normality assumptions are violated.
+
+```{r fig-m7r_ti-resid}
+#| fig-cap: Extreme values are assigned lower weights in robust model
+plot(m7r_ti, which = 1)
+```
+As a final model validation, @fig-h1b-rlm-pred shows the predictions generated by the robust model for the first five participants in each treatment. In this figure, the black circles and lines represent observed TCT values for each participant, while the colored curves represent the RLM's predictions. Each row corresponds to a different treatment group (AR, MR, PAR, PWI), and each subplot shows data for an individual participant.
 
 ```{r h1b-insp-cond}
 # Select the first 5 participants from each treatment
-m7r_sample <- md |>
-  mutate(pred = fitted(m7r)) |> 
+m7r_ti_sample <- mdf |>
+  mutate(pred = fitted(m7r_ti)) |> 
   group_by(treatment) |>
   arrange(participant) |>
   filter(participant %in% unique(participant)[1:5]) |>
@@ -1974,14 +2105,14 @@ m7r_sample <- md |>
   mutate(facet_label = paste(treatment, participant, sep = " - "))
 
 # Set a consistent maximum for y-axis
-max_tct <- max(m7r_sample$tct) + 20
+max_tct <- max(m7r_ti_sample$tct) + 20
 ```
 
 
 ```{r fig-h1b-rlm-pred}
 #| fig-cap: "Visualizing RLM model fit"
 
-ggplot(m7r_sample, aes(x = seq.fp, y = tct)) + 
+ggplot(m7r_ti_sample, aes(x = seq.fp, y = tct)) + 
   geom_point(fill = "grey", pch = 21, size = 2, stroke = 1.25) + 
   geom_line(aes(group = participant)) + 
   geom_line(aes(y = pred, color = treatment), lwd = 1.5) +
@@ -2001,320 +2132,312 @@ ggplot(m7r_sample, aes(x = seq.fp, y = tct)) +
   )
 ```
 
+This visualization allows for a comparison between observed data and model predictions across different treatments and participants, and helps confirm that a good fit is obtained for the specified range of observation counts. The variation in TCT is evident here, with participants assigned to the PWI and PAR groups completing substantially more task iterations than their AR / MR peers.
 
-```{r}
-parameters::model_parameters(m7r)
+```{r tbl-m7r-ti-fe}
+#| tbl-cap: Fixed Effects Parameters for the Unconditioned RLM including initial TCT interactions (m7r_ti)
+display_model_parameters(m7r_ti)
 ```
 
-back transform seq.fp → seq = seq.fp x 10
+@tbl-m7r-ti-fe summarizes the fixed effects parameters for m7r_ti, revealing a complex interplay of factors influencing task completion time (TCT). The intercept term is near-zero (0.189) and not likely significant[^25-results-1] (t = 0.10). This counter-intuitive result is a direct consequence of including initial TCT as an explanatory variable, centering predictions around each participant's starting point and calculating deviations from initial performance rather than absolute TCT values. The initial_tct coefficient (0.996, t = 83.54) is highly significant and nearly 1, indicating that initial performance is the dominating predictor of subsequent performance, a role played by the intercept in prior formulations. The linear (seq.fp: -224.6, t = -3.70) and logarithmic (log(seq.fp + 1): 354.0, t = 4.13) terms for sequence are both significant and compete for dominance, with signs reversed from the m7 model. This sign reversal is another consequence of including initial TCT. The larger magnitude of the logarithmic term suggests a strong non-linear component to learning, aligning with theory, expectations, and observed values. Significant interactions between initial TCT and both the linear (3.36, t = 7.72) and logarithmic (-5.54, t = -9.24) terms reveal how baseline performance affects TCT changes over time. These interactions suggest that participants with higher initial TCT tend to have a slower linear decrease but stronger logarithmic decrease in TCT over time.
 
-note: all time and slope outputs will now be in terms of 0 to 1, where 1 = `r max(learn_h1b$seq)` (should be 11). For example, task 1 is now 0.0909 and a slope of -354 per unit is equal to -354 / 11 = -32.2 per task.
+[^25-results-1]: For this interpretation, t values with a magnitude greater than 2.0 are taken as likely significant.
 
-look at model summary
+Finally, the model's random effects structure allows for participant-level variations in both the intercept and slope for the linear and log terms. Together, this sophisticated design incorporates the power law of practice in a nuanced, participant-specific manner. The combination of linear and logarithmic terms, along with their interactions with initial performance, allows it to represent complex, dynamic learning patterns that vary based on sequence, starting proficiency, and participant idiosyncrasies. 
 
-```{r h1b-sum-uncond}
-summary(m7r)
-```
+To ease its interpretation, this model can be expressed mathematically as:
 
-all fixed effects are significant
+\begin{align}
+\small
+\text{TCT}_{ij} &=\: 0.189 + (0.996 \times \text{TCT}_{0i}) - (224.6 \times \text{SC}_{ij}) + \left( 354.0 \times \log(\text{SC}_{ij} + 1) \right) \label{eq:m7r-ti-form} \\
+&\quad + (3.36 \times \text{SC}_{ij} \times \text{TCT}_{0i}) - \left(5.54 \times \log(\text{SC}_{ij} + 1) \times \text{TCT}_{0i} \right) \notag \\
+&\quad + \text{RE}_{ij} + \varepsilon_{ij} \notag
+\end{align}
 
 
+Where:
 
-::: content-hidden
+- $i$ and $j$ are indices for participant and task iteration 
+- $TCT_{ij}$ is the Task Completion Time in seconds
+- $TCT_{0i}$ is the initial Task Completion Time
+- $SC_{ij}$ is the standardized sequence count, $\text{SC} = (\text{SEQ} - 1) / (\max(\text{SEQ}) - 1)$
+- $RE_{ij}$ represents the random effects
+- $\varepsilon_{ij}$ is the residual error term
 
-TODO: check model assumptions / validity
-these results are not great
+Note that $RE_{ij}$ can be further broken down as:
 
-```{r eval=FALSE}
-ps <- plot(check_model(m, panel = F))
-```
+$$
+\small{
+\text{RE}_{ij} = U_{INTi} + (U_{LINi} \times \text{SC}_{ij}) + \left( U_{LOGi} \times \log(\text{SC}_{ij} + 1) \right)
+}
+$$ {#eq-m7r-ti-re}
 
-```{r eval=FALSE}
-binned_residuals(m)
-check_outliers(m)
-check_overdispersion(m)
+Where the participant-specific random effects for intercept, linear, and log terms are:
 
-check_autocorrelation(m)
-check_heteroscedasticity(m)
-check_homogeneity(m)
-check_normality(m)
-check_residuals(m)
-```
+- $U_{INTi} \sim \mathcal{N}(0, \sigma_{INT}^2)$ and $\sigma_{INT} = 0.749$
+- $U_{LINi} \sim \mathcal{N}(0, \sigma_{LIN}^2)$ and $\sigma_{LIN} = 108.34$
+- $U_{LOGi} \sim \mathcal{N}(0, \sigma_{LOG}^2)$ and $\sigma_{LOG} = 160.37$
 
-:::
+These terms are participant-specific (as noted by the subscript $i$), and have a complex correlation structure. Notably, there is a strong negative correlation (-0.99) between the random effects for seq.fp and log(seq.fp + 1), indicating these terms strongly counteract each other at the participant level. The intercept has a moderate negative correlation with seq.fp (-0.68) and a moderate positive correlation with log(seq.fp + 1) (0.79). Finally, the residual error, $\varepsilon_{ij} \sim \mathcal{N}(0, 4.256^2)$. Together, these specifications provide a complete picture of the model's structure and variability.
 
 #### Conditional Models and Hypothesis Testing
 
-Add fixed treatment effect to best fit from above - does it improve the model? Use estimated slopes and intercepts to understand relationship between time, sequence, treatment, and TCT.
-
-using treatment and interactions with `seq` and `seq ^ 2`
+To understand the treatment effects and test $H_{1b}$, a model conditioned on treatment must be fit. Using m7r_ti as a base, three models of increasing complexity were again fit. The first includes treatment as a covariate predictor, the second includes interactions with the linear term, and the final model adds interactions with the log term. As before, these were fit with `robustlmm::rlmer`, and performance of the resulting models is compared in @tbl-h1b-fit-cond.
 
 ```{r h1b-fit-cond, eval=FALSE}
-# conditional models based on m4 (quadratic random slope and random intercept)
-# introduce treatment and interactions as fixed effects
-cm1 <- lmer(
-    tct ~ 
-      1 + seq.fp * treatment + I(seq.fp ^ 2) * treatment + 
-      (1 + seq.fp + I(seq.fp ^ 2) | participant),
-    data = md, REML = F
+
+# include treatment as a covariate
+m7r_ti_c1 <- robustlmm::rlmer(
+    tct ~ 1 + seq.fp * initial_tct + log(seq.fp + 1) * initial_tct + treatment +
+         (1 + seq.fp + log(seq.fp + 1) | participant),
+    data = mdf, REML = FALSE
 )
 
+# include treatment interaction with linear term
+m7r_ti_c2 <- robustlmm::rlmer(
+    tct ~ 1 + seq.fp * initial_tct + seq.fp * treatment + log(seq.fp + 1) * initial_tct +
+         (1 + seq.fp + log(seq.fp + 1) | participant),
+    data = mdf, REML = FALSE
+)
+
+# include treatment interactions with both linear and log terms
+m7r_ti_c3 <- robustlmm::rlmer(
+    tct ~ 1 + seq.fp * initial_tct + seq.fp * treatment + log(seq.fp + 1) * initial_tct + log(seq.fp + 1) * treatment + 
+         (1 + seq.fp + log(seq.fp + 1) | participant),
+    data = mdf, REML = FALSE
+)
+
+save(m7r_ti_c1, m7r_ti_c2, m7r_ti_c3, file = here("rdata", "h1b-fit-cond.RData"))
+
 ```
 
-does the conditional model differ from / improve fit? testing for treatment effect
+```{r tbl-h1b-fit-cond}
+load(here("rdata", "h1b-fit-cond.RData"))
+cp_h1b_cn_r <- compare_performance(m7r, m7r_ti_c1, m7r_ti_c2, m7r_ti_c3, metrics = "common", rank = F)
 
-```{r eval=FALSE}
-anova(m, cm1)
+cp_h1b_cn_r |> 
+  select(Name, R2_conditional, R2_marginal, ICC, RMSE) |> 
+  display()
 ```
 
-28 point reduction in AIC, significant improvement
+All models incorporating $TCT_{0}$ as a predictor show a substantial increase in $R^2_{marg}$. This suggests that adding treatment as a fixed effect improves the model's explanatory power. Model m7r_ti_c2, which includes treatment interactions with the linear term, performs better than the alternatives in every metric ($R^2_{marg}$ = 0.93, ICC = 0.85, RMSE = 5.93) except $R^2_{cond}$, where it matches the most complex matter (0.99). Furthermore, where the other models produced singularity warnings during the fit, c2 did not. These warnings did not invalidate the results for c1 or c3, as `robustlmm` automatically negotiated to an alternate optimizer. But the added stability provides additional comfort.
 
-inspect model results
+```{r fig-plot-make}
 
-```{r h1b-anova-cond, eval=FALSE}
-anova(cm1)
+# Create a data frame for predictions
+# include predictions for m7r_ti (no treatment effect)
+pred_data_m7r_ti <- data.frame(seq.fp = seq(0, 1, length.out = 100))
+pred_data_m7r_ti$initial_tct <- mean(mdf$initial_tct, na.rm = TRUE)  # Use mean initial_tct
+pred_data_m7r_ti$TCT <- predict(m7r_ti, newdata = pred_data_m7r_ti, re.form = NA)
+
+# use average initial TCT for each treatment
+avg_tct_0 <- aggregate(initial_tct ~ treatment, data = mdf, FUN = mean)
+names(avg_tct_0)[2] <- "avg_initial_tct"
+
+# Create a data frame for predictions
+pred_data <- expand.grid(
+  seq.fp = seq(0, 1, length.out = 100),
+  treatment = unique(mdf$treatment)
+)
+
+# Merge the average initial TCT values into pred_data
+pred_data <- merge(pred_data, avg_tct_0, by = "treatment")
+
+# Rename avg_initial_tct to initial_tct to match the model
+names(pred_data)[names(pred_data) == "avg_initial_tct"] <- "initial_tct"
+
+# Generate predictions
+pred_data$TCT <- predict(m7r_ti_c2, newdata = pred_data, re.form = NA)
+
+# Calculate confidence interval
+vcov_fixed <- vcov(m7r_ti_c2)
+X <- model.matrix(~ seq.fp * initial_tct + seq.fp * treatment + log(seq.fp + 1) * initial_tct, data = pred_data)
+se <- sqrt(diag(X %*% vcov_fixed %*% t(X)))
+pred_data$lower <- pred_data$TCT - 1.96 * se
+pred_data$upper <- pred_data$TCT + 1.96 * se
 ```
 
-rough interpretation:
+```{r fig-plot-show}
+#| fig-cap: "Learning Curves by Treatment"
 
-- all fixed effects are significant
-- TCT changes with task iteration (seq.fp)
-- TCT varies by group (treatment)
-- Rate of change of TCT changes by task iteration (seq.fp)
-- The effect of iteration (seq.fp) differs by group (treatment)
-- The rate of change of TCT differs by group (treatment)
-
-From Chet, after confirming above, elaborating:
-
-- Task Iteration Effect $(\text{seq.fp})$: TCT significantly decreases as task iterations increase, indicating learning over time (p < 0.001).
-- Treatment Effect: Baseline TCT varies significantly by treatment group, demonstrating that different treatments have distinct initial impacts on task completion time (p < 0.001).
-- Non-Linear Task Iteration Effect (Quadratic Term $(I(\text{seq.fp}^2))): The rate of change in TCT is non-linear and significantly changes with task iterations (p < 0.001).
-- Interaction Effects:
-  - $\text{seq.fp} \times \text{treatment}$: The impact of task iterations on TCT significantly differs across treatment groups (p = 0.005), indicating that treatments influence how quickly participants improve over iterations.
-  - $I(\text{seq.fp}^2) \times \text{treatment}$: The non-linear rate of change in TCT also varies significantly by treatment (p = 0.017), suggesting that the treatments affect the curvature of the learning trajectory.
-  
-These results highlight the importance of both linear and quadratic terms in modeling learning rates and emphasize the varying effects of different treatments on TCT dynamics over time. The significant interactions underscore how treatments modulate not just the initial performance but also the improvement trajectories.
-
-```{r h1b-sum-cond, eval=FALSE}
-summary(cm1)
+# Create the plot
+ggplot() +
+  # Add points for actual data
+  geom_point(data = mdf, aes(x = seq.fp, y = tct, color = treatment), alpha = 0.5) +
+  # Add lines for m7r_ti_c2 predictions
+  geom_line(data = pred_data, aes(x = seq.fp, y = TCT, color = treatment)) +
+  # Add line for m7r_ti predictions
+  geom_line(data = pred_data_m7r_ti, aes(x = seq.fp, y = TCT), color = "black", size = 1) +
+  labs(title = "Predicted Learning Curves by Treatment",
+       subtitle = "Black line represents overall prediction from m7r_ti",
+       x = "Standardized Task Sequence (SC)",
+       y = "Predicted Task Completion Time (seconds)") +
+  scale_color_brewer(palette = "Set1") +  # Use a color-blind friendly palette
+  theme_minimal() +
+  theme(legend.position = "bottom")
 ```
 
-rough interpretation:
-- (Intercept), seq.fp, and I(seq.fp^2) are all significant and give the initial TCT value, initial slope, and rate of change of slope for the reference treatment, AR
-- treatmentMR/PWI/PAR give the change in intercept from AR; only PWI and PAR are significant ("reliably different")
-- seq.fp:treatmentMR/PWI/PAR give the treatment level difference from the initial slope; only interactions with PWI and PAR are significant
-- treatmentMR/PWI/PAR:I(seq.fp^2) gives the treatment level difference from the rate of change of slope; only PWI and PAR are signficant
+@fig-plot-show plots the predicted learning curves for each treatment based on their mean $TCT_{0}$. The black line shows the predictions from the prior model, without treatment effects. All treatments show a general non-linear decrease in TCT with sequence, demonstrating learning. PWI and PAR perform better than average, while AR and MR are slower. This ranking persists through all iterations, despite clear differences in initial performance. To quantify these trends in statistical terms, @tbl-m7r-ti-c2-params summarizes the parameters for the model's fixed effects.
 
-from this we can see that AR and MR are roughly equivalent in all regards, and both PWI and PAR are significantly different from them in all measures. it does not provide sufficient information to ascertain the differences between MR, PWI, and PAR
-
-compared to AR, these differences are significant:
-- PWI and PAR start faster (lower baseline intercept)
-- PWI and PAR start learning slower (positive seq.fp:treatment values)
-- PWI and PAR improve learning faster (negative treatment:I(seq.fp^2) values)
-
-interpretation of above:
-- the first suggests PWI and PAR are more intuitive than AR
-- the second aligns with the intuition that learning rate is related to the difference in understanding, i.e. lower initial task times give lower learning potential to the asymptote (proficiency), so the rate is lower
-- the third observation seems counterintuitive - despite slower initial learning, the PWI and PAR reduce task completion times more per iteration
-
-This counterintuitive trend highlights the deep insights derived from advanced modeling and underscores the importance of considering both initial performance and subsequent learning trajectories when evaluating instructional methods.
-
-The learning for PWI and PAR might follow a sigmoidal curve, where there's slow initial improvement that accelerates rapidly as participants become more familiar with the task. This can happen if the initial hurdles are high, but once overcome, participants experience more significant gains.
-
-PWI and PAR participants might spend more time initially adapting to a new, potentially more complex instruction method. Once they adapt, they leverage this understanding more effectively, leading to faster improvements.
-
-The instructional methods for PWI and PAR might be inherently more effective in the long run, even if they take longer to grasp initially. These methods might impart skills that lead to compounded improvements over time.
-
-I'm reminded of OH's comment: 'learning takes effort' - perhaps the advanced instructional techniques are too helpful, to the point of diminishing the learning. Where PWI and PAR require greater participant engagement in the task, which requires greater effort initially but that investment pays off with better overall understanding.
-
-Early challenges encourage deeper cognitive processing, which fosters a better overall understanding despite the initial slower progress. The concept of "desirable difficulties" in learning theory posits that learning tasks should be challenging enough to promote deeper cognitive engagement but not so difficult that they become discouraging. PWI and PAR might embody this principle by requiring more effort initially, which results in more substantial long-term gains.
-
-Chet's Revised Interpretation:
-
-Initial Performance:
-
-PWI and PAR participants start with lower baseline TCT, suggesting these methods are more intuitive or easier to grasp initially.
-Effort and Engagement:
-
-Advanced instructional techniques like AR might not challenge participants enough initially, leading to faster initial gains but slower long-term improvement.
-PWI and PAR require greater initial effort, aligning with the participant insight that "learning takes effort." This investment of effort requires deeper cognitive engagement, which ultimately pays off.
-Learning Trajectories:
-
-Initial Slow Learning: PWI and PAR participants initially learn slower because more cognitive effort and engagement are required.
-Accelerated Improvement: Over time, the effort invested initially by PWI and PAR participants results in faster learning, leading to greater reductions in TCT per iteration.
-Integration of Insight:
-
-This model aligns with learning theories suggesting that greater initial effort and engagement foster deeper understanding and long-term gains in proficiency. The comment "learning takes effort" encapsulates the necessity of active engagement, which may explain why participants eventually achieve faster reductions in TCT despite slower initial learning.
-
-Summary:
-
-PWI and PAR methods promote greater initial effort and cognitive engagement, leading to deeper learning and accelerated improvement over time.
-While these methods may initially show slower learning rates, the effort invested results in faster long-term TCT reductions, demonstrating the importance of desirable difficulties in instructional design.
-
-Summarized Interpretation with Concept Integration:
-
-Initial Performance:
-
-Lower Baseline TCT: PWI and PAR start with lower initial TCT values, suggesting these methods are more naturally intuitive.
-Effort and Engagement:
-
-Desirable Difficulty: These methods incorporate a level of difficulty that requires greater cognitive effort initially, which is essential for deep learning.
-Zone of Proximal Development: PWI and PAR engage participants within their ZPD, challenging them sufficiently to enhance skill acquisition over time.
-Learning Trajectories:
-
-Initial Slower Learning: Slower initial learning rates for PWI and PAR participants reflect the necessary investment in overcoming early challenges.
-Accelerating Improvement: Over time, the learning rate accelerates as participants gain proficiency, aligning with the principles of Flow Theory where optimal challenge and skill balance lead to deeper engagement and faster learning improvements.
-Conclusion and Insight:
-The integration of educational theories with model outputs provides a comprehensive explanation for the observed learning patterns:
-
-PWI and PAR methods require initial higher efforts (desirable difficulty) but lead to better long-term understanding and faster TCT reductions.
-AR and MR methods may offer quicker, easier starts but do not sustain the accelerated improvement seen with PWI and PAR.
-Closing Thoughts:
-
-This nuanced interpretation underscores the importance of instructional design that balances initial challenge with long-term learning benefits, leveraging the principles of desirable difficulty, ZPD, and Flow Theory for optimal educational outcomes.
-
-pairwise comparisons of intercept, seq, and seq^2 effect using emmeans
-
-```{r h1b-pw-cond, eval=FALSE}
-em_int <- emmeans::emmeans(cm1, ~ treatment)
-em_slope <- emmeans::emmeans(cm1, ~ treatment | seq.fp)
-em_quad <- emmeans::emmeans(cm1, ~ treatment | I(seq.fp ^ 2))
-
-pw_int <- pairs(em_int, adjust = "holm")
-pw_slope <- pairs(em_slope, adjust = "holm")
-pw_quad <- pairs(em_quad, adjust = "holm")
-
-summary(pw_int)
-summary(pw_slope)
-summary(pw_quad)
+```{r tbl-m7r-ti-c2-params}
+display_model_parameters(m7r_ti_c2)
 ```
 
-in each case, all contrasts are significant except for AR-MR and PWI-PAR
+These results are similar to those for the unconditioned model (@tbl-m7r-ti-fe). All terms previously found significant remain so, including $TCT_{0}$, the linear and log terms, and their interactions with $TCT_{0}$. The relevant interpretations stand, though the magnitude of the effects vary slightly. Importantly, all interactions between treatment and seq.fp are identified as significant. This directly addresses $H_{1b}$, confirming that treatment varies TCT over time, when $TCT_{0}$ varies. To test if these findings hold when all participants begin with equal proficiency (equalizing the effects of the power law of practice), a second set of predictions is generated using equal values of $TCT_{0}$ for all treatments. The resulting learning curves are plotted in @fig-plot-stdtct.
 
-visualize predictions...
+```{r fit-with-std-tct0}
+# Use the overall mean initial TCT for all treatments
+mean_initial_tct <- mean(mdf$initial_tct, na.rm = TRUE)
 
-```{r h1b-plot-cond, eval=FALSE}
-library(ggplot2)
+# Create a new prediction data frame
+pred_data_equal_start <- expand.grid(
+  seq.fp = seq(0, 1, length.out = 100),
+  treatment = unique(mdf$treatment),
+  initial_tct = mean_initial_tct
+)
 
-# Predicted values for different seq.fp levels
-seq_levels <- unique(md$seq.fp)
-predicted_vals <- expand.grid(treatment = levels(md$treatment), seq.fp = seq_levels)
-predicted_vals$pred_tct <- predict(cm1, newdata = predicted_vals, re.form = NA)
+# Generate predictions
+pred_data_equal_start$TCT <- predict(m7r_ti_c2, newdata = pred_data_equal_start, re.form = NA)
+```
 
-# Plot with both predicted lines and actual data points
-ggplot(predicted_vals, aes(x = seq.fp, y = pred_tct, color = treatment, group = treatment)) +
+```{r fig-plot-stdtct}
+#| fig-cap: "Compare Learning Curves with Equal Initial Proficiency"
+
+ggplot(pred_data_equal_start, aes(x = seq.fp, y = TCT, color = treatment)) +
   geom_line() +
-  geom_point(data = md, aes(x = seq.fp, y = tct, color = treatment, alpha = 0.4)) +
-  labs(title = "Predicted TCT across Task Iterations by Treatment", x = "Task Iteration (seq.fp)", y = "Predicted TCT") +
-  facet_wrap(~ treatment) +
+  labs(title = "Predicted Learning Curves by Treatment",
+       subtitle = "Assuming equal initial proficiency",
+       x = "Standardized Task Sequence (SC)",
+       y = "Predicted Task Completion Time (seconds)") +
+  scale_color_brewer(palette = "Set1") +
   theme_minimal()
 ```
 
-model is overfitting / extrapolating beyond data
-obviously TCT should not rapidly increase after 3-6 iterations of the task
-BUT - model performance is only a measure of residuals (y error) of predicted vs real data, so the up trend only matters where there is existing data - min impact on AR, max on PWI
+This plot shows that, even when the effects of $TCT_{0}$ are standardized, the instructional method influences the learning rate. To quantify this effect, `emtrends` from the `emmeans` package is used to calculate the rate of change in the response variable with respect to specified predictors. In the context of this analysis, it is used to calculate the slope of TCT with respect to sequence for each treatment while holding $TCT_{0}$ constant. Pairwise comparisons of the resulting slopes allow for statistical tests, as seen in @tbl-slopes-fixedtct. These results show significant differences between the learning rates for PWI and both AR (p = 0.007) and MR (p < 0.001) as well as PAR and MR (p = 0.04). The overall ranking of effectiveness can be expressed as PWI ≈ PAR, PWI > (AR ≈ MR), and PAR > MR.
 
-sufficient evidence for now to go with this model, understanding its limitations, but let's try other things - limits of model fit undermine model comparisons since we're comparing models of the data now, not the data itself
+```{r tbl-slopes-fixedtct}
+#| tbl-cap: "Average Slope of TCT over Task Sequence by Treatment"
 
-further attempts to address this with:
+# Compute slopes
+emm_slopes <- emtrends(m7r_ti_c2, ~ treatment, var = "seq.fp", 
+                       at = list(initial_tct = mean_initial_tct))
 
-- explored inverse, cubic, logarithmic, logistic, and trigonometric terms as alternative to quadratic / spline in the random slopes; random intercepts LME
-- attempted a non-linear mixed effects model based on exponential decay
-- fit the model with valid subsets of data with balanced iterations, e.g. the first n observations for all participants that completed that many tasks
+# Pairwise comparisons of slopes
+pairs(emm_slopes)
 
-no success - worse results, convergence problems
-
-but important to get good model fit as that is what we are comparing now, not the data itself - another layer of abstraction
-
-continuing efforts with spline, bayesian methods moved to `h1b_mod_select.qmd`
-
-::: content-hidden
-
-#### Old Material
-
-This formulation captures individual variability by allowing each participant to have a different initial TCT (intercept). It accounts for variations in TCT due to differences between participants (random effects) and within each participant's repeated measures (residuals). This design naturally incorporates all sources of participant-level variation, including imbalances due to the differing number of tasks completed by each participant, thereby addressing the data's inherent non-independence.
-
-Variations of this model were fit using the residual maximum likelihood method (REML), as implemented by the `lmer` function from the `{lme4}` package. To address issues related to the non-linear nature of TCT, which follows an exponential decay pattern commonly observed in learning outcomes, models were fit to response variables transformed by log, square-root, and inverse (i.e., $1/\text{tct}$) functions. The results were then compared using the `compare_performance` function from the `{performance}` package. @tbl-h1b-results summarizes the results.
-
-|Metric         |      `log(tct)` |     `sqrt(tct)` |  `inverse(tct)` |
-|:--------------|:---------------:|:---------------:|:---------------:|
-|R2 (cond.)     |            0.72 |            0.70 |            0.71 |
-|R2 (marg.)     |            0.39 |            0.36 |            0.39 |
-|ICC            |            0.54 |            0.53 |            0.52 |
-|RMSE           |            0.20 |            1.03 |        2.32e-03 |
-|Sigma          |            0.22 |            1.13 |        2.54e-03 |
-
-: Comparison of Model Performance Metrics {#tbl-h1b-results .striped}
-
-The values of ICC and $R^2$ (both conditional and marginal) are comparable across the three transformations. However, the inverse response resulted in substantially lower root mean square error (RMSE) and Sigma ($\sigma$), which represent the average and standard deviation of the residuals, respectively. With prediction errors that are both lower overall and have less variance, the inverse-transformed response, shown in @fig-inverse-tct, results in the best model performance.
-
-```{r fig-inverse-tct, eval=FALSE}
-#| fig-cap: Inverse transformation of the response
-#| fig-height: 3.5
-#| warning: false
-
-# Create a data frame with the original and inverse transformed TCT values
-pd <- learn_h1b |>
-  mutate(inverse_tct = 1 / tct)
-
-# Plot for tct
-plot_tct <- ggplot(pd, aes(x = seq, y = tct, color = treatment)) +
-  geom_point(alpha = 0.4) +
-  geom_smooth(method = "loess", se = FALSE) +
-  labs(
-    title = "TCT vs. Sequence",
-    x = element_blank(),
-    y = element_blank()
-  ) +
-  theme_minimal(base_size = 10) +
-  theme(
-    plot.title.position = "plot",
-    plot.title = element_text(size = 9, face = "bold"),
-    legend.position = "none",
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    # axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
-  )
-
-# Plot for inverse(tct)
-plot_inverse_tct <- ggplot(pd, aes(x = seq, y = inverse_tct, color = treatment)) +
-  geom_point(alpha = 0.4) +
-  geom_smooth(method = "loess", se = FALSE) +
-  labs(
-    title = "Inverse(TCT) vs. Sequence",
-    x = element_blank(),
-    y = element_blank()
-  ) +
-  theme_minimal(base_size = 10) +
-  theme(
-    plot.title.position = "plot",
-    plot.title = element_text(size = 9, face = "bold"),
-    legend.position = "none",
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    # axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
-  )
-
-# Display the plots
-plot_tct + plot_inverse_tct +
-  plot_annotation(
-    title = "Task Completion Time and Inverse",
-    subtitle = "Inverse transformation of TCT gives best model performance"
-  )
 ```
 
-:::
+While @fig-plot-stdtct clearly illustrates the differences in learning curves, and @tbl-slopes-fixedtct provides compelling statistical evidence of these effects, both approaches focus on absolute changes in task completion time. As a complementary perspective, @fig-learn-cont expresses progress as cumulative percentage improvements. This approach offers some advantages:
 
-#### Check Model Assumptions
+1. It allows for comparison of relative progress across treatments, which can be informative when participants start at different performance levels.
+2. Percentage improvements can sometimes highlight subtle differences in learning patterns that are less apparent in absolute time measures.
+3. It provides a way to visualize learning gains that is independent of the scale of the original task completion times.
 
-#### Analysis
+While the result may appear similar to the inverse of earlier plots, it offers a standardized view of learning progress across treatments that aligns closely with how learning is often conceptualized in cognitive and educational theories. This representation helps confirm and clarify the trends observed in our previous analyses, reinforcing our understanding of how each treatment impacts learning over time.
+
+```{r fig-learn-cont}
+#| fig-cap: "The last damn plot"
+
+# Create a grid of seq.fp values that matches observed values
+seq_grid <- seq(0, 1, by = 0.25)
+
+emm <- emmeans(
+  m7r_ti_c2, 
+  ~ treatment | seq.fp, 
+  at = list(
+    seq.fp = seq_grid,
+    initial_tct = mean_initial_tct
+    )
+  )
+
+emm_data <- as.data.frame(emm)
+
+emm_data_cumulative <- emm_data |>
+  arrange(treatment, seq.fp) |>
+  group_by(treatment) |>
+  mutate(
+    chg_emm = lag(emmean) - emmean,
+    pct_chg = chg_emm / lag(emmean),
+    cumulative_learning = c(0, cumprod(1 + pct_chg[-1]) - 1)
+  ) |>
+  ungroup()
+
+# Plot cumulative learning
+ggplot(emm_data_cumulative, aes(x = seq.fp, y = cumulative_learning, color = treatment)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Sequence Progress", 
+       y = "Cumulative Learning Progress", 
+       title = "Cumulative Learning Progress by Treatment",
+       subtitle = "All treatments start at 0; higher values indicate more learning") +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::percent) +
+  coord_cartesian(ylim = c(0, NA))  # Start y-axis at 0 and let the upper limit adjust automatically
+
+
+```
 
 #### $H_{1b}$ Results
 
+Based on comprehensive analysis of learning curves and statistical modeling, there is strong evidence to accept $H_{1b}$: the rate of improvement in task completion time varies significantly by treatment. Specifically, PWI demonstrates the steepest learning curve, followed closely by PAR. Both AR and MR show slower rates of improvement. The relationship can be summarized as: PWI ≈ PAR, PWI > (AR ≈ MR), and PAR > MR. This pattern holds true even when controlling for initial task completion time, suggesting that the treatment effects on learning rates are robust. The differences in learning rates are most pronounced in the early stages of task repetition and tend to converge over time, highlighting the importance of instructional method particularly in the initial phases of skill acquisition. However, these findings should be interpreted with the described limitations in mind, primarily those related to the limited extrapolation capabilities resulting from an imbalanced data set and statistical model formulation. In light of these considerations, great effort was invested to ensure the robust and reliable findings outlined above.
+
+::: content-hidden
+
+#### Additional Analysis
+
+alternative method for comparing learning using AUC
+
+```{r eval=FALSE}
+
+### build a learning curve for each participant
+mdf_pc <- mdf |>
+  arrange(participant, seq.fp) |>
+  group_by(participant) |>
+  mutate(
+    chg_tct = lag(tct) - tct,
+    pct_chg = chg_tct / lag(tct),
+    cumulative_learning = c(0, cumprod(1 + pct_chg[-1]) - 1)
+  ) |>
+  ungroup()
+
+### calculate the AUC and avg AUC / iteration for each participant (aggregated)
+mdf_pa <- mdf_pc |>
+  group_by(participant) |>
+  summarise(
+    auc = pracma::trapz(seq.fp, cumulative_learning),
+    n_iterations = n(),
+    normalized_auc = auc / n_iterations,
+    treatment = first(treatment),
+    initial_tct = first(tct)
+  )
+
+### look for treatment and initial_tct effects
+auc_model <- lm(auc ~ treatment + initial_tct, data = mdf_pa)
+summary(auc_model)
+
+emmeans_result <- emmeans(auc_model, ~ treatment)
+pairs(emmeans_result)
+
+```
+
+#### Limitations
+
+in spite of good model performance statistics smile curve not a good fit - extrapolation, sparsity of data points above seq 0.50, log model form
+
+RSME, etc. use error between predictions and observed value to assess model performance. where observations don't exist, error cannot be measured
+
+we have to temper our interpretation of these results in two ways:
+
+1. treatments that start with higher TCT naturally exhibit faster initial learning. we have normalized the curves but we cannot "undo" that effect *now including init_TCT as covariate, controlling for that effect!!!*
+2. the model overfits and predicts a smile curve for predictions, beginning to curve upwards slightly at the fourth iteration and continuing upwards thereafter, where it extrapolates poorly with limited data. I've tried to account for that by only looking  at the first 5 iterations for this analysis, but the effect is still there. this contributes to / causes the downturn in learning seen for some treatments in the final (5th) task iteration
+
+:::
+
+\pagebreak
 
 ### $H_{1c}$: Average Error Count per Car
 
-```{r prep-h1c-data, eval=FALSE}
+```{r prep-h1c-data}
 # create data
 learn_h1c <- learn |>
   filter(participant != 1063) |>
@@ -2329,25 +2452,113 @@ learn_h1c <- learn |>
     avg_uce = mean(uce, na.rm = T)
   )
 
-glimpse(learn_h1c)
 ```
 
-The third and final hypothesis of the learning phase:
+The third and final hypothesis of the learning phase tests the third commonly assessed aspect of learning:
 $$H_{1b}\textrm{: Average error count per car varies with treatment}$$ 
 
-tests a different aspect of learning. Lower error rates signal a higher quality of learning outcomes. Combined with the previous measures of efficiency (TCT) and learning rate (change in TCT per task), it provides a balanced view of training performance.
+Here again, we are interested in finding statistically significant differences in the average error count under different treatment conditions to identify which instructional method leads to the lowest defect rate. Lower error rates signal a higher quality of learning outcomes. Combined with the previous measures of efficiency (TCT) and learning rate (change in TCT per task), these provide a balanced and comprehensive view of training performance.
 
-#### Applicable Statistical Methods
+#### Descriptive Statistics
 
-as with TCT, UCE data is unbalanced, not independent, probably not normally distributed; additionally, it is not continuous data, but counted values. all of these have implications for the statistical method used
+As with previous measures, the uncorrected error count (UCE) is neither independent nor balanced. Additionally, it is a discrete (counted) variable. All of these have implications for the statistical method used, but where average counts are used, many are addressed. The standard five number summary for UCE is presented in @tbl_h1c_ss. 
 
-however, none of this invalidates non-parametric statistical tests of aggregated (average UCE per car) data, which addresses the independence issue
+```{r tbl_h1c_ss}
+#| tbl-cap: "Summary Statistic for Dependent Variables, H1c Quality"
+
+datasummary(
+  Heading("Average Uncorrected Errors") * avg_uce ~
+    Mean + SD + Min + Median + Max,
+  data = learn_h1c,
+  output = "kableExtra"
+)
+```
+
+```{r h1c-tests}
+# check linear model assumptions for avgUCE
+
+# normality
+h1c_st <- shapiro.test(learn_h1c$avg_uce)
+h1c_st_pv <- fmt_p_val(h1c_st$p.value)
+
+h1c_st_treat <- by(learn_h1c$avg_uce, learn_h1c$treatment, shapiro.test)
+
+# homogeneity of variance, aka homoscedasticity
+h1c_lt_tct <- car::leveneTest(avg_uce ~ treatment, data = learn_h1c)
+h1c_lt_tct_pv <- fmt_p_val(h1c_lt_tct$`Pr(>F)`[1])
+
+h1c_skew <- moments::agostino.test(learn_h1c$avg_uce)
+h1c_skew_pv <- fmt_p_val(h1c_skew$p.value)
+
+h1c_kurt <- moments::anscombe.test(learn_h1c$avg_uce)
+h1c_kurt_pv <- fmt_p_val(h1c_kurt$p.value)
+
+# outliers
+h1c_out <- check_iqr(learn_h1c$avg_uce, 1.5)
+h1c_out_count <- sum(h1c_out)  # 3 found: 6, 7, 45 → participants 1016, 1017, and 1056
+```
+
+As this data is aggregated by participant, there is only one observation for each ($n$ = 53). As is common in this study, variation is high (SD = 3.15) compared to the mean value (2.19). Many participants made no errors, but one averaged 12 errors per task iteration, resulting in an overall median value of 0.33. The distribution of UCE is illustrated by @fig-h1c-hist. As seen before, the overall average error count data exhibits floor effects that contribute to a strongly positive skew. Obvious non-normality (Shapiro-Wilk, `r h1c_st_pv`), skew (D'Agostino, `r h1c_skew_pv`), and kurtosis (Anscombe-Glynn, `r h1c_kurt_pv`) are all confirmed in the overall dataset using the appropriate tests.
+
+```{r fig-h1c-hist}
+#| fig-cap: Histogram of Average Error Count in Learning
+#| fig-height: 3.5
+#| warning: false
+#| message: false
+
+# Plotting uce
+learn_h1c |>
+  filter(!is.na(avg_uce)) |>
+  ggplot(aes(x = avg_uce)) +
+  geom_histogram(
+    bins = 18,
+    fill = I(base_color),
+    alpha = 0.75,
+    width = 0.25,
+    color = outline_color
+  ) +
+  geom_boxplot(
+    width = 1.5,
+    position = position_nudge(y = -1.25),
+    notch = FALSE
+  ) +
+  labs(
+    x = element_blank(),
+    y = element_blank(),
+    title = "Distribution of UCE Values",
+    subtitle = "Broad range of result quality centered near zero"
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold"),
+    # legend.position = "none",
+    # axis.text.y = element_blank(),
+    # axis.ticks.y = element_blank(),
+    # axis.text.x = element_text(margin = margin(b = 3, unit = "pt"))
+  )
+
+```
+
+Finally, Shapiro-Wilk tests are performed for each treatment group, revealing strong evidence that PAR (`r fmt_p_val(h1c_st_treat$PAR$p.value)`), AR (`r fmt_p_val(h1c_st_treat$AR$p.value)`), and MR (`r fmt_p_val(h1c_st_treat$MR$p.value)`) are not normally distributed, but PWI is (`r fmt_p_val(h1c_st_treat$PWI$p.value)`).  These findings are supported by the Q--Q plots in @fig-qq-h1c. Furthermore, it is important to note that this is counted data. Despite the fact that means / grand means may appear continuous in this aggregated form, the underlying distribution remains discrete. Traditional parametric tests are not recommended in this case. 
+
+```{r fig-qq-h1c}
+#| fig-cap: Q-Q Plots of UCE by Treatment
+#| fig-height: 3.5
+
+p <- qq_plot_patchwork(learn_h1c, x_var = "avg_uce", by_var = "treatment")
+
+p + plot_annotation(
+  title = "Quantile-Quantile Plots of UCE Treatment Data",
+  subtitle = "Only PWI data appears normally distributed"
+)
+```
 
 #### Analysis
 
-KW non-parametric test conducted, as seen in @fig-h1c-plot.
+The Kruskal-Wallis non-parametric test is used to compare average UCE by treatment, the results of which are shown in @fig-h1c-plot. Large differences in the overall mean are observed, along with some floor effects in the augmented treatments. The test statistic $\chi^{2}_{KW}(3)=25.5$, with a p-value < 0.001, indicates a statistically significant difference between groups. The effect is $\hat{\epsilon}^{2}_{rank}=0.49$, with a $CI_{95\%}\:[0.32,1.00]$, reflecting the data's variability. The results of Dunn's Holm-adjusted pairwise comparisons show statistically significant differences between PWI and all other treatments (p << 0.01 in all cases), while PAR, AR, and MR treatments are statistically similar. These results formally quantify the obvious reduction in error count experienced with any form of augmented instruction.
 
-```{r fig-h1c-plot, eval=FALSE}
+```{r fig-h1c-plot}
 #| fig-cap: Differences in Average Uncorrected Error per Task by Treatment
 #| fig-height: 5
 #| warning: false
@@ -2356,7 +2567,7 @@ KW non-parametric test conducted, as seen in @fig-h1c-plot.
 # using bootstrapping, it is important to set a seed for reproducibility
 set.seed(42)
 
-ggstatsplot::ggbetweenstats(
+x <- ggstatsplot::ggbetweenstats(
   data = learn_h1c,
   x = treatment,
   y = avg_uce,
@@ -2364,9 +2575,9 @@ ggstatsplot::ggbetweenstats(
   xlab = "",
   ylab = "",
   title = "Avg UCE per Task by Treatment: Kruskal-Wallis non-parametric rank sum test",
-  results.subtitle = FALSE,
-  subtitle = "Significant Differences Identified between PWI and others using Dunn's Test, Holm-adjusted post-hoc",
-  digits = 2,
+  # results.subtitle = FALSE,
+  subtitle = "Significant pairwise differences identified between PWI and Augmented Treatmentts",
+  digits = 3,
   # centrality.label.args = list(point.padding = 30),
   ggtheme = theme_minimal(base_size = 10) +
     theme(
@@ -2385,15 +2596,11 @@ ggstatsplot::ggbetweenstats(
     )
 )
 
-# list(chi["Kruskal-Wallis"]^2 * "(" * 3 * ")" == "25.5", italic(p) == 
-#     "1.2e-05", widehat(epsilon)["ordinal"]^2 == "0.5", CI["95%"] ~ 
-#     "[" * "0.3", "1.0" * "]", italic("n")["obs"] == "53")
 ```
 
-Results confirm significant treatment effect. Large differences in the overall mean are observed, along with some floor effects in the augmented treatments. Post-hoc tests confirm the significance of observed differences, showing that the error rate is significantly larger in the PWI condition than in all other treatments.
+```{r h1c-outliers}
 
-```{r h1c-validation, eval=FALSE}
-co <- check_outliers(learn_h1c$avg_uce, method = c("zscore_robust", "iqr"))
+co <- check_outliers(learn_h1c$avg_uce, method = "iqr", threshold = 1.5)
 
 # use co as boolean mask to get relevant participants
 co_res <- learn_h1c[as.vector(co), ]
@@ -2413,16 +2620,20 @@ without_outliers <- learn_h1c[!learn_h1c$participant %in% co_res$participant, ]
 kt_h1b_no_outliers <- kruskal.test(avg_uce ~ treatment, data = without_outliers)
 ```
 
-KW is a robust test that does not assume normality or homogeneity of variances. It can be sensitive to the presence of outliers, three of which were detected in the UCE data based on a combination of IQR and Z-score. Participants *r col_to_string(co_res, participant)* were all assigned to the PWI treatment and averaged *r col_to_string(co_res, avg_uce, digits = 1)* errors per task, respectively. A second Kruskal-Wallis test of the data without those outliers showed the difference remained significant (p=*r fmt_p_val(kt_h1b_no_outliers$p.val)*). Based on this it is determined that the outliers are not impacting the test result.
+KW is a robust test that does not assume normality or homogeneity of variances. It can be sensitive to the presence of outliers, three of which were detected in the UCE data based on a combination of IQR and Z-score. Participants `r col_to_string(co_res, participant)` were all assigned to the PWI treatment and averaged `r col_to_string(co_res, avg_uce, digits = 1)` errors per task, respectively. A second Kruskal-Wallis test of the data without those outliers showed the difference remained significant (`r fmt_p_val(kt_h1b_no_outliers$p.val)`). This confirms that the outliers did not impacting the outcome of the test.
 
-While this method was deemed insufficient for capturing the nuances of learning rate analysis, it is appropriate for comparing average error counts.
+::: content-hidden
+TODO: fix hard-coded numbers
+MAYBE: consider investigating zero-inflated model, e.g. ZIP / ZINB?
+MAYBE: reevaluate using mixed effect models to account for participant variation?
+MAYBE: power analysis?
+:::
 
 #### $H_{1c}$ Results
 
-$H_{1c}$ is accepted - all augmented instruction methods result in error rates that are drastically lower in magnitude than PWI, the statistical significance of which is confirmed. 
-note the floor effects
+$H_{1c}$ is accepted - all augmented instruction methods result in error rates that are drastically lower in magnitude than PWI, the statistical significance of which is confirmed. Floor effects may imply that the task complexity was insufficent to capture the full range of participant performance. Further analysis using a generalized linear mixed model with poisson or negative binomial distribution for count data could be used to better account for participant variation but that seems unnecessary given the strong observed differences. While this method was deemed insufficient for capturing the nuances of learning rate analysis, it is entirely appropriate for comparing average error counts.
 
-further analysis using a generalized linear mixed model with poisson or negative binomial distribution for count data could be used to better account for participant variation but that seems unnecessary given the strong differences observed here
+\pagebreak
 
 ::: content-hidden
 MAYBE: learning add. analysis
@@ -2529,6 +2740,8 @@ limitations
     -   few participants assigned HMDMR took advantage of the affordance
 - analysis
     -   does not account for interactions between affordances
+    - cross validation or similar models not  employeed
+    - imbalanced data in learning
 
 noticed improvising - discourage as occurs
 
