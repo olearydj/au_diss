@@ -1,0 +1,1005 @@
+# Results TLX, SUS, Feedback {#25-results_tlx}
+
+```{r load-libs}
+#| message: false
+
+library(here)
+library(tidyverse)
+library(readxl)
+library(gt)
+library(gtsummary)
+library(patchwork)
+library(xtable)
+library(broom)
+library(report)
+library(tools)
+
+library(emmeans)
+library(performance)
+library(lmerTest)
+library(modelsummary)
+library(boot)
+library(english)
+
+# library(ggtext)
+# library(glue) now included with tidyverse as str_glue
+# library(gridExtra)
+
+# currently unused:
+# library(skimr)
+# library(gtExtras)
+# library(grid)
+```
+
+```{r functions}
+fmt_p_val <- function(p_value, alpha = 0.05) {
+  if (p_value < 0.001) { return("p < 0.001") }
+  if (p_value < 0.01) { return(paste0("p = ", round(p_value, digits = 3))) }
+  return(paste0("p = ", format(round(p_value, 2), nsmall = 2)))
+} 
+```
+
+
+## Workload, Usability, and User Experience
+
+```{r load-main-data}
+
+car_results <- read_xlsx(
+  here("data", "combined_results.xlsx"),
+  na = c("", "N/A"),
+  sheet = "car results"
+)
+
+demographics <- read_xlsx(
+  here("data", "combined_results.xlsx"),
+  na = c("", "N/A"),
+  sheet = "demographics"
+)
+```
+
+```{r load-qual-data}
+
+TLX <- read_xlsx(
+  here("data", "combined_results.xlsx"),
+  na = c("", "N/A"),
+  sheet = "tlx scores"
+) |> 
+  filter(participant > 1010)  # drop pilot study participants
+
+SUS <- read_xlsx(
+  here("data", "combined_results.xlsx"),
+  na = c("", "N/A"),
+  sheet = "system usability scores"
+) |> filter(participant > 1010)  # drop pilot study participants
+
+```
+
+This section explores the relationships between perceived workload, system usability ratings, overall user experience, and the instructional technology assigned. It is accomplished by a thorough analysis of data collected from the TLX and SUS instruments, along with a synthesis of qualitative feedback recorded during each session. Together they provide a rich expression of each participant's experience.
+
+This analysis focuses on two important aspects of the TLX and SUS data: the results from the learning phase, where instructional technologies were actively used, and how those measures differ from the those observed during recall. This approach provides insight into the perceived workload and usability of each treatment both during use and, by contrast, in its absence. Changes in workload and usability between phases will be evaluated in the context of the experimental design, which suggests any improvement[^25-TLX-1] must be attributable to some combination of the following factors:
+
+1. Shift in the priorities and objectives of the recall phase. Except for participant idiosyncrasies, this effect is assumed consistent for all treatments.
+2. The elimination of training support during recall, which requires participants to work from memory with limited access to instructions. This factor may vary if some treatments do more to engender reliance than support learning.
+3. Learning outcomes during the first phase. Some treatments may lead to a better combination of proficiency and confidence than others.
+
+The second and third factors both relate to the instructional treatment, though both express different dimensions of effectiveness. All other known and unknown confounders are controlled for by the study design.
+
+[^25-TLX-1]: Care must be taken in evaluating "improvement" for these measures. Where an increase in usability (SUS) is seen as an improvement, the opposite is true for measures of workload (TLX), where decreases are desirable.
+
+### NASA Task Load Index Results
+
+```{r tlx-data-versions}
+tlx_learn <- TLX |> 
+  filter(phase == 1)
+
+tlx_recall <- TLX |> 
+  filter(phase == 2)
+
+tlx_wide <- TLX |> 
+  pivot_wider(names_from = type, values_from = value) |> 
+  janitor::clean_names()
+
+tlx_learn_wide <- tlx_wide |> 
+  filter(phase == 1)
+
+tlx_recall_wide <- tlx_wide |> 
+  filter(phase == 2)
+```
+
+All observed and calculated measures from the NASA TLX are summarized by phase in @tbl-tlx-ds. As detailed in @sec-tlx, source weight, rating, and workload refer to the ranking, value, and weighted score for all workload sources, while task workload is the composite measure of all contributing sources. This data reveals a consistent reduction in perceived workload as participants transitioned to the recall phase. This is evidenced by decreases in overall Task Workload (Learning: M = 57.90, SD = 13.73; Recall: M = 41.82, SD = 14.69) and individual Source Ratings and Workloads. Notably, the Source Weight remained constant (M = 2.50) across phases, suggesting that while the perceived importance of workload sources didn't change, their intensity diminished.
+
+```{r tbl-tlx_ds}
+#| tbl-cap: "Summary Statistics for TLX Workload Measures"
+
+tlx_ds_data <- tlx_wide |>
+  filter(phase != 0) |>
+  mutate(phase = factor(phase, levels = c(1, 2), labels = c("1 - Learning", "2 - Recall")))
+
+# Now, let's create the summary table
+datasummary(
+  Heading("Phase") * phase * (
+    Heading("Measure") * (
+      Heading("Source Weight") * (source_weight) +
+      Heading("Source Rating") * (source_rating) +
+      Heading("Source Workload") * (source_workload) +
+      Heading("Task Workload") * (task_workload)
+    )
+  ) ~ Mean + SD + Min + Median + Max,
+  data = tlx_ds_data,
+  output = "kableExtra"
+)
+
+```
+
+Despite this overall trend, the data exhibits considerable individual variability, as shown by high standard deviations and wide ranges, particularly in Source Workload (0 to 500 in both phases). The consistently lower median values compared to means indicate positively skewed distributions, suggesting that while most participants experienced reduced workload during recall, a subset continued to find certain aspects highly demanding.
+
+These findings provide a basis for understanding how different instructional methods may have influenced workload perceptions across the experimental conditions. This section will explore each of the following aspects of that influence workload during learning:
+
+- Q1: Which sources are most important to participants' perception of workload, regardless of treatment?
+- Q2: How does the perceived impact of each source differ across treatment groups?
+- Q3: For each treatment, which source(s) had the greatest overall influence on perceived workload?
+- Q4: Is there a reliable relationship between overall workload and the instructional treatment?
+
+Together, the answers will provide a comprehensive understanding of relationships between how participants perceive workload, how they quantify it for each task / treatment, and factors underlying that association. The results will offer insights into the cognitive, physical, and emotional demands imposed by different instructional technologies and their implications for task performance and learning outcomes.
+
+#### TLX Q1: Participant Ranking of Source Weights
+
+```{r tlx-q1-ft}
+#| warning: false
+
+# source weights
+tlx_sw_long <- tlx_learn |>
+  filter(type == "source weight") |>
+  pivot_wider(names_from = source, values_from = value) |>
+  pivot_longer(cols = c("MD", "PD", "TD", "PF", "EF", "FF"),
+               names_to = "factor",
+               values_to = "score") |>
+  mutate(
+    participant = as.factor(participant),
+    factor = as.factor(factor)
+  ) |>
+  select(participant, treatment, phase, type, factor, score)
+
+# Asymptotic Friedman test and post-hoc analysis with Wilcoxon signed rank test, bonferroni correction
+tlx_q1_ft <- coin::friedman_test(score ~ factor | participant, data = tlx_sw_long)
+tlx_q1_ft_st <- coin::statistic(tlx_q1_ft)
+tlx_q1_ft_pv <- coin::pvalue(tlx_q1_ft)
+
+tlx_q1_ph <- pairwise.wilcox.test(
+  tlx_sw_long$score,
+  tlx_sw_long$factor,
+  p.adjust.method = "bonferroni",
+  paired = TRUE
+)
+
+```
+
+To understand which of the TLX's six sources are most important to all participants' perception of workload, a Friedman test of repeated measures was conducted. This non-parametric test is well suited for the job. It does not assume normality and accounts for the within-participant variability inherent in the repeated measures of survey data. Using `friedman_test` from the `coin` package confirmed significant (`r  round(tlx_q1_ft_st, 1)`, `r fmt_p_val(tlx_q1_ft_pv)`) differences source rankings by participants. The subsequent post-hoc test calculated pairwise differences using a Wilcoxon signed-rank test and Bonferroni correction for multiple comparisons.
+
+```{r tbl-tlx-q1-ph}
+#| tbl-cap: Pairwise comparisons of TLX source of workload rankings
+
+fmt_p_val_tab <- function(p_value, alpha = 0.05) {
+  if (is.na(p_value)) return(NA_character_)
+  if (p_value < 0.001) return("< 0.001")
+  if (p_value < 0.01) return(sprintf("%.3f", p_value))
+  return(sprintf("%.2f", p_value))
+}
+
+tlx_q1_ph |> 
+  tidy() |> 
+  pivot_wider(names_from = group2, values_from = p.value) |> 
+  mutate(across(-group1, ~ map_chr(., fmt_p_val_tab))) |> 
+  tinytable::tt() |> 
+  print("markdown")
+
+```
+
+The results of `stats::pairwise.wilcox.test`, as tabulated in @tbl-tlx-q1-ph, show significant differences for most pairs. In particular, Physical Demand (PD), Performance Factor (PF), and Temporal Demand (TD) are significantly different from all other sources, with the exception of TD vs PF and FF (Frustration Factor). Pairs with significant differences indicate substantial disagreement among participants about the ranking of the corresponding sources. Less polarizing pairs have higher p-values, with those over 0.05 of similar importance to participants. Overall, the number of significant and strongly significant findings shows that participants rank sources very differently. The distribution of rank by source is shown in @fig-tlx-q1-box.
+
+```{r fig-tlx-q1-box}
+#| fig-cap: "Distribution of Factor Scores Across All Treatments"
+
+tlx_sw_long |>
+  ggplot(aes(x = factor, y = score)) +
+    geom_boxplot() +
+    geom_jitter(width = 0.2, alpha = 0.3) +  # Add individual points
+    theme_minimal() +
+    labs(
+      title = "How do Participants Rank Sources of Workload Overall?",
+      subtitle = "Wide variation, approximately ordered by mean PF > TD > FF > MD > EF > PD ",
+      x = "NASA TLX Factor",
+      y = "Score"
+    ) +
+    theme(
+      # axis.text.x = element_text(angle = 45, hjust = 1),
+      plot.title = element_text(hjust = 0.5)
+    )
+```
+
+```{r tlx-q1-kw}
+# Assuming your data is in wide format with participants as rows and factors as columns
+kw_mat <- tlx_sw_long |>
+  pivot_wider(names_from = factor, values_from = score) |> 
+  select(-participant, -treatment, -phase, -type) |>
+  as.matrix()
+
+# Calculate Kendall's W
+kr <- irr::kendall(kw_mat)
+
+
+```
+
+Kendall's coefficient of concordance, a measure of inter-rater agreement, was used to further
+assess the rankings across the six sources of workload. Results from the `kendall` function of the `irr` package (W = `r round(kr$value, 2)`, `r fmt_p_val(kr$p.value)`) indicated negligible agreement among participants, confirming that workload rankings are highly individualized. Low agreement in ranking has lead other researchers to question the utility of the TLX's weighting scheme *(Bustamante and Spain 2008, Byers et al 1989)*. Regardless, it remains the officially recommended methodology *(Heart 2006)*.
+
+::: content-hidden
+TODO: cite above
+
+- Hart (2006) reviewed the use of NASA-TLX over 20 years and discussed some of these issues.
+- Bustamante and Spain (2008) compared weighted and unweighted versions of the TLX, finding high correlations between them.
+- Byers et al. (1989) early on questioned the utility of the weighting process in the TLX.
+
+:::
+
+#### TLX Q2: Source Ratings by Treatment
+
+@fig-tlx-q2-heat was created to understand how the sources of perceived workload vary by treatment group. All combinations of treatment and source of workload are arranged in a heatmap, where each cell is the mean rating for the corresponding source and treatment. Temporal Demand consistently rate as the most important workload source across all treatments, with mean ratings all above 66.1. This suggests that all participants experienced substantial time pressure. Physical Demand is consistently rated as the least important source, with all mean ratings below 25.8. This indicates that the assembly task is not perceived as physically demanding in any group.
+
+```{r tlx-q2-calcs}
+# Calculate the mean rating for each source and treatment
+tlx_q2_rating_trt <- tlx_learn_wide |>
+  filter(!is.na(source_rating)) |>
+  group_by(treatment, source) |>
+  summarise(mean_rating = mean(source_rating), .groups = "drop")
+
+# Calculate overall mean weights
+tlx_q2_rating_all <- tlx_learn_wide |>
+  filter(!is.na(source_rating)) |>
+  group_by(source) |>
+  summarise(mean_rating = mean(source_rating), .groups = "drop") |>
+  mutate(treatment = "Overall")
+
+# Combine the data
+tlx_q2_rating_comb <- bind_rows(tlx_q2_rating_trt, tlx_q2_rating_all)
+
+# Create a custom order for treatments
+treatment_order <- c("Overall", "PWI", "PAR", "AR", "MR")
+
+# Prepare the data
+tlx_q2_heat_data <- tlx_q2_rating_comb |>
+  mutate(treatment = factor(treatment, levels = treatment_order)) |>
+  group_by(source) |>
+  mutate(mean_source_rating = mean(mean_rating)) |>
+  ungroup() |>
+  mutate(source = reorder(source, mean_source_rating))
+
+# Create custom labels for sources
+source_labels <- c(
+  MD = "Mental\nDemand", PD = "Physical\nDemand", TD = "Time\nDemand", 
+  PF = "Performance", EF = "Effort", FF = "Frustration"
+)
+```
+
+```{r fig-tlx-q2-heat}
+#| fig-cap: "Heatmap for Source of Workload Rating by Treatment"
+
+ggplot(tlx_q2_heat_data, aes(x = treatment, y = source, fill = mean_source_rating)) +
+  geom_tile(color = "white", linewidth = 0.25) +
+  scale_fill_gradient(low = "white", high = "steelblue") +
+  scale_y_discrete(labels = source_labels) +  # Apply custom labels
+  theme_minimal(base_size = 10) +
+  labs(
+    title = "How does the Rating of Workload Sources Differ Across Treatment Groups?",
+    subtitle = "Time demand most influences workload for all instructional methods"
+  ) +
+  theme(
+    axis.title = element_blank(),
+    legend.position = "none",
+    axis.text = element_text(color = "black"),
+    axis.text.x = element_text(hjust = 0.5, vjust = 3),
+    axis.text.y = element_text(
+      lineheight = 1,
+      margin = margin(r = -5),
+      vjust = 0.5  # Center vertically
+    ),
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold"),
+    panel.grid = element_blank(),
+  ) +
+  geom_text(aes(label = round(mean_rating, 1)), color = "gray25", size = 3)
+```
+
+There are other subtle but noteworthy differences between treatments. AR has the highest Temporal Demand rating, perhaps due to the groups' lack of familiarity with the system. PAR and PWI have the highest Effort ratings, indicating those participants felt challenged by their work, or less concerned with other factors. Despite these differences, the overall pattern of factor importance remains relatively consistent across treatments, as seen in the uniform vertical gradient of the heatmap. 
+
+::: content-hidden
+TODO: address too much / unintended time pressure
+:::
+
+To better quantify these differences, significance tests were conducted for the difference in rating, by treatment, for all sources. The Kruskal-Wallis rank sum test, which is appropriate for these discrete ordinal values, failed to identify any significant effects, indicating that the ratings for each source are consistent across treatment groups. There appears to be no meaningful relationship between the task-treatment a participant completes and their perception of which factors are most important to the overall workload.
+
+```{r tlx-q2-test, eval=FALSE}
+
+tlx_q2_src_ratings <- tlx_learn  |>  
+  filter(type == "source rating")
+
+for(s in unique(tlx_q2_src_ratings$source)) {
+  cat("\nKruskal-Wallis test for", s, "\n")
+  print(kruskal.test(value ~ treatment, data = tlx_q2_src_ratings[tlx_q2_src_ratings$source == s,]))
+}
+
+# no significant differences found (TD close 0.06)
+# i.e. treatment has no statistically significant effect on source ratings
+
+### post hoc unnecessary
+
+# post hoc test to check pairwise differences
+td_data <- tlx_q2_src_ratings |> 
+  filter(source == "TD") |> 
+  mutate(treatment = as.factor(treatment))
+
+td_model <- kruskal.test(value ~ treatment, data = td_data)
+PMCMRplus::kwAllPairsDunnTest(td_data$value, td_data$treatment, p.adjust.method = "bonferroni")
+
+# only the PWI-AR pair is significantly different
+```
+
+#### TLX Q3: Treatment Effect on Weighted Source Workloads
+
+Where the previous section explored changes across the treatment axis of fig-tlx-q2-heat for unweighted source ratings, this section tests the differences across sources for weighted source workloads. @fig-tlx-q3-bar illustrates the relative contributions of each source to the total workload in each treatment. From this it is easy to observe a fairly consistent progression from the highest contributor, Time Demand, to the lowest, Physical Demand. While there is some variation in between, those sources act ast the endpoints for all treatments.
+
+```{r tlx-q3-unweighted, eval=FALSE}
+# not using
+
+unweighted_means <- tlx_learn |>
+  filter(type == "source rating") |>
+  group_by(treatment, source) |>
+  summarise(mean_rating = mean(value, na.rm = TRUE)) |>
+  arrange(treatment, desc(mean_rating))
+
+ggplot(unweighted_means, aes(x = reorder(source, -mean_rating), y = mean_rating, fill = treatment)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~ treatment) +
+  theme_minimal() +
+  labs(x = "Workload Source", y = "Mean Rating", title = "Unweighted Workload Source Ratings by Treatment")
+
+```
+
+```{r tlx-q3-weighted}
+# weighted source workloads
+tlx_q3_wt_swl <- tlx_learn |>
+  filter(type == "source workload") |> 
+  pivot_wider(names_from = type, values_from = value) |>
+  # mutate(weighted_score = `source rating` * `source weight`) |>
+  group_by(treatment, source) |>
+  summarise(mean_wt_swl_trt_src = mean(`source workload`, na.rm = TRUE)) |>
+  arrange(treatment, desc(mean_wt_swl_trt_src))
+```
+
+
+```{r fig-tlx-q3-bar}
+#| fig-cap: "Weighted Workload Source Scores by Treatment"
+ggplot(
+    tlx_q3_wt_swl, 
+    aes(x = reorder(source, -mean_wt_swl_trt_src), y = mean_wt_swl_trt_src, fill = treatment)
+  ) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~ treatment) +
+  theme_minimal() +
+  labs(
+    x = "Workload Source", 
+    y = "Mean Weighted Score", 
+    title = "Which Sources have the Largest Overall Influence on Workload by Treatment?",
+    subtitle = "Time Demand is consistently the largest contributor, Physical the smallest"
+  )
+
+```
+Friedman tests show significant workload differences for all treatments (p < 0.001 in each). These results indicate that participants perceived different levels of workload from the various sources (Mental Demand, Physical Demand, Temporal Demand, Performance, Effort, and Frustration) within each treatment group. To explore the nature of those differences, Dunn's test for pairwise multiple comparisons of ranked data is applied with Bonferroni correction. Of the 60 pairs tested[^25-TLX-2], seventeen significant differences were identified (AR: 6, PWI: 4, PAR: 4, and MR: 3), all involving Time Demand, Physical Demand, or both. The four central sources (FF, PF, MD, and EF) are each involved in 3-4 significant pairs. 
+
+[^25-TLX-2]: Four treatments with six sources each = 4 * (6 * (6 - 1)) / 2 = 4 * 15 = 60
+
+```{r tlx-q3-fried, eval=FALSE}
+# avoid output in quarto renders
+
+for(t in unique(tlx_learn$treatment)) {
+  cat("\nAnalysis for", t, "\n")
+  
+  data_subset <- tlx_learn %>%
+    filter(treatment == t, type == "source workload")
+  
+  # Perform Friedman test
+  friedman_result <- data_subset %>%
+    rstatix::friedman_test(value ~ source | participant)
+  print(friedman_result)
+  
+  # If Friedman test is significant, perform post-hoc analysis
+  if(friedman_result$p < 0.05) {
+    cat("\nPost-hoc test:\n")
+    
+    posthoc <- data_subset %>%
+      rstatix::dunn_test(value ~ source, p.adjust.method = "bonferroni", detailed = TRUE)
+    
+    print(posthoc)
+  } else {
+    cat("\nNo significant differences found. Post-hoc test not performed.\n")
+  }
+}
+
+```
+
+::: content-hidden
+why use friedman test from stats in one place, from coin another, and from rstatix in a third?
+:::
+
+In summary, while all treatments show significant differences in how source workloads are perceived, only Temporal and Physical Demands emerge as reliably different in all cases. Between those endpoints the relative importance of other workload sources varies in magnitude and significance, as @fig-tlx-q3-bar implies.
+
+#### TLX Q4: Task Workload by Treatment
+
+Having examined the individual components of workload, the analysis now focuses on overall Task Workload (TWL, the sum of weighted source workloads) and its relationship with the assigned instructional treatment. Of particular interest is whether any treatments have a significant positive or negative influence on perceived workload. Such influences could indicate aspects of user experience that are uncontrolled mediators of task performance. Once again, the Kruskal-Wallis test is used for comparison and the results are shown in @fig-tlx-q4-test.
+
+```{r fig-tlx-q4-test}
+#| fig-cap: "Composite Task Workload by Treatment"
+#| fig-height: 5
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+ggstatsplot::ggbetweenstats(
+  data = tlx_learn_wide,
+  x = treatment,
+  y = task_workload,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "Does treatment influence perceived workload?",
+  # results.subtitle = FALSE,
+  subtitle = "Treatment has no significant impact on perceived task workload",
+  digits = 3,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+
+```
+
+```{r eval=FALSE}
+# not using
+
+unweighted_data <- tlx_learn |>
+  filter(type == "source rating") |>
+  pivot_wider(names_from = source, values_from = value)
+
+# Now calculate the unweighted score
+unweighted_data$unweighted_score <- rowMeans(unweighted_data[, c("MD", "PD", "TD", "PF", "EF", "FF")])
+
+# Perform Kruskal-Wallis test
+kruskal.test(unweighted_score ~ treatment, data = unweighted_data)
+
+```
+
+No significant differences are identified. Visual inspection shows that median TWL values are quite similar for all treatments and all IQRs overlap. This result is somewhat surprising, given the added complexity and occasional issues associated with the AR and MR interfaces. It may suggest that technical complexity has limited effect on perceived workload, especially in the recruited demographic.
+
+#### TLX Results
+
+The TLX analysis revealed several important insights into the workload experienced by participants across different instructional technologies. Notably, there was a consistent reduction in perceived workload as participants transitioned from the learning to the recall phase, suggesting that all instructional methods led to some degree of task familiarization. Temporal Demand emerged as the most significant contributor to workload across all treatments, indicating that time pressure was a universal challenge. Conversely, Physical Demand was consistently rated as the least important factor, implying that the assembly task was not physically taxing. Interestingly, despite the varying complexities of the different instructional technologies, no significant differences were found in overall task workload between treatments. This unexpected result warrants further investigation.
+
+Consistent patterns of source ratings and workload across treatments are evident, but accompanied by little statistical significance. This may suggest that the inherent nature of the task, rather than the assigned instructional method, primarily determines which aspects of workload are most important to the participants. The high individual variability across TLX metrics also highlights the importance of considering personal factors in designing and implementing instructional technologies.
+
+::: content-hidden
+
+Implications:
+
+a. Robustness of Task: The task itself may be the primary driver of workload, regardless of the instructional method used.
+b. User Adaptability: Participants might be adapting quickly to different instructional methods, equalizing the workload across conditions.
+c. Device Design: The more complex devices (AR, MR) may be well-designed, mitigating potential increases in cognitive load. Perhaps that complexity is offset by the benefits previously enumerated.
+
+This unexpected result is valuable. It challenges assumptions about the impact of instructional method complexity on workload and opens up new questions about how users interact with different types of instructional technologies. It suggests that, at least in the context of this study, the choice of instructional method may be driven more by factors other than workload (e.g., user preference, task performance, or practical considerations) since the workload impact appears to be relatively uniform across methods.
+
+
+
+#### TLX Q5: Task Workload Change in Recall
+
+```{r tlx-q5-twl, eval=FALSE}
+
+tlx_q5_twl_change <- tlx_wide %>%
+  filter(
+    source == "combined", 
+    phase != 0
+  ) %>%
+  group_by(treatment, participant) %>%
+  summarize(diff = task_workload[phase == 2] - task_workload[phase == 1], .groups = "drop") %>%
+  group_by(treatment) %>%
+  summarize(
+    mean_diff = -mean(diff, na.rm = TRUE),
+    # adjusted_diff = mean_diff - tlx_pwi_diff,
+    sd_diff = sd(diff, na.rm = TRUE),
+    n = sum(!is.na(diff))
+  ) %>%
+  mutate(se_diff = sd_diff / sqrt(n))
+
+```
+
+To consider how participant workload changes in recall, differences from the learning phase are calculated for each treatment. As seen in @fig-tlx-q5-diff, the PWI treatment experiences the largest reduction in average TWL, followed closely by the AR treatment, with MR and PAR each farther behind. Where the standard error bars overlap the statistical significance of those differences is questionable. Regardless, the magnitude of these changes, which are in the range of 5-22 (approximately) are meaningful in practice.
+
+```{r fig-tlx-q5-diff, eval=FALSE}
+#| fig-cap: "Change in Task Workload in Recall by Treatment"
+
+ggplot(tlx_q5_twl_change, aes(x = reorder(treatment, mean_diff), y = mean_diff)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = mean_diff - se_diff, ymax = mean_diff + se_diff), width = 0.2) +
+  coord_flip() +
+  labs(x = element_blank(),
+       y = element_blank(),
+       title = "How does Task Workload Decrease for each Treatment in Recall?",
+       subtitle = "PAR experiences the largest decrease, followed by MR, AR, and PWI") +
+  theme_minimal()
+
+```
+
+If PWI is used as the baseline for expected change, the performance differences between it and the AR, MR, and PAR treatments are particularly interesting. If reliable, it provides evidence that PAR is of relatively little benefit in spite of the additional complexity of the AR / MR systems.
+
+If PWI is used as the baseline for expected change, the performance differences between it and the AR, MR, and PAR treatments warrant further examination. Of particular interest is the relative performance of PAR, which, assuming the reliability of these results, appears to offer less benefit than expected given the additional complexity of AR/MR systems.
+
+, as it suggests differences in the effectiveness of these systems.
+
+more speculative - come back to in conclusions?
+
+If PWI is used as the baseline for expected change, AR's performance implies a similar net improvement, through some combination of positive learning outcomes and the reduction in complexity previously contributed by the HL2 interface. Following that logic, it seems reasonable to infer that MR and PAR, both of which benefited from similar reductions in complexity but performed substantially worse than  AR, did not achieve the same degree of training success.
+
+If PWI is used as the baseline for expected change, AR's similar net improvement suggests it effectively balanced the benefits of augmented instruction during learning with successful knowledge transfer to the unsupported recall phase. The performance of AR implies that any reliance on the HL2 interface was offset by a combination of reduced complexity in recall and strong learning outcomes.
+
+In contrast, the relatively smaller improvements seen with MR and PAR, despite the same reduction in interface complexity, suggest these methods may have been less effective in promoting independent task mastery. This could be due to either:
+a) these methods fostering more reliance on the augmented interface during learning, leading to a greater performance drop when that support was removed, or
+b) these methods being less effective at creating learning outcomes that translate well to unsupported task execution.
+
+The difference between AR and the other augmented methods (MR and PAR) in this regard is particularly interesting, as it suggests that not all augmented reality implementations are equally effective in balancing immediate task support with long-term learning and transfer
+
+
+
+so the question we're trying to answer is this: do the sources of my perceived workload change when moving from learning to recall?
+
+
+```{r eval=FALSE}
+
+prepare_tlx_data <- function(df) {
+  df |>
+    filter(type == "source workload") |>
+    select(participant, treatment, source, value) |>
+    pivot_wider(names_from = source, values_from = value) |>
+    mutate(overall = (MD + PD + TD + PF + EF + FF) / 6)
+}
+
+tlx_learn_wide <- prepare_tlx_data(tlx_learn)
+tlx_recall_wide <- prepare_tlx_data(tlx_recall)
+
+# Combine the data
+tlx_combined <- tlx_learn_wide |>
+  inner_join(tlx_recall_wide, by = c("participant", "treatment"), suffix = c("_l", "_r")) |>
+  mutate(across(c(MD_l, PD_l, TD_l, PF_l, EF_l, FF_l, overall_l), 
+                list(diff = ~get(sub("_l$", "_r", cur_column())) - .)))
+
+# Perform Wilcoxon signed-rank tests
+wilcoxon_results <- tlx_combined |>
+  select(ends_with("_l"), ends_with("_r")) |>
+  pivot_longer(
+    cols = everything(),
+    names_to = c(".value", "phase"),
+    names_pattern = "(.*)_(l|r)"
+  ) |>
+  pivot_longer(
+    cols = c(MD, PD, TD, PF, EF, FF, overall),
+    names_to = "component",
+    values_to = "score"
+  ) |>
+  group_by(component) |>
+  rstatix::wilcox_test(
+    score ~ phase,
+    paired = TRUE,
+    detailed = TRUE
+  ) |>
+  rstatix::adjust_pvalue(method = "bonferroni") |>
+  rstatix::add_significance()
+
+print(wilcoxon_results)
+
+# Visualize the results (same as before)
+plot_data <- tlx_combined |>
+  pivot_longer(cols = c(ends_with("_l"), ends_with("_r")), 
+               names_to = c("component", "phase"), 
+               names_pattern = "(.*)_(.*)") |>
+  filter(!component %in% c("overall_diff", "MD_diff", "PD_diff", "TD_diff", "PF_diff", "EF_diff", "FF_diff"))
+
+ggplot(plot_data, aes(x = component, y = value, fill = phase)) +
+  geom_boxplot() +
+  facet_wrap(~ treatment) +
+  theme_bw() +
+  labs(title = "TLX Scores: Learning vs Recall", 
+       x = "TLX Component", 
+       y = "Score") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Median differences and IQR
+median_differences <- tlx_combined |>
+  pivot_longer(cols = ends_with("_diff"), names_to = "component", values_to = "difference") |>
+  group_by(component) |>
+  summarise(
+    median_diff = median(difference),
+    iqr_diff = IQR(difference)
+  )
+
+print(median_differences)
+
+```
+Interpretation of wilcox:
+
+Frustration (FF), Performance (PF), Temporal Demand (TD), and Overall workload showed statistically significant increases from the learning phase to the recall phase.
+Effort (EF), Mental Demand (MD), and Physical Demand (PD) did not show statistically significant changes between the two phases.
+The largest increase was in Temporal Demand (estimate = 32.5), followed by Frustration and Performance (both with estimate = 22.5).
+The overall workload increased by an estimated 12.9 points.
+
+These results suggest that participants experienced significantly higher levels of frustration, perceived their performance as worse, felt more time pressure, and overall found the recall phase more demanding than the learning phase. However, the mental and physical demands, as well as the effort required, didn't change significantly between the two phases.
+
+interpretation of box plots:
+
+There are noticeable differences between learning and recall phases for some components:
+
+TD (Temporal Demand) generally shows higher scores in the recall phase across all treatments.
+FF (Frustration) tends to be higher in the recall phase, especially for AR and MR treatments.
+PF (Performance) often shows higher scores in the recall phase.
+
+
+The magnitude of differences between learning and recall phases varies across treatments and components.
+Some components, like PD (Physical Demand), show less pronounced differences between phases.
+There's considerable variability within each component and treatment, as indicated by the box sizes and whiskers.
+Outliers are present in several components, represented by individual points beyond the whiskers.
+
+This visualization supports the statistical findings you previously shared, showing clear differences in some TLX components between learning and recall phases, particularly for Temporal Demand, Frustration, and Performance. The differences appear to vary across treatments, suggesting that the type of interface or method used may influence how task load changes from learning to recall.
+
+Yes, the sources of perceived workload do change when moving from learning to recall.
+Specifically, Temporal Demand, Frustration, and Performance showed significant increases from learning to recall across treatments.
+The magnitude and nature of these changes vary somewhat by treatment, as visible in the boxplot.
+
+:::
+
+::: content-hidden
+
+Additional analysis involving TLX from recall:
+
+Differential Effects by Treatment:
+
+Analyze if the change in workload from learning to recall differs across treatment groups. For example, do participants who used AR during learning experience a greater or lesser increase in workload during recall compared to those who used paper instructions?
+This could be done using a mixed ANOVA or linear mixed models.
+Workload Change as a Predictor:
+
+Investigate if the change in workload (learning to recall) predicts recall performance. Do participants who experience a smaller increase (or even a decrease) in workload during recall perform better?
+Component-Specific Changes:
+
+Examine how different components of the TLX (mental demand, physical demand, etc.) change from learning to recall. This might reveal which aspects of the task become more or less demanding when working from memory.
+Relationship to PWI Usage:
+
+Analyze if the change in workload correlates with how much participants relied on the PWI during recall. Do those who experience a greater increase in workload tend to reference the PWI more often?
+Learning Effectiveness:
+
+Explore if the workload during learning predicts the workload during recall. Does lower workload during learning lead to lower workload during recall, possibly indicating more effective learning?
+Workload Profiles:
+
+Create "workload profiles" for each treatment by comparing the pattern of TLX component scores in learning vs. recall. This could reveal how different instructional methods impact the nature of the workload when transitioning to working from memory.
+Confidence and Performance:
+
+Examine if the change in the "Performance" component of the TLX (which reflects perceived success) correlates with actual performance in recall. This could provide insights into participants' metacognitive awareness.
+Adaptation to Task:
+
+Investigate if certain treatments lead to better adaptation to the task, as indicated by smaller increases (or even decreases) in workload from learning to recall.
+
+:::
+
+### System Usability Scale Results
+
+```{r}
+### REDOING METHOD IN `forms_data.Rmd` DUE TO INVERSION OF SCALE ON MY INSTRUMENT
+### SHOULD BE DISAGREE → AGREE, BUT IS REVERSED
+### AS A RESULT THE OFFSETS FOR EVEN AND ODD ROWS ARE BACKWARDS, RESULTING IN INCORRECT (LOW) SCORES
+
+# load all excel tabs into a combined tidy tibble
+target_sheets <- paste0("SUS-", 1:2)
+
+sus_data <- map_dfr(
+  target_sheets,
+  ~ read_excel(
+    here("data", "source", "i1_raw_data.xlsx"),
+    na = c("", "N/A"),
+    sheet = .x
+  ) |>
+  mutate(phase = which(target_sheets == .x)) |>
+  janitor::clean_names() |>
+  select(participant, phase, everything(), -notes) |> 
+  filter(participant > 1010)
+)
+
+sus_data_tidy <- sus_data |>
+  pivot_longer(cols = starts_with("q"),
+               names_to = "question",
+               values_to = "value") |>
+  mutate(question = as.numeric(str_extract(question, "\\d+"))) |>
+  arrange(participant, phase, question)
+
+# add column for score contribution based on question number
+sus_data_tidy <- sus_data_tidy |>
+  mutate(score_contribution = case_when(
+    question %in% c(1, 3, 5, 7, 9) ~ 5 - value,   # correction!
+    question %in% c(2, 4, 6, 8, 10) ~ value - 1,  # correction!
+    TRUE ~ NA_real_  # this line is just a fail-safe
+  ))
+
+# function to normalize sus scores into percentile ranks
+find_sus_rank <- function(x, mu = 68, sd = 12.5) {
+  z_score <- (x - mu) / sd
+  percentile <- pnorm(z_score) * 100
+  return(percentile)
+}
+
+# calculate scores for each (participant, phase) and add pct rank
+sus_scores <- sus_data_tidy |>
+  group_by(participant, phase) |>
+  summarise(sus = sum(score_contribution) * 2.5, .groups = "drop") |> 
+  mutate(sus_pct = find_sus_rank(sus))
+
+sus_scores <- sus_scores |>
+  left_join(select(demographics, participant, treatment), by = "participant") |>
+  select(
+    participant,
+    treatment,
+    everything()
+  ) |>
+  arrange(participant, treatment, phase)
+
+sus_l <- sus_scores |> 
+  filter(phase == 1)
+
+sus_r <- sus_scores |> 
+  filter(phase == 2)
+
+```
+
+::: content-hidden
+
+MUST DO: add note to methods section discussing mislabled instrument
+
+:::
+
+The System Usability Score (SUS) provides a complementary view of the participant experience. Where TLX is focused on perceived workload, SUS is designed to provide a simple, one number assessment of overall usability. Despite its simplicity, the SUS is well respected and often used. @tbl-sus-ds summarizes the raw SUS scores collected during the learning phase of this study, representing the usability of the instructional technology. Five-number summaries are provided for each treatment group for both phases.
+
+```{r tbl-sus-ds}
+#| tbl-cap: "Summary Statistics for Raw System Usability Scores"
+
+datasummary(
+  Heading("Treatment") * treatment * (Heading("Score") * sus + Heading("Rank") * sus_pct)
+  ~ (Mean + SD + Min + Median + Max),
+  data = sus_l,
+  fmt = 1,
+  output = "kableExtra"
+)
+```
+
+The benchmark distribution for these scores is $\text{SUS} \sim \mathcal{N}(\mu = 68, \sigma = 12.5)$. As such, despite being on a 100-point scale, raw SUS scores should not be interpreted as percentages. For example, a score of 68 is indeed 68% of the maximum, but only represents the 50th percentile. To improve the interpretability of the raw scores, it is considered best practice to convert to percentile rank by normalizing:
+
+$$
+\text{SUS}_{rank} = \Phi\left(\frac{\text{SUS} - \mu}{\sigma}\right) \times 100
+$$ {#eg-sus-rank}
+
+where $\Phi$ is the cumulative distribution function (CDF) of the standard normal distribution. Values transformed in this manner can be interpreted in terms of letter grades on the traditional 10-point scale. The benchmark parameters $\mu$ and $\sigma$ were primarily developed during 500 studies of commercial, publicly available products. In research and product development, where SUS percentile ranks and letter grades may seem harsh or unrealistic, they are more commonly used to track improvement over time rather than for absolute comparison.
+
+With that in mind, percentile ranks are also included in @tbl-sus-ds. The overall median rank of `r round(median(sus_ds_data$sus_pct), 1)`% gives these systems a failing grade overall, *relative to commercially available products*. Performance by treatment ranges from 77.2% for PWI to 29.6% for MR, with PAR scoring 63.8% and AR 44.5%, all of which roughly aligns with observed interactions. Following best practices, subsequent SUS analysis will utilize the transformed SUS percentile ranks. In addition to improved interpretability, this also accounts for the non-linear nature of the raw scores, enabling more meaningful comparisons. The monotonic nature of this transformation, which preserves the data's original order, will have no affect on the statistical conclusions for the methods employed.
+
+
+Do participant rankings of the instructional technologies (treatments) suggest that any are significantly more or less usable than the others?
+
+```{r}
+#| fig-cap: "System Usability Score for Each Instructional Method"
+#| fig-height: 5
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+ggstatsplot::ggbetweenstats(
+  data = sus_l,
+  x = treatment,
+  y = sus_pct,
+  type = "nonparametric",
+  xlab = "",
+  ylab = "",
+  title = "Does the Usability of each Treatment Vary Significantly?",
+  # results.subtitle = FALSE,
+  subtitle = "Usability rankings for all methods are statistically equivalent (p = 0.40)",
+  digits = 3,
+  # centrality.label.args = list(point.padding = 30),
+  ggtheme = theme_minimal(base_size = 10) +
+    theme(
+      plot.title.position = "plot",
+      plot.title = element_text(face = "bold"),
+      axis.text.y.right = element_blank(),
+      axis.ticks.y.right = element_blank(),
+      axis.text.x = element_text(color = "black")
+      # legend.position = "none",
+      # axis.text.y = element_blank(),
+      # axis.ticks.y = element_blank(),
+    ),
+  # remove side label
+  ggplot.component = list(
+      ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+    )
+)
+```
+
+interpretation:
+
+no statistically significant difference but the progression of observed values aligns with expectations based on complexity of instructional tech: PWI < PAR < AR < MR
+
+suggests that while the technologies differ in complexity, their perceived usability during learning is not drastically different
+
+does SUS differ significantly between phases
+
+```{r}
+#| fig-cap: "System Usability Score for Learning and Recall Phases"
+#| fig-height: 5
+#| warning: false
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+  ggstatsplot::ggbetweenstats(
+    data = sus_scores,
+    x = phase,
+    y = sus_pct,
+    type = "nonparametric",
+    xlab = "",
+    ylab = "",
+    title = "Is there a Significant Change in SUS between Phases?",
+    # results.subtitle = FALSE,
+    subtitle = "Learning (1) exhibits a significantly lower SUS than the Recall (2) phase, p < 0.001",
+    digits = 3,
+    # centrality.label.args = list(point.padding = 30),
+    ggtheme = theme_minimal(base_size = 10) +
+      theme(
+        plot.title.position = "plot",
+        plot.title = element_text(face = "bold"),
+        axis.text.y.right = element_blank(),
+        axis.ticks.y.right = element_blank(),
+        axis.text.x = element_text(color = "black")
+        # legend.position = "none",
+        # axis.text.y = element_blank(),
+        # axis.ticks.y = element_blank(),
+      ),
+    # remove side label
+    ggplot.component = list(
+        ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+      )
+  )
+```
+
+SUS in L and R are significantly different and practically meaningful
+
+supporting your interpretation that removing the instructional technology generally improves perceived usability
+
+::: content-hidden
+TODO: convert all figure labs to this format:
+caption = description (for LoF)
+title = research question
+subtitle = finding / interpretation that addresses title
+:::
+
+does the significant difference in SUS between phases vary with instructional method?
+
+```{r}
+wilcoxon_results <- sus_scores |>
+  group_by(treatment) |>
+  summarise(
+    n = sum(!is.na(sus_pct[phase == 1]) & !is.na(sus_pct[phase == 2])),  # number of complete pairs
+    median_diff = median(sus_pct[phase == 2] - sus_pct[phase == 1], na.rm = TRUE),
+    test_result = list(wilcox.test(sus_pct[phase == 2], sus_pct[phase == 1], 
+                                   paired = TRUE, exact = FALSE, correct = TRUE, na.action = na.omit)),
+    wilcox_statistic = test_result[[1]]$statistic,
+    p_value = test_result[[1]]$p.value
+  ) |>
+  mutate(
+    significance = case_when(
+      p_value < 0.001 ~ "***",
+      p_value < 0.01 ~ "**",
+      p_value < 0.05 ~ "*",
+      TRUE ~ "ns"
+    )
+  ) |>
+  select(-test_result)
+
+# Calculate effect sizes separately, handling NAs
+effect_sizes <- sus_scores |>
+  group_by(treatment) |>
+  rstatix::wilcox_effsize(sus_pct ~ phase, paired = TRUE, na.rm = TRUE) |>
+  select(treatment, effsize)
+
+# Join the effect sizes to the main results
+wilcoxon_results <- wilcoxon_results |>
+  left_join(effect_sizes, by = "treatment") |>
+  arrange(p_value)
+
+
+print(wilcoxon_results)
+
+
+```
+
+for PWI, AR, and MR the change in SUS between L and R was statistically significant with practically meaningful magnitudes and large effect sizes
+
+how did average SUS change from L to R for each treatment, relative to the PWI condition?
+
+```{r}
+# calculate the mean difference in SUS for PWI (baseline)
+pwi_diff <- sus_scores |>
+  filter(treatment == "PWI") |>
+  group_by(participant) |>
+  summarize(diff = sus_pct[phase == 2] - sus_pct[phase == 1]) |>
+  pull(diff) |>
+  mean(na.rm = TRUE)
+
+# Now calculate the adjusted differences for each method
+adj_sus_diffs <- sus_scores |>
+  group_by(treatment, participant) |>
+  summarize(diff = sus_pct[phase == 2] - sus_pct[phase == 1], .groups = "drop") |>
+  group_by(treatment) |>
+  summarize(
+    mean_diff = mean(diff, na.rm = TRUE),
+    adjusted_diff = mean_diff - pwi_diff,
+    sd_diff = sd(diff, na.rm = TRUE),
+    n = sum(!is.na(diff))
+  ) |>
+  mutate(se_diff = sd_diff / sqrt(n)) |>
+  arrange(desc(adjusted_diff)) |> 
+  filter(treatment != "PWI")
+
+print(adj_sus_diffs)
+
+# Visualize the adjusted differences
+ggplot(adj_sus_diffs, aes(x = reorder(treatment, adjusted_diff), y = adjusted_diff)) +
+  geom_col() +
+  geom_errorbar(aes(ymin = adjusted_diff - se_diff, ymax = adjusted_diff + se_diff), width = 0.2) +
+  coord_flip() +
+  labs(x = "Treatment", y = "Adjusted Difference in SUS Score",
+       title = "Adjusted SUS Score Differences Relative to PWI",
+       subtitle = "Positive values indicate greater improvement compared to PWI") +
+  theme_minimal()
+
+```
+
+observations:
+
+- increase in SUS: AR > MR > PAR (ns?)
+- suggests that AR and MR have similar usability
+- when those interfaces were eliminated for recall, usability improved by substantially more than the change in usability for L(PWI) to R(PWI)
+- the same is true of PAR, but lower magnitude and wide variance suggest not reliable, may be zero
+- high variance overall
+
+also calculated normalized (percent) changes, which flipped the ordering of MR and AR
+
+interpretation: SUS increases in recall primarily thanks to reduced complexity due to removal of instructional technology. change can be interpreted as a measure of "complexity overhead" for those devices vs traditional methods
+
+
+### Qualitative Feedback Analysis
+
