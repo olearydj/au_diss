@@ -883,6 +883,12 @@ write.csv(tlx_scores, "test/tlx_scores.csv", row.names = FALSE)
 
 Process the System Usability Scale Data
 
+*THIS IS WRONG*
+*MY DATA COLLECTION FORM IS MISLABELED - 1 SHOULD BE STRONGLY DISAGREE, 5 STRONGLY AGREE*
+*ODD AND EVEN ADJUSTMENTS HAVE TO BE FLIPPED*
+*CORRECTED FOR THIS BY REDOING IN THE RESULTS CHAPTER, WHERE IT IS ALSO NOTED*
+*ALSO MENTIONED IN METHODS SECTION*
+
 ```{r}
 # load all excel tabs into a combined tidy tibble
 target_sheets <- paste0("SUS-", 1:2)
