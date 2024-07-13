@@ -296,7 +296,7 @@ To ensure the validity of the outcomes, the study design carefully controlled fo
 
 These control measures were integral to maintaining the integrity of the study and ensuring that the results accurately reflect the effects of the instructional treatments.
 
-### Primary Outcomes
+### Primary Outcomes {#sec-primary-outs}
 
 The primary outcomes of this study are the results of the hypotheses tests for each phase, as outlined below.
 
