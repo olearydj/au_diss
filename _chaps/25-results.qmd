@@ -4166,23 +4166,6 @@ Given the limitations of the study (small sample size, single retention test, va
 
 ## Workload, Usability, and User Experience
 
-```{r load-main-data, eval=FALSE}
-
-# unnecessary when merged
-
-car_results <- read_xlsx(
-  here("data", "combined_results.xlsx"),
-  na = c("", "N/A"),
-  sheet = "car results"
-)
-
-demographics <- read_xlsx(
-  here("data", "combined_results.xlsx"),
-  na = c("", "N/A"),
-  sheet = "demographics"
-)
-```
-
 ```{r load-qual-data}
 
 TLX <- read_xlsx(
@@ -4359,15 +4342,6 @@ kr <- irr::kendall(kw_mat)
 Kendall's coefficient of concordance, a measure of inter-rater agreement, was used to further
 assess the rankings across the six sources of workload. Results from the `kendall` function of the `irr` package (W = `r round(kr$value, 2)`, `r fmt_p_val(kr$p.value)`) indicated negligible agreement among participants, confirming that workload rankings are highly individualized. Low agreement in ranking has lead other researchers to question the utility of the TLX's weighting scheme *(Bustamante and Spain 2008, Byers et al 1989)*. Regardless, it remains the officially recommended methodology *(Heart 2006)*.
 
-::: content-hidden
-TODO: cite above
-
-- Hart (2006) reviewed the use of NASA-TLX over 20 years and discussed some of these issues.
-- Bustamante and Spain (2008) compared weighted and unweighted versions of the TLX, finding high correlations between them.
-- Byers et al. (1989) early on questioned the utility of the weighting process in the TLX.
-
-:::
-
 #### TLX Q2: Source Ratings by Treatment
 
 @fig-tlx-q2-heat was created to understand how the sources of perceived workload vary by treatment group. All combinations of treatment and source of workload are arranged in a heatmap, where each cell is the mean rating for the corresponding source and treatment. Temporal Demand consistently rate as the most important workload source across all treatments, with mean ratings all above 66.1. This suggests that all participants experienced substantial time pressure. Physical Demand is consistently rated as the least important source, with all mean ratings below 25.8. This indicates that the assembly task is not perceived as physically demanding in any group.
@@ -4438,10 +4412,6 @@ ggplot(tlx_q2_heat_data, aes(x = treatment, y = source, fill = mean_source_ratin
 
 There are other subtle but noteworthy differences between treatments. AR has the highest Temporal Demand rating, perhaps due to the groups' lack of familiarity with the system. PAR and PWI have the highest Effort ratings, indicating those participants felt challenged by their work, or less concerned with other factors. Despite these differences, the overall pattern of factor importance remains relatively consistent across treatments, as seen in the uniform vertical gradient of the heatmap. 
 
-::: content-hidden
-TODO: address too much / unintended time pressure
-:::
-
 To better quantify these differences, significance tests were conducted for the difference in rating, by treatment, for all sources. The Kruskal-Wallis rank sum test, which is appropriate for these discrete ordinal values, failed to identify any significant effects, further evidence that the ratings for each source are consistent across treatment groups. There appears to be no meaningful relationship between the task-treatment a participant completes and their perception of the factors most important to their overall workload.
 
 ```{r tlx-q2-test, eval=FALSE}
@@ -4473,23 +4443,6 @@ PMCMRplus::kwAllPairsDunnTest(td_data$value, td_data$treatment, p.adjust.method 
 #### TLX Q3: Treatment Effect on Weighted Source Workloads
 
 Where the previous section explored changes across the treatment axis of fig-tlx-q2-heat for unweighted source ratings, this section tests the differences across sources for weighted source workloads. @fig-tlx-q3-bar illustrates the relative contributions of each source to the total workload in each treatment. A fairly consistent progression from the highest contributor, Time Demand, to the lowest, Physical Demand is obvious. While there is some variation in between, those sources act as the high / low points for all treatments.
-
-```{r tlx-q3-unweighted, eval=FALSE}
-# not using
-
-unweighted_means <- tlx_learn |>
-  filter(type == "source rating") |>
-  group_by(treatment, source) |>
-  summarise(mean_rating = mean(value, na.rm = TRUE)) |>
-  arrange(treatment, desc(mean_rating))
-
-ggplot(unweighted_means, aes(x = reorder(source, -mean_rating), y = mean_rating, fill = treatment)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  facet_wrap(~ treatment) +
-  theme_minimal() +
-  labs(x = "Workload Source", y = "Mean Rating", title = "Unweighted Workload Source Ratings by Treatment")
-
-```
 
 ```{r tlx-q3-weighted}
 # weighted source workloads
@@ -4554,10 +4507,6 @@ for(t in unique(tlx_learn$treatment)) {
 
 ```
 
-::: content-hidden
-why use friedman test from stats in one place, from coin another, and from rstatix in a third?
-:::
-
 In summary, while all treatments show significant differences in how source workloads are perceived, only Temporal and Physical Demands emerge as reliably different in all cases. The relative importance of other workload sources varies in magnitude and significance, as @fig-tlx-q3-bar implies.
 
 #### TLX Q4: Task Workload by Treatment
@@ -4604,21 +4553,6 @@ ggstatsplot::ggbetweenstats(
 
 ```
 
-```{r eval=FALSE}
-# not using
-
-unweighted_data <- tlx_learn |>
-  filter(type == "source rating") |>
-  pivot_wider(names_from = source, values_from = value)
-
-# Now calculate the unweighted score
-unweighted_data$unweighted_score <- rowMeans(unweighted_data[, c("MD", "PD", "TD", "PF", "EF", "FF")])
-
-# Perform Kruskal-Wallis test
-kruskal.test(unweighted_score ~ treatment, data = unweighted_data)
-
-```
-
 No significant differences are identified (p = 0.53). Visual inspection shows that median TWL values are quite similar for all treatments and all IQRs overlap. This result is somewhat surprising, given the added complexity and occasional issues associated with the AR and MR interfaces. It may suggest that technical complexity has limited effect on perceived workload, especially in the recruited demographic.
 
 #### TLX Results
@@ -4626,211 +4560,6 @@ No significant differences are identified (p = 0.53). Visual inspection shows th
 The TLX analysis revealed several important insights into the workload experienced by participants across different instructional technologies. Notably, there was a consistent reduction in perceived workload as participants transitioned from the learning to the recall phase, suggesting that all instructional methods led to some degree of task familiarization. Temporal Demand emerged as the most significant contributor to workload across all treatments, indicating that time pressure was a universal challenge. Conversely, Physical Demand was consistently rated as the least important factor, implying that the assembly task was not physically taxing. Interestingly, despite the varying complexities of the different instructional technologies, no significant differences were found in overall task workload between treatments. This unexpected result warrants further investigation.
 
 Consistent patterns of source ratings and workload across treatments are evident, but accompanied by little statistical significance. This may suggest that the inherent nature of the task, rather than the assigned instructional method, primarily determines which aspects of workload are most important to the participants. The high individual variability across TLX metrics also highlights the importance of considering personal factors in designing and implementing instructional technologies.
-
-::: content-hidden
-
-Implications:
-
-a. Robustness of Task: The task itself may be the primary driver of workload, regardless of the instructional method used.
-b. User Adaptability: Participants might be adapting quickly to different instructional methods, equalizing the workload across conditions.
-c. Device Design: The more complex devices (AR, MR) may be well-designed, mitigating potential increases in cognitive load. Perhaps that complexity is offset by the benefits previously enumerated.
-
-This unexpected result is valuable. It challenges assumptions about the impact of instructional method complexity on workload and opens up new questions about how users interact with different types of instructional technologies. It suggests that, at least in the context of this study, the choice of instructional method may be driven more by factors other than workload (e.g., user preference, task performance, or practical considerations) since the workload impact appears to be relatively uniform across methods.
-
-#### TLX Q5: Task Workload Change in Recall
-
-```{r tlx-q5-twl, eval=FALSE}
-
-tlx_q5_twl_change <- tlx_wide %>%
-  filter(
-    source == "combined", 
-    phase != 0
-  ) %>%
-  group_by(treatment, participant) %>%
-  summarize(diff = task_workload[phase == 2] - task_workload[phase == 1], .groups = "drop") %>%
-  group_by(treatment) %>%
-  summarize(
-    mean_diff = -mean(diff, na.rm = TRUE),
-    # adjusted_diff = mean_diff - tlx_pwi_diff,
-    sd_diff = sd(diff, na.rm = TRUE),
-    n = sum(!is.na(diff))
-  ) %>%
-  mutate(se_diff = sd_diff / sqrt(n))
-
-```
-
-To consider how participant workload changes in recall, differences from the learning phase are calculated for each treatment. As seen in @fig-tlx-q5-diff, the PWI treatment experiences the largest reduction in average TWL, followed closely by the AR treatment, with MR and PAR each farther behind. Where the standard error bars overlap the statistical significance of those differences is questionable. Regardless, the magnitude of these changes, which are in the range of 5-22 (approximately) are meaningful in practice.
-
-```{r fig-tlx-q5-diff, eval=FALSE}
-#| fig-cap: "Change in Task Workload in Recall by Treatment"
-
-ggplot(tlx_q5_twl_change, aes(x = reorder(treatment, mean_diff), y = mean_diff)) +
-  geom_col() +
-  geom_errorbar(aes(ymin = mean_diff - se_diff, ymax = mean_diff + se_diff), width = 0.2) +
-  coord_flip() +
-  labs(x = element_blank(),
-       y = element_blank(),
-       title = "How does Task Workload Decrease for each Treatment in Recall?",
-       subtitle = "PAR experiences the largest decrease, followed by MR, AR, and PWI") +
-  theme_minimal()
-
-```
-
-If PWI is used as the baseline for expected change, the performance differences between it and the AR, MR, and PAR treatments are particularly interesting. If reliable, it provides evidence that PAR is of relatively little benefit in spite of the additional complexity of the AR / MR systems.
-
-If PWI is used as the baseline for expected change, the performance differences between it and the AR, MR, and PAR treatments warrant further examination. Of particular interest is the relative performance of PAR, which, assuming the reliability of these results, appears to offer less benefit than expected given the additional complexity of AR/MR systems.
-
-, as it suggests differences in the effectiveness of these systems.
-
-more speculative - come back to in conclusions?
-
-If PWI is used as the baseline for expected change, AR's performance implies a similar net improvement, through some combination of positive learning outcomes and the reduction in complexity previously contributed by the HL2 interface. Following that logic, it seems reasonable to infer that MR and PAR, both of which benefited from similar reductions in complexity but performed substantially worse than  AR, did not achieve the same degree of training success.
-
-If PWI is used as the baseline for expected change, AR's similar net improvement suggests it effectively balanced the benefits of augmented instruction during learning with successful knowledge transfer to the unsupported recall phase. The performance of AR implies that any reliance on the HL2 interface was offset by a combination of reduced complexity in recall and strong learning outcomes.
-
-In contrast, the relatively smaller improvements seen with MR and PAR, despite the same reduction in interface complexity, suggest these methods may have been less effective in promoting independent task mastery. This could be due to either:
-a) these methods fostering more reliance on the augmented interface during learning, leading to a greater performance drop when that support was removed, or
-b) these methods being less effective at creating learning outcomes that translate well to unsupported task execution.
-
-The difference between AR and the other augmented methods (MR and PAR) in this regard is particularly interesting, as it suggests that not all augmented reality implementations are equally effective in balancing immediate task support with long-term learning and transfer
-
-so the question we're trying to answer is this: do the sources of my perceived workload change when moving from learning to recall?
-
-
-```{r eval=FALSE}
-
-prepare_tlx_data <- function(df) {
-  df |>
-    filter(type == "source workload") |>
-    select(participant, treatment, source, value) |>
-    pivot_wider(names_from = source, values_from = value) |>
-    mutate(overall = (MD + PD + TD + PF + EF + FF) / 6)
-}
-
-tlx_learn_wide <- prepare_tlx_data(tlx_learn)
-tlx_recall_wide <- prepare_tlx_data(tlx_recall)
-
-# Combine the data
-tlx_combined <- tlx_learn_wide |>
-  inner_join(tlx_recall_wide, by = c("participant", "treatment"), suffix = c("_l", "_r")) |>
-  mutate(across(c(MD_l, PD_l, TD_l, PF_l, EF_l, FF_l, overall_l), 
-                list(diff = ~get(sub("_l$", "_r", cur_column())) - .)))
-
-# Perform Wilcoxon signed-rank tests
-wilcoxon_results <- tlx_combined |>
-  select(ends_with("_l"), ends_with("_r")) |>
-  pivot_longer(
-    cols = everything(),
-    names_to = c(".value", "phase"),
-    names_pattern = "(.*)_(l|r)"
-  ) |>
-  pivot_longer(
-    cols = c(MD, PD, TD, PF, EF, FF, overall),
-    names_to = "component",
-    values_to = "score"
-  ) |>
-  group_by(component) |>
-  rstatix::wilcox_test(
-    score ~ phase,
-    paired = TRUE,
-    detailed = TRUE
-  ) |>
-  rstatix::adjust_pvalue(method = "bonferroni") |>
-  rstatix::add_significance()
-
-print(wilcoxon_results)
-
-# Visualize the results (same as before)
-plot_data <- tlx_combined |>
-  pivot_longer(cols = c(ends_with("_l"), ends_with("_r")), 
-               names_to = c("component", "phase"), 
-               names_pattern = "(.*)_(.*)") |>
-  filter(!component %in% c("overall_diff", "MD_diff", "PD_diff", "TD_diff", "PF_diff", "EF_diff", "FF_diff"))
-
-ggplot(plot_data, aes(x = component, y = value, fill = phase)) +
-  geom_boxplot() +
-  facet_wrap(~ treatment) +
-  theme_bw() +
-  labs(title = "TLX Scores: Learning vs Recall", 
-       x = "TLX Component", 
-       y = "Score") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-# Median differences and IQR
-median_differences <- tlx_combined |>
-  pivot_longer(cols = ends_with("_diff"), names_to = "component", values_to = "difference") |>
-  group_by(component) |>
-  summarise(
-    median_diff = median(difference),
-    iqr_diff = IQR(difference)
-  )
-
-print(median_differences)
-
-```
-
-Interpretation of wilcox:
-
-Frustration (FF), Performance (PF), Temporal Demand (TD), and Overall workload showed statistically significant increases from the learning phase to the recall phase.
-Effort (EF), Mental Demand (MD), and Physical Demand (PD) did not show statistically significant changes between the two phases.
-The largest increase was in Temporal Demand (estimate = 32.5), followed by Frustration and Performance (both with estimate = 22.5).
-The overall workload increased by an estimated 12.9 points.
-
-These results suggest that participants experienced significantly higher levels of frustration, perceived their performance as worse, felt more time pressure, and overall found the recall phase more demanding than the learning phase. However, the mental and physical demands, as well as the effort required, didn't change significantly between the two phases.
-
-interpretation of box plots:
-
-There are noticeable differences between learning and recall phases for some components:
-
-TD (Temporal Demand) generally shows higher scores in the recall phase across all treatments.
-FF (Frustration) tends to be higher in the recall phase, especially for AR and MR treatments.
-PF (Performance) often shows higher scores in the recall phase.
-
-
-The magnitude of differences between learning and recall phases varies across treatments and components.
-Some components, like PD (Physical Demand), show less pronounced differences between phases.
-There's considerable variability within each component and treatment, as indicated by the box sizes and whiskers.
-Outliers are present in several components, represented by individual points beyond the whiskers.
-
-This visualization supports the statistical findings you previously shared, showing clear differences in some TLX components between learning and recall phases, particularly for Temporal Demand, Frustration, and Performance. The differences appear to vary across treatments, suggesting that the type of interface or method used may influence how task load changes from learning to recall.
-
-Yes, the sources of perceived workload do change when moving from learning to recall.
-Specifically, Temporal Demand, Frustration, and Performance showed significant increases from learning to recall across treatments.
-The magnitude and nature of these changes vary somewhat by treatment, as visible in the boxplot.
-
-:::
-
-::: content-hidden
-
-Additional analysis involving TLX from recall:
-
-Differential Effects by Treatment:
-
-Analyze if the change in workload from learning to recall differs across treatment groups. For example, do participants who used AR during learning experience a greater or lesser increase in workload during recall compared to those who used paper instructions?
-This could be done using a mixed ANOVA or linear mixed models.
-Workload Change as a Predictor:
-
-Investigate if the change in workload (learning to recall) predicts recall performance. Do participants who experience a smaller increase (or even a decrease) in workload during recall perform better?
-Component-Specific Changes:
-
-Examine how different components of the TLX (mental demand, physical demand, etc.) change from learning to recall. This might reveal which aspects of the task become more or less demanding when working from memory.
-Relationship to PWI Usage:
-
-Analyze if the change in workload correlates with how much participants relied on the PWI during recall. Do those who experience a greater increase in workload tend to reference the PWI more often?
-Learning Effectiveness:
-
-Explore if the workload during learning predicts the workload during recall. Does lower workload during learning lead to lower workload during recall, possibly indicating more effective learning?
-Workload Profiles:
-
-Create "workload profiles" for each treatment by comparing the pattern of TLX component scores in learning vs. recall. This could reveal how different instructional methods impact the nature of the workload when transitioning to working from memory.
-Confidence and Performance:
-
-Examine if the change in the "Performance" component of the TLX (which reflects perceived success) correlates with actual performance in recall. This could provide insights into participants' metacognitive awareness.
-Adaptation to Task:
-
-Investigate if certain treatments lead to better adaptation to the task, as indicated by smaller increases (or even decreases) in workload from learning to recall.
-
-:::
 
 ### System Usability Scale Analysis
 
@@ -4901,11 +4630,6 @@ sus_r <- sus_scores |>
 
 ```
 
-::: content-hidden
-
-MUST DO: add note to methods section discussing mislabled instrument
-
-:::
 
 The System Usability Score (SUS) provides a complementary view of the participant experience. Where TLX is focused on perceived workload, SUS is designed to provide a simple, one number assessment of overall usability. Despite its simplicity, the SUS is well-respected and often used. @tbl-sus-ds summarizes the raw SUS scores collected during the learning phase of this study, representing the usability of the instructional technology. Five-number summaries are provided for each treatment group for both phases.
 
@@ -4978,12 +4702,6 @@ No statistically significant overall difference is identified (p = 0.40), likely
 
 Those learning scores were compared with SUS during recall to test for significance using the Wilcoxon signed rank test for paired samples. As seen in @fig-sus-change, the difference is statistically significant (p < 0.001) and practically meaningful. The median value for $SUS_{R}$ (87.70) is a 31.34 point improvement in usability from the learning phase ($SUS_{L}$ = 56.36). The large negative effect size ($\hat{r}^{2}_{biserial}$ = -0.644) with relatively narrow 95% confidence interval [-0.792, -0.424] suggests this finding is robust.
 
-::: content-hidden
-TODO: clarify other wilcoxons:
-Mann-Whitney U test and Wilcoxon rank-sum test are the same.
-Wilcoxon signed-rank test is a different test for paired data.
-:::
-
 ```{r fig-sus-change}
 #| fig-cap: "System Usability Score for Learning and Recall Phases"
 #| fig-height: 5
@@ -5030,13 +4748,6 @@ sus_scores %>%
 ```
 
 This result implies that usability is increased in recall due to some combination of (1) eliminating the instructional technologies as a source of complexity, and (2) learning effects preparing participants for independent work. To evaluate the relationships between that difference and the treatments, two more tests were conducted. First, the Wilcoxon test is again employed to confirm that the change in SUS is significant (i.e., reliably non-zero) within each treatment. The results of these paired tests are summarized in @tbl-sus-within-treat.
-
-::: content-hidden
-TODO: convert all figure labs to this format:
-caption = description (for LoF)
-title = research question
-subtitle = finding / interpretation that addresses title
-:::
 
 ```{r sus-within-trt}
 
@@ -5143,96 +4854,11 @@ sus_scores |>
   )
 ```
 
-::: content-hidden
-
-how did average SUS change from L to R for each treatment, relative to the PWI condition?
-
-```{r eval=FALSE}
-
-# calculate the mean difference in SUS for PWI (baseline)
-pwi_diff <- sus_scores |>
-  filter(treatment == "PWI") |>
-  group_by(participant) |>
-  summarize(diff = sus_pct[phase == 2] - sus_pct[phase == 1]) |>
-  pull(diff) |>
-  mean(na.rm = TRUE)
-
-# Now calculate the adjusted differences for each method
-adj_sus_diffs <- sus_scores |>
-  group_by(treatment, participant) |>
-  summarize(diff = sus_pct[phase == 2] - sus_pct[phase == 1], .groups = "drop") |>
-  group_by(treatment) |>
-  summarize(
-    mean_diff = mean(diff, na.rm = TRUE),
-    adjusted_diff = mean_diff - pwi_diff,
-    sd_diff = sd(diff, na.rm = TRUE),
-    n = sum(!is.na(diff))
-  ) |>
-  mutate(se_diff = sd_diff / sqrt(n)) |>
-  arrange(desc(adjusted_diff)) |> 
-  filter(treatment != "PWI")
-
-print(adj_sus_diffs)
-
-# Visualize the adjusted differences
-ggplot(adj_sus_diffs, aes(x = reorder(treatment, adjusted_diff), y = adjusted_diff)) +
-  geom_col() +
-  geom_errorbar(aes(ymin = adjusted_diff - se_diff, ymax = adjusted_diff + se_diff), width = 0.2) +
-  coord_flip() +
-  labs(x = "Treatment", y = "Adjusted Difference in SUS Score",
-       title = "Adjusted SUS Score Differences Relative to PWI",
-       subtitle = "Positive values indicate greater improvement compared to PWI") +
-  theme_minimal()
-
-```
-
-observations:
-
-- increase in SUS: AR > MR > PAR (ns?)
-- suggests that AR and MR have similar usability
-- when those interfaces were eliminated for recall, usability improved by substantially more than the change in usability for L(PWI) to R(PWI)
-- the same is true of PAR, but lower magnitude and wide variance suggest not reliable, may be zero
-- high variance overall
-
-also calculated normalized (percent) changes, which flipped the ordering of MR and AR
-
-interpretation: SUS increases in recall primarily thanks to reduced complexity due to removal of instructional technology. change can be interpreted as a measure of "complexity overhead" for those devices vs traditional methods
-
-:::
-
 #### SUS Results
 
 The SUS analysis revealed several key findings. During the learning phase, the overall usability reported for all instructional technologies was substantially below commercial benchmarks. This includes both the PAR, a commercial system, and PWI, the experimental control and standard instructions for the lab. While poor by SUS benchmarks, the relative scores for each treatment generally aligned with observed interactions and participant feedback. No statistically significant differences in usability were reported for the treatments used during learning. This unexpected result suggests that, while the technologies differ in complexity, their perceived usability during learning is not drastically different. Individually, participants experienced a significant increase in SUS with phase, but there isn't sufficient evidence to attribute that change to the assigned treatment, despite large observed differences and effect sizes. Furthermore, the magnitude of usability improvement did not differ significantly between treatments.
 
 Based on the design of this study, it is likely that the improvement in SUS primarily originates from some combination of reduced complexity during retention and participant preparation during learning. However, these results provide no evidence regarding the balance of those effects. Overall, these results challenge some common assumptions about the usability of different instructional technologies and highlight the need for a more nuanced understanding of how usability impacts learning and performance in manufacturing assembly tasks.
-
-::: content-hidden
-
-keeping these notes around to help (re)interpret the findings in this section
-
-- *fig-sus-plot*: `sus_pct ~ treatment` (Kruskal-Wallis on learning phase data)
-  - Despite varying levels of complexity, there were no statistically significant differences in usability across treatments during the learning phase.
-  - progression of median values aligns with expectations based on the complexity associated with each treatment: PWI < PAR < PAR < MR
-  - suggests that, while the technologies differ in complexity, their perceived usability during learning is not drastically different (unexpected)
-- *fig-sus-change*: `sus_pct ~ phase | participant` (Wilcoxon signed rank test on all data by participant)
-  - participants in all treatments experienced a significant change in SUS between phases
-  - usability is increased in recall due to some combination of (1) eliminating the instructional technologies as a source of complexity, and (2) learning effects preparing participants for independent work
-  - There was a significant and substantial improvement in perceived usability from the learning to the recall phase across all treatments. (independent of treatments)
-- *sus-within-trt*: `sus_pct ~ phase | treatment` (Wilcoxon signed rank test on all by treatment)
-  - the effect of phase does not vary by treatment
-  - despite large observerd differences and effect sizes
-- *fig-sus-within-trt*: `diff ~ treatment` (Kruskal-Wallis on all data)
-  - no significant treatment effect on the difference in SUS
-  - The magnitude of usability improvement did not differ significantly between treatments.
-
-essentially:
-
-- sus is consistent across treatments
-- individually, participants experienced a change in SUS with phase
-- collectively, the effect of phase on SUS does not vary with treatment
-- overall, the change in SUS does not differ by treatment
-
-:::
 
 ### Qualitative Feedback Analysis
 
@@ -5304,63 +4930,6 @@ Participants also noted how their individual characteristics affected the experi
 
 Environmental factors were more common than expected in participant feedback. Comments about background noise, workspace setup, and lighting conditions were scattered across different treatment groups. While uncommon, this feedback emphasizes the importance of considering the suitability of these systems for the environents they are intended for deployment in.
 
-## Summary of Results
-
-This study examined the effects of different instructional methods (PWI, PAR, AR, MR) on learning, recall, and retention of a manufacturing assembly task. The results provide insights into the effectiveness of these methods across multiple phases and dimensions of performance.
-
-### Quantitative Results
-
-This section will briefly summarize the quantitative results in the context of the three research questions originally posed in @sec-primary-outs.
-
-1. How does each treatment affect performance during the learning phase?
-
-Average TCT varied significantly by treatment, with PWI and PAR being faster than AR and MR. Learning rates also differed, following a pattern of PWI ≈ PAR > AR ≈ MR. Error rates were drastically lower for all augmented instruction methods compared to PWI. These results suggest that while traditional paper instructions and projected AR allowed for faster initial performance, the more immersive AR and MR technologies led to higher quality outcomes, albeit with slower execution.
-
-2. How does each treat affect performance during the recall phase?
-
-OEE varied significantly by treatment, with PAR, AR, and MR all showing improvements over PWI. Reliance also varied by treatment, with AR and MR users showing less than PWI and PAR users. This indicates that the augmented technologies, particularly AR and MR, may lead to better retention and more independent task performance after initial training.
-
-3. How does each treatment affect performance during the retention phase?
-
-No significant effect of treatment was found on the increase in TCT over the retention interval. There was a significant treatment effect on the increase in UCE over time, with PWI showing a lower rate of error increase compared to AR. These mixed results suggest that while the instructional method may not significantly impact speed retention, it may influence quality retention, though not always in expected ways.
-
-### Survey Results
-
-The surveys of workload (TLX) and usability (SUS) bring another dimension to the analysis by quantifying critical symptoms of user experience and possibly suggesting uncontrolled moderating factors. NASA-TLX results showed no significant differences in overall workload between treatments, though Temporal Demand was consistently the highest contributor across all methods. SUS scores were generally below commercial benchmarks for all treatments during learning, but improved significantly during recall. However, this improvement could not be conclusively attributed to specific treatments.
-
-### Qualitative Results
-
-PWI was seen as simple and flexible, but hampered by poor instruction quality. PAR was helpful for initial learning but became constraining as users gained familiarity. AR and MR were engaging and effective for training, but faced hardware limitations and ergonomic issues. Participants across treatments noted developing personal strategies and preferences as they became more familiar with the task.
-
-### Collective Insights 
-
-The quantitative results align with much of the qualitative feedback. For example, the faster TCT but higher error rates for PWI correspond with participant comments about its simplicity but poor instruction quality. The improved OEE and reduced reliance on instructions for AR and MR users during recall aligns with feedback about these methods being effective for training and confidence-building.
-
-The lack of significant differences in TLX scores between treatments, despite clear preferences expressed in qualitative feedback, suggests that while the nature of the workload may differ between methods, the overall perceived difficulty remains similar. This could explain why learning rates and retention measures showed mixed results across treatments.
-
-Overall, the results indicate that each instructional method has distinct advantages and limitations. While augmented technologies show promise for improving certain aspects of learning and performance, they also introduce new challenges. The effectiveness of each method appears to be influenced by factors such as task familiarity, individual learning styles, and the specific performance metrics being prioritized.
-
-These findings suggest that while augmented technologies offer promising benefits for training quality and retention in manufacturing assembly tasks, their implementation should be carefully considered. The choice of instructional method may need to be tailored to specific performance priorities (speed vs. accuracy), task complexity, and learner characteristics. Organizations should weigh the potential gains in quality and long-term performance against initial learning curves and technology investment when selecting instructional methods.
-
-## Limitations
-
-While this study provides valuable insights into the effectiveness of different instructional methods for manufacturing assembly tasks, several limitations should be considered when interpreting the results:
-
-1. Sample Size and Composition: The study was conducted with a relatively small sample size (n=54), primarily consisting of university students. This may limit the generalizability of the findings to broader populations or professional manufacturing environments.
-2. Task Complexity: The assembly task, while designed to simulate real-world manufacturing processes, was relatively simple and short in duration. Results may differ for more complex or longer-duration tasks.
-3. Novelty Effect: The PAR, AR, and MR technologies were new to all participants. The novelty of these systems may have influenced participant engagement and performance in ways that might not persist with long-term use.
-4. Limited Retention Period: The retention phase was conducted after a relatively short interval (up to 44 days). Longer-term retention effects may differ from those observed in this study.
-5. Single Task Type: The study focused on a specific type of assembly task. The effectiveness of different instructional methods may vary for other types of manufacturing tasks or in different industrial contexts.
-6. Technology Limitations: The AR and MR systems used in the study had known limitations in terms of field of view, comfort, and interaction methods. More advanced systems might yield different results.
-7. Imbalanced Repeated Measures: By not ensuring the same number of task iterations for each participant during the learning phase, the study design forced undesirable compromises during analysis.
-8. Environmental Factors: The controlled laboratory setting may not fully reflect the conditions of a real manufacturing environment, potentially affecting the applicability of results to industrial settings.
-9. Measurement Limitations: While comprehensive, the measures used (e.g., TCT, UCE, OEE) may not capture all relevant aspects of performance and learning in manufacturing contexts.
-10. Potential Bias in Qualitative Data: The qualitative feedback, while valuable, may be subject to recall bias or influenced by participants' preconceptions about different technologies.
-
-These limitations do not invalidate the findings but provide important context for their interpretation and application. They also suggest avenues for future research to address these constraints and further validate the results in diverse settings and with larger, more representative samples.
-
-::: content-hidden
-
 ## Challenges and Unexpected Observations {#sec-res-challenges}
 
 Discussion of any challenges encountered during the conduct of the protocol  Modifications made to the protocol in response to these challenges
@@ -5388,5 +4957,3 @@ complexity of MR, less reliable tracking, crashes
     - cross validation or similar models not  employeed
 
 noticed improvising - discourage as occurs
-
-:::
