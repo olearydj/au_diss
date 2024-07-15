@@ -12,7 +12,7 @@ As enumerated in @sec-gaps, our review of the literature has highlighted a numbe
 
 Collectively, these limitations hinder our ability to draw definitive conclusions about the effectiveness of AR/MR technologies in manufacturing training, leaving organizations without clear guidance on how to leverage these tools for optimal learning outcomes and return on investment. In short, additional data and more comprehensive results are needed to provide an accurate assessment of AR/MR efficacy across the diverse problem and solution space.
 
-## Research Questions
+## Research Questions {#sec-ps-rqs}
 
 This gives rise to the central research question of this work:
 

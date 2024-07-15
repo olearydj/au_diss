@@ -1,84 +1,237 @@
 # Conclusions {#26-conclusions}
 
+This chapter synthesizes the key findings, insights, and implications of this study on augmented technologies in manufacturing assembly training. It begins with a comprehensive summary of results, addressing the initial research questions and hypotheses. That is followed by a discussion of the study's main conclusions, its contributions to the field, and the implications for both research methods and theory. An examination of the the limitations of the work and its generalizability to broader contexts follows. Finally, directions for future research are outlined, aiming to build upon this study's foundations and address its identified limitations.
+
 ## Summary of Results
 
 This study examined the effects of different instructional methods (PWI, PAR, AR, MR) on learning, recall, and retention of a manufacturing assembly task. The results provide insights into the effectiveness of these methods across multiple phases and dimensions of performance.
 
-### Quantitative Results
+### Hypothesis Testing
 
-This section will briefly summarize the quantitative results in the context of the three research questions originally posed in @sec-primary-outs.
+This section will briefly summarize the quantitative results in the context of the three questions originally posed as hypotheses in @sec-primary-outs.
 
-1. How does each treatment affect performance during the learning phase?
+#### $H_{1}$: How does each treatment affect performance during the learning phase?
 
-Average TCT varied significantly by treatment, with PWI and PAR being faster than AR and MR. Learning rates also differed, following a pattern of PWI ≈ PAR > AR ≈ MR. Error rates were drastically lower for all augmented instruction methods compared to PWI. These results suggest that while traditional paper instructions and projected AR allowed for faster initial performance, the more immersive AR and MR technologies led to higher quality outcomes, albeit with slower execution.
+@tbl-learn-results-summary summarizes the outcomes related to $H_{1}$. These results suggest that while traditional paper instructions and projected AR allowed for faster initial performance, the more immersive AR and MR technologies led to higher quality outcomes, albeit with slower execution.
 
-2. How does each treat affect performance during the recall phase?
+| Claim                                                              | Result                     | Key Findings                                                                                                                                                                                                                            |
+| ------------------------------------------------------------------ | :--------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| $H_{1a}$: Average task completion time varies with treatment            | Accepted                   | PWI and PAR are both significantly faster than AR and MR. No significant difference between PWI and PAR or between AR and MR.                                                                                                           |
+| $H_{1b}$: Learning rates vary with treatment                            | Accepted                   | PWI demonstrates the steepest learning curve when controlling for iTCT, followed closely by PAR. AR and MR show slower rates of improvement. Relationship: PWI ≈ PAR > (AR ≈ MR)                                                                                  |
+| $H_{1c}$: Average error count per car varies with treatment             | Accepted                   | All augmented instruction methods (PAR, AR, MR) result in significantly lower error rates compared to PWI.                                                                                                                              |
 
-OEE varied significantly by treatment, with PAR, AR, and MR all showing improvements over PWI. Reliance also varied by treatment, with AR and MR users showing less than PWI and PAR users. This indicates that the augmented technologies, particularly AR and MR, may lead to better retention and more independent task performance after initial training.
+: Summary of Quantitative Results for Learning Claims {#tbl-learn-results-summary tbl-colwidths="\[30,20,50\]" .striped}
 
-3. How does each treatment affect performance during the retention phase?
+The observed performance differences observed during the learning phase stem from a balance between the familiarity and simplicity of traditional methods versus the potentially deeper, more spatially-integrated learning offered by PAR, AR, and MR technologies. Initial performance in the PWI condition was likely influenced by a combination of participants' prior experience with paper-based instructions and the lack of built-in error checking to slow them down. But when combined with limitations in the instructional design, PWI resulted in the lowest quality by far. In contrast, the relatively high TCTs and low UCEs observed for augmented methods are the result of unfamiliar interfaces and integrated error-checking through step-by-step guidance and real-time feedback. As predicted by cognitive learning theory and embodied cognition, the additional time and engagement likely contributed to the low error counts observed for augmented instruction.
 
-No significant effect of treatment was found on the increase in TCT over the retention interval. There was a significant treatment effect on the increase in UCE over time, with PWI showing a lower rate of error increase compared to AR. These mixed results suggest that while the instructional method may not significantly impact speed retention, it may influence quality retention, though not always in expected ways.
+#### $H_{2}$: How does each treatment affect performance during the recall phase?
+
+The Recall-related results summarized in @tbl-recall-results-summary suggest that augmented technologies, particularly AR and MR, may lead to better retention and more independent task performance after initial training.
+
+| Claim                                                              | Result                     | Key Findings                                                                                                                                                                                                                            |
+| ------------------------------------------------------------------ | :--------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| $H_{2a}$: OEE varies with treatment                                     | Accepted                   | PAR, AR, and MR all result in statistically significant and practically meaningful improvements in OEE compared to PWI.                                                                                                                 |
+| $H_{2b}$: PWI reliance varies with treatment                            | Accepted                   | Statistically significant differences in reliance exist between treatments, but specific pair-wise differences are not clear enough to declare. AR and MR tend to reduce reliance more than PAR and PWI.                                |
+
+: Summary of Quantitative Results for Recall Claims {#tbl-recall-results-summary tbl-colwidths="\[30,20,50\]" .striped}
+
+The observed differences in recall phase performance likely stem from the nature of learning facilitated by each instructional method. The significantly lower OEE for PWI can be attributed to errors that negated its effectiveness. This confirms that the initial speed advantage of PWI came at the cost of proper skill acquisition and retention. In contrast, higher OEE scores for AR methods, particularly AR and MR, indicate better retention and more independent task performance. This aligns with theories of embodied cognition and active learning, where the spatial integration and hands-on interaction provided by these technologies likely led to deeper processing and more robust mental models of the assembly process. The reduced reliance on instructions for AR and MR users further supports this interpretation. While PAR showed improvements over PWI, its intermediate performance in both OEE and reliance hints at a balance between the benefits of augmentation and the limitations of 2D presentation.
+
+
+#### $H_{3}$: How does each treatment affect performance during the retention phase?
+
+@tbl-retention-results-summary summarizes the findings that relate iTCT and iUCE with treatment. Overall, the implications for retention are mixed, with the UCE model providing stronger evidence for an effect of instructional method on retention than the TCT model. This difference suggests that error-related performance improvements may be more sensitive to instructional methods than completion times.
+
+| Claim                                                              | Result                     | Key Findings                                                                                                                                                                                                                            |
+| ------------------------------------------------------------------ | :--------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| $H_{3a}$: Increase in TCT over retention interval varies with treatment | Rejected                   | No statistically significant evidence found for the effect of instructional method on the increase in TCT over the retention interval.                                                                                                  |
+| $H_{3b}$: Increase in UCE over retention interval varies with treatment | Accepted                   | PWI method showed a significantly lower rate of error increase compared to the reference AR method. Other treatments suggest meaningful effects but did not reach statistical significance.                                             |
+
+: Summary of Quantitative Results for Retention Claims {#tbl-retention-results-summary tbl-colwidths="\[30,20,50\]" .striped}
+
+The lack of significant differences in iTCT across treatments can likely be taken at face value--the observed decreases in temporal performance are dominated by the natural process of skill decay. While the evidence that PWI users experienced a lower rate of error increase seems to challenge expectations, it can likely be attributed to a ceiling effect on UCE. Simply put, it was hard for many PWI results to get worse. Another plausible contributor, that augmented users were too dependent on the provided guidance, seems discredited by the reliance findings during recall.
 
 ### Survey Results
 
-The surveys of workload (TLX) and usability (SUS) bring another dimension to the analysis by quantifying critical symptoms of user experience and possibly suggesting uncontrolled moderating factors. NASA-TLX results showed no significant differences in overall workload between treatments, though Temporal Demand was consistently the highest contributor across all methods. SUS scores were generally below commercial benchmarks for all treatments during learning, but improved significantly during recall. However, this improvement could not be conclusively attributed to specific treatments.
+The surveys of workload (TLX) and usability (SUS) bring another dimension to the analysis by quantifying critical symptoms of user experience and possibly suggesting uncontrolled moderating factors. @tbl-tlxsus-results-summary summarizes those findings:
+
+| Claim                                                              | Result                     | Key Findings                                                                                                                                                                                                                            |
+| ------------------------------------------------------------------ | :--------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Workload Analysis (NASA TLX)                                       | No Significant Differences | No significant differences in overall task workload between treatments. Temporal Demand was consistently the most significant contributor to workload across all treatments.                                                            |
+| Usability Analysis (SUS)                                           | No Significant Differences | No statistically significant differences in usability were reported for the treatments used during learning. Significant increase in SUS from learning to recall phase for all treatments, but not attributable to specific treatments. |
+
+: Summary of Quantitative Results for Workload and Usability Claims {#tbl-tlxsus-results-summary tbl-colwidths="\[30,20,50\]" .striped}
+
+The lack of significant differences in TLX scores across treatments suggests that participants adapted to the challenges of each method, resulting in similar overall workload experiences. The consistency of Temporal Demand as the primary contributor to workload indicates that the timed nature of the task, rather than the instructional method, dominated workload perception. The unintended emphasis on time pressure likely overshadowed other potential differences between treatments.
+
+User adaptation likely accounts, in part, for the absence of significant differences in SUS scores during learning, despite varying technological complexities and observed performance differences. This also suggests that the benefits of interactive features in AR/MR systems were likely balanced by technical issues and comfort concerns, resulting in similar overall usability perceptions across treatments. Those perceptions may also reflect factors that are disconnected from performance metrics. For example, the novelty of AR/MR technologies might have positively influenced usability ratings despite initial performance differences. In short, SUS may not be a valid measure of the efficacy of these training methods.
+
+The significant increase in SUS scores from learning to recall across all treatments likely reflects both reduced interface complexity and increased user confidence. However, the lack of treatment-specific differences in this improvement indicates that all methods similarly prepared users for independent task performance, regardless of their initial technological sophistication.
 
 ### Qualitative Results
 
-PWI was seen as simple and flexible, but hampered by poor instruction quality. PAR was helpful for initial learning but became constraining as users gained familiarity. AR and MR were engaging and effective for training, but faced hardware limitations and ergonomic issues. Participants across treatments noted developing personal strategies and preferences as they became more familiar with the task.
+Participant feedback revealed nuanced experiences across treatments. PWI was perceived as simple and flexible, but hampered by poor instruction quality, particularly in distinguishing similar parts. PAR was initially helpful but became constraining as users gained familiarity. The inconsistent auto-advance feature significantly impacted user experience, highlighting the importance of reliable automation and/or direct user control in training systems. AR and MR were seen as engaging and effective for training, generating enthusiasm despite hardware limitations. Users appreciated the combination of digital instructions with real-world overlay, particularly for complex steps. However, technical issues like unreliable interactions, limited field of view, and tracking problems presented significant challenges.
+
+Across all treatments, participant preferences and performance evolved with task familiarity. Many developed personalized strategies to overcome various system limitations, and individual characteristics like height and gaze patterns notably influenced method effectiveness. Environmental factors such as background noise, workspace setup, and lighting conditions were also noted by some participants. All of this highlights the importance of user-centered instructional design, adaptive training methods, flexible process designs, and environmental considerations in the design and implementation of these systems.
+
+### Researcher Observations
+
+Several common themes emerged when observing participant trends and behavior, some of which are supported by participant feedback from @sec-qual-fb and briefly summarized above. Most obviously, nearly all participants showed a clear improvement in speed and confidence as their trial progressed, regardless of treatment. The rate with which they did so varied, and some seemed more confident than others with the nature and design of the experiments. While each treatment had its unique challenges, participants generally adapted and improved over time. The AR and MR treatments offered helpful visualization but came with technical challenges, while the PWI treatment allowed for more flexibility but sometimes led to confusion with part identification and orientation.
+
+Among AR and MR participants, the impact of tracking and FOV limitations described in @sec-res-challenges varied with individual height and preferred gaze patterns, an outcome that was neither expected nor accounted for in the study design. For all augmented treatments, the inconsistency of gesture detection systems was a common cause of frustration. The same could be said of the shortcomings of PWI instructions, all of which led to adaptation.
+
+Though specifically discouraged, it was not uncommon for participants to develop individual assembly strategies. Efforts to improve their performance and/or address perceived limits or shortcomings of the instructional method typically involved skipping, combining, or reordering steps. This was most common in the PWI treatment, where no step-wise controls existed. It was also prevalent in the PAR condition, where users that struggled with the gesture recognition system would sometimes resort to batching steps: working from memory for a few steps before advancing through all the relevant instructions.
 
 ### Collective Insights 
 
-The quantitative results align with much of the qualitative feedback. For example, the faster TCT but higher error rates for PWI correspond with participant comments about its simplicity but poor instruction quality. The improved OEE and reduced reliance on instructions for AR and MR users during recall aligns with feedback about these methods being effective for training and confidence-building.
+The quantitative results align with much of the qualitative feedback. For instance, PWI's faster TCT but higher error rates corresponds with participant comments about its simplicity and poor instruction quality. Similarly, the improved OEE and reduced reliance on instructions for AR and MR users during recall aligned with feedback about these methods being effective for training and confidence-building.
 
-The lack of significant differences in TLX scores between treatments, despite clear preferences expressed in qualitative feedback, suggests that while the nature of the workload may differ between methods, the overall perceived difficulty remains similar. This could explain why learning rates and retention measures showed mixed results across treatments.
+However, several unexpected findings and diverging quantitative / qualitative results also emerged. While PWI showed poorer performance in terms of error rates during learning, it unexpectedly demonstrated potential for improving learning durability. The lack of significant differences in TLX scores between treatments contrasted with the clear preferences and challenges expressed in qualitative feedback. AR and MR showed slower TCT but lower error rates quantitatively, yet participants generally provided positive feedback about these technologies' effectiveness. Finally, although SUS scores improved across all treatments from learning to recall, qualitative feedback indicated ongoing usability challenges with augmented technologies.
 
-Overall, the results indicate that each instructional method has distinct advantages and limitations. While augmented technologies show promise for improving certain aspects of learning and performance, they also introduce new challenges. The effectiveness of each method appears to be influenced by factors such as task familiarity, individual learning styles, and the specific performance metrics being prioritized.
+These divergences emphasizes the importance of considering both quantitative and qualitative data in evaluating instructional methods, as each provides unique insights into user experience and performance. They may also help to explain the mixed results obtained during this study.
 
-These findings suggest that while augmented technologies offer promising benefits for training quality and retention in manufacturing assembly tasks, their implementation should be carefully considered. The choice of instructional method may need to be tailored to specific performance priorities (speed vs. accuracy), task complexity, and learner characteristics. Organizations should weigh the potential gains in quality and long-term performance against initial learning curves and technology investment when selecting instructional methods.
+### Key Findings
 
-## Limitations
+To complete the summary of results, the ten most significant findings are enumerated below, listed roughly in order of importance:
 
-While this study provides valuable insights into the effectiveness of different instructional methods for manufacturing assembly tasks, several limitations should be considered when interpreting the results:
+1. Error Reduction with Augmented Methods: AR and MR technologies led to significantly lower error rates compared to traditional methods (PWI) during the learning phase. While this reduction is notable, it may be partially attributable to limitations in PWI instructions and potential floor effects for augmented methods. Further research is needed to fully understand the extent and implications of this error reduction across various task complexities and over longer periods.
+2. Speed-Accuracy Trade-off: While augmented methods reduced errors, they also led to slower initial execution compared to traditional methods. This trade-off is crucial for organizations to consider when implementing training systems and warrants further investigation, particularly in more complex tasks and real-world manufacturing environments.
+3. Evolution of Learning Effectiveness: The effectiveness of instructional methods varied across learning phases, highlighting the need for longitudinal studies. AR and MR showed benefits in initial error reduction and recall performance, while PWI unexpectedly demonstrated potential for improving error-rate durability in retention. Research exploring longer intervals between tasks could provide valuable insights into the long-term effectiveness of different methods.
+4. Adaptive User Behavior: Participants across all treatments developed personal strategies and preferences as they gained task familiarity. This emphasizes the importance of flexible training systems that accommodate user adaptation and suggests a need for research into how instructional methods can best support this natural learning process.
+5. Impact of Individual Differences: Characteristics such as height, gaze patterns, and learning styles significantly influenced the effectiveness of each method, especially for AR and MR systems. This underscores the need for adaptable designs in training technologies and further research into how these individual differences interact with various instructional methods.
+6. Complex Relationship between Perceived and Actual Performance: The discrepancy between quantitative workload measures (TLX) and qualitative feedback reveals that user adaptation may result in similar perceived workload despite varying technological complexities. This highlights the need for comprehensive evaluation methods in future research.
+7. Affordances and Limitations Balance: While AR/MR affordances like spatial registration and user-centric displays may contribute to deeper learning, current technical limitations partially offset these benefits. Further research is needed to quantify the impact of specific affordances and overcome existing limitations.
+8. Dynamic User Experience: User preferences and satisfaction evolved as participants became more familiar with the task, indicating that the effectiveness of training methods may vary depending on the stage of learning. This suggests a need for research into adaptive instructional methods that evolve with user proficiency.
+9. Environmental Factors: The unexpected influence of environmental conditions on method effectiveness emphasizes the importance of considering deployment contexts in training system design and future research.
+10. Long-term Usability Perceptions: SUS scores improved from learning to recall across all treatments, suggesting that familiarity with the task may improve perceived usability regardless of the initial technological sophistication. This highlights the need for longitudinal studies in usability research for training systems.
 
-1. Sample Size and Composition: The study was conducted with a relatively small sample size (n=54), primarily consisting of university students. This may limit the generalizability of the findings to broader populations or professional manufacturing environments.
-2. Task Complexity: The assembly task, while designed to simulate real-world manufacturing processes, was relatively simple and short in duration. Results may differ for more complex or longer-duration tasks.
-3. Novelty Effect: The PAR, AR, and MR technologies were new to all participants. The novelty of these systems may have influenced participant engagement and performance in ways that might not persist with long-term use.
-4. Limited Retention Period: The retention phase was conducted after a relatively short interval (up to 44 days). Longer-term retention effects may differ from those observed in this study.
-5. Single Task Type: The study focused on a specific type of assembly task. The effectiveness of different instructional methods may vary for other types of manufacturing tasks or in different industrial contexts.
-6. Technology Limitations: The AR and MR systems used in the study had known limitations in terms of field of view, comfort, and interaction methods. More advanced systems might yield different results.
-7. Imbalanced Repeated Measures: By not ensuring the same number of task iterations for each participant during the learning phase, the study design forced undesirable compromises during analysis.
-8. Environmental Factors: The controlled laboratory setting may not fully reflect the conditions of a real manufacturing environment, potentially affecting the applicability of results to industrial settings.
-9. Measurement Limitations: While comprehensive, the measures used (e.g., TCT, UCE, OEE) may not capture all relevant aspects of performance and learning in manufacturing contexts.
-10. Potential Bias in Qualitative Data: The qualitative feedback, while valuable, may be subject to recall bias or influenced by participants' preconceptions about different technologies.
+## Conclusions
+
+Together, these findings reveal complex relationships between instructional methods, various performance metrics, and individual traits. The central research question of this work, per @sec-ps-rqs is:
+
+> *How do different AR/MR instructional methods, designed to leverage specific affordances, impact operator learning, recall, and retention in a real-world manufacturing assembly training context?*
+
+Realizing this question is difficult to answer directly in a concise manner, it was broken down into five supporting questions, each of which are revisited below.
+
+> *What are the relative effects of various AR/MR technologies on immediate learning outcomes, such as task completion time and error rates, compared to traditional paper-based instructions?*
+
+These findings reveal a clear trade-off between speed and accuracy in immediate learning outcomes. While traditional methods facilitated faster initial performance, AR/MR technologies promoted higher quality outcomes. This suggests that the choice of instructional method should be guided by whether initial speed or accuracy is prioritized in a given training context.
+
+> *How do these AR/MR technologies influence long-term recall and retention of assembly skills, as measured by performance on the same task after a designated period without further training?*
+
+The impact of AR/MR on long-term performance appears more nuanced than initially expected, with differing effects on speed versus accuracy retention. While augmented technologies generally led to better recall performance, unexpected results in the retention phase highlight the complexity of long-term skill retention and the need for further investigation in this area.
+
+> *To what extent do the specific affordances of each AR/MR technology, such as hands-free interaction, spatial registration, and user-centric displays, contribute to the observed learning, recall, and retention outcomes?*
+
+Affordances such as spatial registration and user-centric displays appear to contribute significantly to learning outcomes, albeit with some trade-offs. These features may initially slow task completion but potentially lead to deeper learning and better long-term retention. However, current technical limitations partially offset these benefits, underscoring the need for continued refinement of AR/MR technologies.
+
+> *How do operator characteristics, such as related experience or demographics, influence the effectiveness of each instructional method?*
+
+This study reveals that individual differences significantly impact the effectiveness of each instructional method. Factors such as height, gaze patterns, and learning styles interact with the features of each method, highlighting the need for adaptable designs that can accommodate a range of user characteristics and preferences.
+
+> *What are the perceived workload, usability, and user satisfaction associated with each AR/MR technology, and how do these factors relate to learning, recall, and retention outcomes?*
+
+The relationship between perceived workload, usability, and actual performance is complex. While quantitative measures showed little difference between methods, qualitative feedback revealed evolving user preferences and adaptation strategies. This suggests that effective implementation of AR/MR in training contexts requires consideration of both objective performance metrics and subjective user experiences.
+
+In conclusion, this study reveals that AR/MR instructional methods in manufacturing assembly training offer a nuanced trade-off between immediate performance and long-term learning outcomes. While these technologies can enhance accuracy and potentially deepen learning, their effectiveness is moderated by individual user characteristics and evolving preferences. The impact of AR/MR methods on learning, recall, and retention is not uniform across all aspects of performance, highlighting the need for context-specific implementation strategies. As these technologies continue to develop, their unique affordances promise to reshape training approaches, but realizing their full potential requires careful consideration of both immediate task demands and long-term skill development goals.
+
+## Contributions
+
+This work makes several significant contributions to the field of AR/MR technologies in manufacturing training, directly addressing the central research question: "How do different AR/MR instructional methods, designed to leverage specific affordances, impact operator learning, recall, and retention in a real-world manufacturing assembly training context?" The primary contributions relate to theoretical, methodological, empirical, practical, and human factors considerations. Each correspond with one of the supporting research questions, as detailed below.
+
+### Theoretical: Affordance-Based Evaluation Framework
+
+This study develops and applies an affordance-based framework for evaluating AR/MR technologies in manufacturing training contexts, addressing the research question: "To what extent do the specific affordances of each AR/MR technology contribute to the observed learning, recall, and retention outcomes?" The framework provides a new theoretical lens through which to understand and assess the effectiveness of these technologies. By focusing on specific affordances such as spatial registration, user-centric displays, and hands-free interaction, this framework offers a more structured and theoretically grounded method of assessing AR/MR technologies in manufacturing training, enabling more precise comparisons and insights across different systems and contexts. Evidence from the study suggests that affordances like spatial registration and user-centric displays contribute significantly to learning outcomes, albeit with some trade-offs in initial task completion time.
+
+### Methodological: Comprehensive Multi-Phase Study Design
+
+A comprehensive study that captures learning, recall, and retention outcomes was designed and implemented to address the question: "How do these AR/MR technologies influence long-term recall and retention of assembly skills?" This multi-phase approach allows for the evaluation of both immediate learning outcomes and longer-term skill retention, offering insights into how the effectiveness of different instructional methods evolves over time. The study revealed that while AR and MR showed benefits in initial error reduction and recall performance, traditional methods unexpectedly demonstrated potential for improving error-rate durability in retention.
+
+### Empirical: Quantification of Speed-Accuracy Trade-offs
+
+By providing empirical evidence to quantify the speed-accuracy trade-offs between traditional and AR/MR-based instructional methods in manufacturing assembly tasks, this study addresses the question: "What are the relative effects of various AR/MR technologies on immediate learning outcomes?" It reveals that while AR/MR technologies often lead to slower initial performance, they result in higher quality outcomes with fewer errors. Specifically, PWI and PAR demonstrated faster initial performance but higher error rates, while AR and MR showed slower initial execution but significantly lower error rates during the learning phase. By quantifying this trade-off across different phases of learning and retention, this study provides valuable insight into important implementation considerations.
+
+### Practical: Insights on the Interplay of Environmental and User Characteristics
+
+The question: "How do operator characteristics and environmental conditions influence the effectiveness of each instructional method?" is addressed through relevant practical insights. The research found that factors such as user height, workspace setup, and lighting conditions had some unexpected effects on the effectiveness of AR and MR systems. For example, taller participants and those with specific gaze behaviors (e.g., "down-lookers") experienced more tracking issues with AR and MR systems. Additionally, the study revealed how environmental factors like background noise and lighting affected the user experience across different instructional methods. These findings provide valuable guidance for the real-world implementation of AR/MR training systems, informing the design of more flexible and effective solutions that can accommodate a diverse range of users and deployment contexts in manufacturing settings.
+
+### Human Factors: User Adaptation and Perceived Workload / Usability
+
+This study contributes valuable insights into the cognitive and experiential aspects of AR/MR training systems, addressing the question: "What are the perceived workload, usability, and user satisfaction associated with each AR/MR technology, and how do these factors relate to learning outcomes?" By examining the complex relationships between perceived workload, usability, and actual performance across different phases of learning, this research reveals important considerations for the design and implementation of AR/MR training systems. The study's significant, counter-intuitive findings concerning the relationships (or lack thereof) between complexity, workload, and usability suggest that the participants are less sensitive to technical complexity and more influenced by other factors (e.g. time pressures) than expected. This contribution underscores the importance of integrating both objective performance metrics and subjective user experiences in the evaluation and development of AR/MR training systems for manufacturing contexts.
+
+These contributions collectively advance our understanding of AR/MR technologies in manufacturing training. Collectively, they shed significant light on the central research question and offer a variety of insights that can guide future research and implementation in this rapidly evolving field. 
+
+## Implications to Method and Theory
+
+The contributions outlined above have important implications for both research and practice in augmented-assisted training.
+
+### Methodical Implications
+
+1. Research Design: The multi-phase, mixed-methods approach employed in this study demonstrates the value of comprehensive assessment in capturing the effects of AR/MR technologies on learning, recall, and retention. Future studies may consider adopting similar approaches to fully understand the impact of these technologies.
+
+2. Training System Design: The observed trade-offs between speed and accuracy, as well as the impact of individual differences, underscore the need for adaptable AR/MR training systems. Designers should consider incorporating features that can adjust to user characteristics and learning progress.
+
+3. Implementation Strategies: The varying effectiveness of different methods across learning phases suggests that organizations should consider using a combination of instructional approaches, potentially transitioning between methods as learners progress from novice to expert.
+
+4. Evaluation Metrics: The discrepancies observed between performance and user experiences highlight the importance of supporting comprehensive quantitative performance measures with diverse qualitative metrics when assessing the effectiveness of AR/MR training systems in the context of participant idiosyncrasies.
+
+5. Technology Development: The identified limitations of current AR/MR systems, particularly in terms of ergonomics and adaptability, provide clear directions for technology developers to improve these systems for manufacturing training applications.
+
+### Theoretical Implications
+
+1. Cognitive Load Theory: The findings on speed-accuracy trade-offs and learning effectiveness across phases enhance our understanding of how different instructional methods affect cognitive load over time.
+
+2. Embodied Cognition: The benefits observed from spatial registration and user-centric displays in AR/MR systems provide empirical support for embodied cognition theories in learning processes.
+
+3. Active Learning Theory: The observation of adaptive user behavior across all treatments supports the importance of active engagement in the learning process, as posited by active learning theories.
+
+4. Technology Acceptance Model: The complex relationship found between perceived workload, usability, and actual performance suggests a need to refine how we apply technology acceptance models to AR/MR training systems.
+
+5. Affordance Theory: The study's findings on the balance between AR/MR affordances and limitations contribute to our understanding of how technological affordances translate into learning outcomes in practical settings.
+
+Together, these implications highlight the complexity of evaluating AR/MR training systems and suggest several directions for refining both research methodologies and theoretical frameworks in this field. They emphasize the need for more nuanced, multi-faceted approaches to studying the effectiveness of these technologies in real-world learning contexts.
+
+
+## Limitations and Generalizability
+
+While this study provides valuable insights into the effectiveness of different instructional methods for manufacturing assembly tasks, several limitations should be considered when interpreting the results. All are discussed below, grouped into the categories ecological generalizability, data measurement and analysis, and technology limitations.
+
+A number of considerations may limit the ecological generalizability of these findings for real-world industrial tasks, workers, and environments. The convenience sample was relatively small (n=54) and comprised primarily of university students without significant manufacturing experience. The assembly task, while designed to simulate real-world manufacturing processes, was relatively simple and short in duration, leading to floor effects in the observed error rates. Only a single assembly task was simulated, and the controlled laboratory setting may not fully reflect the conditions of a real manufacturing environment. Results may differ for experienced participants or different task types, including those that are more complex or of longer duration, in real world settings. Additionally, the fixed ergonomics of the workstation couldn't accommodate diverse user needs, especially in AR/MR conditions, potentially impacting comfort, system performance, and AR/MR effectiveness for some participants.
+
+Limitations in data measurement and analysis should also be considered. While comprehensive, the measures used (e.g., TCT, UCE, OEE) may not capture all relevant aspects of performance and learning in manufacturing contexts. The qualitative feedback, while valuable, may be subject to recall bias or influenced by participants' preconceptions about different technologies. Furthermore, the novelty of PAR, AR, and MR technologies to all participants may have influenced engagement and performance in ways that might not persist with long-term use. The variable retention period with a single measure (up to 44 days) may not provide a complete understanding of training durability. The imbalanced repeated measures due to varying task iterations during the learning phase led to compromises in analysis, challenging model fitting and reducing the accuracy of extrapolations. Additionally, the analysis did not employ cross-validation or other methods to prevent bias and limit overfitting for model-based approaches, potentially leading to underestimated error rates and overly optimistic model performance estimates.
+
+Finally, the PAR, AR, and MR systems used in the study had various known limitations in terms of field of view, comfort, reliability, and interaction methods. More advanced systems or implementations might yield different results, highlighting the need for caution when comparing these findings with results from other technological setups.
 
 These limitations do not invalidate the findings but provide important context for their interpretation and application. They also suggest avenues for future research to address these constraints and further validate the results in diverse settings and with larger, more representative samples.
 
 ## Future Work
-In addition to the participants described above, Investigation 1 will recruit 20-30 participants from local manufacturing companies. The same requirements, recruiting, consent, and onboarding procedures will apply, and the experimental protocol is unchanged, except that those participants will be compensated.
+
+Building on the findings and limitations of this study, future work will focus on furthering the understanding of AR/MR technologies in manufacturing training while increasing the ecological validity of the research. Several publications are planned from this work, each focusing on specific contributions of the work. As summarized in @tbl-pubs-proposed, these publications will extend the current analysis by exploring interactions between affordances, refining performance metrics (e.g., a more nuanced OEE calculation), conducting error type analysis, and investigating the relationships between workload, usability, and performance measures.
+
+| Working Title                                                                                                                                       | Focus                                                                                                                                                              |
+|---------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| "An Affordance-Based Framework for Evaluating AR/MR Training Systems in Manufacturing"                                                      | Affordance-based framework, Theoretical underpinnings, Application to AR/MR training systems                                                             |
+| "Designing and Implementing AR/MR Technologies for Manufacturing Assembly Training: A Comparative Study of Learning Outcomes"               | Literature review and theoretical background, Experimental design and methodology, Learning phase results, Immediate impacts on task completion time and error rates |
+| "Long-term Effectiveness of AR/MR Technologies in Manufacturing Training: An Analysis of Recall and Retention"                              | Recap of experimental design, Recall phase results, Retention phase findings, Implications for long-term skill acquisition                           |
+| "Beyond Performance Metrics: Assessing Workload, Usability, and Individual Factors in AR/MR-Assisted Manufacturing Training"                | TLX and SUS results analysis, Demographic and individual factors, Interplay between workload, usability, and performance, User-centered design implications          |
+| "Modeling Learning Curves in AR/MR-Assisted Manufacturing Training: Challenges and Methodological Approaches"                               | Methodological aspects, Challenges in modeling learning curves, Solutions for imbalanced repeated measures data                                          |
+| "Qualitative Analysis of Error Types in AR/MR vs. Traditional Manufacturing Training: Implications for Training Design and Quality Control" | Error type analysis, Qualitative insights into error nature, Impact of instructional methods on errors                                                   |
+
+: Proposed Publications {#tbl-pubs-proposed tbl-colwidths="\[60,40\]" .striped}
+
+These topics are suitable for publication in a range of reputable journals, including IEEE Transactions on Visualization and Computer Graphics, International Journal of Human-Computer Studies, Journal of Manufacturing Systems, and Computers in Industry; a list that reflects the interdisciplinary nature of the research and the value of its contributions.
+
+Subsequent studies with increasing complexity and ecological validity are intended. Each will integrate improvements to both the experimental and system design intended to address the limitations and implications previously identified. Anticipated system upgrades include improved application design, variable-height workstation with integrated multi-camera video capture, and modern VR / VST hardware. This would provide enhanced user experience, streamlined data capture, more robust tracking, and support user adaptation.
+
+Enhancements to the experimental design will prioritize ecological validity, the robustness of results, and greater insight into underlying learning mechanisms. This can be accomplished by refining participant selection, task design, and study duration, implementing more comprehensive assessment methods with additional qualitative and quantitative measures, and exploring the impact of instructional design methods on skill acquisition and retention.
+
+This research trajectory is best suited for a series of industrial experiments, progressing from controlled lab settings to longitudinal on-site studies with industry partners. Ideally, these studies will feature  real-world tasks that vary in type and complexity to help validate and refine our understanding of AR/MR effectiveness in authentic manufacturing contexts.
+
+Through this future work, we aim to bridge the gap between theoretical insights and practical applications, ultimately contributing to the development of more effective and adaptable AR/MR training systems for the manufacturing industry.
 
 
-Additionally, the industry recruitment will allow us to compare the results between our initial convenience sample and a more representative population to see how well the results generalize. IRB approved - one participant from first recruitment effort. All subjects recruited from the local manufacturing industry will be offered gift cards in exchange for their participation. This is considered important to the success of that recruitment. All industry volunteers will be given $40 in cash / gift card at the completion of their participation.
+## Closing
 
-AR better than paper because it provides a kind of error correction, but falls short of error prevention. Avoid learning wrong like PWI. Corrects for poor PWI designs.
+In closing, this study provides valuable insights into the effectiveness of AR/MR technologies in manufacturing assembly training, highlighting both their potential benefits and current limitations. The research reveals a nuanced interplay between instructional methods, performance metrics, and individual user characteristics, emphasizing the need for adaptive and context-sensitive training solutions. While AR/MR technologies demonstrate promise in reducing errors and potentially fostering deeper learning, their implementation requires careful consideration of speed-accuracy trade-offs, user adaptation processes, and environmental factors.
 
-AR better for more complex tasks, e.g. in-field repair. Operator support. For low takt time processes, where the individual assembly steps are relatively small and simple, it is not terribly helpful. Gets in the way after initial training. It could be helpful to refresh operators, especially if they are required to move between stations.
-
-Discrete physical inputs are generally preferrable to gesture based. Slow response and error-prone. PAR foot control.
-
-HL2 was way before its time
-Challenges and limitations of OST designs have encouraged more recent devices to adopt a VST approach (not well suited for manufacturing?)
-
-see ROI calculators at:
-- lightguide: https://www.lightguidesys.com/why-lightguide/lightguide-value-calculator/
-  - claimed increases: >90% quality, >50% throughput, >30% learning rate ("accelerate training")
-- microsoft: ?
-
- MS support for HL2 and MRTK (wiki layoffs)
- 
- future adaptability / scalability; custom application development
- 
- from scratch apps not directly comparable to other findings. implementation details matter in performance, experience, etc. need standard platforms that implement mid-level features and allow researchers to build higher level functionality with them to allow directly comparable results
- 
- future: incorporate cog / spatial assessment
+As the field of AR/MR-assisted training continues to evolve, future research should focus on addressing the limitations identified in this study and expanding our understanding of these technologies in diverse manufacturing contexts. By building on the affordance-based framework and methodological approaches developed here, researchers and practitioners can work towards creating more effective, user-centered AR/MR training systems that balance immediate performance needs with long-term skill development goals. Ultimately, this line of inquiry has the potential to significantly enhance workforce training in manufacturing, contributing to improved productivity, quality, and adaptability in an increasingly complex industrial landscape.
