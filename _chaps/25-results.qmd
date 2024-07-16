@@ -1477,7 +1477,7 @@ learn_agg <- learn |>
   ungroup()
 ```
 
-@tbl-agg-results-by-treat presents participant-level metrics, including the number of tasks completed along with the average TCT and UCE per task. In addition to the overall results, the data is broken out by assigned treatment group to allow for comparisons across conditions. Note that the statistics presented are the overall (aka "grand") mean and median values. That is, they are the average or middle values of all individual participant averages. This provides overall summary statistics for each treatment group that reflect the central tendency and variability among the average outcomes reported by participants within each group.
+@tbl-agg-results-by-treat presents participant-level metrics, including the number of tasks completed along with the average TCT and UCE per task. In addition to the overall results, the data is decomposed by assigned treatment group to allow for comparisons across conditions. Note that the statistics presented are the overall (aka "grand") mean and median values. That is, they are the average or middle values of all individual participant averages. This provides overall summary statistics for each treatment group that reflect the central tendency and variability among the average outcomes reported by participants within each group.
 
 ```{r tbl-agg-results-by-treat}
 #| tbl-cap: Avg. Participant Performance Data Summarized by Treatment Group
@@ -1643,7 +1643,7 @@ ggplot(final_stats, aes(x = metric, y = normalized_mean, fill = treatment, label
 
 Given the level of variation and spread seen above, the presence of outliers was analyzed. Participant-level outliers within treatment groups were the focus, rather than individual data points across the entire dataset. This method identifies annomolous participant level contributions to treatment variability.
 
-Four different tests were used to assess each participant as an outlier in their treatment group: (1) Tukey's Fences at 1.5 times the IQR, (2) 2.5 times the Z-score, (3) outside the 5th and 95th percentiles, and (4) using the Mahalanobis distance. TCE and UCE were each tested separately using the first three methods. The fourth method is a multivariate test that considers TCE and UCE together. The results are summarized in @tbl-outlier-summary, for all participants that were identified by two or more tests.
+Four different tests were used to assess each participant as an outlier in their treatment group: (1) Tukey's Fences at 1.5 times the IQR, (2) 2.5 times the Z-score, (3) outside the 5th and 95th percentiles, and (4) using the Mahalanobis distance. TCT and UCE were each tested separately using the first three methods. The fourth method is a multivariate test that considers TCT and UCE together. The results are summarized in @tbl-outlier-summary, for all participants that were identified by two or more tests.
 
 ```{r find-outliers}
 # Function to detect outliers in a vector using Z-score
@@ -1746,7 +1746,7 @@ save(
 The first hypothesis of the learning phase:
 $$H_{1a}\textrm{: Average task completion time varies with treatment}$$
 
-will be tested by comparing the average TCT of each treatment group to understand the magnitude, direction, and significance of differences.
+was tested by comparing the average TCT of each treatment group to understand the magnitude, direction, and significance of differences.
 
 #### Applicable Statistical Methods
 
@@ -1975,7 +1975,7 @@ p <- ggstatsplot::ggbetweenstats(
   type = "nonparametric",
   xlab = "",
   ylab = "",
-  title = "Avg Change in TCT per Task by Treatment: Kruskal-Wallis non-parametric rank sum test",
+  title = "Avg Change in TCT per Task by Treatment: KW non-parametric rank sum test",
   # results.subtitle = FALSE,
   subtitle = "Significant Differences Identified between Groups using Dunn's Test, Holm-adjusted post-hoc",
   digits = 3,
@@ -2078,7 +2078,7 @@ Using linear mixed effect models (LMEs) to assess treatment effect is a two-step
 
 #### Unconditional Models of Time
 
-To find an unconditional model that best fits the data, several options of increasing complexity will be considered. In the model selection process, it is important to consider that learning is an inherently non-linear process. Typically, TCT starts high and decreases with each training iteration, but the rate of decrease is not constant. The pattern often resembles exponential decay, with rapid initial improvement followed by more gradual changes. When working with an LME, quadratic terms can be used to create a curvilinear approximation of this effect. This is depicted in @fig-h1b-qrsri, where each line is fit using a quadratic term for sequence: $TCT \approx \beta_{0} + \beta_{1}SEQ + \beta_{2}SEQ^2$. The result appears provide an overall improvement to fit at both participant and treatment levels compared to the previous linear formulation.
+To find an unconditional model that best fits the data, several options of increasing complexity were considered. In the model selection process, it is important to consider that learning is an inherently non-linear process. Typically, TCT starts high and decreases with each training iteration, but the rate of decrease is not constant. The pattern often resembles exponential decay, with rapid initial improvement followed by more gradual changes. When working with an LME, quadratic terms can be used to create a curvilinear approximation of this effect. This is depicted in @fig-h1b-qrsri, where each line is fit using a quadratic term for sequence: $TCT \approx \beta_{0} + \beta_{1}SEQ + \beta_{2}SEQ^2$. The result appears provide an overall improvement to fit at both participant and treatment levels compared to the previous linear formulation.
 
 ```{r fig-h1b-qrsri}
 #| fig-cap: Quadratic random slopes and intercepts model visualized.
@@ -2606,7 +2606,7 @@ While @fig-plot-stdtct clearly illustrates the differences in learning curves, a
 While the result may appear similar to the inverse of earlier plots, it offers a standardized view of learning progress across treatments that aligns closely with how learning is often conceptualized in cognitive and educational theories. This representation helps confirm and clarify the trends observed in our previous analyses, reinforcing our understanding of how each treatment impacts learning over time.
 
 ```{r fig-learn-cont}
-#| fig-cap: "The last damn plot"
+#| fig-cap: "Cumulative Learning Progress by Treatment"
 
 # Create a grid of seq.fp values that matches observed values
 seq_grid <- seq(0, 1, by = 0.25)
@@ -2673,7 +2673,7 @@ learn_h1c <- learn |>
 The third and final hypothesis of the learning phase tests the third commonly assessed aspect of learning:
 $$H_{1b}\textrm{: Average error count per car varies with treatment}$$ 
 
-Here again, we are interested in finding statistically significant differences in the average error count under different treatment conditions to identify which instructional method leads to the lowest defect rate. Lower error rates signal a higher quality of learning outcomes. Combined with the previous measures of efficiency (TCT) and learning rate (change in TCT per task), these provide a balanced and comprehensive view of training performance.
+Here again, we are interested in finding statistically significant differences in the average error count under different treatment conditions to identify which instructional method leads to the lowest defect rate. Lower error rates can indicate a higher quality of learning outcomes. Combined with the previous measures of efficiency (TCT) and learning rate (change in TCT per task), these provide a balanced and comprehensive view of training performance.
 
 #### Descriptive Statistics
 
@@ -3285,7 +3285,7 @@ recall_h2b_agg |>
   ) +
   labs(
     title = "Average Time per PWI Reference in Recall",
-    subtitle = "Reliance is strongly right-skewed with high variability and long tails",
+    subtitle = "Reliance is strongly left-skewed with high variability and long tails",
     x = element_blank(),
     y = element_blank()
   ) +
@@ -3686,9 +3686,9 @@ The final phase of this study is designed to test the durability of the training
 The one hypothesis tested during the retention phase:
 $$H_{3}\textrm{: Learning retention varies with treatment}$$
 
-is designed to determine if the instructional methods have an impact on the durability of training for up to two months. When originally planned, this analysis would utilize the change in OEE from recall to retention.
+is designed to determine if the instructional methods have an impact on the durability of training for up to two months.
 
-It was later realized that the way in which OEE assesses task quality as pass / fail based on a single defect is problematic. Each participant only performed one replication of the retention task, where errors are expected. However, minor errors may not indicate a complete lack of retention. The combination of these factors leads to unstable binary outcomes that make it impractical to draw reliable conclusions about retention when using OEE. Instead, retention is assessed by studying the relationships between treatment and gap (the number of days since the original training), and the increase in TCT and UCE during that time. These are treated as $H_{3a}$ and $H_{3b}$ for the increases in TCT and UCE, respectively.
+When originally planned, this analysis would utilize the change in OEE from recall to retention. It was later realized that the way in which OEE assesses task quality as pass / fail based on a single defect is problematic. Each participant only performed one replication of the retention task, where errors are expected. However, minor errors may not indicate a complete lack of retention. The combination of these factors leads to unstable binary outcomes that make it impractical to draw reliable conclusions about retention when using OEE. Instead, retention is assessed by studying the relationships between treatment and gap (the number of days since the original training), and the increase in TCT and UCE during that time. These are treated as $H_{3a}$ and $H_{3b}$ for the increases in TCT and UCE, respectively.
 
 #### Descriptive Statistics
 
@@ -3886,7 +3886,7 @@ m2_tct_int <- lm(incr_tct ~ gap * treatment, data = h3_data_unordered)
 cp_tct <- compare_performance(m1_tct_add, m2_tct_int, metrics = "common", rank = F)
 ```
 
-A comparison of model performance statistics are summarized in @tbl_tct_modperf. Columns for the model name and type are followed by AIC, BIC, and their corresponding weights, standard and adjusted R-squared (R2), and the Root Mean Squared Error (RMSE). AIC/BIC weights represent the relative likelihood of each model being the most accurate of those considered.
+A comparison of model performance statistics are summarized in @tbl_tct_modperf. Columns for the model name and type are followed by AIC, BIC, and their corresponding weights, standard and adjusted R-squared ($R^2$), and the Root Mean Squared Error (RMSE). AIC/BIC weights represent the relative likelihood of each model being the most accurate of those considered.
 
 ```{r tbl_tct_modperf}
 #| tbl-cap: "Model Performance Results"
@@ -3894,7 +3894,7 @@ A comparison of model performance statistics are summarized in @tbl_tct_modperf.
 display(cp_tct)
 ```
 
-In this comparison, both AIC and BIC strongly prefer the additive model. While the R2 of the model with interactions is higher, the additive model scores a higher R2 adj., where complexity is penalized. Despite a slightly higher RMSE, the additive model outperforms based on the principle of parsimony, which favors the least complex model that effectively explains the data. Details for the additive model are summarized in @tbl_tct_modsum. The intercept represents the mean iTCT for the reference treatment (AR), with a gap of zero. The treatment coefficients (MR, PAR, PWI) indicate the difference in mean iTCT between each treatment and AR, assuming the same gap value. Since there are no interaction terms in the model, the effect of gap on iTCT is constant across all treatments.
+In this comparison, both AIC and BIC strongly prefer the additive model. While the $R^2$ of the model with interactions is higher, the additive model scores a higher $R^{2}_{adj}$., where complexity is penalized. Despite a slightly higher RMSE, the additive model outperforms based on the principle of parsimony, which favors the least complex model that effectively explains the data. Details for the additive model are summarized in @tbl_tct_modsum. The intercept represents the mean iTCT for the reference treatment (AR), with a gap of zero. The treatment coefficients (MR, PAR, PWI) indicate the difference in mean iTCT between each treatment and AR, assuming the same gap value. Since there are no interaction terms in the model, the effect of gap on iTCT is constant across all treatments.
 
 ```{r tbl_tct_modsum}
 #| tbl-cap: "Increase in TCT LM"
@@ -3957,8 +3957,12 @@ To validate this model a number of checks were performed. A Shapiro-Wilk test
 indicates residuals are normally distributed (`r m1_tct_st_pv`). The Q-Q plot of the residuals in @fig-tct-mod-qq shows most points are on or near the reference line, despite some deviance in the right tail. The second plot in the figure shows the residuals are scattered randomly around the axis without clear curvature or other systematic deviations. This provides good support for the LM's linearity assumption within the limits of the available data. The variance inflation values for gap (`r vif_gap`) and treatment (`r vif_treat`) are both near 1, indicating very low multicollinearity. These results confirm the model is valid.
 
 ```{r fig-tct-mod-qq}
-#| fig-cap: "This is the figure"
+#| fig-cap: "Model validation for H3a"
 ps <- plot(check_model(m1_tct_add, panel = F))
+
+ps$QQ <- ps$QQ +
+  ylab("Sample Quantiles\nDeviations") +  # Add a line break in the y-axis label
+  theme(axis.title.y = element_text(vjust = 2))  # Adjust vertical position of y-axis label
 
 # QQ - normality of residuals; NCV - linearity via residuals vs fitted values
 ps$QQ / ps$NCV
@@ -3971,23 +3975,23 @@ Continuing the analysis of $H_{3}$, the second measure of learning retention, iU
 
 ```{r fig-h3-uce}
 #| fig-cap: "Increase in Uncounted Errors vs Gap by Treatment"
-#| fig-subcap: "Something clever"
 #| message: false
 
 ggplot(data = h3_data, aes(x = gap, y = incr_uce, color = treatment)) +
   geom_point(alpha = 0.6) +
   geom_smooth(aes(x = gap, y = incr_uce), method = "lm", se = TRUE, color = "black") +
   labs(
-    title = "incr_uce vs gap by Treatment",
-    x = "Gap (days)",
-    y = "Increase in Uncorrected Error Count (incr_uce)",
+    title = "Increase in UCE vs Gap by Treatment",
+    subtitle = "Linear regression with 95% confidence intervals shaded",
+    x = element_blank(),
+    y = element_blank(),
     color = "Treatment"
   ) +
   theme_minimal()
 
 ```
 
-Because the Poisson distribution is used to model count data, it requires all non-negative integer values for the response variable. Sincce iUCE was measured from the average of the last two values during recall, some observations do not meet that requirement--all are positive but some are not integers. To correct for this without altering the relative differences between observations, iUCE was doubled prior to the model fit. When interpreting the model results, the coefficients and other estimates will be on the scale of the doubled iUCE and should be halved to interpret them on the original scale.
+Because the Poisson distribution is used to model count data, it requires all non-negative integer values for the response variable. Since iUCE was measured from the average of the last two values during recall, some non-integer observations are included. To correct for this without altering the relative differences between observations, iUCE was doubled prior to the model fit. When interpreting the model results, the coefficients and other estimates will be on the scale of the doubled iUCE and should be halved to interpret them on the original scale.
 
 ```{r h3_model_pm}
 # to ensure all uce values are integers, double incr_uce
@@ -4283,7 +4287,7 @@ tlx_q1_ph <- pairwise.wilcox.test(
 
 ```
 
-To understand which of the TLX's six sources are most important to all participants' perception of workload, a Friedman test of repeated measures was conducted. This non-parametric test is well suited for the job. It does not assume normality and accounts for the within-participant variability inherent in the repeated measures of survey data. Using `friedman_test` from the `coin` package confirmed significant (`r  round(tlx_q1_ft_st, 1)`, `r fmt_p_val(tlx_q1_ft_pv)`) differences source rankings by participants. The subsequent post-hoc test calculated pairwise differences using a Wilcoxon signed-rank test and Bonferroni correction for multiple comparisons.
+To understand which of the TLX's six sources are most important to all participants' perception of workload, a Friedman test of repeated measures was conducted. This non-parametric test does not assume normality and accounts for the within-participant variability inherent in the repeated measures of survey data. Using `friedman_test` from the `coin` package confirmed significant (`r  round(tlx_q1_ft_st, 1)`, `r fmt_p_val(tlx_q1_ft_pv)`) differences source rankings by participants. The subsequent post-hoc test calculated pairwise differences using a Wilcoxon signed-rank test and Bonferroni correction for multiple comparisons.
 
 ```{r tbl-tlx-q1-ph}
 #| tbl-cap: Pairwise comparisons for TLX Source of Workload Rankings
@@ -4376,7 +4380,7 @@ tlx_q2_heat_data <- tlx_q2_rating_comb |>
 
 # Create custom labels for sources
 source_labels <- c(
-  MD = "Mental\nDemand", PD = "Physical\nDemand", TD = "Time\nDemand", 
+  MD = "Mental\nDemand", PD = "Physical\nDemand", TD = "Temporal\nDemand", 
   PF = "Performance", EF = "Effort", FF = "Frustration"
 )
 ```
@@ -4385,13 +4389,13 @@ source_labels <- c(
 #| fig-cap: "Heatmap for Source of Workload Rating by Treatment"
 
 ggplot(tlx_q2_heat_data, aes(x = treatment, y = source, fill = mean_source_rating)) +
-  geom_tile(color = "white", linewidth = 0.25) +
-  scale_fill_gradient(low = "white", high = "steelblue") +
+  geom_tile(color = "gray25", linewidth = 0.25) +
+  scale_fill_gradient(low = "#d0e8e1", high = "#4fa490") +
   scale_y_discrete(labels = source_labels) +  # Apply custom labels
   theme_minimal(base_size = 10) +
   labs(
     title = "How does the Rating of Workload Sources Differ Across Treatment Groups?",
-    subtitle = "Time demand most influences workload for all instructional methods"
+    subtitle = "Temporal most influences workload for all instructional methods"
   ) +
   theme(
     axis.title = element_blank(),
@@ -4442,7 +4446,7 @@ PMCMRplus::kwAllPairsDunnTest(td_data$value, td_data$treatment, p.adjust.method 
 
 #### TLX Q3: Treatment Effect on Weighted Source Workloads
 
-Where the previous section explored changes across the treatment axis of fig-tlx-q2-heat for unweighted source ratings, this section tests the differences across sources for weighted source workloads. @fig-tlx-q3-bar illustrates the relative contributions of each source to the total workload in each treatment. A fairly consistent progression from the highest contributor, Time Demand, to the lowest, Physical Demand is obvious. While there is some variation in between, those sources act as the high / low points for all treatments.
+Where the previous section explored changes across the treatment axis of fig-tlx-q2-heat for unweighted source ratings, this section tests the differences across sources for weighted source workloads. @fig-tlx-q3-bar illustrates the relative contributions of each source to the total workload in each treatment. A fairly consistent progression from the highest contributor, Temporal Demand, to the lowest, Physical Demand is obvious. While there is some variation in between, those sources act as the high / low points for all treatments.
 
 ```{r tlx-q3-weighted}
 # weighted source workloads
@@ -4469,12 +4473,12 @@ ggplot(
     x = "Workload Source", 
     y = "Mean Weighted Score", 
     title = "Which Sources have the Largest Overall Influence on Workload by Treatment?",
-    subtitle = "Time Demand is consistently the largest contributor, Physical the smallest"
+    subtitle = "Temporal Demand is consistently the largest contributor, Physical the smallest"
   )
 
 ```
 
-Friedman tests show these workload differences are significant for all treatments (p < 0.001 in each), confirming that the sources perceived most influential to overall workload vary by treatment. To explore the nature of those differences, Dunn's test for pairwise multiple comparisons of ranked data is applied with Bonferroni correction. Of the 60 pairs tested[^25-TLX-2], seventeen significant differences were identified (AR: 6, PWI: 4, PAR: 4, and MR: 3), all involving Time Demand, Physical Demand, or both. The four central sources (FF, PF, MD, and EF) are each involved in 3-4 significant pairs. 
+Friedman tests show these workload differences are significant for all treatments (p < 0.001 in each), confirming that the sources perceived most influential to overall workload vary by treatment. To explore the nature of those differences, Dunn's test for pairwise multiple comparisons of ranked data is applied with Bonferroni correction. Of the 60 pairs tested[^25-TLX-2], seventeen significant differences were identified (AR: 6, PWI: 4, PAR: 4, and MR: 3), all involving Temporal Demand, Physical Demand, or both. The four central sources (FF, PF, MD, and EF) are each involved in 3-4 significant pairs. 
 
 [^25-TLX-2]: Four treatments with six sources each = 4 * (6 * (6 - 1)) / 2 = 4 * 15 = 60
 
