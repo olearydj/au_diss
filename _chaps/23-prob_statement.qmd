@@ -1,16 +1,17 @@
 # Problem Statement {#23-prob_statement}
 
-This chapter identifies the research gap and frames our study’s objectives. It begins by summarizing the problem context and need detailed in the preceding chapters. It then briefly outlines the problem, bounded by gaps and limitations of the current literature. We then state the primary research question, and identify several supported questions before describing the planned methodology, centered around an affordance-based approach. Key contributions of the work are then identified, and their significance described. Finally, we relate the problem, question, contributions, and significance of this work to the methods chapter that follows.
 
-## Introduction
-
-Despite a demonstrated need for operator assistance, the emergence of promising technology, a theoretical basis for performance enhancement, a "solution" that connects it all, and frameworks to support its development and assessment, XR adoption remains slow in manufacturing. Until a compelling business case can be made for the substantial investment required, it is unlikely that industry will move beyond isolated proof of concept studies. With continued delays to adoption comes the risk that hardware providers lose their appetite for the massive ongoing R&D budgets these systems demand and reduce or end their commitment in the sector. Therefore, there is a pressing need to assess the business benefits of augmented instruction, which may come in the form of improved operator performance, learning outcomes, long-term retention, user comfort, quality, or other measurable returns on the investment.
+This chapter identifies the research gap and frames our study’s objectives. It begins by summarizing the problem context and need detailed in the preceding chapters. It then briefly outlines the problem, bounded by gaps and limitations of the current literature. The primary research question and supporting questions are identified. Finally, the work's primary contributions are identified.
 
 ## Problem Identification
+
+Despite a demonstrated need for operator assistance, the emergence of promising technology, a theoretical basis for performance enhancement, a "solution" that connects it all, and frameworks to support its development and assessment, XR adoption remains slow in manufacturing. Until a compelling business case can be made for the substantial investment required, it is unlikely that industry will move beyond isolated proof of concept studies. With continued delays to adoption comes the risk that hardware providers lose their appetite for the massive ongoing R&D budgets these systems demand and reduce or end their commitment in the sector. Therefore, there is a pressing need to assess the business benefits of augmented instruction, which may come in the form of improved operator performance, learning outcomes, long-term retention, user comfort, quality, or other measurable returns on the investment.
 
 As enumerated in @sec-gaps, our review of the literature has highlighted a number of gaps. This list includes few direct comparisons of AR/MR technologies, a focus on immediate performance measures, a lack of ecological validity, and heterogeneous designs. More specifically, too many studies focus on comparing a single AR/MR intervention to traditional training methods, leaving unanswered questions about how various AR/MR technologies stack up against each other, and which are most suitable for specific training contexts and desired learning outcomes. The prevailing emphasis on immediate performance measures, such as task completion time and error rates, provides a limited view of training success and knowledge transfer. Furthermore, a significant portion of existing research on AR/MR in manufacturing training relies on simplistic tasks, irrelevant environments, or novice participants. While these controlled studies provide valuable insights into the potential of AR/MR technologies, they may not accurately reflect the complexity and challenges of real-world industrial settings. Finally, the literature includes a wide variation in research designs, technologies, training content, and outcome measures employed across studies. While this diversity reflects the breadth and complexity of the field, it also poses significant challenges for comparing results, synthesizing findings, and drawing conclusive insights about the effectiveness of AR/MR interventions.
 
 Collectively, these limitations hinder our ability to draw definitive conclusions about the effectiveness of AR/MR technologies in manufacturing training, leaving organizations without clear guidance on how to leverage these tools for optimal learning outcomes and return on investment. In short, additional data and more comprehensive results are needed to provide an accurate assessment of AR/MR efficacy across the diverse problem and solution space.
+
+To address these shortcomings, this research proposes an affordance-based framework that conceptualizes AR/MR not as transient technologies, but as bundles of theoretically-grounded affordances designed to optimize learning processes. By systematically operationalizing these affordances through carefully designed instructional treatments, we aim to provide empirical insights into the factors that most influence the efficacy of AR/MR-augmented training. Grounded in the literature and tailored to real-world manufacturing contexts, the proposed study will yield actionable recommendations to accelerate the adoption of these innovative technologies where their benefits can be maximized. 
 
 ## Research Questions {#sec-ps-rqs}
 
@@ -30,16 +31,6 @@ D. How do operator characteristics, such as related experience or demographics, 
 
 E. What are the perceived workload, usability, and user satisfaction associated with each AR/MR technology, and how do these factors relate to learning, recall, and retention outcomes?
 
-## Approach
-
-The current study aims to address these gaps by employing a novel, affordance-based framework, a rigorous methodology, and a comprehensive assessment strategy to investigate the differential impact of three different AR/MR technologies on learning, recall, and retention in a real-world manufacturing assembly training context. The result is, to the best of our knowledge, unique in its design.
-
-This work systematically compares distinct AR/MR technologies against each other and a traditional paper-based control. By designing treatments that isolate the effects of specific AR/MR affordances, we aim to provide much-needed clarity on their differential impact. The study also employs a comprehensive assessment strategy that examines learning, recall, and retention. Together with workload and usability instruments and qualitative user feedback, it provides a holistic understanding of how AR/MR technologies can support both short-term learning and sustained performance improvement. To maximize ecological validity this research is situated within an authentic manufacturing training context, using methods that mimic actual assembly processes and training methods validated over years of use. Finally, this work adopts a rigorous and standardized methodology that prioritizes comparability and replicability. By employing a consistent experimental design, carefully controlling for potential confounding variables, and following best practices collected from the literature, this research aims to generate findings that can be more readily compared and integrated with existing knowledge in the field.
-
-::: content-hidden
-TODO: move approach section into the intro of methods
-:::
-
 ## Key Contributions
 
 By addressing key gaps in the existing literature, this research will contribute to the development of evidence-based guidelines and best practices, ultimately advancing the field and informing future efforts to optimize AR/MR-assisted training programs for improved learning outcomes and return on investment. Three key contributions of this work are:
@@ -50,18 +41,4 @@ By addressing key gaps in the existing literature, this research will contribute
 
 3.  An examination of the factors influencing the long-term effectiveness of AR/MR training, including the relationships between initial learning outcomes, recall and retention, user experience, and individual differences.
 
-## Significance of the Study
-
-This study is significant for its theoretical contributions, practical implications, and efforts to advance the field of AR/MR training research.
-
-Its theoretical contributions center on the affordance-based study design. This framework is grounded in established theories of learning and cognition, converges with existing research, and is empirically assessed through study findings. It aims to advance our understanding of AR/MR devices as "bundles of affordances" that influence learning outcomes individually and through interactions with other factors and affordances. When combined with existing theories of multimedia learning, this has practical implications for AR/MR instructional design and may lead to new / extended models, frameworks, or theories.
-
-The study also holds significant practical implications. Its findings can be applied to the selection and implementation of AR/MR technologies in manufacturing training, optimization of training programs for improved learning outcomes and return on investment, and support of informed decision-making for AR/MR adoption in industry. Its focus on meeting requirements through fundamental, enduring benefits rather than the transient, high tech devices that implement them may help improve results while reducing costs and complexity. Finally, by analyzing the factors that influence outcomes across learning, recall, and retention, this research may help improve the long-term effectiveness of augmented training. Strategies for mitigating performance issues and reducing cognitive load may also be derived from the study's comprehensive assessment of user experience factors and error analysis.
-
-Finally, it is our hope that this work can contribute to the established field of AR/MR training by promoting a theory-driven and systematic approach. The affordance-based framework, grounded in established theories of learning and cognition, provides a robust theoretical foundation for guiding the design, implementation, and evaluation of AR/MR training interventions. By systematically operationalizing these affordances through carefully designed instructional treatments, this research demonstrates the value of a principled, theory-informed approach to leveraging AR/MR technologies for enhanced learning outcomes. The consistent experimental design, meticulous control of confounding variables, and adherence to best practices from the literature ensure the reliability and generalizability of the findings. By integrating theoretical principles and rigorous methods, it exemplifies a pathway for future inquiries to build upon the strong foundations established by the broader research community.
-
-::: content-hidden
-TODO: move significance section to end of methods
-show that methods align with PS
-:::
-
+To address these research questions and deliver the outlined contributions, a comprehensive methodology is outlined in the following chapter. It details the the selection of AR/MR technologies, development of instructional treatments, and the methods for data collection and analysis.

@@ -833,7 +833,7 @@ demo_f <- demographics |>
   )
 ```
 
-#### Numeric Data
+#### Numeric Demographic Data
 
 ```{r numeric-data}
 nums <- demo_f |>
@@ -853,7 +853,7 @@ height_summary <- str_glue(
 )
 ```
 
-After excluding data from the pilot study, `r report_participants(nums, age = "age", participants = "participant")` were included in this analysis. Other than age, height (`r height_summary`) was the only numeric data collected. As discussed in @sec-res-challenges, height was first recorded following the pilot study, when its impact on user behavior and results was first observed. Both numeric characteristics are visualized with a combined box and scatter plot in @fig-numeric. Where present, the notches of these box plots show the 95% confidence interval around the median.
+After excluding data from the pilot study, `r report_participants(nums, age = "age", participants = "participant")` were included in this analysis. Other than age, height (`r height_summary`) was the only numeric demographic data collected. As discussed in @sec-res-challenges, height was first recorded following the pilot study, when its impact on user behavior and results was first observed. Both numeric characteristics are visualized with a combined box and scatter plot in @fig-numeric. Where present, the notches of these box plots show the 95% confidence interval around the median.
 
 ```{r fig-numeric}
 #| fig-cap: "Distribution of Participant Age and Height"
@@ -928,7 +928,7 @@ age_plot + height_plot +
   )
 ```
 
-#### Categorical Data
+#### Categorical Demographic Data
 
 ```{r categorical-data}
 cats <- demo_f |>
@@ -1091,7 +1091,7 @@ vc_tbl |>
 
 Following the primary hypothesis testing, additional analyses may explore the differences in key outcomes across these demographic subgroups. That effort will aim to provide additional context and insights into potential underlying factors influencing the findings.
 
-#### Ordinal Data
+#### Ordinal Demographic Data
 
 ```{r ord-data}
 ords <- demo_f |>
@@ -1221,7 +1221,7 @@ educ_plot / (lego_plot + manuf_plot) +
   )
 ```
 
-### Multivariate Analysis
+### Multivariate Demographic Analysis
 
 In order to assess the equivalence of treatment groups and validate the random assignment that is assumed by most statistical analysis, Age, Gender, Lego experience, and Education were compared across treatment groups. These variables were selected for their meaningful variation and potential relevance to the outcomes of interest. Other notable variables, including Ethnicity and Country of Origin were considered less critical due to their skewed distributions and small subgroup sizes.
 
@@ -1852,7 +1852,9 @@ Given these deviations from normality, particularly for the PWI group, a non-par
 ```{r fig-h1a-plot}
 #| fig-cap: Task Completion Time Differences by Treatment
 #| fig-height: 6
+#| out-width: "75%"
 #| warning: false
+#| message: false
 
 # since ggstatsplot computes confidence intervals for the effect sizes
 # using bootstrapping, it is important to set a seed for reproducibility
@@ -1962,7 +1964,9 @@ pd <- learn_h1b |>
 ```{r fig-h1b-naive}
 #| fig-cap: Naive method
 #| fig-height: 6
+#| out-width: "75%"
 #| warning: false
+#| message: false
 
 # since ggstatsplot computes confidence intervals for the effect sizes
 # using bootstrapping, it is important to set a seed for reproducibility
@@ -2212,6 +2216,9 @@ cp_h1b_uc |>
 The result of this comparison shows that m7 outperforms the other options in most measures, with the lowest AIC, BIC, and RMSE. Approximately 95% of the variance in TCT can be explained by this model ($R^2_{cond}$), of which only 28% is due to its fixed effects ($R^2_{marg}$). The high ICC (0.93) indicates that a large proportion of the total variance is due to differences between participants, suggesting that individual variation is a crucial factor in the model. The resulting predictions are plotted in @fig-m7-pred.
 
 ```{r fig-m7-pred}
+#| fig-cap: "Learning Curve for Unconditioned Model"
+#| fig-height: 4
+
 # Create a data frame for predictions
 pred_data <- data.frame(seq.fp = seq(0, 1, length.out = 100))
 
@@ -2241,9 +2248,13 @@ Even with the subset of data, we see that the log-based model begins to exhibit 
 Inspecting the fixed effects parameters for m7, summarized in @tbl-m7-params, shows that all terms are significant. The intercept of 145.5 seconds establishes the baseline average performance for all participants on the first iteration. Estimated coefficients for the linear and log terms of sequence show that these terms compete for dominance, with the linear term increasing TCT at a rate of 246.5 seconds per unit of seq.fp, the continuous transformation of task iteration number. This is offset by the log term, which decreases TCT by 431.7 seconds per unit of $\log{(\text{seq.fp} + 1)}$. These coefficients represent the change in TCT for a one-unit change in their respective transformed sequence terms, resulting in a non-linear learning curve when combined. The strong negative correlation of -0.75 between the log term and intercept indicates that participants with higher initial TCT experience a stronger effect from the log term, which drives rapid initial improvement. In learning theory, this phenomenon is known as the *power law of practice*. It formalizes the idea that, all other things constant, the farther a learner starts from expected proficiency, the faster they will initially improve.
 
 ```{r tbl-m7-params}
-#| tbl-cap: Fixed Effects Parameters for the Unconditioned RLM (m7)
+# tbl-cap: Fixed Effects Parameters for the Unconditioned RLM (m7)
 display_model_parameters(m7)
 ```
+
+::: content-hidden
+TODO: fix double-caption from display_model_parameters
+:::
 
 ```{r}
 residuals_m7 <- residuals(m7)
@@ -2286,7 +2297,8 @@ m7_out_pv <- m7_out$p.value
 Validation of m7 confirmed that the residuals exhibit equal variance (`r fmt_p_val(m7_het_pv)`), but are not normally distributed (Shapiro-Wilk test, `r fmt_p_val(m7_st_pv)`). Traditional QQ plots of the raw residuals do not properly account for the hierarchical structure and non-independence of mixed effect models, leading to overly optimistic results. The `{DHARMa}` package was specifically designed to address this problem by comparing observed residuals to a large number of simulations from the fitted model. This technique provides a more robust and accurate representation of model accuracy. Diagnostics produced by `testResiduals` indicate deviation from the expected distribution of residuals (Kolmogorov-Smirnov test, `r fmt_p_val(m7_ks_pv)`) without significant dispersion issues (`r fmt_p_val(m7_disp_pv)`) or outliers (`r fmt_p_val(m7_out_pv)`). Visual inspection of residual plots confirmed these findings (@fig-m7-dharma).
 
 ```{r fig-m7-dharma}
-#| fig-cap: Residual Plots
+#| fig-cap: "Residual Plots"
+#| fig-height: 4
 
 DHARMa::plotQQunif(sim_m7, testDispersion = F, testUniformity = F, testOutliers = F)
 ```
@@ -2360,6 +2372,8 @@ These results, particularly the decrease in RMSE (`r round(cp_h1b_uc_r$RMSE[4], 
 
 ```{r fig-m7r_ti-resid}
 #| fig-cap: Extreme values are assigned lower weights in robust model
+#| fig-height: 4
+
 plot(m7r_ti, which = 1)
 ```
 As a final model validation, @fig-h1b-rlm-pred shows the predictions generated by the robust model for the first five participants in each treatment. In this figure, the black circles and lines represent observed TCT values for each participant, while the colored curves represent the RLM's predictions. Each row corresponds to a different treatment group (AR, MR, PAR, PWI), and each subplot shows data for an individual participant.
@@ -2381,6 +2395,7 @@ max_tct <- max(m7r_ti_sample$tct) + 20
 
 ```{r fig-h1b-rlm-pred}
 #| fig-cap: "Visualizing RLM model fit"
+#| fig-height: 4
 
 ggplot(m7r_ti_sample, aes(x = seq.fp, y = tct)) + 
   geom_point(fill = "grey", pch = 21, size = 2, stroke = 1.25) + 
@@ -2482,6 +2497,8 @@ save(m7r_ti_c1, m7r_ti_c2, m7r_ti_c3, file = here("rdata", "h1b-fit-cond.RData")
 ```
 
 ```{r tbl-h1b-fit-cond}
+#| tbl-cap: "Comparison of Model Performance"
+
 load(here("rdata", "h1b-fit-cond.RData"))
 cp_h1b_cn_r <- compare_performance(m7r, m7r_ti_c1, m7r_ti_c2, m7r_ti_c3, metrics = "common", rank = F)
 
@@ -2492,7 +2509,7 @@ cp_h1b_cn_r |>
 
 All models incorporating $TCT_{0}$ as a predictor show a substantial increase in $R^2_{marg}$. This suggests that adding treatment as a fixed effect improves the model's explanatory power. Model m7r_ti_c2, which includes treatment interactions with the linear term, performs better than the alternatives in every metric ($R^2_{marg}$ = 0.93, ICC = 0.85, RMSE = 5.93) except $R^2_{cond}$, where it matches the most complex matter (0.99). Furthermore, where the other models produced singularity warnings during the fit, c2 did not. These warnings did not invalidate the results for c1 or c3, as `robustlmm` automatically negotiated to an alternate optimizer. But the added stability provides additional comfort.
 
-```{r fig-plot-make}
+```{r make-learn-plot}
 
 # Create a data frame for predictions
 # include predictions for m7r_ti (no treatment effect)
@@ -2529,6 +2546,7 @@ pred_data$upper <- pred_data$TCT + 1.96 * se
 
 ```{r fig-plot-show}
 #| fig-cap: "Learning Curves by Treatment"
+#| fig-height: 4
 
 # Create the plot
 ggplot() +
@@ -2572,6 +2590,7 @@ pred_data_equal_start$TCT <- predict(m7r_ti_c2, newdata = pred_data_equal_start,
 
 ```{r fig-plot-stdtct}
 #| fig-cap: "Compare Learning Curves with Equal Initial Proficiency"
+#| fig-height: 4
 
 ggplot(pred_data_equal_start, aes(x = seq.fp, y = TCT, color = treatment)) +
   geom_line() +
@@ -2607,6 +2626,7 @@ While the result may appear similar to the inverse of earlier plots, it offers a
 
 ```{r fig-learn-cont}
 #| fig-cap: "Cumulative Learning Progress by Treatment"
+#| fig-height: 4
 
 # Create a grid of seq.fp values that matches observed values
 seq_grid <- seq(0, 1, by = 0.25)
@@ -2677,9 +2697,9 @@ Here again, we are interested in finding statistically significant differences i
 
 #### Descriptive Statistics
 
-As with previous measures, the uncorrected error count (UCE) is neither independent nor balanced. Additionally, it is a discrete (counted) variable. All of these have implications for the statistical method used, but where average counts are used, many are addressed. The standard five number summary for UCE is presented in @tbl_h1c_ss. 
+As with previous measures, the uncorrected error count (UCE) is neither independent nor balanced. Additionally, it is a discrete (counted) variable. All of these have implications for the statistical method used, but where average counts are used, many are addressed. The standard five number summary for UCE is presented in @tbl-h1c-ss. 
 
-```{r tbl_h1c_ss}
+```{r tbl-h1c-ss}
 #| tbl-cap: "Summary Statistic for Dependent Variables, H1c Quality"
 
 datasummary(
@@ -2776,14 +2796,16 @@ The Kruskal-Wallis non-parametric test is used to compare average UCE by treatme
 
 ```{r fig-h1c-plot}
 #| fig-cap: Differences in Average Uncorrected Error per Task by Treatment
-#| fig-height: 5
+#| fig-height: 6
+#| out-width: "75%"
 #| warning: false
+#| message: false
 
 # since ggstatsplot computes confidence intervals for the effect sizes
 # using bootstrapping, it is important to set a seed for reproducibility
 set.seed(42)
 
-x <- ggstatsplot::ggbetweenstats(
+ggstatsplot::ggbetweenstats(
   data = learn_h1c,
   x = treatment,
   y = avg_uce,
@@ -3088,6 +3110,7 @@ In @fig-h2a-plot, group-wise significant differences are found (p = 0.02), with 
 ```{r fig-h2a-plot}
 #| fig-cap: $H_{2a}$ Test - OEE Differences by Treatment
 #| fig-height: 5
+#| out-width: "75%"
 #| warning: false
 #| message: false
 
@@ -3161,7 +3184,7 @@ This unexpected result indicates that, despite *substantial observed differences
 
 To further investigate the observed variability and validate these unexpected findings, bootstrap resampling analysis was employed. This flexible technique samples with replacement to construct robust estimates of the distribution for the statistics of interest (e.g. mean or median) and their confidence intervals. Bootstrapping relies on the empirical distribution of the data to accurately capture variability with few assumptions. Additionally, the replication process effectively increases the sample size and statistical power of the analysis, enhancing the accuracy and reliability of its results.
 
-A bootstrap analysis was used to estimate pairwise differences in three measures of centrality for OEE--mean, median, and the Hodges-Lehmann estimator. The later is a non-parametric approach to estimate population median shifts that is robust to outliers. It provides a consistent estimate of the true shift in medians, even when the underlying distributions are dissimilar, by considering the differences between all possible observation pairs. This process was replicated five times, each with 10,000 resamples, and the results were averaged to determine grand means and related statistics. The significant results of this complementary analysis, where the 95% confidence interval does not include zero, are tabulated in @tbl-bootstrap-oee.
+A bootstrap analysis was used to estimate pairwise differences in three measures of centrality for OEE--mean, median, and the Hodges-Lehmann estimator. The later is a non-parametric approach to estimate population median shifts that is robust to outliers. It provides a consistent estimate of the true shift in medians, even when the underlying distributions are dissimilar, by considering the differences between all possible observation pairs. This process was replicated five times, each with 10,000 resamples, and the results were averaged to determine grand means and related statistics. The significant results of this complementary analysis, where the 95% confidence interval does not include zero, are tabulated in @tbl-boot-oee.
 
 ```{r bootstrap-oee, eval=FALSE}
 # registerDoParallel(cores = parallel::detectCores())
@@ -3699,9 +3722,9 @@ h3_group_sizes <- summary(h3_data$treatment)
 h3_gs_txt <- glue::glue_collapse(glue::glue("{h3_group_sizes} {names(h3_group_sizes)}"), ", ", last = ", and ")
 ```
 
-Each of the `r num_par` participants completed one task, for which the two measures were observed. The four treatments were relatively evenly represented (`r h3_gs_txt`) and the gap between recall and retention ranged from 3 to 44 days (mean 21.58, SD 13.06, median 20.5). @tbl_h3_ss summarizes the descriptive statistics for TCT, UCE, and their increases.
+Each of the `r num_par` participants completed one task, for which the two measures were observed. The four treatments were relatively evenly represented (`r h3_gs_txt`) and the gap between recall and retention ranged from 3 to 44 days (mean 21.58, SD 13.06, median 20.5). @tbl-h3-ss summarizes the descriptive statistics for TCT, UCE, and their increases.
 
-```{r tbl_h3_ss}
+```{r tbl-h3-ss}
 #| tbl-cap: "Summary Statistics for Dependent Variables, H3 Retention"
 
 datasummary(
@@ -3721,6 +3744,7 @@ As seen in @fig-h3-boxplot, the median increases in TCT appear similar across al
 
 ```{r fig-h3-boxplot}
 #| fig-cap: "Variation of Response Variables by Treatment"
+#| fig-height: 4
 
 h3_data_long |> 
   filter(
@@ -3784,6 +3808,7 @@ To test the linearity assumption, a graph of iTCT vs gap was constructed for eac
 
 ```{r fig-h3-iTCT-lin}
 #| fig-cap: "Average Gap vs Increase in TCT by Treatment"
+#| fig-height: 4
 #| message: false
 
 h3_data_long |> 
@@ -3856,7 +3881,7 @@ To begin assessing the effect of instructional method on retention, the relation
 
 ```{r fig-h3-tct}
 #| fig-cap: "Increase in Task Completion Time vs Gap by Treatment"
-#| fig-subcap: "Something clever"
+#| fig-height: 4
 #| message: false
 
 ggplot(data = h3_data, aes(x = gap, y = incr_tct, color = treatment)) +
@@ -3886,17 +3911,17 @@ m2_tct_int <- lm(incr_tct ~ gap * treatment, data = h3_data_unordered)
 cp_tct <- compare_performance(m1_tct_add, m2_tct_int, metrics = "common", rank = F)
 ```
 
-A comparison of model performance statistics are summarized in @tbl_tct_modperf. Columns for the model name and type are followed by AIC, BIC, and their corresponding weights, standard and adjusted R-squared ($R^2$), and the Root Mean Squared Error (RMSE). AIC/BIC weights represent the relative likelihood of each model being the most accurate of those considered.
+A comparison of model performance statistics are summarized in @tbl-tct-modperf. Columns for the model name and type are followed by AIC, BIC, and their corresponding weights, standard and adjusted R-squared ($R^2$), and the Root Mean Squared Error (RMSE). AIC/BIC weights represent the relative likelihood of each model being the most accurate of those considered.
 
-```{r tbl_tct_modperf}
+```{r tbl-tct-modperf}
 #| tbl-cap: "Model Performance Results"
 
 display(cp_tct)
 ```
 
-In this comparison, both AIC and BIC strongly prefer the additive model. While the $R^2$ of the model with interactions is higher, the additive model scores a higher $R^{2}_{adj}$., where complexity is penalized. Despite a slightly higher RMSE, the additive model outperforms based on the principle of parsimony, which favors the least complex model that effectively explains the data. Details for the additive model are summarized in @tbl_tct_modsum. The intercept represents the mean iTCT for the reference treatment (AR), with a gap of zero. The treatment coefficients (MR, PAR, PWI) indicate the difference in mean iTCT between each treatment and AR, assuming the same gap value. Since there are no interaction terms in the model, the effect of gap on iTCT is constant across all treatments.
+In this comparison, both AIC and BIC strongly prefer the additive model. While the $R^2$ of the model with interactions is higher, the additive model scores a higher $R^{2}_{adj}$., where complexity is penalized. Despite a slightly higher RMSE, the additive model outperforms based on the principle of parsimony, which favors the least complex model that effectively explains the data. Details for the additive model are summarized in @tbl-tct-modsum. The intercept represents the mean iTCT for the reference treatment (AR), with a gap of zero. The treatment coefficients (MR, PAR, PWI) indicate the difference in mean iTCT between each treatment and AR, assuming the same gap value. Since there are no interaction terms in the model, the effect of gap on iTCT is constant across all treatments.
 
-```{r tbl_tct_modsum}
+```{r tbl-tct-modsum}
 #| tbl-cap: "Increase in TCT LM"
 
 # summary(m1_tct_add)
@@ -3958,6 +3983,8 @@ indicates residuals are normally distributed (`r m1_tct_st_pv`). The Q-Q plot of
 
 ```{r fig-tct-mod-qq}
 #| fig-cap: "Model validation for H3a"
+#| fig-height: 4.5
+
 ps <- plot(check_model(m1_tct_add, panel = F))
 
 ps$QQ <- ps$QQ +
@@ -3975,6 +4002,7 @@ Continuing the analysis of $H_{3}$, the second measure of learning retention, iU
 
 ```{r fig-h3-uce}
 #| fig-cap: "Increase in Uncounted Errors vs Gap by Treatment"
+#| fig-height: 3.5
 #| message: false
 
 ggplot(data = h3_data, aes(x = gap, y = incr_uce, color = treatment)) +
@@ -4007,13 +4035,13 @@ m2_uce_poisson <- glm(incr_uce ~ gap * treatment, data = h3_data_unordered_uce_x
 cp_uce_pm <- compare_performance(m1_uce_poisson, m2_uce_poisson, metrics = "common", rank = F)
 ```
 
-```{r tbl_uce_modperf_pm}
+```{r tbl-uce-modperf-pm}
 #| tbl-cap: "Model Performance Results"
 
 display(cp_uce_pm)
 ```
 
-A comparison of model performance statistics are summarized in @tbl_uce_modperf_pm. The columns for AIC, BIC, and RMSE are as previously described. The standard and adjusted $R^2$ terms are replaced with Nagelkerke's $R^2$. This is the equivalent measure for GLMs with count data outcomes, and is interpreted in the same manner. The second model includes interactions of gap and treatment. It performs better on AIC, BIC, and RMSE metrics, and has the same $R^2$ value, indicating that the additional model complexity provides a substantially better fit.
+A comparison of model performance statistics are summarized in @tbl-uce-modperf-pm. The columns for AIC, BIC, and RMSE are as previously described. The standard and adjusted $R^2$ terms are replaced with Nagelkerke's $R^2$. This is the equivalent measure for GLMs with count data outcomes, and is interpreted in the same manner. The second model includes interactions of gap and treatment. It performs better on AIC, BIC, and RMSE metrics, and has the same $R^2$ value, indicating that the additional model complexity provides a substantially better fit.
 
 ```{r h3_mod_pm_val}
 # validate poisson model
@@ -4049,15 +4077,15 @@ cp_uce_nb <- compare_performance(
 )
 ```
 
-```{r tbl_uce_modperf_nb}
+```{r tbl-uce-modperf-nb}
 #| tbl-cap: "Model Performance Results"
 
 display(cp_uce_nb)
 ```
 
-As seen in @tbl_uce_modperf_nb, both ZINB options (model 3 and 4) strongly outperform the NB alternatives in terms of AIC and BIC. While model 4 (with predictor interactions) has a slightly lower AIC, the main effects version (model 3) shows substantially better BIC and RMSE. Based on this, the additive ZINB model, which provides the best balance of model complexity, fit, and predictive power, is selected.
+As seen in @tbl-uce-modperf-nb, both ZINB options (model 3 and 4) strongly outperform the NB alternatives in terms of AIC and BIC. While model 4 (with predictor interactions) has a slightly lower AIC, the main effects version (model 3) shows substantially better BIC and RMSE. Based on this, the additive ZINB model, which provides the best balance of model complexity, fit, and predictive power, is selected.
 
-```{r tbl_uce_modsum}
+```{r tbl-uce-modsum}
 #| tbl-cap: "ZINB Model Summary"
 
 m3_uce_zinb_add_mp <- parameters::model_parameters(m3_uce_zinb_add, exponentiate = T)
@@ -4089,7 +4117,7 @@ mp_c  |>
 
 ```
 
-Details for the main effects of the ZINB model are summarized in @tbl_uce_modsum. The parameters for this model must be interpreted differently than in the previous linear model. In a GLM, the response is log-transformed, resulting in exponentiated coefficients for predictors. As a consequence, the effects are *multiplicative* rather than additive. The intercept represents the expected log count of the response variable when all predictors are at their reference levels. The predictor coefficients then represent the multiplicative effects on the expected count compared to the baseline.
+Details for the main effects of the ZINB model are summarized in @tbl-uce-modsum. The parameters for this model must be interpreted differently than in the previous linear model. In a GLM, the response is log-transformed, resulting in exponentiated coefficients for predictors. As a consequence, the effects are *multiplicative* rather than additive. The intercept represents the expected log count of the response variable when all predictors are at their reference levels. The predictor coefficients then represent the multiplicative effects on the expected count compared to the baseline.
 
 To ease interpretation, the values for estimated coefficients and standard errors are exponentiated in this table, revering the log transform applied by the NB model fit. This adjustment puts the coefficients in the original 2x scale that was used to ensure integer values for the response. Additionally, the "Adj Coef" column reverses the 2 x iUCE transform, allowing interpretation in the observed scale. Importantly, these transformations do not alter the multiplicative nature of GLM results.
 
@@ -4140,6 +4168,7 @@ PAR and MR are statistically equivalent to AR, despite estimated differences tha
 
 ```{r fig-m3-uce-pr}
 #| fig-cap: "Pearson Residuals"
+#| fig-height: 3.5
 #| warning: false
 
 # Extract Pearson residuals into data frame for plotting
@@ -4221,7 +4250,7 @@ tlx_recall_wide <- tlx_wide |>
 
 All observed and calculated measures from the NASA TLX are summarized by phase in @tbl-tlx-ds. As detailed in @sec-tlx, source weight, rating, and workload refer to the ranking, value, and weighted score for all workload sources, while task workload is the composite measure of all contributing sources. This data reveals a consistent reduction in perceived workload as participants transitioned to the recall phase. This is evidenced by decreases in overall Task Workload (Learning: M = 57.90, SD = 13.73; Recall: M = 41.82, SD = 14.69) and individual Source Ratings and Workloads. Notably, the Source Weight remained constant (M = 2.50) across phases, suggesting that while the perceived importance of workload sources didn't change, their intensity diminished.
 
-```{r tbl-tlx_ds}
+```{r tbl-tlx-ds}
 #| tbl-cap: "Summary Statistics for TLX Workload Measures"
 
 tlx_ds_data <- tlx_wide |>
@@ -4312,6 +4341,7 @@ The results of `stats::pairwise.wilcox.test`, as tabulated in @tbl-tlx-q1-ph, sh
 
 ```{r fig-tlx-q1-box}
 #| fig-cap: "Distribution of Factor Scores Across All Treatments"
+#| fig-height: 4
 
 tlx_sw_long |>
   ggplot(aes(x = factor, y = score)) +
@@ -4387,6 +4417,7 @@ source_labels <- c(
 
 ```{r fig-tlx-q2-heat}
 #| fig-cap: "Heatmap for Source of Workload Rating by Treatment"
+#| fig-height: 4
 
 ggplot(tlx_q2_heat_data, aes(x = treatment, y = source, fill = mean_source_rating)) +
   geom_tile(color = "gray25", linewidth = 0.25) +
@@ -4461,6 +4492,7 @@ tlx_q3_wt_swl <- tlx_learn |>
 
 ```{r fig-tlx-q3-bar}
 #| fig-cap: "Weighted Workload Source Scores by Treatment"
+#| fig-height: 4
 
 ggplot(
     tlx_q3_wt_swl, 
@@ -4519,8 +4551,9 @@ Having examined the individual components of workload, the analysis now focuses 
 
 ```{r fig-tlx-q4-test}
 #| fig-cap: "Composite Task Workload by Treatment"
-#| fig-height: 5
+#| fig-height: 4
 #| warning: false
+#| message: false
 
 # since ggstatsplot computes confidence intervals for the effect sizes
 # using bootstrapping, it is important to set a seed for reproducibility
@@ -4663,8 +4696,9 @@ Following best practices, subsequent SUS analysis will utilize the transformed S
 
 ```{r fig-sus-plot}
 #| fig-cap: "System Usability Score for Each Instructional Method"
-#| fig-height: 5
+#| fig-height: 4
 #| warning: false
+#| message: false
 
 # here we test `sus_pct ~ treatment`
 
@@ -4708,8 +4742,9 @@ Those learning scores were compared with SUS during recall to test for significa
 
 ```{r fig-sus-change}
 #| fig-cap: "System Usability Score for Learning and Recall Phases"
-#| fig-height: 5
+#| fig-height: 4.5
 #| warning: false
+#| message: false
 
 # here we test `sus_pct ~ phase | participant`
 
@@ -4751,7 +4786,7 @@ sus_scores %>%
   )
 ```
 
-This result implies that usability is increased in recall due to some combination of (1) eliminating the instructional technologies as a source of complexity, and (2) learning effects preparing participants for independent work. To evaluate the relationships between that difference and the treatments, two more tests were conducted. First, the Wilcoxon test is again employed to confirm that the change in SUS is significant (i.e., reliably non-zero) within each treatment. The results of these paired tests are summarized in @tbl-sus-within-treat.
+This result implies that usability is increased in recall due to some combination of (1) eliminating the instructional technologies as a source of complexity, and (2) learning effects preparing participants for independent work. To evaluate the relationships between that difference and the treatments, two more tests were conducted. First, the Wilcoxon test is again employed to confirm that the change in SUS is significant (i.e., reliably non-zero) within each treatment. The results of these paired tests are summarized in @tbl-sus-within-trt.
 
 ```{r sus-within-trt}
 
@@ -4808,7 +4843,7 @@ These calculations utilize a normal approximation to address ties (AR) and zero 
 
 ```{r fig-sus-within-trt}
 #| fig-cap: "System Usability Score for Learning and Recall Phases"
-#| fig-height: 5
+#| fig-height: 4
 #| warning: false
 
 # this tests `diff ~ treatment`
