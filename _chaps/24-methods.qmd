@@ -48,7 +48,7 @@ The remainder of this chapter will describe in detail all aspects of the study's
 In this section, we will provide a detailed description of the study design. We will begin by discussing the task and the authentic manufacturing environment in which the experiments are situated. Next, each of the four treatment levels are described. Finally, the affordance-based nature of this design will be detailed, wherein the underlying affordances are identified for each treatment and inherent tradeoffs are described.
 
 ::: content-hidden
-TODO: use present tense (e.g. are identified) throughout per GH notes
+TODO: use present tense (e.g., are identified) throughout per GH notes
 :::
 
 ### Task and Context
@@ -93,7 +93,7 @@ While it may seem trivial to complete the work at ST-8 correctly in one minute o
 
 #### Projected AR
 
-Projected AR (PAR) systems integrate work and instruction by projecting the later onto the work surface. Work steps are displayed sequentially, either under operator control or automatically triggered.
+Projected AR (PAR) systems integrate work and instruction by projecting the latter onto the work surface. Work steps are displayed sequentially, either under operator control or automatically triggered.
 
 ST-8 is equipped with a PAR system by LightGuide[^24-methods-3] (LG), a Michigan-based company focused on innovative, AR-based manufacturing solutions. As shown in @fig-lgs, Their system uses a Windows PC, industrial-grade projector, and 2D or 3D vision system, along with other optional input devices and tools. All components are commercially available and integrated by the LG software, where digital work instructions are both authored and played back.
 
@@ -163,7 +163,7 @@ For comparison purposes, @fig-arcomp shows the HMDAR operator's view of the same
 
 Head-mounted MR (HMDMR) extends the capabilities of the HMDAR treatment with a more sophisticated tracking method that allows for more natural interactions with the workpiece. For all other treatments, the workpiece remains in a fixture, forcing the operator to align themselves, both physically and mentally, to its placement.
 
-HMDMR eliminates the need for a fixture and allows the operator to rotate and/or lift the work off the surface if it seemed natural to them to do so. It achieves this by incorporating model-based tracking to to align instructions with the workpiece itself. The added flexibility was expected to make the process more intuitive and ergonomic, enhancing operator performance.
+HMDMR eliminates the need for a fixture and allows the operator to rotate and/or lift the work off the surface if it seemed natural to them to do so. It achieves this by incorporating model-based tracking to align instructions with the workpiece itself. The added flexibility was expected to make the process more intuitive and ergonomic, enhancing operator performance.
 
 Using model-based tracking, part placement indicators remain properly aligned with the workpiece, regardless of its position and orientation in space. This is demonstrated in @fig-mrmodtrack, where participant #1040 has rotated the workpiece approximately 45 degrees from its normal orientation to facilitate the installation of parts at the rear of the model. Note that the green part proxies and white placement arrows, all virtual, remain properly oriented.
 
@@ -192,6 +192,7 @@ TODO: correct or eliminate the above fragment
 | Task Instructions        |    Y    |    Y    |     Y     |     Y     |
 | Hands-On Engagement      |    Y    |    Y    |     Y     |     Y     |
 | Direct View of Work      |    Y    |    Y    |     Y     |     Y     |
+| Freedom of Movement      |    Y    |    Y    |     Y     |     Y     |
 | Step-Wise Guidance       |         |    Y    |     Y     |     Y     |
 | Feedback Mechanisms      |         |    Y    |     Y     |     Y     |
 | Workspace Integration    |         |    Y    |     Y     |     Y     |
@@ -205,7 +206,7 @@ TODO: correct or eliminate the above fragment
 
 While it may be tempting to make a-priori claims about the most influential affordances or theories in this context, the relationships are not so clear-cut. Each identified affordance can claim some benefit from most identified theories; all are interrelated and contribute to the overall learning experience.
 
-Instead, this work hypothesizes that treatments leveraging more affordances will result in better learning outcomes. But the success of these treatments also depends on the quality of their implementation and the balance between enhanced functionality and added complexity. The later may have a negative impact on the overall user experience, increasing cognitive load, breaking flow, and otherwise offsetting the intended gains. Finally, the interplay between different affordances — how they complement or interfere with one another — is also a significant consideration.
+Instead, this work hypothesizes that treatments leveraging more affordances will result in better learning outcomes. But the success of these treatments also depends on the quality of their implementation and the balance between enhanced functionality and added complexity. The latter may have a negative impact on the overall user experience, increasing cognitive load, breaking flow, and otherwise offsetting the intended gains. Finally, the interplay between different affordances — how they complement or interfere with one another — is also a significant consideration.
 
 ### Tradeoff
 
@@ -357,18 +358,18 @@ The study design supports several other areas for statistical, exploratory, and 
 
 #### Statistical
 
-A variety of additional statistical tests will be performed, involving workload, usability, demographics, and performance variability. Specifically, we plan to investigate the following relationships:
+A variety of additional statistical tests were performed, involving workload, usability, demographics, and performance variability. Specifically, we plan to investigate the following relationships:
 
 -   TLX composite score (workload) and performance across treatments.
 -   SUS composite score (usability) and performance across treatments.
--   Demographics (e.g. age, prior experience) and performance across treatments.
+-   Demographics (e.g., age, prior experience) and performance across treatments.
 -   Within-group performance variance
 
 #### Exploratory
 
-In addition to commonly used descriptive statistics and visualization methods, this study will employ a variety of other statistical methods to explore second level effects.
+In addition to commonly used descriptive statistics and visualization methods, this study employed a variety of other statistical methods to explore second level effects.
 
--   The TLX components (e.g. mental workload, frustration) with the greatest influence on performance.
+-   The TLX components (e.g., mental workload, frustration) with the greatest influence on performance.
 -   The relationship between workload, usability, treatment, and their interactions on performance.
 -   Factors influencing within-group performance variance during the recall phase.
 
@@ -439,7 +440,7 @@ Phase one, Learning, compared the effects of the assigned treatment on the speed
 
 Participants were instructed to focus on three priorities during the first phase: (1) learn the steps of the assembly process, (2) complete each assembly correctly, and (3) finish as many assemblies as possible in the time allowed. This approach of prioritizing correct and efficient work is in line with measures observed and the principles of OEE, which is used in the second and third phases of this study.
 
-The fixed duration of 10-minutes was deliberately chosen to align with various aspects of the learning process and the operational context of the task. In addition to the OEE considerations outlined above, using a fixed duration ensured that all participants have the same opportunity to learn the procedure. A fixed car count approach (e.g. "make 6 cars") was rejected due to concerns that the absence of a time constraint could lead to uneven learning opportunities and extend session lengths beyond practical limits.
+The fixed duration of 10-minutes was deliberately chosen to align with various aspects of the learning process and the operational context of the task. In addition to the OEE considerations outlined above, using a fixed duration ensured that all participants have the same opportunity to learn the procedure. A fixed car count approach (e.g., "make 6 cars") was rejected due to concerns that the absence of a time constraint could lead to uneven learning opportunities and extend session lengths beyond practical limits.
 
 A 10-minute timeline was chosen based on prior experience with learning curves for the task. The Lean Lab is designed around a 60-second takt time, which constrains the work content for experienced operators at each station. Before training, the time to complete these tasks varies widely. Our expectation was that participants would typically complete between three and six cars during their 10-minute session, but any individual participant might complete only one or as many as ten cars.
 
@@ -469,7 +470,7 @@ Photos were also taken to provide a detailed, high-quality record of the results
 
 Subsequent analyses, as detailed in @sec-analysis, confirmed the original results and extracted additional data related to timing, error type, PWI usage during recall, and more. While video review was time consuming, this approach allowed us to focus on administering the experiment correctly and carefully observing the participant without the distraction of data collection. This ultimately improved the accuracy and traceability of the results.
 
-The TLX and SUS instruments were both administered twice during this session, once after each experiment. This gave us workload and usability information for all treatment groups during the learning task and for all participants during recall. The later could be used as baseline measurements for the ST-8 work content.
+The TLX and SUS instruments were both administered twice during this session, once after each experiment. This gave us workload and usability information for all treatment groups during the learning task and for all participants during recall. The latter could be used as baseline measurements for the ST-8 work content.
 
 The PIF, BCS, and a trial run of the TLX were also administered during the intake process of this session. Finally, during the exit interview, general feedback was collected. All of this is detailed in @sec-conduct1.
 
@@ -542,7 +543,7 @@ Best known as a "game engine," Unity is a very capable tool, commonly used for i
 
 Despite its complexity, Unity is relatively easy to learn. High quality training, documentation, and support are widely available, both through official channels and from a large and enthusiastic development community. Like most tools of its type, Unity is extremely extensible via plugins, many of which are distributed through the official asset store.
 
-Unity is free for non-commercial and academic applications[^24-methods-10]. For research applications like this one, which won't be distributed or otherwise commercialized, its Terms of Service[^24-methods-11] did not pose major concerns. Crucially, Unity allows users to retain rights to content they create, and makes no ownership claims over it.
+Unity is free for non-commercial and academic applications[^24-methods-10]. For research applications like this one, which will not be distributed or otherwise commercialized, its Terms of Service[^24-methods-11] did not pose major concerns. Crucially, Unity allows users to retain rights to content they create, and makes no ownership claims over it.
 
 [^24-methods-10]: Unity Pricing: <https://unity.com/pricing#plans-student-and-hobbyist>
 
@@ -693,7 +694,7 @@ This effort primarily involved: (1) recreating the PAR's instructional design ap
 
 The first was relatively straightforward. Assets were modeled in Unity to resemble components from the PAR instructions. They were arranged in the scene relative to the workpiece location, based on an established scale. Finally, scripts were written to control the scenario logic, changing the scene based on user behavior.
 
-Our interaction implementation relied on HL2 input systems provided by MRTK's modular, component-based architecture. In this system, input actions like `select` or `activate` and the events they trigger act as the bridge between the user's physical actions and the software's response. Physical actions are captured via HL2 sensors and interpreted by MRTK's various modalities, including gesture and hand tracking. Different interaction styles are associated with available pointer types, e.g. ray pointers for distant interactions and poke pointers for nearby. With this approach a diverse range of interactions can be design through careful composition of components.
+Our interaction implementation relied on HL2 input systems provided by MRTK's modular, component-based architecture. In this system, input actions like `select` or `activate` and the events they trigger act as the bridge between the user's physical actions and the software's response. Physical actions are captured via HL2 sensors and interpreted by MRTK's various modalities, including gesture and hand tracking. Different interaction styles are associated with available pointer types, e.g., ray pointers for distant interactions and poke pointers for nearby. With this approach a diverse range of interactions can be design through careful composition of components.
 
 For HMDAR tracking, we relied on VE's *Area Targets*[^24-methods-20] feature, an implementation of the area-based tracking methods described in @sec-tracking. Area-based tracking compares a pre-generated 3D model of the workspace with live 3D data of the user's surroundings. This "spatial map" is a polygonal mesh generated in real-time by the HL2, using data from the depth sensor, visible light cameras, and inertial measurement unit. A sample is shown in @fig-spatmap. From this comparison, the system can determine the current position and angle of the user's head. 
 
@@ -795,7 +796,7 @@ This section will outline all participant recruitment, selection, benefits, and 
 
 ### Recruitment and Selection
 
-A convenience sample of participants were recruited from the Auburn University community using digital and printed promotions around campus, the graduate school mailing list, and outreach in various undergraduate engineering classrooms. The later focused on freshman and sophomore engineering students in Industrial & Systems Engineering, as they are accessible and most likely to meet all requirements. @fig-recruit exemplifies the recruiting materials, approved copies of which are included in [Appendix A, IRB Documentation](#app-irb).
+A convenience sample of participants were recruited from the Auburn University community using digital and printed promotions around campus, the graduate school mailing list, and outreach in various undergraduate engineering classrooms. The latter focused on freshman and sophomore engineering students in Industrial & Systems Engineering, as they are accessible and most likely to meet all requirements. @fig-recruit exemplifies the recruiting materials, approved copies of which are included in [Appendix A, IRB Documentation](#app-irb).
 
 ![Digital recruitment flyer distributed on campus monitors.](/images/24-RecruitSlideV3.png){#fig-recruit width="5in"}
 
@@ -1161,7 +1162,7 @@ At the end of the day the lab was cleaned and restored to its normal operating s
 
 ### Session Procedure
 
-Participants were asked to complete the ST-8 task for one car, from memory, without reference (e.g. paper work instructions). Data was efficiently collected with a single video camera, timer, and photos. With this approach, only a single research associate (RA) was required to direct and document the trial. An additional volunteer was responsible for recycling the inventory of assemblies.
+Participants were asked to complete the ST-8 task for one car, from memory, without reference (e.g., paper work instructions). Data were efficiently collected with a single video camera, timer, and photos. With this approach, only a single research associate (RA) was required to direct and document the trial. An additional volunteer was responsible for recycling the inventory of assemblies.
 
 ## Administration of Protocol
 
@@ -1196,7 +1197,7 @@ Between 10 and 12 slots were available each week at a variety of days and times.
 
 Each slot was 75-minutes in duration, which was slightly more than the estimated average treatment duration (60-minutes). This padding allowed us to accommodate late arrivals, unusually long trials, and other unexpected events with little knock-on effect.
 
-SignUpGenius was configured to only show available slots in a rolling two-week window. This was done with the hopes of encouraging signups by creating a sense of scarcity and urgency, and reducing no-shows by preventing interested but forgetful participants from signing up too far in advance. At the start of each week the schedule was reviewed to make adjustments for staff availability (e.g. illness and travel) and notify interested participants of slots that remained open.
+SignUpGenius was configured to only show available slots in a rolling two-week window. This was done with the hopes of encouraging signups by creating a sense of scarcity and urgency, and reducing no-shows by preventing interested but forgetful participants from signing up too far in advance. At the start of each week the schedule was reviewed to make adjustments for staff availability (e.g., illness and travel) and notify interested participants of slots that remained open.
 
 ### Safety Measures
 
@@ -1230,7 +1231,7 @@ This section will describe the methods used to extract the data collected in ins
 
 When extracting raw data from PDF sources, the only changes made were to label categorical values as described in the following sections. Otherwise, except where specifically noted, no changes were made to the data during transcription. Where no value was provided, "N/A" was used.
 
-Any data issues encountered were noted and marked for correction during the subsequent cleaning process. This approach allowed us to explicitly document required corrections in the code that made them, improving transparency and reproducibility. Finally, anything more involved than simple labeling, such as more sophisticated encoding (e.g. one-hot encoding) was left to the analysis phase, where computational methods would be employed to reduce the chance of error.
+Any data issues encountered were noted and marked for correction during the subsequent cleaning process. This approach allowed us to explicitly document required corrections in the code that made them, improving transparency and reproducibility. Finally, anything more involved than simple labeling, such as more sophisticated encoding (e.g., one-hot encoding) was left to the analysis phase, where computational methods would be employed to reduce the chance of error.
 
 ### Instruments and Data Collection Sheets
 
@@ -1242,7 +1243,7 @@ This process was straightforward except as described below. Complete details, in
 
 #### Personal Information Form
 
-Fields in the PIF were a mix of numeric (e.g. age, height), nominal and ordinal categorical (e.g. gender, education level), datetime (e.g. the date and time of scheduled trial), and text values (e.g. notes). One change was made to the raw data for this form. Where participants that were known to be degree-seeking AU students incorrectly marked “High school degree or equivalent,” their status was changed to “Some college but no degree”.
+Fields in the PIF were a mix of numeric (e.g., age, height), nominal and ordinal categorical (e.g., gender, education level), datetime (e.g., the date and time of scheduled trial), and text values (e.g., notes). One change was made to the raw data for this form. Where participants that were known to be degree-seeking AU students incorrectly marked “High school degree or equivalent,” their status was changed to “Some college but no degree”.
 
 #### NASA TLX {#sec-tlxextract}
 
@@ -1260,7 +1261,7 @@ Numeric responses (1-5) for all ten questions were transcribed as--is in columns
 
 #### Data Collection Sheets
 
-Each row of the "Outcomes" tab contained the manually-recorded results for each attempted assembly task, i.e. a unique combination of participant number, experiment number, and car number. The number of uncorrected errors (UCE) was determined by inspection of each final assembly, verifying that the brick for each step was correctly selected, placed, and oriented. The quality of attachment was not considered. For each UCE encountered, its type was recorded as a combination of selection, position, and rotation errors. Brief descriptions of the nature of each error, e.g. "front 59 swapped", were also included to aid interpretation.
+Each row of the "Outcomes" tab contained the manually-recorded results for each attempted assembly task, i.e., a unique combination of participant number, experiment number, and car number. The number of uncorrected errors (UCE) was determined by inspection of each final assembly, verifying that the brick for each step was correctly selected, placed, and oriented. The quality of attachment was not considered. For each UCE encountered, its type was recorded as a combination of selection, position, and rotation errors. Brief descriptions of the nature of each error, e.g., "front 59 swapped", were also included to aid interpretation.
 
 Results recorded by the research team during the experiments were naturally error-prone. During transcription, all were verified against the corresponding photographs and, if necessary, video recordings. Corrections were made as required. This approach differs from the handling of self-reported data, where the integrity of participants' personal perceptions must be preserved as provided.
 
@@ -1270,7 +1271,7 @@ A final step transcribes the recorded results into a concise format that encodes
 
 In addition to the quantitative data from surveys, observed results, and annotated performances, a number of qualitative observations were recorded by the research team during the conduct of each session and in debriefs that followed. These were manually transcribed from various sources, including the Data Collection Sheets, General Feedback Forms, and the PI's notes. When transcribing notes from the debriefing, which were often terse, care was taken to accurately represent the participant's original feedback.
 
-The results were collected in a separate Markdown[^24-methods-35] file (`MD`) for each participant, e.g. (`1001.md`). Markdown is a lightweight plain-text formatting syntax proposed by John Gruber in 2004[^24-methods-36]. Originally intended as a tool for HTML generation, Markdown is now widely used to create text documents that have structure and are easily rendered in a variety of styles.
+The results were collected in a separate Markdown[^24-methods-35] file (`MD`) for each participant, e.g., (`1001.md`). Markdown is a lightweight plain-text formatting syntax proposed by John Gruber in 2004[^24-methods-36]. Originally intended as a tool for HTML generation, Markdown is now widely used to create text documents that have structure and are easily rendered in a variety of styles.
 
 [^24-methods-35]: Markdown: <https://en.wikipedia.org/wiki/Markdown>
 
@@ -1311,7 +1312,7 @@ A search was conducted, and a variety of tools were tested. Some notes from that
 
 2.  Handbrake[^24-methods-38] v1.7.x was selected to downsize and compress Filmora output, improving performance during annotation. Handbrake did this much faster and with better final quality than Filmora. This popular and highly-regarded tool is free and open-source.
 
-3.  Kyno[^24-methods-39] v1.8.x was selected to add markers for instantaneous events (e.g. breakage occurs) and sub-clips for events with duration (e.g. task completion times). Notes can be added to either as desired. The metadata is exported in eXtensible Markup Language [XML, @w3c2008xml], a flexible, text-based language that is used to structure, store, and transport data. Kyno is specifically designed to accelerate this task in a production environment and is generously priced for the market.
+3.  Kyno[^24-methods-39] v1.8.x was selected to add markers for instantaneous events (e.g., breakage occurs) and sub-clips for events with duration (e.g., task completion times). Notes can be added to either as desired. The metadata is exported in eXtensible Markup Language [XML, @w3c2008xml], a flexible, text-based language that is used to structure, store, and transport data. Kyno is specifically designed to accelerate this task in a production environment and is generously priced for the market.
 
 [^24-methods-37]: Filmora: <https://filmora.wondershare.com/>
 
@@ -1331,7 +1332,7 @@ For each participant experiment, a single three-pane video was created in Filmor
 
 The output was rendered by Filmora in the MP4 video format with full HD resolution (1920x1080) at 30 frames per second, using H.264 compression. This was then resized to 720p (1280x720) by Handbrake. The final file size is reduced to about 20mb / minute from multiple gigabytes of source material. This greatly increases the responsiveness the annotation experience without significantly degrading visual quality.
 
-The compressed 720p video is loaded in Kyno where two types of events were annotated. Instantaneous events (e.g. car breaks during assembly) are identified by placing a marker at the moment of occurrence. Events with a duration (e.g. the start and end of each assembly task) are assigned to sub-clips. Both markers and sub-clips are given standard names that denote the event type, and descriptions where additional detail is called for. The standard list of names is included in [Appendix F](#app-videoproc), along with other important details about this process.
+The compressed 720p video is loaded in Kyno where two types of events were annotated. Instantaneous events (e.g., car breaks during assembly) are identified by placing a marker at the moment of occurrence. Events with a duration (e.g., the start and end of each assembly task) are assigned to sub-clips. Both markers and sub-clips are given standard names that denote the event type, and descriptions where additional detail is called for. The standard list of names is included in [Appendix F](#app-videoproc), along with other important details about this process.
 
 Finally, the Kyno project file is saved and annotation data is exported in XML format. A sample of that output is provided in @fig-learnxmp, based on participant #1051's learning experiment. This is confirmed by line (2), which shows the data is associated with the file `1051-Learn.mp4`. Lines (10) and (12) denote the start and end times of the "Car 1" sub-clip, each given in 1/90,000ths of a second.
 
@@ -1387,7 +1388,7 @@ Write csvData to a CSV file
 Pseudocode for XML Data Extraction (`process_data.py`)
 :::
 
-While the XML data includes annotations for both instantaneous events (e.g. breakage occurs or defect encountered) and those with duration (e.g. task completion time), only the later are included in the resulting CSV. While instant events can provide important context for understanding performance, the focus of our analysis will be on task outcomes, which involve a duration.
+While the XML data includes annotations for both instantaneous events (e.g., breakage occurs or defect encountered) and those with duration (e.g., task completion time), only the latter are included in the resulting CSV. While instant events can provide important context for understanding performance, the focus of our analysis will be on task outcomes, which involve a duration.
 
 The result includes columns for participant number, experiment number, and the event name, start time, duration, and description. For example, the data extracted for the first participant's learn experiment is summarized in @tbl-i1_times_csv.
 

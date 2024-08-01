@@ -1460,7 +1460,7 @@ cet_plot / uce_plot +
   )
 ```
 
-Compared to TCT, with a coefficient of variation (CV) of `r round(cv_tct, 2)`, UCE shows substantially greater spread (CV=`r round(cv_uce, 2)`) and the presence of a floor effect. The later could potentially suggest limitations in the task's ability to capture a full range of participant performance. Further investigation is required to determine if this is due to task complexity or other factors.
+Compared to TCT, with a coefficient of variation (CV) of `r round(cv_tct, 2)`, UCE shows substantially greater spread (CV=`r round(cv_uce, 2)`) and the presence of a floor effect. The latter could potentially suggest limitations in the task's ability to capture a full range of participant performance. Further investigation is required to determine if this is due to task complexity or other factors.
 
 ### Aggregated Data
 
@@ -1948,6 +1948,36 @@ $$ {#eq-naive}
 
 where $N$ is the total number of tasks completed by participant $j$, and $i$ indexes each of the $N-1$ differences in TCT. This metric can be compared by group using the approach employed by $H_{1a}$, as seen in @fig-h1b-naive. The results show that there is a significant difference in groups (p = 0.002), with small to moderate effect size $\hat{\varepsilon}^{2}_{rank}=0.29$. Significant pairwise differences were identified between PWI and both AR (p=0.027) and MR (p=0.039) as well as PAR and the same (AR p=0.015, MR p=0.025). 
 
+```{r eval=FALSE}
+#| fig-height: 3.5
+
+# added for defense PPT
+
+ggplot(learn_h1b, aes(x = seq, y = tct, color = treatment)) +
+  geom_point() +
+  geom_smooth(method = "nls", formula = y ~ a * exp(-b * x) + c, 
+              method.args = list(start = list(a = 100, b = 0.1, c = 50)),
+              se = FALSE, color = "black") +
+  scale_color_discrete(name = "Treatment") +
+  scale_x_continuous(breaks = seq(2, 12, by = 2)) +
+  labs(
+    x = element_blank(),
+    y = element_blank(),
+    title = "Observed TCTs for each task iteration, by treatment",
+    subtitle = "Approximate exponential decay pattern; little data after fifth iteration"
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold"),
+    legend.position = c(0.95, 0.95),
+    legend.justification = c(1, 1),
+    legend.background = element_rect(fill = "white", color = NA),
+    legend.key = element_rect(fill = "white", color = NA)
+  )
+```
+
+
 ```{r agg-h1b-data}
 pd <- learn_h1b |>
   group_by(participant) |>
@@ -2024,7 +2054,7 @@ where:
 - $U_{0j}$ is the participant variation on the intercept.
 - $\beta_1$ is the overall slope.
 - $U_{1j}$ is the participant variation on the slope.
-- $SEQ_{ij}$ is the time value associated with each observation $i$ of participant $j$, i.e. the task number.
+- $SEQ_{ij}$ is the time value associated with each observation $i$ of participant $j$, i.e., the task number.
 - $\varepsilon_{ij}$ represents the residuals for each observation---variation not accounted for by the model.
 
 This formulation allows for random intercepts, $(\beta_0+U_{0j})$, and slopes $(\beta_1+U_{1j})$, each based on individual differences per participants $U_j$. In the context of this analysis those can be interpreted as individual starting points (intercept) and learning rates (slope). While @eq-lme1 makes it easy to understand how participant-level variation contributes to both slope and intercept, it is more commonly formulated as:
@@ -2507,7 +2537,7 @@ cp_h1b_cn_r |>
   display()
 ```
 
-All models incorporating $TCT_{0}$ as a predictor show a substantial increase in $R^2_{marg}$. This suggests that adding treatment as a fixed effect improves the model's explanatory power. Model m7r_ti_c2, which includes treatment interactions with the linear term, performs better than the alternatives in every metric ($R^2_{marg}$ = 0.93, ICC = 0.85, RMSE = 5.93) except $R^2_{cond}$, where it matches the most complex matter (0.99). Furthermore, where the other models produced singularity warnings during the fit, c2 did not. These warnings did not invalidate the results for c1 or c3, as `robustlmm` automatically negotiated to an alternate optimizer. But the added stability provides additional comfort.
+All models incorporating treatment as a fixed effect show a substantial increase in $R^2_{marg}$, suggesting it improves the model's explanatory power. Model m7r_ti_c2, which includes treatment interactions with the linear term, performs better than the alternatives in every metric ($R^2_{marg}$ = 0.93, ICC = 0.85, RMSE = 5.93) except $R^2_{cond}$, where it matches the most complex model (0.99). Furthermore, where the other models produced singularity warnings during the fit, c2 did not. These warnings did not invalidate the results for c1 or c3, as `robustlmm` automatically negotiated to an alternate optimizer. But the added stability provides additional comfort.
 
 ```{r make-learn-plot}
 
@@ -2691,7 +2721,7 @@ learn_h1c <- learn |>
 ```
 
 The third and final hypothesis of the learning phase tests the third commonly assessed aspect of learning:
-$$H_{1b}\textrm{: Average error count per car varies with treatment}$$ 
+$$H_{1c}\textrm{: Average error count per car varies with treatment}$$ 
 
 Here again, we are interested in finding statistically significant differences in the average error count under different treatment conditions to identify which instructional method leads to the lowest defect rate. Lower error rates can indicate a higher quality of learning outcomes. Combined with the previous measures of efficiency (TCT) and learning rate (change in TCT per task), these provide a balanced and comprehensive view of training performance.
 
@@ -3077,7 +3107,7 @@ lt_oee_treat <- car::leveneTest(oee_100 ~ treatment, data = oee_data)
 pv <- lt_oee_treat$`Pr(>F)`[1]
 ```
 
-Results from the Shapiro-Wilk test provide further evidence against the normality hypothesis for OEE, both overall (p `r fmt_p_val(shapiro.test(oee_data$oee_100)$p.value)`) and by treatment (p < 0.05 in all cases). Q-Q plots in @fig-qq-h2a suggest that OEE is close to normally distributed for all augmented treatments, but PWI is clearly not. No outliers were detected in the OEE data based on the Z-score test. Finally, Levene's test indicated no significant heterogeneity of variance between treatment groups (`r fmt_p_val(pv)`). These findings again dictate a non-parametric approach to testing $H_{2a}$.
+Results from the Shapiro-Wilk test provide further evidence against the normality hypothesis for OEE, both overall (`r fmt_p_val(shapiro.test(oee_data$oee_100)$p.value)`) and by treatment (p < 0.05 in all cases). Q-Q plots in @fig-qq-h2a suggest that OEE is close to normally distributed for all augmented treatments, but PWI is clearly not. No outliers were detected in the OEE data based on the Z-score test. Finally, Levene's test indicated no significant heterogeneity of variance between treatment groups (`r fmt_p_val(pv)`). These findings again dictate a non-parametric approach to testing $H_{2a}$.
 
 ```{r fig-qq-h2a}
 #| fig-cap: Q-Q Plots of OEE by Treatment
@@ -3182,9 +3212,9 @@ pr <- function(trt) {
 
 This unexpected result indicates that, despite *substantial observed differences*, the PWI, AR, and MR treatments have *statistically equivalent* OEE. High within-group variability likely contributes to this finding by obscuring genuine differences in group means. Kruskal-Wallis test is somewhat vulnerable to this effect due to its rank-based design and underlying assumptions. The ratio of interquartile range to overall range for PAR (`r pr("PAR")`), AR (`r pr("AR")`), and MR (`r pr("MR")`) show that the central 50% of observations in these treatments is spread over more than half of its overall range. This wide variation is easily observed in the box plots of @fig-h2a-plot.
 
-To further investigate the observed variability and validate these unexpected findings, bootstrap resampling analysis was employed. This flexible technique samples with replacement to construct robust estimates of the distribution for the statistics of interest (e.g. mean or median) and their confidence intervals. Bootstrapping relies on the empirical distribution of the data to accurately capture variability with few assumptions. Additionally, the replication process effectively increases the sample size and statistical power of the analysis, enhancing the accuracy and reliability of its results.
+To further investigate the observed variability and validate these unexpected findings, bootstrap resampling analysis was employed. This flexible technique samples with replacement to construct robust estimates of the distribution for the statistics of interest (e.g., mean or median) and their confidence intervals. Bootstrapping relies on the empirical distribution of the data to accurately capture variability with few assumptions. Additionally, the replication process effectively increases the sample size and statistical power of the analysis, enhancing the accuracy and reliability of its results.
 
-A bootstrap analysis was used to estimate pairwise differences in three measures of centrality for OEE--mean, median, and the Hodges-Lehmann estimator. The later is a non-parametric approach to estimate population median shifts that is robust to outliers. It provides a consistent estimate of the true shift in medians, even when the underlying distributions are dissimilar, by considering the differences between all possible observation pairs. This process was replicated five times, each with 10,000 resamples, and the results were averaged to determine grand means and related statistics. The significant results of this complementary analysis, where the 95% confidence interval does not include zero, are tabulated in @tbl-boot-oee.
+A bootstrap analysis was used to estimate pairwise differences in three measures of centrality for OEE--mean, median, and the Hodges-Lehmann estimator. The latter is a non-parametric approach to estimate population median shifts that is robust to outliers. It provides a consistent estimate of the true shift in medians, even when the underlying distributions are dissimilar, by considering the differences between all possible observation pairs. This process was replicated five times, each with 10,000 resamples, and the results were averaged to determine grand means and related statistics. The significant results of this complementary analysis, where the 95% confidence interval does not include zero, are tabulated in @tbl-boot-oee.
 
 ```{r bootstrap-oee, eval=FALSE}
 # registerDoParallel(cores = parallel::detectCores())
@@ -3615,7 +3645,11 @@ subtitle <- "Five Replications of 10,000 Resamples for Mean, Median, and the Hod
 create_boot_summary_table(h2b_pwi_boot_res, title = title, subtitle = subtitle)
 ```
 
-On average, AR and MR reduce reliance by 0.686 and 0.612 seconds per reference, respectively, relative to the PWI instructional method. This finding is statistically and practically meaningful, given that the overall average reference duration is `r round(mean(recall_h2b_agg_out$pwi_time_per_ref_agg), 2)` seconds. In summary, the bootstrap analysis finds AR and MR are equivalent to one another but reduce reliance more than than PAR and PWI, which are themselves equivalent. The negligible bias values and low standard error reported across all replicates once again reinforce the reliability of these findings.
+*On average, AR and MR reduce reliance by 0.686 and 0.612 seconds per reference*, respectively, relative to the PWI instructional method. This finding is statistically and practically meaningful, given that the overall average reference duration is `r round(mean(recall_h2b_agg_out$pwi_time_per_ref_agg), 2)` seconds. In summary, the bootstrap analysis finds AR and MR are equivalent to one another but reduce reliance more than than PAR and PWI, which are themselves equivalent. The negligible bias values and low standard error reported across all replicates once again reinforce the reliability of these findings.
+
+::: content-hidden
+TODO: FIX THIS
+:::
 
 #### $H_{2b}$ Result
 
@@ -4248,7 +4282,7 @@ tlx_recall_wide <- tlx_wide |>
   filter(phase == 2)
 ```
 
-All observed and calculated measures from the NASA TLX are summarized by phase in @tbl-tlx-ds. As detailed in @sec-tlx, source weight, rating, and workload refer to the ranking, value, and weighted score for all workload sources, while task workload is the composite measure of all contributing sources. This data reveals a consistent reduction in perceived workload as participants transitioned to the recall phase. This is evidenced by decreases in overall Task Workload (Learning: M = 57.90, SD = 13.73; Recall: M = 41.82, SD = 14.69) and individual Source Ratings and Workloads. Notably, the Source Weight remained constant (M = 2.50) across phases, suggesting that while the perceived importance of workload sources didn't change, their intensity diminished.
+All observed and calculated measures from the NASA TLX are summarized by phase in @tbl-tlx-ds. As detailed in @sec-tlx, source weight, rating, and workload refer to the ranking, value, and weighted score for all workload sources, while task workload is the composite measure of all contributing sources. These data reveal a consistent reduction in perceived workload as participants transitioned to the recall phase. This is evidenced by decreases in overall Task Workload (Learning: M = 57.90, SD = 13.73; Recall: M = 41.82, SD = 14.69) and individual Source Ratings and Workloads. Notably, the Source Weight remained constant (M = 2.50) across phases, suggesting that while the perceived importance of workload sources didn't change, their intensity diminished.
 
 ```{r tbl-tlx-ds}
 #| tbl-cap: "Summary Statistics for TLX Workload Measures"
@@ -4316,7 +4350,7 @@ tlx_q1_ph <- pairwise.wilcox.test(
 
 ```
 
-To understand which of the TLX's six sources are most important to all participants' perception of workload, a Friedman test of repeated measures was conducted. This non-parametric test does not assume normality and accounts for the within-participant variability inherent in the repeated measures of survey data. Using `friedman_test` from the `coin` package confirmed significant (`r  round(tlx_q1_ft_st, 1)`, `r fmt_p_val(tlx_q1_ft_pv)`) differences source rankings by participants. The subsequent post-hoc test calculated pairwise differences using a Wilcoxon signed-rank test and Bonferroni correction for multiple comparisons.
+To understand which of the TLX's six sources are most important to all participants' perception of workload, a Friedman test of repeated measures was conducted. This non-parametric test does not assume normality and accounts for the within-participant variability inherent in the repeated measures of survey data. Using `friedman_test` from the `coin` package confirmed significant (`r  round(tlx_q1_ft_st, 1)`, `r fmt_p_val(tlx_q1_ft_pv)`) differences in source rankings by participants. The subsequent post-hoc test calculated pairwise differences using a Wilcoxon signed-rank test and Bonferroni correction for multiple comparisons.
 
 ```{r tbl-tlx-q1-ph}
 #| tbl-cap: Pairwise comparisons for TLX Source of Workload Rankings
@@ -4460,7 +4494,7 @@ for(s in unique(tlx_q2_src_ratings$source)) {
 }
 
 # no significant differences found (TD close 0.06)
-# i.e. treatment has no statistically significant effect on source ratings
+# i.e., treatment has no statistically significant effect on source ratings
 
 ### post hoc unnecessary
 
@@ -4736,7 +4770,7 @@ ggstatsplot::ggbetweenstats(
 )
 ```
 
-No statistically significant overall difference is identified (p = 0.40), likely due to the very large range of scores found in every treatment. While the effect size is quite small ($\hat{\varepsilon}_{rank}^{2}$ = 0.056), the progression of median values aligns with expectations based on the complexity associated with each treatment: PWI < PAR < PAR < MR. This suggests that, while the technologies differ in complexity, their perceived usability during learning is not drastically different--an unexpected result.
+No statistically significant overall difference is identified (p = 0.40), likely due to the very large range of scores found in every treatment. While the effect size is quite small ($\hat{\varepsilon}_{rank}^{2}$ = 0.056), the progression of median values aligns with expectations based on the complexity associated with each treatment: PWI > PAR > AR > MR. This suggests that, while the technologies differ in complexity, their perceived usability during learning is not drastically different--an unexpected result.
 
 Those learning scores were compared with SUS during recall to test for significance using the Wilcoxon signed rank test for paired samples. As seen in @fig-sus-change, the difference is statistically significant (p < 0.001) and practically meaningful. The median value for $SUS_{R}$ (87.70) is a 31.34 point improvement in usability from the learning phase ($SUS_{L}$ = 56.36). The large negative effect size ($\hat{r}^{2}_{biserial}$ = -0.644) with relatively narrow 95% confidence interval [-0.792, -0.424] suggests this finding is robust.
 
@@ -4839,7 +4873,7 @@ print(wilcoxon_results)
 
 ```
 
-These calculations utilize a normal approximation to address ties (AR) and zero values (PWI and MR), and p-values are adjusted for multiple comparisons using the Holm method. The results indicate that, despite large effect sizes ($r$ > 0.50 for all treatments), none of the observed differences can be conclusively attributed to the treatments (adjusted p-values < 0.08 in all cases) given the sample size and variability. A final test was conducted to determine if the changes differ by treatment, as shown in @fig-sus-within-trt. Once again, no significant differences were identified (p = 0.479).
+These calculations utilize a normal approximation to address ties (AR) and zero values (PWI and MR), and p-values are adjusted for multiple comparisons using the Holm method. The results indicate that, despite large effect sizes ($r$ > 0.50 for all treatments), none of the observed differences can be conclusively attributed to the treatments (adjusted p-values > 0.08 in all cases) given the sample size and variability. A final test was conducted to determine if the changes differ by treatment, as shown in @fig-sus-within-trt. Once again, no significant differences were identified (p = 0.479).
 
 ```{r fig-sus-within-trt}
 #| fig-cap: "System Usability Score for Learning and Recall Phases"
