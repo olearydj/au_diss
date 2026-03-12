@@ -5,7 +5,7 @@ This document records a content-only comparison between the submitted manuscript
 Compared artifacts:
 
 - Submitted manuscript: `_versions/submitted-2024-08-02/main.pdf`
-- Current rebuild, with the phantom first page removed: `_build-compare/rebuilt-minus-page1.pdf`
+- Current rebuild, with the phantom first page removed during comparison
 
 Excluded from scope:
 

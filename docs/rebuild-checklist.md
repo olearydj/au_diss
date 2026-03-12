@@ -94,10 +94,7 @@ As of this checkpoint:
 - The preserved Intel library is only partly readable locally because most entries are broken symlinks into the old `renv` cache, but those symlink targets still preserve many exact package versions.
 - A frozen Posit Package Manager snapshot dated `2024-08-02` was used to rebuild the arm64 project library for the first serious render attempt.
 - `renv::status()` remains noisy and is not currently a clean gating signal, because it scans the whole repo and the lockfile does not fully cover the present source tree.
-- The defended manuscript PDF was copied to:
-  [_build-compare/defended-reference.pdf](/Volumes/Casa/dev/dissertation/_build-compare/defended-reference.pdf)
-- The pre-render `manuscript/` output directory was moved to:
-  [manuscript-prebuild-20260311-181620](/Volumes/Casa/dev/dissertation/manuscript-prebuild-20260311-181620)
+- Temporary local comparison copies and pre-render backups were created during rebuild investigation to protect existing outputs and compare the direct render against `main.pdf`.
 - A fresh empty render target was created at:
   [manuscript](/Volumes/Casa/dev/dissertation/manuscript)
 - The dissertation now renders successfully to PDF on the current machine at:
@@ -111,12 +108,11 @@ As of this checkpoint:
 - The deposited artifact appears to have been assembled after the manuscript render by appending at least the IRB packet PDF to the manuscript PDF.
 - The Quarto project also defines an HTML output path.
 - That HTML path has now been re-verified successfully on the current machine with:
-  `quarto render --to html --output-dir _html-check`
-- The resulting site output includes the active chapter and appendix set from `_quarto.yml` and produces:
-  [index.html](/Volumes/Casa/dev/dissertation/_html-check/index.html)
-  plus the expected `_chaps/`, `_apps/`, `images/`, `css/`, `site_libs/`, and `search.json` artifacts.
-- The historical `html/` tree is stale relative to the current active source set; it contains pages not present in the verified current render:
-  `_chaps/27-colophon.html`, `_apps/33c-s1conduct.html`, `_apps/34d-s2conduct.html`, and `_apps/37g-datadict.html`.
+  `quarto render --to html --output-dir html`
+- The regenerated `html/` tree includes the active chapter and appendix set from `_quarto.yml` and produces the expected `_chaps/`, `_apps/`, `images/`, `css/`, `site_libs/`, and `search.json` artifacts.
+- The previously stale extra pages in the historical `html/` tree
+  (`_chaps/27-colophon.html`, `_apps/33c-s1conduct.html`, `_apps/34d-s2conduct.html`, and `_apps/37g-datadict.html`)
+  are no longer present after regeneration.
 - `downlit` was subsequently installed into the project library, and a follow-up HTML render completed without the prior code-link warning.
 - `css/custom.css` was also updated to override the newer Bootstrap inline-code background so the rebuilt HTML matches the older light inline-code pill appearance in the archived `html/` output.
 - A separate current-build R lock snapshot was captured at:
@@ -228,12 +224,11 @@ Once the rebuild is acceptable, capture the exact workflow in a permanent build 
 - Is the `date: today` field materially affecting front matter or PDF metadata?
 - Are the current manuscript source edits post-defense refinements that must be excluded from the real baseline?
 - Are any untracked data or `rdata/` files required to reproduce the defended PDF exactly at the content level?
-- Does the HTML/website render path in `_quarto.yml` need any further cleanup beyond deciding what to do with the stale historical `html/` output tree and whether to keep the inline-code compatibility override?
+- Does the HTML/website render path in `_quarto.yml` need any further cleanup beyond deciding whether to keep the inline-code compatibility override?
 
 **Next Action**
 The immediate next tasks are:
 
 1. Decide whether the alternate R lock snapshot remains documentary support material or should be promoted later.
-2. Decide whether the alternate R environment capture should be refreshed to include the post-capture `downlit` install.
-3. Triage stale generated artifacts, especially the historical `html/` tree versus the newly verified `_html-check/` render.
-4. Continue with broader generated-noise cleanup before the baseline commit.
+2. Decide whether the updated alternate R environment capture should remain documentary support material or be promoted later.
+3. Continue with broader generated-noise cleanup before the baseline commit.

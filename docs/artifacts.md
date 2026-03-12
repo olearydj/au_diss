@@ -30,7 +30,7 @@ These files are the authoritative dissertation-era artifacts for baselining.
 - Notes:
   - this appears to have been appended to the manuscript artifact to create the deposited package
 
-## Supporting Non-Canonical Comparison Artifacts
+## Supporting Non-Canonical Build Artifacts
 
 These are useful for reconstruction but should not be treated as the canonical baseline targets.
 
@@ -39,15 +39,26 @@ These are useful for reconstruction but should not be treated as the canonical b
 - Path: `manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf`
 - Role: current successful rebuild output on the active cleanup branch
 
-### Rebuilt Minus Page 1
+### Temporary Comparison Copies
 
-- Path: `_build-compare/rebuilt-minus-page1.pdf`
-- Role: comparison helper used to evaluate the historical front-matter/post-processing behavior
+- Role: temporary local PDFs created during rebuild investigation to compare the direct render against `main.pdf`
+- Status: not canonical and safe to remove once the comparison findings are captured in docs
 
-### Defended Reference Copy
+### Temporary Render Backups
 
-- Path: `_build-compare/defended-reference.pdf`
-- Role: preserved local comparison copy used during rebuild investigation
+- Role: temporary local copies such as `manuscript-prebuild-*` created while protecting existing render outputs during rebuild testing
+- Status: not canonical and safe to remove after successful verification
+
+### Current HTML Output
+
+- Path: `html/`
+- Role: regenerated HTML/book output from the current active source set
+- Status: non-canonical generated output; reproducible and safe to regenerate
+
+### Generated TeX Evidence
+
+- Role: generated `.tex`, `.log`, `.fls`, and related auxiliary files retained during the successful PDF rebuild and used to derive the TeX footprint note
+- Status: supporting evidence only; retain only as long as they are useful for baseline verification
 
 ## Canonical Source State
 

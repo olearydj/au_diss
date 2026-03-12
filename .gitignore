@@ -20,12 +20,18 @@
 *.lof
 *.lot
 *.toc
+*.bcf
+*.run.xml
+*.fls
 *.pdf
 /*.tex
 
 # Output directory
 _book/
 /html
+/_html-check/
+/_build-compare/
+/manuscript-prebuild-*/
 
 # Test directories
 test_input/

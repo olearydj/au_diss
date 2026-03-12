@@ -62,7 +62,7 @@ The current repository already includes `keep-tex: true` in the PDF format confi
 The same Quarto project also includes an HTML render path. That website/book output has now been re-verified on the current machine using:
 
 ```sh
-quarto render --to html --output-dir _html-check
+quarto render --to html --output-dir html
 ```
 
 Current HTML verification notes:
@@ -71,7 +71,7 @@ Current HTML verification notes:
 - the generated site output is coherent and includes the active chapter and appendix set from `_quarto.yml`
 - `downlit` is now installed in the project library, so HTML code-linking no longer emits the prior missing-package warning
 - `css/custom.css` now restores the older light inline-code background used by the archived HTML output
-- the existing `html/` tree is a stale historical artifact and contains pages not in the current active source set
+- the top-level `html/` tree has been regenerated from the current active source set and no longer includes the previously stale extra pages
 
 Build notes, historical caveats, and current reproducibility status are in `docs/build.md` and `docs/rebuild-checklist.md`.
 

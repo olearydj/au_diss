@@ -412,6 +412,11 @@
       ],
       "Hash": "40415719b5a479b87949f3aa0aee737c"
     },
+    "brio": {
+      "Package": "brio",
+      "Version": "1.1.5",
+      "Source": "Repository"
+    },
     "broom": {
       "Package": "broom",
       "Version": "1.0.5",
@@ -803,6 +808,11 @@
       ],
       "Hash": "0a861334beb4eb8ca0d24a27b28b6679"
     },
+    "desc": {
+      "Package": "desc",
+      "Version": "1.4.3",
+      "Source": "Repository"
+    },
     "digest": {
       "Package": "digest",
       "Version": "0.6.35",
@@ -851,6 +861,11 @@
         "utils"
       ],
       "Hash": "451e5edf411987991ab6a5410c45011f"
+    },
+    "downlit": {
+      "Package": "downlit",
+      "Version": "0.4.4",
+      "Source": "Repository"
     },
     "dplyr": {
       "Package": "dplyr",

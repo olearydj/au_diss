@@ -59,12 +59,4 @@ For current baselining work:
 
 The later baseline decision is whether this alternate lock snapshot should become canonical support material, remain documentary only, or be normalized further before promotion.
 
-## Post-Capture Change
-
-After this snapshot was taken, `downlit` was installed into the project library so the HTML/book render would complete without the prior code-link warning.
-
-That means:
-
-- the dissertation PDF rebuild evidence captured here is still valid
-- the verified HTML render path is now in a better state than this snapshot records
-- if the alternate lock snapshot is later promoted to canonical support material, it should either be refreshed or accompanied by a note that the final verified HTML-capable environment also includes `downlit`
+This alternate lock snapshot now also includes the `downlit`, `brio`, and `desc` additions required for the verified HTML-capable environment.

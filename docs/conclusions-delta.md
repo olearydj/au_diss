@@ -4,7 +4,7 @@
 
 This note compares the Conclusions chapter in:
 
-- [rebuilt-minus-page1.pdf](/Volumes/Casa/dev/dissertation/_build-compare/rebuilt-minus-page1.pdf)
+- the rebuilt manuscript with the phantom first page removed during comparison
 - [main.pdf](/Volumes/Casa/dev/dissertation/_versions/submitted-2024-08-02/main.pdf)
 
 The goal is to identify real wording differences while excluding line-wrap, hyphenation, and page-layout noise.

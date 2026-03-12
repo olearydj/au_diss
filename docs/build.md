@@ -48,7 +48,7 @@ Current PDF config characteristics:
 The same Quarto config also defines an HTML output path for website/book-style rendering. That path was revalidated on the current machine using a disposable output directory:
 
 ```sh
-quarto render --to html --output-dir _html-check
+quarto render --to html --output-dir html
 ```
 
 Observed result:
@@ -57,7 +57,7 @@ Observed result:
 - the generated site is coherent and includes the active chapter and appendix set from `_quarto.yml`
 - `downlit` is now installed in the project library, so the previous code-link warning is resolved
 - `css/custom.css` now overrides the newer Bootstrap inline-code background so the rebuilt HTML matches the older light inline-code pill appearance
-- the historical `html/` directory is not the same artifact as the current render and should be treated as a stale generated tree pending later cleanup
+- the top-level `html/` directory has been regenerated from the current active source set and no longer includes the previously stale extra pages
 
 ## Current Rebuild State
 
@@ -75,7 +75,7 @@ Current build interpretation:
 2. Current rebuild does not fully reproduce the exact historical post-processing step that yielded `main.pdf`.
 3. The current package stack can inject runtime output into the Results chapter if a chunk does not suppress emitted output.
 4. The deposited package is a separate artifact class from the manuscript PDF and should not be treated as a plain re-render of the book.
-5. The HTML build now succeeds cleanly with `downlit` installed, but the historical `html/` tree remains a stale generated artifact to be triaged during cleanup.
+5. The HTML build now succeeds cleanly with `downlit` installed and the regenerated `html/` output matches the active chapter and appendix set.
 
 ## Content-Level Baseline Rule
 
@@ -98,5 +98,5 @@ These artifacts capture the current verified rebuild environment without overwri
 The next build-focused tasks are:
 
 1. decide whether the captured R environment should become canonical baseline support material
-2. decide whether the captured R environment should be refreshed to include the post-capture `downlit` install
+2. decide whether the updated alternate R snapshot should remain documentary support material or be promoted later
 3. complete generated-noise triage and archival cleanup before the baseline commit
