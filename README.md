@@ -40,6 +40,7 @@ This is documented in `docs/build.md`.
 - `_chaps/`: main dissertation chapters and some exploratory chapter-side work.
 - `_apps/`: appendices and appendix-source material.
 - `data/`: curated spreadsheets, reports, and supporting data artifacts.
+- `archive/`: non-baseline exploratory, drafting, and historical materials retained for provenance.
 - `rdata/`: saved R objects used by the analysis and manuscript build.
 - `parse_xml/`: Python utilities for processing annotation exports and derived reports.
 - `tex/`: custom LaTeX template work and Quarto template experiments.
@@ -52,6 +53,8 @@ Retention/H3 data note:
 - `data/combined_results.xlsx` is the curated main-study workbook produced by the original data pipeline for phases 1 and 2.
 - `data/source/i1_h3.xlsx` is a separate retention-phase support workbook used by the later H3 analysis.
 - Current evidence indicates H3 was analyzed later and more ad hoc, rather than being folded back into the original Excel/Python aggregation workflow.
+- `data/source/notes/` holds participant-level source notes and feedback markdown.
+- `data/reports/` holds generated participant reports derived from the source notes, workbook data, and local video metadata.
 
 ## Build
 
@@ -86,6 +89,7 @@ Build notes, historical caveats, and current reproducibility status are in `docs
 - `docs/artifacts.md`: canonical artifacts and source-state rules.
 - `docs/build.md`: build path, provenance, and current known caveats.
 - `docs/baseline-plan.md`: overall cleanup/baseline plan.
+- `docs/data.md`: data-tree provenance and relationships between raw, curated, generated, and archival analysis inputs.
 - `docs/rebuild-checklist.md`: rebuild verification notes and environment findings.
 - `docs/text-content-diff.md`: content-only comparison between `main.pdf` and the rebuilt manuscript.
 - `docs/intel-renv-manifest.md`: recovered package evidence from the preserved Intel `renv` library.

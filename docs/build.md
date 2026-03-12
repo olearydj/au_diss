@@ -70,6 +70,13 @@ The dissertation data pipeline is not completely uniform across all three phases
 
 This means the current baseline should treat `data/source/i1_h3.xlsx` as a legitimate source artifact for the retention analysis, not as an anomalous duplicate of `combined_results.xlsx`.
 
+Related preserved support artifacts:
+
+- `data/source/notes/` contains participant-level script notes and feedback
+- `data/reports/` contains generated participant reports that relate those notes to workbook/video metadata
+
+Those directories are not active build inputs, but they are part of the preserved research record.
+
 ## Current Rebuild State
 
 The current machine has already been shown to render the dissertation successfully through the full Quarto/R/LaTeX/Biber path.
