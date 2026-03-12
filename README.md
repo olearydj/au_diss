@@ -91,6 +91,7 @@ Build notes, historical caveats, and current reproducibility status are in `docs
 - `docs/build.md`: build path, provenance, and current known caveats.
 - `docs/baseline-plan.md`: overall cleanup/baseline plan.
 - `docs/data.md`: data-tree provenance and relationships between raw, curated, generated, and archival analysis inputs.
+- `docs/worktree-audit.md`: current ignored/generated residue and remaining cleanup decisions.
 - `docs/rebuild-checklist.md`: rebuild verification notes and environment findings.
 - `docs/text-content-diff.md`: content-only comparison between `main.pdf` and the rebuilt manuscript.
 - `docs/intel-renv-manifest.md`: recovered package evidence from the preserved Intel `renv` library.

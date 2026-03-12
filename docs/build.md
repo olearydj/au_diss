@@ -76,6 +76,8 @@ Related preserved support artifacts:
 - `data/source/notes/` contains participant-level script notes and feedback
 - `data/reports/` contains generated participant reports that relate those notes to workbook/video metadata
 
+The fuller source-to-curated workflow, including the external video/XML roots and the Python-to-R handoff through `data/csv/i1_times_v2.csv`, is documented in `docs/data.md`.
+
 Those directories are not active build inputs, but they are part of the preserved research record.
 
 ## Current Rebuild State
@@ -95,6 +97,10 @@ Current build interpretation:
 3. The current package stack can inject runtime output into the Results chapter if a chunk does not suppress emitted output.
 4. The deposited package is a separate artifact class from the manuscript PDF and should not be treated as a plain re-render of the book.
 5. The HTML build now succeeds cleanly with `downlit` installed and the regenerated `html/` output matches the active chapter and appendix set.
+
+## Remaining Ignored Residue
+
+The remaining ignored worktree now consists mostly of render residue, QA/debug outputs, parser test fixtures, and local editor noise. That audit is documented in `docs/worktree-audit.md`.
 
 ## Content-Level Baseline Rule
 
