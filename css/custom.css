@@ -8,6 +8,13 @@ span.math.inline {
   font-size: 85%;
 }
 
+/* Restore the older light inline-code pill used by the archived HTML build. */
+p code:not(.sourceCode),
+li code:not(.sourceCode),
+td code:not(.sourceCode) {
+  background-color: #f8f9fa;
+}
+
 .hide {
   display: none;
 }

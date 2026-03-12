@@ -13,9 +13,8 @@
 *.doc
 *.docx
 
-# Temp files (includes ALL markdown by default)
-# replace with work folder when configured to use
-*.md
+# Markdown render scratch
+*.knit.md
 *.aux
 *.log
 *.lof
@@ -33,7 +32,17 @@ test_input/
 test_output/
 /test/
 
-# Don't ignore these...
-!issues.md
-!/reports/*.md
+# OS / editor / local cache noise
+.DS_Store
+__pycache__/
+parse_xml/__pycache__/
+*.code-workspace
 
+# Common local render noise
+_chaps/*.html
+_chaps/*_files/
+_chaps/tinytable_assets/
+index_files/
+
+
+**/*.quarto_ipynb
