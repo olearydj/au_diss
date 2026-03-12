@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Conclusions – Augmented vs. Traditional Instruction in Manufacturing Assembly</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../_chaps/28-references.html" rel="next">
+<link href="../_chaps/25-results.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2ff81c2e5dfd9e56c4f590b9591e1eb8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a5592cc64b029f1226b51e29f5abb0e4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../css/custom.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../_chaps/26-conclusions.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusions</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Augmented vs.&nbsp;Traditional Instruction in Manufacturing Assembly</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Abstract</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_chaps/21-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_chaps/22-lit_review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Literature Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_chaps/23-prob_statement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Problem Statement</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_chaps/24-methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Methods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_chaps/25-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Results</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_chaps/26-conclusions.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_chaps/28-references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_apps/32b-contributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Team Contribution Matrix</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_apps/35e-videotools.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Video Tool Selection</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_apps/36f-videoproc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Video Processing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_apps/38h-dataorg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Data Organization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../_apps/31a-irb.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Institutional Review Board Approval</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#summary-of-results" id="toc-summary-of-results" class="nav-link active" data-scroll-target="#summary-of-results"><span class="header-section-number">6.1</span> Summary of Results</a>
+  <ul class="collapse">
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">6.1.1</span> Hypothesis Testing</a></li>
+  <li><a href="#survey-results" id="toc-survey-results" class="nav-link" data-scroll-target="#survey-results"><span class="header-section-number">6.1.2</span> Survey Results</a></li>
+  <li><a href="#qualitative-results" id="toc-qualitative-results" class="nav-link" data-scroll-target="#qualitative-results"><span class="header-section-number">6.1.3</span> Qualitative Results</a></li>
+  <li><a href="#researcher-observations" id="toc-researcher-observations" class="nav-link" data-scroll-target="#researcher-observations"><span class="header-section-number">6.1.4</span> Researcher Observations</a></li>
+  <li><a href="#collective-insights" id="toc-collective-insights" class="nav-link" data-scroll-target="#collective-insights"><span class="header-section-number">6.1.5</span> Collective Insights</a></li>
+  <li><a href="#key-findings" id="toc-key-findings" class="nav-link" data-scroll-target="#key-findings"><span class="header-section-number">6.1.6</span> Key Findings</a></li>
+  </ul></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">6.2</span> Conclusions</a></li>
+  <li><a href="#contributions" id="toc-contributions" class="nav-link" data-scroll-target="#contributions"><span class="header-section-number">6.3</span> Contributions</a>
+  <ul class="collapse">
+  <li><a href="#theoretical-affordance-based-evaluation-framework" id="toc-theoretical-affordance-based-evaluation-framework" class="nav-link" data-scroll-target="#theoretical-affordance-based-evaluation-framework"><span class="header-section-number">6.3.1</span> Theoretical: Affordance-Based Evaluation Framework</a></li>
+  <li><a href="#methodological-comprehensive-multi-phase-study-design" id="toc-methodological-comprehensive-multi-phase-study-design" class="nav-link" data-scroll-target="#methodological-comprehensive-multi-phase-study-design"><span class="header-section-number">6.3.2</span> Methodological: Comprehensive Multi-Phase Study Design</a></li>
+  <li><a href="#empirical-quantification-of-speed-accuracy-trade-offs" id="toc-empirical-quantification-of-speed-accuracy-trade-offs" class="nav-link" data-scroll-target="#empirical-quantification-of-speed-accuracy-trade-offs"><span class="header-section-number">6.3.3</span> Empirical: Quantification of Speed-Accuracy Trade-offs</a></li>
+  <li><a href="#practical-insights-on-the-interplay-of-environmental-and-user-characteristics" id="toc-practical-insights-on-the-interplay-of-environmental-and-user-characteristics" class="nav-link" data-scroll-target="#practical-insights-on-the-interplay-of-environmental-and-user-characteristics"><span class="header-section-number">6.3.4</span> Practical: Insights on the Interplay of Environmental and User Characteristics</a></li>
+  <li><a href="#human-factors-user-adaptation-and-perceived-workload-usability" id="toc-human-factors-user-adaptation-and-perceived-workload-usability" class="nav-link" data-scroll-target="#human-factors-user-adaptation-and-perceived-workload-usability"><span class="header-section-number">6.3.5</span> Human Factors: User Adaptation and Perceived Workload / Usability</a></li>
+  </ul></li>
+  <li><a href="#implications-to-method-and-theory" id="toc-implications-to-method-and-theory" class="nav-link" data-scroll-target="#implications-to-method-and-theory"><span class="header-section-number">6.4</span> Implications to Method and Theory</a>
+  <ul class="collapse">
+  <li><a href="#methodical-implications" id="toc-methodical-implications" class="nav-link" data-scroll-target="#methodical-implications"><span class="header-section-number">6.4.1</span> Methodical Implications</a></li>
+  <li><a href="#theoretical-implications" id="toc-theoretical-implications" class="nav-link" data-scroll-target="#theoretical-implications"><span class="header-section-number">6.4.2</span> Theoretical Implications</a></li>
+  </ul></li>
+  <li><a href="#limitations-and-generalizability" id="toc-limitations-and-generalizability" class="nav-link" data-scroll-target="#limitations-and-generalizability"><span class="header-section-number">6.5</span> Limitations and Generalizability</a></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="header-section-number">6.6</span> Future Work</a></li>
+  <li><a href="#closing" id="toc-closing" class="nav-link" data-scroll-target="#closing"><span class="header-section-number">6.7</span> Closing</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="26-conclusions" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusions</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This chapter synthesizes the key findings, insights, and implications of this study on augmented technologies in manufacturing assembly training. It begins with a comprehensive summary of results, addressing the initial research questions and hypotheses. That is followed by a discussion of the study’s main conclusions, its contributions to the field, and the implications for both research methods and theory. An examination of the the limitations of the work and its generalizability to broader contexts follows. Finally, directions for future research are outlined, aiming to build upon this study’s foundations and address its identified limitations.</p>
+<section id="summary-of-results" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="summary-of-results"><span class="header-section-number">6.1</span> Summary of Results</h2>
+<p>This study examined the effects of different instructional methods (PWI, PAR, AR, MR) on learning, recall, and retention of a manufacturing assembly task. The results provide insights into the effectiveness of these methods across multiple phases and dimensions of performance.</p>
+<section id="hypothesis-testing" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">6.1.1</span> Hypothesis Testing</h3>
+<p>This section will briefly summarize the quantitative results in the context of the three questions originally posed as hypotheses in <a href="24-methods.html#sec-primary-outs" class="quarto-xref"><span>Section 4.3.4</span></a>.</p>
+<section id="h_1-how-does-each-treatment-affect-performance-during-the-learning-phase" class="level4" data-number="6.1.1.1">
+<h4 data-number="6.1.1.1" class="anchored" data-anchor-id="h_1-how-does-each-treatment-affect-performance-during-the-learning-phase"><span class="header-section-number">6.1.1.1</span> <span class="math inline">\(H_{1}\)</span>: How does each treatment affect performance during the learning phase?</h4>
+<p><a href="#tbl-learn-results-summary" class="quarto-xref">Table&nbsp;<span>6.1</span></a> summarizes the outcomes related to <span class="math inline">\(H_{1}\)</span>. These results suggest that while traditional paper instructions and projected AR allowed for faster initial performance, the more immersive AR and MR technologies led to higher quality outcomes, albeit with slower execution.</p>
+<div id="tbl-learn-results-summary" class="striped quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="[30,20,50]">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-learn-results-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.1: Summary of Quantitative Results for Learning Claims
+</figcaption>
+<div aria-describedby="tbl-learn-results-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 20%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Claim</th>
+<th style="text-align: center;">Result</th>
+<th>Key Findings</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(H_{1a}\)</span>: Average task completion time varies with treatment</td>
+<td style="text-align: center;">Accepted</td>
+<td>PWI and PAR are both significantly faster than AR and MR. No significant difference between PWI and PAR or between AR and MR.</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(H_{1b}\)</span>: Learning rates vary with treatment</td>
+<td style="text-align: center;">Accepted</td>
+<td>PWI demonstrates the steepest learning curve when controlling for iTCT, followed closely by PAR. AR and MR show slower rates of improvement. Relationship: PWI ≈ PAR &gt; (AR ≈ MR)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(H_{1c}\)</span>: Average error count per car varies with treatment</td>
+<td style="text-align: center;">Accepted</td>
+<td>All augmented instruction methods (PAR, AR, MR) result in significantly lower error rates compared to PWI.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The observed performance differences observed during the learning phase stem from a balance between the familiarity and simplicity of traditional methods versus the potentially deeper, more spatially-integrated learning offered by PAR, AR, and MR technologies. Initial performance in the PWI condition was likely influenced by a combination of participants’ prior experience with paper-based instructions and the lack of built-in error checking to slow them down. But when combined with limitations in the instructional design, PWI resulted in the lowest quality by far. In contrast, the relatively high TCTs and low UCEs observed for augmented methods are the result of unfamiliar interfaces and integrated error-checking through step-by-step guidance and real-time feedback. As predicted by cognitive learning theory and embodied cognition, the additional time and engagement likely contributed to the low error counts observed for augmented instruction.</p>
+</section>
+<section id="h_2-how-does-each-treatment-affect-performance-during-the-recall-phase" class="level4" data-number="6.1.1.2">
+<h4 data-number="6.1.1.2" class="anchored" data-anchor-id="h_2-how-does-each-treatment-affect-performance-during-the-recall-phase"><span class="header-section-number">6.1.1.2</span> <span class="math inline">\(H_{2}\)</span>: How does each treatment affect performance during the recall phase?</h4>
+<p>The Recall-related results summarized in <a href="#tbl-recall-results-summary" class="quarto-xref">Table&nbsp;<span>6.2</span></a> suggest that augmented technologies, particularly AR and MR, may lead to better retention and more independent task performance after initial training.</p>
+<div id="tbl-recall-results-summary" class="striped quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="[30,20,50]">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-recall-results-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.2: Summary of Quantitative Results for Recall Claims
+</figcaption>
+<div aria-describedby="tbl-recall-results-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 20%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Claim</th>
+<th style="text-align: center;">Result</th>
+<th>Key Findings</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(H_{2a}\)</span>: OEE varies with treatment</td>
+<td style="text-align: center;">Accepted</td>
+<td>PAR, AR, and MR all result in statistically significant and practically meaningful improvements in OEE compared to PWI.</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(H_{2b}\)</span>: PWI reliance varies with treatment</td>
+<td style="text-align: center;">Accepted</td>
+<td>Statistically significant differences in reliance exist between treatments, but specific pair-wise differences are not clear enough to declare. AR and MR tend to reduce reliance more than PAR and PWI.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The observed differences in recall phase performance likely stem from the nature of learning facilitated by each instructional method. The significantly lower OEE for PWI can be attributed to errors that negated its effectiveness. This confirms that the initial speed advantage of PWI came at the cost of proper skill acquisition and retention. In contrast, higher OEE scores for AR methods, particularly AR and MR, indicate better retention and more independent task performance. This aligns with theories of embodied cognition and active learning, where the spatial integration and hands-on interaction provided by these technologies likely led to deeper processing and more robust mental models of the assembly process. The reduced reliance on instructions for AR and MR users further supports this interpretation. While PAR showed improvements over PWI, its intermediate performance in both OEE and reliance hints at a balance between the benefits of augmentation and the limitations of 2D presentation.</p>
+</section>
+<section id="h_3-how-does-each-treatment-affect-performance-during-the-retention-phase" class="level4" data-number="6.1.1.3">
+<h4 data-number="6.1.1.3" class="anchored" data-anchor-id="h_3-how-does-each-treatment-affect-performance-during-the-retention-phase"><span class="header-section-number">6.1.1.3</span> <span class="math inline">\(H_{3}\)</span>: How does each treatment affect performance during the retention phase?</h4>
+<p><a href="#tbl-retention-results-summary" class="quarto-xref">Table&nbsp;<span>6.3</span></a> summarizes the findings that relate iTCT and iUCE with treatment. Overall, the implications for retention are mixed, with the UCE model providing stronger evidence for an effect of instructional method on retention than the TCT model. This difference suggests that error-related performance improvements may be more sensitive to instructional methods than completion times.</p>
+<div id="tbl-retention-results-summary" class="striped quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="[30,20,50]">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-retention-results-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.3: Summary of Quantitative Results for Retention Claims
+</figcaption>
+<div aria-describedby="tbl-retention-results-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 20%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Claim</th>
+<th style="text-align: center;">Result</th>
+<th>Key Findings</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(H_{3a}\)</span>: Increase in TCT over retention interval varies with treatment</td>
+<td style="text-align: center;">Rejected</td>
+<td>No statistically significant evidence found for the effect of instructional method on the increase in TCT over the retention interval.</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(H_{3b}\)</span>: Increase in UCE over retention interval varies with treatment</td>
+<td style="text-align: center;">Accepted</td>
+<td>PWI method showed a significantly lower rate of error increase compared to the reference AR method. Other treatments suggest meaningful effects but did not reach statistical significance.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The lack of significant differences in iTCT across treatments can likely be taken at face value–the observed decreases in temporal performance are dominated by the natural process of skill decay. While the evidence that PWI users experienced a lower rate of error increase seems to challenge expectations, it can likely be attributed to a ceiling effect on UCE. Simply put, it was hard for many PWI results to get worse. Another plausible contributor, that augmented users were too dependent on the provided guidance, seems discredited by the reliance findings during recall.</p>
+</section>
+</section>
+<section id="survey-results" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="survey-results"><span class="header-section-number">6.1.2</span> Survey Results</h3>
+<p>The surveys of workload (TLX) and usability (SUS) bring another dimension to the analysis by quantifying critical symptoms of user experience and possibly suggesting uncontrolled moderating factors. <a href="#tbl-tlxsus-results-summary" class="quarto-xref">Table&nbsp;<span>6.4</span></a> summarizes those findings:</p>
+<div id="tbl-tlxsus-results-summary" class="striped quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="[30,20,50]">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tlxsus-results-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.4: Summary of Quantitative Results for Workload and Usability Claims
+</figcaption>
+<div aria-describedby="tbl-tlxsus-results-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 20%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Claim</th>
+<th style="text-align: center;">Result</th>
+<th>Key Findings</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Workload Analysis (NASA TLX)</td>
+<td style="text-align: center;">No Significant Differences</td>
+<td>No significant differences in overall task workload between treatments. Temporal Demand was consistently the most significant contributor to workload across all treatments.</td>
+</tr>
+<tr class="even">
+<td>Usability Analysis (SUS)</td>
+<td style="text-align: center;">No Significant Differences</td>
+<td>No statistically significant differences in usability were reported for the treatments used during learning. Significant increase in SUS from learning to recall phase for all treatments, but not attributable to specific treatments.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The lack of significant differences in TLX scores across treatments suggests that participants adapted to the challenges of each method, resulting in similar overall workload experiences. The consistency of Temporal Demand as the primary contributor to workload indicates that the timed nature of the task, rather than the instructional method, dominated workload perception. The unintended emphasis on time pressure likely overshadowed other potential differences between treatments.</p>
+<p>User adaptation likely accounts, in part, for the absence of significant differences in SUS scores during learning, despite varying technological complexities and observed performance differences. This also suggests that the benefits of interactive features in AR/MR systems were likely balanced by technical issues and comfort concerns, resulting in similar overall usability perceptions across treatments. Those perceptions may also reflect factors that are disconnected from performance metrics. For example, the novelty of AR/MR technologies might have positively influenced usability ratings despite initial performance differences. In short, SUS may not be a valid measure of the efficacy of these training methods.</p>
+<p>The significant increase in SUS scores from learning to recall across all treatments likely reflects both reduced interface complexity and increased user confidence. However, the lack of treatment-specific differences in this improvement indicates that all methods similarly prepared users for independent task performance, regardless of their initial technological sophistication.</p>
+</section>
+<section id="qualitative-results" class="level3" data-number="6.1.3">
+<h3 data-number="6.1.3" class="anchored" data-anchor-id="qualitative-results"><span class="header-section-number">6.1.3</span> Qualitative Results</h3>
+<p>Participant feedback revealed nuanced experiences across treatments. PWI was perceived as simple and flexible, but hampered by poor instruction quality, particularly between similar parts. PAR was initially helpful but became constraining as users gained familiarity. The inconsistent auto-advance feature significantly impacted user experience, highlighting the importance of reliable automation and/or direct user control in training systems. AR and MR were seen as engaging and effective for training, generating enthusiasm despite hardware limitations. Users appreciated the combination of digital instructions with real-world overlay, particularly for complex steps. However, technical issues like unreliable interactions, limited field of view, and tracking problems presented significant challenges.</p>
+<p>Across all treatments, participant preferences and performance evolved with task familiarity. Many developed personalized strategies to overcome various system limitations, and individual characteristics like height and gaze patterns notably influenced method effectiveness. Environmental factors such as background noise, workspace setup, and lighting conditions were also noted by some participants. All of this highlights the importance of user-centered instructional design, adaptive training methods, flexible process designs, and environmental considerations in the design and implementation of these systems.</p>
+</section>
+<section id="researcher-observations" class="level3" data-number="6.1.4">
+<h3 data-number="6.1.4" class="anchored" data-anchor-id="researcher-observations"><span class="header-section-number">6.1.4</span> Researcher Observations</h3>
+<p>Several common themes emerged when observing participant trends and behavior, some of which are supported by participant feedback from <a href="25-results.html#sec-qual-fb" class="quarto-xref"><span>Section 5.6.3</span></a> and briefly summarized above. Most obviously, nearly all participants showed a clear improvement in speed and confidence as their trial progressed, regardless of treatment. The rate with which they did so varied, and some seemed more confident than others with the nature and design of the experiments. While each treatment had its unique challenges, participants generally adapted and improved over time. The AR and MR treatments offered helpful visualization but came with technical challenges, while the PWI treatment allowed for more flexibility but sometimes led to confusion with part identification and orientation.</p>
+<p>Among AR and MR participants, the impact of tracking and FOV limitations described in <a href="25-results.html#sec-res-challenges" class="quarto-xref"><span>Section 5.7</span></a> varied with individual height and preferred gaze patterns, an outcome that was neither expected nor accounted for in the study design. For all augmented treatments, the inconsistency of gesture detection systems was a common cause of frustration. The same could be said of the shortcomings of PWI instructions, all of which led to adaptation.</p>
+<p>Though specifically discouraged, it was not uncommon for participants to develop individual assembly strategies. Efforts to improve their performance and/or address perceived limits or shortcomings of the instructional method typically involved skipping, combining, or reordering steps. This was most common in the PWI treatment, where no step-wise controls existed. It was also prevalent in the PAR condition, where users that struggled with the gesture recognition system would sometimes resort to batching steps: working from memory for a few steps before advancing through all the relevant instructions.</p>
+</section>
+<section id="collective-insights" class="level3" data-number="6.1.5">
+<h3 data-number="6.1.5" class="anchored" data-anchor-id="collective-insights"><span class="header-section-number">6.1.5</span> Collective Insights</h3>
+<p>The quantitative results align with much of the qualitative feedback. For instance, PWI’s faster TCT but higher error rates corresponds with participant comments about its simplicity and poor instruction quality. Similarly, the improved OEE and reduced reliance on instructions for AR and MR users during recall aligned with feedback about these methods being effective for training and confidence-building.</p>
+<p>However, several unexpected findings and diverging quantitative / qualitative results also emerged. While PWI showed poorer performance in terms of error rates during learning, it unexpectedly demonstrated potential for improving learning durability. The lack of significant differences in TLX scores between treatments contrasted with the clear preferences and challenges expressed in qualitative feedback. AR and MR showed slower TCT but lower error rates quantitatively, yet participants generally provided positive feedback about these technologies’ effectiveness. Finally, although SUS scores improved across all treatments from learning to recall, qualitative feedback indicated ongoing usability challenges with augmented technologies.</p>
+<p>These divergences emphasizes the importance of considering both quantitative and qualitative data in evaluating instructional methods, as each provides unique insights into user experience and performance. They may also help to explain the mixed results obtained during this study.</p>
+</section>
+<section id="key-findings" class="level3" data-number="6.1.6">
+<h3 data-number="6.1.6" class="anchored" data-anchor-id="key-findings"><span class="header-section-number">6.1.6</span> Key Findings</h3>
+<p>To complete the summary of results, the ten most significant findings are enumerated below, listed roughly in order of importance:</p>
+<ol type="1">
+<li>Error Reduction with Augmented Methods: AR and MR technologies led to significantly lower error rates compared to traditional methods (PWI) during the learning phase. While this reduction is notable, it may be partially attributable to limitations in PWI instructions and potential floor effects for augmented methods. Further research is needed to fully understand the extent and implications of this error reduction across various task complexities and over longer periods.</li>
+<li>Speed-Accuracy Trade-off: While augmented methods reduced errors, they also led to slower initial execution compared to traditional methods. This trade-off is crucial for organizations to consider when implementing training systems and warrants further investigation, particularly in more complex tasks and real-world manufacturing environments.</li>
+<li>Evolution of Learning Effectiveness: The effectiveness of instructional methods varied across learning phases, highlighting the need for longitudinal studies. AR and MR showed benefits in initial error reduction and recall performance, while PWI unexpectedly demonstrated potential for improving error-rate durability in retention. Research exploring longer intervals between tasks could provide valuable insights into the long-term effectiveness of different methods.</li>
+<li>Adaptive User Behavior: Participants across all treatments developed personal strategies and preferences as they gained task familiarity. This emphasizes the importance of flexible training systems that accommodate user adaptation and suggests a need for research into how instructional methods can best support this natural learning process.</li>
+<li>Impact of Individual Differences: Characteristics such as height, gaze patterns, and learning styles significantly influenced the effectiveness of each method, especially for AR and MR systems. This underscores the need for adaptable designs in training technologies and further research into how these individual differences interact with various instructional methods.</li>
+<li>Complex Relationship between Perceived and Actual Performance: The discrepancy between quantitative workload measures (TLX) and qualitative feedback reveals that user adaptation may result in similar perceived workload despite varying technological complexities. This highlights the need for comprehensive evaluation methods in future research.</li>
+<li>Affordances and Limitations Balance: While AR/MR affordances like spatial registration and user-centric displays may contribute to deeper learning, current technical limitations partially offset these benefits. Further research is needed to quantify the impact of specific affordances and overcome existing limitations.</li>
+<li>Dynamic User Experience: User preferences and satisfaction evolved as participants became more familiar with the task, indicating that the effectiveness of training methods may vary depending on the stage of learning. This suggests a need for research into adaptive instructional methods that evolve with user proficiency.</li>
+<li>Environmental Factors: The unexpected influence of environmental conditions on method effectiveness emphasizes the importance of considering deployment contexts in training system design and future research.</li>
+<li>Long-term Usability Perceptions: SUS scores improved from learning to recall across all treatments, suggesting that familiarity with the task may improve perceived usability regardless of the initial technological sophistication. This highlights the need for longitudinal studies in usability research for training systems.</li>
+</ol>
+</section>
+</section>
+<section id="conclusions" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="conclusions"><span class="header-section-number">6.2</span> Conclusions</h2>
+<p>Together, these findings reveal complex relationships between instructional methods, various performance metrics, and individual traits. The central research question of this work, per <a href="23-prob_statement.html#sec-ps-rqs" class="quarto-xref"><span>Section 3.2</span></a> is:</p>
+<blockquote class="blockquote">
+<p><em>How do different AR/MR instructional methods, designed to leverage specific affordances, impact operator learning, recall, and retention in a real-world manufacturing assembly training context?</em></p>
+</blockquote>
+<p>Realizing this question is difficult to answer directly in a concise manner, it was broken down into five supporting questions, each of which are revisited below.</p>
+<blockquote class="blockquote">
+<p><em>What are the relative effects of various AR/MR technologies on immediate learning outcomes, such as task completion time and error rates, compared to traditional paper-based instructions?</em></p>
+</blockquote>
+<p>These findings reveal a clear trade-off between speed and accuracy in immediate learning outcomes. While traditional methods facilitated faster initial performance, AR/MR technologies promoted higher quality outcomes. This suggests that the choice of instructional method should be guided by whether initial speed or accuracy is prioritized in a given training context.</p>
+<blockquote class="blockquote">
+<p><em>How do these AR/MR technologies influence long-term recall and retention of assembly skills, as measured by performance on the same task after a designated period without further training?</em></p>
+</blockquote>
+<p>The impact of AR/MR on long-term performance appears more nuanced than initially expected, with differing effects on speed versus accuracy retention. While augmented technologies generally led to better recall performance, unexpected results in the retention phase highlight the complexity of long-term skill retention and the need for further investigation in this area.</p>
+<blockquote class="blockquote">
+<p><em>To what extent do the specific affordances of each AR/MR technology, such as hands-free interaction, spatial registration, and user-centric displays, contribute to the observed learning, recall, and retention outcomes?</em></p>
+</blockquote>
+<p>Affordances such as spatial registration and user-centric displays appear to contribute significantly to learning outcomes, albeit with some trade-offs. These features may initially slow task completion but potentially lead to deeper learning and better long-term retention. However, current technical limitations partially offset these benefits, underscoring the need for continued refinement of AR/MR technologies.</p>
+<blockquote class="blockquote">
+<p><em>How do operator characteristics, such as related experience or demographics, influence the effectiveness of each instructional method?</em></p>
+</blockquote>
+<p>This study reveals that individual differences significantly impact the effectiveness of each instructional method. Factors such as height, gaze patterns, and learning styles interact with the features of each method, highlighting the need for adaptable designs that can accommodate a range of user characteristics and preferences.</p>
+<blockquote class="blockquote">
+<p><em>What are the perceived workload, usability, and user satisfaction associated with each AR/MR technology, and how do these factors relate to learning, recall, and retention outcomes?</em></p>
+</blockquote>
+<p>The relationship between perceived workload, usability, and actual performance is complex. While quantitative measures showed little difference between methods, qualitative feedback revealed evolving user preferences and adaptation strategies. This suggests that effective implementation of AR/MR in training contexts requires consideration of both objective performance metrics and subjective user experiences.</p>
+<p>In conclusion, this study reveals that AR/MR instructional methods in manufacturing assembly training offer a nuanced trade-off between immediate performance and long-term learning outcomes. While these technologies can enhance accuracy and potentially deepen learning, their effectiveness is moderated by individual user characteristics and evolving preferences. The impact of AR/MR methods on learning, recall, and retention is not uniform across all aspects of performance, highlighting the need for context-specific implementation strategies. As these technologies continue to develop, their unique affordances promise to reshape training approaches, but realizing their full potential requires careful consideration of both immediate task demands and long-term skill development goals.</p>
+</section>
+<section id="contributions" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="contributions"><span class="header-section-number">6.3</span> Contributions</h2>
+<p>This work makes several significant contributions to the field of AR/MR technologies in manufacturing training, directly addressing the central research question: “How do different AR/MR instructional methods, designed to leverage specific affordances, impact operator learning, recall, and retention in a real-world manufacturing assembly training context?” The primary contributions relate to theoretical, methodological, empirical, practical, and human factors considerations. Each correspond with one of the supporting research questions, as detailed below.</p>
+<section id="theoretical-affordance-based-evaluation-framework" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="theoretical-affordance-based-evaluation-framework"><span class="header-section-number">6.3.1</span> Theoretical: Affordance-Based Evaluation Framework</h3>
+<p>This study develops and applies an affordance-based framework for evaluating AR/MR technologies in manufacturing training contexts, addressing the research question: “To what extent do the specific affordances of each AR/MR technology contribute to the observed learning, recall, and retention outcomes?” The framework provides a new theoretical lens through which to understand and assess the effectiveness of these technologies. By focusing on specific affordances such as spatial registration, user-centric displays, and hands-free interaction, this framework offers a more structured and theoretically grounded method of assessing AR/MR technologies in manufacturing training, enabling more precise comparisons and insights across different systems and contexts. Evidence from the study suggests that affordances like spatial registration and user-centric displays contribute significantly to learning outcomes, albeit with some trade-offs in initial task completion time.</p>
+</section>
+<section id="methodological-comprehensive-multi-phase-study-design" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="methodological-comprehensive-multi-phase-study-design"><span class="header-section-number">6.3.2</span> Methodological: Comprehensive Multi-Phase Study Design</h3>
+<p>A comprehensive study that captures learning, recall, and retention outcomes was designed and implemented to address the question: “How do these AR/MR technologies influence long-term recall and retention of assembly skills?” This multi-phase approach allows for the evaluation of both immediate learning outcomes and longer-term skill retention, offering insights into how the effectiveness of different instructional methods evolves over time. The study revealed that while AR and MR showed benefits in initial error reduction and recall performance, traditional methods unexpectedly demonstrated potential for improving error-rate durability in retention.</p>
+</section>
+<section id="empirical-quantification-of-speed-accuracy-trade-offs" class="level3" data-number="6.3.3">
+<h3 data-number="6.3.3" class="anchored" data-anchor-id="empirical-quantification-of-speed-accuracy-trade-offs"><span class="header-section-number">6.3.3</span> Empirical: Quantification of Speed-Accuracy Trade-offs</h3>
+<p>By providing empirical evidence to quantify the speed-accuracy trade-offs between traditional and AR/MR-based instructional methods in manufacturing assembly tasks, this study addresses the question: “What are the relative effects of various AR/MR technologies on immediate learning outcomes?” It reveals that while AR/MR technologies often lead to slower initial performance, they result in higher quality outcomes with fewer errors. Specifically, PWI and PAR demonstrated faster initial performance but higher error rates, while AR and MR showed slower initial execution but significantly lower error rates during the learning phase. By quantifying this trade-off across different phases of learning and retention, this study provides valuable insight into important implementation considerations.</p>
+</section>
+<section id="practical-insights-on-the-interplay-of-environmental-and-user-characteristics" class="level3" data-number="6.3.4">
+<h3 data-number="6.3.4" class="anchored" data-anchor-id="practical-insights-on-the-interplay-of-environmental-and-user-characteristics"><span class="header-section-number">6.3.4</span> Practical: Insights on the Interplay of Environmental and User Characteristics</h3>
+<p>The question: “How do operator characteristics and environmental conditions influence the effectiveness of each instructional method?” is addressed through relevant practical insights. The research found that factors such as user height, workspace setup, and lighting conditions had some unexpected effects on the effectiveness of AR and MR systems. For example, taller participants and those with specific gaze behaviors (e.g., “down-lookers”) experienced more tracking issues with AR and MR systems. Additionally, the study revealed how environmental factors like background noise and lighting affected the user experience across different instructional methods. These findings provide valuable guidance for the real-world implementation of AR/MR training systems, informing the design of more flexible and effective solutions that can accommodate a diverse range of users and deployment contexts in manufacturing settings.</p>
+</section>
+<section id="human-factors-user-adaptation-and-perceived-workload-usability" class="level3" data-number="6.3.5">
+<h3 data-number="6.3.5" class="anchored" data-anchor-id="human-factors-user-adaptation-and-perceived-workload-usability"><span class="header-section-number">6.3.5</span> Human Factors: User Adaptation and Perceived Workload / Usability</h3>
+<p>This study contributes valuable insights into the cognitive and experiential aspects of AR/MR training systems, addressing the question: “What are the perceived workload, usability, and user satisfaction associated with each AR/MR technology, and how do these factors relate to learning outcomes?” By examining the complex relationships between perceived workload, usability, and actual performance across different phases of learning, this research reveals important considerations for the design and implementation of AR/MR training systems. The study’s significant, counter-intuitive findings concerning the relationships (or lack thereof) between complexity, workload, and usability suggest that the participants are less sensitive to technical complexity and more influenced by other factors (e.g., time pressures) than expected. This contribution underscores the importance of integrating both objective performance metrics and subjective user experiences in the evaluation and development of AR/MR training systems for manufacturing contexts.</p>
+<p>These contributions collectively advance our understanding of AR/MR technologies in manufacturing training. Collectively, they shed significant light on the central research question and offer a variety of insights that can guide future research and implementation in this rapidly evolving field.</p>
+</section>
+</section>
+<section id="implications-to-method-and-theory" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="implications-to-method-and-theory"><span class="header-section-number">6.4</span> Implications to Method and Theory</h2>
+<p>The contributions outlined above have important implications for both research and practice in augmented-assisted training.</p>
+<section id="methodical-implications" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="methodical-implications"><span class="header-section-number">6.4.1</span> Methodical Implications</h3>
+<ol type="1">
+<li><p>Research Design: The multi-phase, mixed-methods approach employed in this study demonstrates the value of comprehensive assessment in capturing the effects of AR/MR technologies on learning, recall, and retention. Future studies may consider adopting similar approaches to fully understand the impact of these technologies.</p></li>
+<li><p>Training System Design: The observed trade-offs between speed and accuracy, as well as the impact of individual differences, underscore the need for adaptable AR/MR training systems. Designers should consider incorporating features that can adjust to user characteristics and learning progress.</p></li>
+<li><p>Implementation Strategies: The varying effectiveness of different methods across learning phases suggests that organizations should consider using a combination of instructional approaches, potentially transitioning between methods as learners progress from novice to expert.</p></li>
+<li><p>Evaluation Metrics: The discrepancies observed between performance and user experiences highlight the importance of supporting comprehensive quantitative performance measures with diverse qualitative metrics when assessing the effectiveness of AR/MR training systems in the context of participant idiosyncrasies.</p></li>
+<li><p>Technology Development: The identified limitations of current AR/MR systems, particularly in terms of ergonomics and adaptability, provide clear directions for technology developers to improve these systems for manufacturing training applications.</p></li>
+</ol>
+</section>
+<section id="theoretical-implications" class="level3" data-number="6.4.2">
+<h3 data-number="6.4.2" class="anchored" data-anchor-id="theoretical-implications"><span class="header-section-number">6.4.2</span> Theoretical Implications</h3>
+<ol type="1">
+<li><p>Cognitive Load Theory: The findings on speed-accuracy trade-offs and learning effectiveness across phases enhance our understanding of how different instructional methods affect cognitive load over time.</p></li>
+<li><p>Embodied Cognition: The benefits observed from spatial registration and user-centric displays in AR/MR systems provide empirical support for embodied cognition theories in learning processes.</p></li>
+<li><p>Active Learning Theory: The observation of adaptive user behavior across all treatments supports the importance of active engagement in the learning process, as posited by active learning theories.</p></li>
+<li><p>Technology Acceptance Model: The complex relationship found between perceived workload, usability, and actual performance suggests a need to refine how we apply technology acceptance models to AR/MR training systems.</p></li>
+<li><p>Affordance Theory: The study’s findings on the balance between AR/MR affordances and limitations contribute to our understanding of how technological affordances translate into learning outcomes in practical settings.</p></li>
+</ol>
+<p>Together, these implications highlight the complexity of evaluating AR/MR training systems and suggest several directions for refining both research methodologies and theoretical frameworks in this field. They emphasize the need for more nuanced, multi-faceted approaches to studying the effectiveness of these technologies in real-world learning contexts.</p>
+</section>
+</section>
+<section id="limitations-and-generalizability" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="limitations-and-generalizability"><span class="header-section-number">6.5</span> Limitations and Generalizability</h2>
+<p>While this study provides valuable insights into the effectiveness of different instructional methods for manufacturing assembly tasks, several limitations should be considered when interpreting the results. All are discussed below, grouped into the categories ecological generalizability, data measurement and analysis, and technology limitations.</p>
+<p>A number of considerations may limit the ecological generalizability of these findings for real-world industrial tasks, workers, and environments. The convenience sample was relatively small (n=54) and comprised primarily of university students without significant manufacturing experience. The assembly task, while designed to simulate real-world manufacturing processes, was relatively simple and short in duration, leading to floor effects in the observed error rates. Only a single assembly task was simulated, and the controlled laboratory setting may not fully reflect the conditions of a real manufacturing environment. Results may differ for experienced participants or different task types, including those that are more complex or of longer duration, in real world settings. Additionally, the fixed ergonomics of the workstation couldn’t accommodate diverse user needs, especially in AR/MR conditions, potentially impacting comfort, system performance, and AR/MR effectiveness for some participants.</p>
+<p>Limitations in data measurement and analysis should also be considered. While comprehensive, the measures used (e.g., TCT, UCE, OEE) may not capture all relevant aspects of performance and learning in manufacturing contexts. The qualitative feedback, while valuable, may be subject to recall bias or influenced by participants’ preconceptions about different technologies. Furthermore, the novelty of PAR, AR, and MR technologies to all participants may have influenced engagement and performance in ways that might not persist with long-term use. The variable retention period with a single measure (up to 44 days) may not provide a complete understanding of training durability. The imbalanced repeated measures due to varying task iterations during the learning phase led to compromises in analysis, challenging model fitting and reducing the accuracy of extrapolations. Additionally, the analysis did not employ cross-validation or other methods to prevent bias and limit overfitting for model-based approaches, potentially leading to underestimated error rates and overly optimistic model performance estimates.</p>
+<p>Finally, the PAR, AR, and MR systems used in the study had various known limitations in terms of field of view, comfort, reliability, and interaction methods. More advanced systems or implementations might yield different results, highlighting the need for caution when comparing these findings with results from other technological setups.</p>
+<p>These limitations do not invalidate the findings but provide important context for their interpretation and application. They also suggest avenues for future research to address these constraints and further validate the results in diverse settings and with larger, more representative samples.</p>
+</section>
+<section id="future-work" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="future-work"><span class="header-section-number">6.6</span> Future Work</h2>
+<p>Building on the findings and limitations of this study, future work will focus on furthering the understanding of AR/MR technologies in manufacturing training while increasing the ecological validity of the research. Several publications are planned from this work, each focusing on specific contributions of the work. As summarized in <a href="#tbl-pubs-proposed" class="quarto-xref">Table&nbsp;<span>6.5</span></a>, these publications will extend the current analysis by exploring interactions between affordances, refining performance metrics (e.g., a more nuanced OEE calculation), conducting error type analysis, and investigating the relationships between workload, usability, and performance measures.</p>
+<div id="tbl-pubs-proposed" class="striped quarto-float quarto-figure quarto-figure-center anchored" data-tbl-colwidths="[60,40]">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pubs-proposed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.5: Proposed Publications
+</figcaption>
+<div aria-describedby="tbl-pubs-proposed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-striped caption-top table">
+<colgroup>
+<col style="width: 60%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Working Title</th>
+<th>Focus</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>“An Affordance-Based Framework for Evaluating AR/MR Training Systems in Manufacturing”</td>
+<td>Affordance-based framework, Theoretical underpinnings, Application to AR/MR training systems</td>
+</tr>
+<tr class="even">
+<td>“Designing and Implementing AR/MR Technologies for Manufacturing Assembly Training: A Comparative Study of Learning Outcomes”</td>
+<td>Literature review and theoretical background, Experimental design and methodology, Learning phase results, Immediate impacts on task completion time and error rates</td>
+</tr>
+<tr class="odd">
+<td>“Long-term Effectiveness of AR/MR Technologies in Manufacturing Training: An Analysis of Recall and Retention”</td>
+<td>Recap of experimental design, Recall phase results, Retention phase findings, Implications for long-term skill acquisition</td>
+</tr>
+<tr class="even">
+<td>“Beyond Performance Metrics: Assessing Workload, Usability, and Individual Factors in AR/MR-Assisted Manufacturing Training”</td>
+<td>TLX and SUS results analysis, Demographic and individual factors, Interplay between workload, usability, and performance, User-centered design implications</td>
+</tr>
+<tr class="odd">
+<td>“Modeling Learning Curves in AR/MR-Assisted Manufacturing Training: Challenges and Methodological Approaches”</td>
+<td>Methodological aspects, Challenges in modeling learning curves, Solutions for imbalanced repeated measures data</td>
+</tr>
+<tr class="even">
+<td>“Qualitative Analysis of Error Types in AR/MR vs.&nbsp;Traditional Manufacturing Training: Implications for Training Design and Quality Control”</td>
+<td>Error type analysis, Qualitative insights into error nature, Impact of instructional methods on errors</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>These topics are suitable for publication in a range of reputable journals, including IEEE Transactions on Visualization and Computer Graphics, International Journal of Human-Computer Studies, Journal of Manufacturing Systems, and Computers in Industry; a list that reflects the interdisciplinary nature of the research and the value of its contributions.</p>
+<p>Subsequent studies with increasing complexity and ecological validity are intended. Each will integrate improvements to both the experimental and system design intended to address the limitations and implications previously identified. Anticipated system upgrades include improved application design, variable-height workstation with integrated multi-camera video capture, and modern VR / VST hardware. This would provide enhanced user experience, streamlined data capture, more robust tracking, and support user adaptation.</p>
+<p>Enhancements to the experimental design will prioritize ecological validity, the robustness of results, and greater insight into underlying learning mechanisms. This can be accomplished by refining participant selection, task design, and study duration, implementing more comprehensive assessment methods with additional qualitative and quantitative measures, and exploring the impact of instructional design methods on skill acquisition and retention.</p>
+<p>This research trajectory is best suited for a series of industrial experiments, progressing from controlled lab settings to longitudinal on-site studies with industry partners. Ideally, these studies will feature real-world tasks that vary in type and complexity to help validate and refine our understanding of AR/MR effectiveness in authentic manufacturing contexts.</p>
+<p>Through this future work, we aim to bridge the gap between theoretical insights and practical applications, ultimately contributing to the development of more effective and adaptable AR/MR training systems for the manufacturing industry.</p>
+</section>
+<section id="closing" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="closing"><span class="header-section-number">6.7</span> Closing</h2>
+<p>In closing, this study provides valuable insights into the effectiveness of AR/MR technologies in manufacturing assembly training, highlighting both their potential benefits and current limitations. The research reveals a nuanced interplay between instructional methods, performance metrics, and individual user characteristics, emphasizing the need for adaptive and context-sensitive training solutions. While AR/MR technologies demonstrate promise in reducing errors and potentially fostering deeper learning, their implementation requires careful consideration of speed-accuracy trade-offs, user adaptation processes, and environmental factors.</p>
+<p>As the field of AR/MR-assisted training continues to evolve, future research should focus on addressing the limitations identified in this study and expanding our understanding of these technologies in diverse manufacturing contexts. By building on the affordance-based framework and methodological approaches developed here, researchers and practitioners can work towards creating more effective, user-centered AR/MR training systems that balance immediate performance needs with long-term skill development goals. Ultimately, this line of inquiry has the potential to significantly enhance workforce training in manufacturing, contributing to improved productivity, quality, and adaptability in an increasingly complex industrial landscape.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../_chaps/25-results.html" class="pagination-link" aria-label="Results">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Results</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../_chaps/28-references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,289 @@
+try nonlinear methods that are theoretically aligned with learning
+
+Each model captures different types of decay or growth behavior based on a starting or ending point, expected magnitude of change, and a rate parameter.
+
+```{r}
+
+# exponential decay with asmptote
+m8e <- nlme::nlme(tct ~ a + b * exp(-c * seq.fp), 
+                    fixed = a + b + c ~ 1,
+                    random = a + b ~ 1 | participant,
+                    data = mdf, start = c(a = 50, b = 100, c = 2))
+
+# hyperbolic function
+m9h <- nlme::nlme(tct ~ a + b / (1 + c * seq.fp), 
+                    fixed = a + b + c ~ 1,
+                    random = a + b ~ 1 | participant,
+                    data = mdf, start = c(a = 50, b = 100, c = 2))
+
+# Gompertz function
+m10g <- nlme::nlme(tct ~ a * exp(-b * exp(-c * seq.fp)), 
+                     fixed = a + b + c ~ 1,
+                     random = a + b ~ 1 | participant,
+                     data = mdf, start = c(a = 150, b = 2, c = 5))
+
+anova(m8e, m9h, m10g)
+```
+
+all are more parsimonious, and aligned with learning theory, m8e performs best
+
+visually compare model predictions
+
+```{r}
+# Create a data frame for predictions
+new_data <- expand.grid(seq.fp = seq(0, 1, length.out = 100),
+                        participant = unique(mdf$participant)[1])
+
+# Add predictions from each model
+new_data$pred_exp <- predict(m8e, newdata = new_data, level = 0)
+new_data$pred_hyp <- predict(m9h, newdata = new_data, level = 0)
+new_data$pred_gomp <- predict(m10g, newdata = new_data, level = 0)
+
+# Reshape the data for plotting
+plot_data <- new_data %>%
+  tidyr::pivot_longer(cols = starts_with("pred_"),
+                      names_to = "model",
+                      values_to = "prediction") %>%
+  mutate(model = factor(model, 
+                        levels = c("pred_exp", "pred_hyp", "pred_gomp"),
+                        labels = c("Exponential", "Hyperbolic", "Gompertz")))
+
+# Create the plot
+ggplot(plot_data, aes(x = seq.fp, y = prediction, color = model)) +
+  geom_line(size = 1) +
+  geom_point(data = mdf, aes(x = seq.fp, y = tct), color = "black", size = 1, alpha = 0.3) +
+  scale_color_manual(values = c("Exponential" = "#1b9e77", 
+                                "Hyperbolic" = "#d95f02", 
+                                "Gompertz" = "#7570b3")) +
+  labs(x = "Sequence Progress (seq.fp)",
+       y = "Predicted Task Completion Time (TCT)",
+       color = "Model",
+       title = "Predicted Learning Curves by Model") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+here the Gompertz model is preferable - its asymptote better reflects expectations (takt time) and fits the existing data better
+
+The Gompertz function models growth or decay with a sigmoid shape, commonly used for population growth and similar phenomena:
+
+( a ): The upper asymptote where ( tct ) starts.
+( b ): A scale parameter affecting the displacement of the curve.
+( c ): Growth rate parameter affecting how quickly the variable changes.
+
+the sigmoidal nature of the Gompertz function provides it with flexibility to fit the early rapid learning followed by by a deceleration and a plateau more accurately. due to double-exponential term
+
+compare model diagnostics
+
+```{r}
+# Function for model diagnostics of nlme models
+model_diagnostics_nlme <- function(model) {
+  # Extract normalized residuals
+  residuals_model <- residuals(model, type = "normalized")
+
+  # 1. Shapiro-Wilk test for normality
+  shapiro_test <- shapiro.test(residuals_model)
+  shapiro_result <- tibble(
+    name = 'shapiro',
+    test_stat = shapiro_test$statistic,
+    p_value = shapiro_test$p.value
+  )
+
+  # 2. Breusch-Pagan test for heteroscedasticity using fitted values
+  fit_values <- fitted(model)
+  bp_test <- lm(I(residuals_model^2) ~ fit_values)
+  bp_statistic <- summary(bp_test)$r.squared * length(residuals_model)
+  bp_p_value <- 1 - pchisq(bp_statistic, df = 1)
+  hetero_result <- tibble(
+    name = 'heterosced',
+    test_stat = bp_statistic,
+    p_value = bp_p_value
+  )
+
+  # 3. Autocorrelation function for residuals
+  acf_test <- acf(residuals_model, plot = FALSE)
+  acf_result <- tibble(
+    name = 'acf1',
+    test_stat = acf_test$acf[2],  # Lag 1 autocorrelation
+    p_value = NA  # Not commonly provided for acf
+  )
+
+  # 4. Outliers Detection using standardized residuals
+  std_residuals <- residuals_model / sd(residuals_model)
+  outliers <- sum(abs(std_residuals) > 2.5)  # Count of residuals > 2.5 SDs
+  out_result <- tibble(
+    name = 'out',
+    test_stat = outliers,
+    p_value = NA  # No p-value for simple outlier count
+  )
+
+  # Combine all results into one tibble
+  results <- bind_rows(shapiro_result, hetero_result, acf_result, out_result)
+
+  return(results)
+}
+
+model_diagnostics_nlme(m8e)
+model_diagnostics_nlme(m9h)
+model_diagnostics_nlme(m10g)
+
+```
+
+m10g is normal with lower acf1 and fewer outliers but exhibits heteroscedasticity
+
+```{r}
+plot(m10g)
+```
+
+validates heteroscedasticity and outliers
+
+check fit for participants in all treatments
+
+```{r h1b-insp-cond}
+# Select the first 5 participants from each treatment
+m10g_sample <- mdf |>
+  mutate(pred = fitted(m10g)) |> 
+  group_by(treatment) |>
+  arrange(participant) |>
+  filter(participant %in% unique(participant)[1:5]) |>
+  ungroup() |> 
+  mutate(facet_label = paste(treatment, participant, sep = " - "))
+
+# Set a consistent maximum for y-axis
+max_tct <- max(m10g_sample$tct) + 20
+```
+
+
+```{r fig-h1b-rlm-pred}
+#| fig-cap: "Visualizing RLM model fit"
+
+ggplot(m10g_sample, aes(x = seq.fp, y = tct)) + 
+  geom_point(fill = "grey", pch = 21, size = 2, stroke = 1.25) + 
+  geom_line(aes(group = participant)) + 
+  geom_line(aes(y = pred, color = treatment), lwd = 1.5) +
+  facet_wrap(~ facet_label, ncol = 5) +
+  scale_y_continuous(limits = c(0, max_tct)) +
+  scale_color_brewer(palette = "Set1") +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank()
+  ) +
+  labs(
+    title = "Model Fit by Participant and Treatment",
+    subtitle = "RLM predictions for the first five participants in each treatment group"
+  )
+```
+
+This visualization allows for a comparison between observed data and model predictions across different treatments and participants, and helps confirm that a good fit is obtained for a wide range of observation counts. The variation in TCT is evident here, with participants assigned to the PWI and PAR groups completing substantially more task iterations than their AR / MR peers.
+
+```{r}
+m10g_sum <- summary(m10g)
+m10g_sum$tTable
+```
+
+Random Effects Variability:
+
+Parameter (b): Shows significant variability among participants (StdDev = 0.3544453), indicating that the scale of decay differs across individuals.
+Parameter (a): Very small standard deviation (1.682909e-04), suggesting that the upper asymptote (baseline performance) is relatively consistent among participants.
+Correlation: There is a moderate positive correlation (0.648) between the random effects of (a) and (b), indicating that participants with higher asymptotes also tend to have higher scales of decay.
+
+Fixed Effects Significance:
+
+All Fixed Effects (a, b, c): The fixed effects for (a), (b), and (c) are highly significant (p-values very close to 0), suggesting that they are important in explaining the variance in task completion time (TCT).
+Intercept (a): 48.03332 suggests a relatively high starting point for TCT.
+Scale (b): -1.03164 indicates a decaying factor influence.
+Rate (c): 2.06771 reflects a rapid rate of decay initially, contributing to the overall learning curve.
+
+Residual Analysis:
+
+Residual Distribution: The distribution of standardized within-group residuals shows no extreme outliers and appears reasonably symmetric (-2.77 to 3.13), indicating a good fit and no major systematic deviations in predictions.
+
+all values are in the original scale of TCT (seconds), measured on the scale of seq.fp, which is the [0,1] transformation of seq, which ranged from 1 to 11
+
+These results can be expressed as:
+
+$$
+\small{
+\text{TCT}_{ij} = 48.03 \cdot \exp\left(1.03 \cdot \exp\left(-2.07 \cdot \text{SC}_{ij}\right)\right) + \text{RE}_{ij} + \varepsilon_{ij}
+}
+$$ {#eq-m10q-form}
+
+$TCT_{ij}$ is the TCT in seconds for participant $j$ on task $i$. SC is the continuous transform of the discrete task number, $\text{SC} = (\text{SEQ} - 1) / (\max(\text{SEQ}) - 1)$. In this equation, $\text{RE}_{ij}$ represents the random effects of the m10g model, which take the form:
+
+$$
+\small{
+\text{RE}_{ij} = U_{aj} + U_{bj} \cdot \text{SC}_{ij}
+}
+$$
+where $U_{aj}$ and $U_{bj}$ are the random effects associated with parameters $a$ and $b$, respectively, for participant $j$. $U_{aj}$ represents the random intercept and $U_{bj}$ the random slope for each participant. These random effects are assumed to follow a normal distribution, $U_{kj} \sim \mathcal{N}(0, \sigma_{k}^2)$ for $k \in a, b$, and $\sigma_{k}$ are the coefficients for each component of the random effect.
+
+#### Conditional Models and Hypothesis Testing
+
+```{r}
+m10gc1 <- nlme::nlme(tct ~ a * exp(-b * exp(-c * seq.fp)), 
+                   fixed = list(a ~ treatment, b ~ 1, c ~ 1),
+                   random = a + b ~ 1 | participant,
+                   data = mdf, 
+                   start = c(a = rep(150, 4), b = 2, c = 5),
+                   control = list(
+                     opt = "optim",
+                     optMethod = "BFGS",
+                     nlme::nlmeControl(maxIter = 1000, msMaxIter = 1000)
+                    )
+                  )
+
+m10gc2 <- nlme::nlme(tct ~ a * exp(-b * exp(-c * seq.fp)), 
+                   fixed = list(a ~ treatment, b ~ treatment, c ~ 1),
+                   random = a + b ~ 1 | participant,
+                   data = mdf, 
+                   start = c(a = rep(150, 4), b = rep(2, 4), c = 5))
+
+m10gc3 <- nlme::nlme(tct ~ a * exp(-b * exp(-c * seq.fp)), 
+                   fixed = list(a ~ treatment, b ~ treatment, c ~ treatment),
+                   random = a + b ~ 1 | participant,
+                   data = mdf, 
+                   start = c(a = rep(150, 4), b = rep(2, 4), c = rep(5, 4)))
+
+```
+
+```{r}
+m10g_brms <- brm(
+  bf(tct ~ a * exp(-b * exp(-c * seq.fp)),
+     a ~ 1 + (1|participant),
+     b ~ 1 + (1|participant),
+     c ~ 1,
+     nl = TRUE),
+  data = mdf,
+  family = gaussian(),
+  prior = c(
+    prior(normal(150, 50), nlpar = "a"),
+    prior(normal(2, 1), nlpar = "b"),
+    prior(normal(5, 2), nlpar = "c"),
+    prior(cauchy(0, 20), class = "sd", nlpar = "a"),
+    prior(cauchy(0, 20), class = "sd", nlpar = "b"),
+    prior(cauchy(0, 20), class = "sigma")
+  ),
+  control = list(adapt_delta = 0.95),
+  cores = 4,
+  chains = 4,
+  iter = 4000,
+  warmup = 2000
+)
+
+```
+
+
+```{r}
+library(brms)
+m_brms <- brm(bf(tct ~ a * exp(-b * exp(-c * seq.fp)),
+                 a ~ treatment + (1|participant),
+                 b ~ 1,
+                 c ~ 1,
+                 nl = TRUE),
+              data = mdf,
+              family = gaussian())
+
+```

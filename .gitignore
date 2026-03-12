@@ -12,28 +12,55 @@
 # Other document types
 *.doc
 *.docx
+!data/DataDictionary.docx
 
-# Temp files (includes ALL markdown by default)
-# replace with work folder when configured to use
-*.md
+# Markdown render scratch
+*.knit.md
 *.aux
 *.log
 *.lof
 *.lot
 *.toc
+*.bcf
+*.run.xml
+*.fls
 *.pdf
 /*.tex
 
 # Output directory
 _book/
 /html
+/_html-check/
+/_build-compare/
+/manuscript-prebuild-*/
+
+# Tracked defended snapshot exceptions
+!defended-2024-08-02/
+!defended-2024-08-02/README.md
+!defended-2024-08-02/*.pdf
+!defended-2024-08-02/html/
+!defended-2024-08-02/html/**
 
 # Test directories
 test_input/
 test_output/
 /test/
+!parse_xml/test_input/
+!parse_xml/test_input/*.xml
+!parse_xml/test_output/
+!parse_xml/test_output/*.md
 
-# Don't ignore these...
-!issues.md
-!/reports/*.md
+# OS / editor / local cache noise
+.DS_Store
+__pycache__/
+parse_xml/__pycache__/
+*.code-workspace
 
+# Common local render noise
+_chaps/*.html
+_chaps/*_files/
+_chaps/tinytable_assets/
+index_files/
+
+
+**/*.quarto_ipynb

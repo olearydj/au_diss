@@ -1,0 +1,561 @@
+#### try linear spline model
+
+```{r}
+library(glmmTMB)
+library(splines)
+
+cms <- glmmTMB(
+  tct ~ 
+    1 + ns(seq.fp, 2) * treatment + 
+    (1 + ns(seq.fp, 2) | participant), 
+  data = md, 
+  family = gaussian()
+)
+
+summary(cms)
+r2(cms)
+```
+would not fit with higher order (3/2 or 3/3) polynomial terms in spline; note: uses glmm model - probably drop this as "also tried"
+
+visualize model fit of cms
+
+```{r}
+# Predicted values for different seq.fp levels
+seq_levels <- unique(md$seq.fp)
+predicted_vals <- expand.grid(treatment = levels(md$treatment), seq.fp = seq_levels)
+predicted_vals$pred_tct <- predict(cms, newdata = predicted_vals, re.form = NA)
+
+# Plot with both predicted lines and actual data points
+ggplot(predicted_vals, aes(x = seq.fp, y = pred_tct, color = treatment, group = treatment)) +
+  geom_line() +
+  geom_point(data = md, aes(x = seq.fp, y = tct, color = treatment, alpha = 0.4)) +
+  labs(title = "Predicted TCT across Task Iterations by Treatment", x = "Task Iteration (seq.fp)", y = "Predicted TCT") +
+  facet_wrap(~ treatment) +
+  theme_minimal()
+```
+
+similar to previous fit
+
+#### try bayesian methods
+
+seem much more robust - few convergence problems, take a while to fit
+
+```{r}
+library(brms)
+
+cmb <- brm(
+  tct ~ 1 + ns(seq.fp, 2) * treatment + 
+         (1 + ns(seq.fp, 2) | participant), 
+  data = md,
+  family = gaussian(),
+  prior = c(
+    set_prior("normal(0, 10)", class = "b"),
+    set_prior("normal(0, 10)", class = "sd", group = "participant")
+  ),
+  control = list(adapt_delta = 0.95)
+)
+
+summary(cmb)
+r2(cmb)
+emmeans::emmeans(cmb, pairwise ~ treatment)
+pp_check(cmb)
+plot(cmb, ask = F)
+
+```
+
+visualize fit for cmb
+
+```{r}
+seq_levels <- unique(md$seq.fp)
+predicted_vals <- expand.grid(treatment = levels(md$treatment), seq.fp = seq_levels)
+
+# Add dummy participant ID to prevent error, not used in prediction
+predicted_vals$participant <- NA
+
+# Use fitted() to get predictions, handling hierarchical structure
+predictions <- fitted(cmb, newdata = predicted_vals, re_formula = NA)
+
+# Add predictions to predicted_vals
+predicted_vals$pred_tct <- as.vector(predictions[, "Estimate"])
+
+# Convert treatment to a factor to ensure consistent plotting
+predicted_vals$treatment <- factor(predicted_vals$treatment, levels = levels(md$treatment))
+
+# Plot with both predicted lines and actual data points
+ggplot(predicted_vals, aes(x = seq.fp, y = pred_tct, color = treatment, group = treatment)) +
+  geom_line() +
+  geom_point(data = md, aes(x = seq.fp, y = tct, color = treatment), alpha = 0.4) +
+  labs(title = "Predicted TCT across Task Iterations by Treatment", x = "Task Iteration (seq.fp)", y = "Predicted TCT") +
+  facet_wrap(~ treatment) +
+  theme_minimal() +
+  guides(alpha = "none") # Hide the alpha legend
+
+```
+
+shows potential - better in some ways (flatter on the right), worse in others (too flat on the left)
+
+build alternative bayesian models
+
+```{r}
+# base model from above
+cmb0 <- cmb
+
+# increase polynomial degree (3,2)
+cmb1 <- brm(
+  tct ~ 1 + ns(seq.fp, 3) * treatment + 
+         (1 + ns(seq.fp, 2) | participant), 
+  data = md,
+  family = gaussian(),
+  prior = c(
+    set_prior("normal(0, 10)", class = "b"),
+    set_prior("normal(0, 10)", class = "sd", group = "participant")
+  ),
+  control = list(adapt_delta = 0.95)
+)
+
+# increase polynomial degree (3,3)
+cmb2 <- brm(
+  tct ~ 1 + ns(seq.fp, 3) * treatment + 
+         (1 + ns(seq.fp, 3) | participant), 
+  data = md,
+  family = gaussian(),
+  prior = c(
+    set_prior("normal(0, 10)", class = "b"),
+    set_prior("normal(0, 10)", class = "sd", group = "participant")
+  ),
+  control = list(adapt_delta = 0.95)
+)
+
+# # use b-spline instead
+# cmb2 <- brm(
+#   tct ~ 1 + bs(seq.fp, degree = 3) * treatment + 
+#          (1 + bs(seq.fp, degree = 2) | participant), 
+#   data = md,
+#   family = gaussian(),
+#   prior = c(
+#     set_prior("normal(0, 10)", class = "b"),
+#     set_prior("normal(0, 10)", class = "sd", group = "participant")
+#   ),
+#   control = list(adapt_delta = 0.95)
+# )
+
+# # use non-gaussian family
+# cmb3 <- brm(
+#   tct ~ 1 + ns(seq.fp, 2) * treatment + 
+#          (1 + ns(seq.fp, 2) | participant), 
+#   data = md,
+#   family = student(),
+#   prior = c(
+#     set_prior("normal(0, 10)", class = "b"),
+#     set_prior("normal(0, 10)", class = "sd", group = "participant")
+#   ),
+#   control = list(adapt_delta = 0.95)
+# )
+
+# add interaction term for early vs late iterations
+md$early <- ifelse(md$seq.fp <= 0.25, 1, 0)
+cmb4 <- brm(
+  tct ~ 1 + ns(seq.fp, 2) * treatment * early + 
+         (1 + ns(seq.fp, 2) | participant), 
+  data = md,
+  family = gaussian(),
+  prior = c(
+    set_prior("normal(0, 10)", class = "b"),
+    set_prior("normal(0, 10)", class = "sd", group = "participant")
+  ),
+  control = list(adapt_delta = 0.95)
+)
+
+# use early term and higher order poly (3,3)
+cmb5 <- brm(
+  tct ~ 1 + ns(seq.fp, 3) * treatment * early + 
+         (1 + ns(seq.fp, 3) | participant), 
+  data = md,
+  family = gaussian(),
+  prior = c(
+    set_prior("normal(0, 10)", class = "b"),
+    set_prior("normal(0, 10)", class = "sd", group = "participant")
+  ),
+  control = list(adapt_delta = 0.95)
+)
+
+
+```
+
+look at best model, cmb5
+
+```{r}
+m <- cmb5
+summary(m)
+r2(m)
+emmeans::emmeans(m, pairwise ~ treatment)
+pp_check(m)
+plot(m, ask = F)# Predicted values for different seq.fp levels
+
+seq_levels <- unique(md$seq.fp)
+predicted_vals <- expand.grid(treatment = levels(md$treatment), seq.fp = seq_levels)
+
+# Add dummy participant ID to prevent error, not used in prediction
+predicted_vals$participant <- NA
+
+# Add 'early' variable based on the same condition used for the model data
+predicted_vals$early <- ifelse(predicted_vals$seq.fp <= 0.25, 1, 0)
+
+# Use fitted() to get predictions, handling hierarchical structure
+predictions <- fitted(m, newdata = predicted_vals, re_formula = NA)
+
+# Add predictions to predicted_vals
+predicted_vals$pred_tct <- as.vector(predictions[, "Estimate"])
+
+# Convert treatment to a factor to ensure consistent plotting
+predicted_vals$treatment <- factor(predicted_vals$treatment, levels = levels(md$treatment))
+
+# Plot with both predicted lines and actual data points
+ggplot(predicted_vals, aes(x = seq.fp, y = pred_tct, color = treatment, group = treatment)) +
+  geom_line() +
+  geom_point(data = md, aes(x = seq.fp, y = tct, color = treatment), alpha = 0.4) +
+  labs(title = "Predicted TCT across Task Iterations by Treatment", x = "Task Iteration (seq.fp)", y = "Predicted TCT") +
+  facet_wrap(~ treatment) +
+  theme_minimal() +
+  guides(alpha = "none") # Hide the alpha legend
+
+
+```
+
+```{r}
+# can't compare directly lmer / glmm with brm fits
+# lmer quad rsri, glmmTMB splines
+cp1 <- compare_performance(cm1, cms, rank = T)
+# b-ns2/2, b-ns3/2, b-ns3/3, be-ns2/2, be-ns3/3
+cp2 <- compare_performance(cmb0, cmb1, cmb2, cmb4, cmb5, rank = T)
+display(cp1, layout = "vertical")
+display(cp2, layout = "vertical")
+# cp1 best = cm1 (lmer quad rsri)
+# cp2 best = cmb5 (be-ns3/3), cmb2 (b-ns3/3), cmb1 (b-ns3/2)
+```
+
+cmb5 appears to be the best model
+
+need to do more exhaustive search with cross validation or other best practices to search the hyper-parameter space for: `ns`, `early` array
+
+
+Hyperparameter search of the bayesian model to maximize fit.
+
+```{r load-libs}
+#| warning: false
+
+library(tidyverse)
+library(lmerTest)
+library(brms)
+library(tidymodels)
+library(broom.mixed) # For tidymodels compatibility with brms
+
+# library(pwr)
+# library(emmeans)
+# library(performance)
+# library(gt)
+# library(patchwork)
+# library(moments)
+# library(ggpubr)
+# library(ggstatsplot)
+```
+
+```{r load-data}
+# Load objects from the file
+load("rdata/learn.RData")
+```
+
+```{r prep-h1b-data}
+# disaggregated data required for rate of change of tct
+# create data
+learn_h1b <- learn |>
+  filter(participant != 1063) |>
+  rename(tct = car_elapsed_time_adj)
+
+# mutate
+learn_h1b <- learn_h1b |>
+  group_by(participant) |>
+  mutate(
+    seq = row_number(),
+    treatment = factor(as.character(treatment))
+  ) |>
+  ungroup() |>
+  select(participant, treatment, seq, tct, uce)
+
+# transform seq to float from 0 to 1
+md <- learn_h1b |>
+  mutate(seq.fp = (seq - 1) / (max(seq) - 1))
+
+summary(md$seq.fp)
+glimpse(md)
+```
+
+## Unconditional Bayesian  Model
+
+```{r}
+umb <- brm(
+  tct ~ 1 + ns(seq.fp, 2) + 
+        (1 + ns(seq.fp, 2) | participant), 
+  data = md,
+  family = gaussian(),
+  prior = c(
+    set_prior("normal(0, 10)", class = "b"),
+    set_prior("normal(0, 10)", class = "sd", group = "participant")
+  ),
+  control = list(adapt_delta = 0.95)
+)
+```
+
+Tune unconditioned Bayesian model
+
+$$
+\begin{align}
+\text{TCT}_{ij} &= \beta_0 + \beta_1 (\text{SEQ}_{ij}) + \beta_2 (\text{SEQ}_{ij}^{ns}) \\
+                &\quad + \beta_3 (\text{SW}_{ij}) + \beta_4 (\text{SEQ}_{ij}) \times \text{SW}_{ij} + \\
+                &\quad + (1 + \text{SEQ}_{ij} | \text{Part}_i) + \epsilon_{ij}
+\end{align}
+$$
+
+unconditioned version of model definitions:
+
+m4 (lmer): `tct ~ 1 + seq.fp + I(seq.fp ^ 2) + (1 + seq.fp + I(seq.fp ^ 2) | participant)`
+
+$$
+\text{TCT}_{ij} = \beta_0 + \beta_1 (\text{SEQ}_{ij}) + \beta_2 (\text{SEQ}_{ij}^2) + (1 + \beta_3 (\text{SEQ}_{ij}) + \beta_4 (\text{SEQ}_{ij}^2) \space | \space \text{PART}_{i}) + \epsilon_{ij}
+$$
+
+- Fixed Effects:
+  - Intercept: 1
+  - Linear Sequence: seq.fp
+  - Quadratic Sequence: I(seq.fp ^ 2)
+  - Interaction: *None*
+- Random Effects:
+  - Intercept: 1
+  - Linear Sequence: seq.fp (random slope)
+  - Quadratic Sequence: I(seq.fp ^ 2) (random slope)
+  - Condition: random effects grouped by participant
+
+cmb0 (brm): `tct ~ 1 + ns(seq.fp, 2) + (1 + ns(seq.fp, 2) | participant)`
+- Fixed Effects:
+  - Intercept: 1
+  - Natural Splines of Sequence: ns(seq.fp, 2)
+  - Linear Sequence: Included in ns(seq.fp, 2) but not explicit as term
+  - Quadratic Sequence: Included in ns(seq.fp, 2) but not explicit as term
+  - Interaction: *None*
+- Random Effects:
+  - Intercept: 1
+  - Natural Splines of Sequence: ns(seq.fp, 2) (random slopes)
+  - Condition: random effects grouped by participant
+
+cmb5 (brm):
+
+`tct ~ 1 + ns(seq.fp, 2) * early + (1 + ns(seq.fp, 2) | participant)`
+
+$$
+\begin{align*}
+\text{TCT}_{ij} &= \beta_0 + \beta_1 (\text{SEQ}_{ij}^{\text{s1}} \times \text{E}_{ij}) + \beta_2 (\text{SEQ}_{ij}^{\text{s2}} \times \text{E}_{ij}) \\
+                &\quad + \left( 1 + \beta_3 (\text{SEQ}_{ij}^{\text{s1}}) + \beta_4 (\text{SEQ}_{ij}^{\text{s2}}) \mid \text{PART}_i \right) + \epsilon_{ij}
+\end{align*}
+$$
+
+where each interaction includes the components:
+
+$$
+A \times B = A + B + A \times B
+$$
+
+so:
+
+$$
+\beta_1 (\text{SEQ}_{ij}^{\text{s1}} \times \text{E}_{ij}) + \beta_2 (\text{SEQ}_{ij}^{\text{s2}} \times \text{E}_{ij}) \\
+$$
+
+is equivalent to: 
+
+$$
+\beta_1 (\text{SEQ}_{ij}^{\text{s1}}) + \beta_2 (\text{SEQ}_{ij}^{\text{s2}}) + \beta_3 (\text{SEQ}_{ij}^{\text{s1}} \times \text{E}_{ij}) + \beta_4 (\text{SEQ}_{ij}^{\text{s2}} \times \text{E}_{ij}) + \beta_5 (\text{E}_{ij})
+$$
+
+therefore:
+
+$$
+\begin{align*}
+\text{TCT}_{ij} &= \beta_0 + \beta_1 (\text{SEQ}_{ij}^{\text{s1}}) + \beta_2 (\text{SEQ}_{ij}^{\text{s2}}) + \beta_3 (\text{SEQ}_{ij}^{\text{s1}} \times \text{E}_{ij}) + \beta_4 (\text{SEQ}_{ij}^{\text{s2}} \times \text{E}_{ij}) + \beta_5 (\text{E}_{ij}) \\
+&\quad + \left( 1 + \beta_6 (\text{SEQ}_{ij}^{\text{s1}}) + \beta_7 (\text{SEQ}_{ij}^{\text{s2}}) \mid \text{PART}_i \right) + \epsilon_{ij}
+\end{align*}
+$$
+
+- $\beta_0$: Intercept
+- $\beta_1(\text{SEQ}_{ij}^{s1})$: Main effect for the first spline basis
+- $\beta_2(\text{SEQ}_{ij}^{s2})$: Main effect for the second spline basis
+- $\beta_3(\text{SEQ}_{ij}^{s1} \times \text{E}_{ij})$: Interaction of first spline basis with early phase
+- $\beta_4(\text{SEQ}_{ij}^{s2} \times \text{E}_{ij})$: Interaction of second spline basis with early phase
+- $\beta_5 (\text{E}_{ij})$: Main effect of the early phase
+- $\left( 1 + \beta_6 (\text{SEQ}_{ij}^{s1}) + \beta_7 (\text{SEQ}_{ij}^{s2}) \mid \text{PART}_i \right)$: 
+
+Random effects grouped by participant
+- $\epsilon_{ij}$: Residual error
+- Fixed Effects:
+  - Intercept: 1
+  - Natural Splines of Sequence: ns(seq.fp, 2)
+  - Linear Sequence: Included in ns(seq.fp, 2) but not explicit as term
+  - Quadratic Sequence: Included in ns(seq.fp, 2) but not explicit as term
+  - Interaction: ns(seq.fp, 2) * early
+- Random Effects:
+  - Intercept: 1
+  - Natural Splines of Sequence: ns(seq.fp, 2) (random slopes)
+  - Condition: random effects grouped by participant
+
+
+```{r}
+# Create a recipe
+umb_recipe <- recipe(tct ~ seq.fp + participant, data = md) |>
+  step_ns(seq.fp, deg_free = tune()) |>
+  step_mutate(early = ifelse(seq.fp <= tune(), 1, 0)) |>
+  step_interact(terms = ~ ns(seq.fp, 2):early)
+
+# Define the Bayesian model
+bayesian_spec <- linear_reg() |>
+  set_engine(
+    "stan",
+    prior_intercept = normal(0, 10),
+    prior = normal(0, 10),
+    prior_aux = cauchy(0, 5),
+    adapt_delta = 0.95
+  ) |>
+  set_mode("regression")
+
+# Define Workflow
+workflow_bayesian <- workflow() |>
+  add_recipe(umb_recipe) |>
+  add_model(bayesian_spec)
+
+# Define the parameter object for deg_free with a specific range
+deg_free_param <- deg_free(range = c(2, 5))
+
+# Define the parameter object for early
+early_param <- threshold(range = c(0.1, 0.5))
+
+# Create a parameter grid to be searched
+tune_grid <- grid_regular(
+  deg_free_param,   # Degrees of freedom for natural splines
+  early_param,      # Cut-off for early variable
+  levels = 4
+)
+
+# Grouped 5-fold cross-validation by participant
+set.seed(123)
+folds <- group_vfold_cv(md, group = participant, v = 5)
+
+# Check balance within cross-validation folds
+balance_check <- folds |>
+  mutate(train_treat_dist = map(
+    splits,
+    ~ .x |> analysis() |>
+      count(treatment) |>
+      mutate(prop = n / sum(n))
+  )) |>
+  unnest(train_treat_dist) |>
+  group_by(id) |>
+  summarize(
+    treatment_mean = mean(n),
+    treatment_sd = sd(n),
+    prop_mean = mean(prop),
+    prop_sd = sd(prop)
+  )
+
+balance_check
+
+```
+
+pre-flight checks
+
+```{r}
+# Take a small sample of the data
+md_sample <- md |> sample_n(10)
+
+# Perform dry run with small data subset and limited iterations
+set.seed(123)
+folds_sample <- group_vfold_cv(md_sample, group = participant, v = 2)
+
+# Dry run tuning with limited resamples (use a rapid backend if fitting models)
+dry_run_results <- tune_grid(
+  workflow_bayesian_sample,
+  resamples = folds_sample,
+  grid = tune_grid,
+  control = control_grid(save_pred = TRUE, extract = partial(rmse, skip = TRUE))
+)
+
+# Check the results from the dry run
+print(dry_run_results)
+
+```
+
+```{r}
+# Tune the model using the workflow and predefined grid
+tune_results <- tune_grid(
+  workflow_bayesian,
+  resamples = folds,
+  grid = tune_grid,
+  control = control_grid(save_pred = TRUE)
+)
+
+# Collect best tuning results
+best_params <- select_best(tune_results, "rmse")  # You can use appropriate metric
+
+```
+
+
+```{r}
+# Sample Data Preparation
+set.seed(123)
+md <- md %>% mutate(participant = as.factor(participant))
+
+# Split Data
+folds <- group_vfold_cv(md, group = participant, v = 5)
+
+# Hyperparameter Grid for Tuning
+deg_free_param <- tibble::tibble(deg_free = seq(2, 4, by = 1))
+early_param <- tibble::tibble(early_cutoff = seq(0.1, 0.5, by = 0.1))
+
+# For each Fold
+results <- list()
+
+for (i in seq_len(length(folds$splits))) {
+  for (deg_free in deg_free_param$deg_free) {
+    for (early_cutoff in early_param$early_cutoff) {
+      
+      # Training Data for the Fold
+      train_data <- analysis(folds$splits[[i]])
+      
+      # Create the early variable
+      train_data <- train_data %>% mutate(early = ifelse(seq.fp <= early_cutoff, 1, 0))
+      
+      # Fit the Model using brms
+      formula <- brms::bf(
+          tct ~ 1 + ns(seq.fp, deg_free) * early + (1 + ns(seq.fp, deg_free) | participant)
+        )
+      
+      fit <- brm(
+        formula = formula,
+        data = train_data,
+        family = gaussian(),
+        prior = c(
+          set_prior("normal(0, 10)", class = "b"),
+          set_prior("normal(0, 10)", class = "sd", group = "participant")
+        ),
+        control = list(adapt_delta = 0.95),
+        sample_prior = TRUE
+      )
+      
+      # Store Results
+      results[[paste0("fold", i, "_df", deg_free, "_early", early_cutoff)]] <- fit
+    }
+  }
+}
+
+# Processing Results
+print(results)
+
+```
+

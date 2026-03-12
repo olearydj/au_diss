@@ -34,10 +34,6 @@ The remainder of this dissertation is structured as follows:
 This work aims to advance the understanding of AR/MR technologies in manufacturing training, ultimately contributing to more effective workforce development in an increasingly complex industrial landscape.
 
 ::: content-hidden
-TODO: review and finalize introduction once results and conclusions are complete
-:::
-
-::: content-hidden
 MAYBE:
 ## Conventions
 

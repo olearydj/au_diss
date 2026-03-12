@@ -1,0 +1,110 @@
+```{r}
+
+# First, create the binned sequence variable
+mdf <- mdf |>
+  mutate(seq_bin = cut(seq.fp, 
+                       breaks = c(-Inf, 0.3, 0.7, Inf),
+                       labels = c("g1", "g2", "g3")))
+
+# Piecewise versions of the models
+
+# random intercept
+m1_pw <- lmer(tct ~ 1 + (1 | participant), 
+              data = mdf, REML = FALSE)
+
+# fixed slope, random intercept
+m2_pw <- lmer(tct ~ 1 + seq.fp * seq_bin + (1 | participant), 
+              data = mdf, REML = FALSE)
+
+# random slope, random intercept
+m3_pw <- lmer(tct ~ 1 + seq.fp * seq_bin + (1 + seq.fp | participant), 
+              data = mdf, REML = FALSE)
+
+# quadratic random slope, random intercept
+m4_pw <- lmer(tct ~ 1 + seq.fp * seq_bin + I(seq.fp^2) * seq_bin + 
+                (1 + seq.fp + I(seq.fp^2) | participant),
+              data = mdf, REML = FALSE)
+
+# log-transformed time; fixed slope, random intercept
+m5_pw <- lmer(tct ~ 1 + log(seq.fp + 1) * seq_bin + (1 | participant), 
+              data = mdf, REML = FALSE)
+
+# log-transformed time; random slope, random intercept
+m6_pw <- lmer(tct ~ 1 + log(seq.fp + 1) * seq_bin + 
+                (1 + log(seq.fp + 1) | participant),
+              data = mdf, REML = FALSE)
+
+# linear and log-transformed time; fixed slope, random intercept
+m7_pw <- lmer(tct ~ 1 + seq.fp * seq_bin + log(seq.fp + 1) * seq_bin + 
+                (1 + seq.fp + log(seq.fp + 1) | participant),
+              data = mdf, REML = FALSE)
+
+compare_performance(m1_pw, m2_pw, m3_pw, m4_pw, m5_pw, m6_pw, m7_pw, rank = T)
+compare_performance(m6_pw, m7, metrics = "common", rank = F)
+```
+
+```{r}
+# 1. Create a new dataset for predictions
+new_data <- expand.grid(
+  seq.fp = seq(0, 1, length.out = 100),
+  participant = unique(mdf$participant)[1]  # Use the first participant for predictions
+)
+
+# Add seq_bin to the new data
+new_data <- new_data |>
+  mutate(seq_bin = cut(seq.fp, 
+                       breaks = c(-Inf, 0.3, 0.7, Inf),
+                       labels = c("g1", "g2", "g3")))
+
+# 2. Generate predictions
+predictions <- predict(m6_pw, newdata = new_data, re.form = NA)  # Marginal predictions
+
+# 3. Add predictions to the new_data
+new_data$predicted_tct <- predictions
+
+# 4. Plot using ggplot2
+ggplot() +
+  geom_point(data = mdf, aes(x = seq.fp, y = tct), alpha = 0.3) +
+  geom_line(data = new_data, aes(x = seq.fp, y = predicted_tct), color = "blue", size = 1) +
+  geom_vline(xintercept = c(0.3, 0.7), linetype = "dashed", color = "red", alpha = 0.5) +
+  labs(x = "Standardized Task Sequence (SC)",
+       y = "Task Completion Time (seconds)",
+       title = "Predicted Learning Curve from Piecewise Model") +
+  theme_minimal()
+
+
+```
+
+```{r}
+m6_pw_treat <- lmer(tct ~ 1 + log(seq.fp + 1) * seq_bin * treatment + 
+                      (1 + log(seq.fp + 1) | participant),
+                    data = mdf, REML = FALSE)
+
+new_data <- expand.grid(
+  seq.fp = seq(0, 1, length.out = 100),
+  treatment = unique(mdf$treatment),
+  participant = unique(mdf$participant)[1]  # Use the first participant for predictions
+)
+
+new_data <- new_data |>
+  mutate(seq_bin = cut(seq.fp, 
+                       breaks = c(-Inf, 0.3, 0.7, Inf),
+                       labels = c("g1", "g2", "g3")))
+
+# Generate predictions
+predictions <- predict(m6_pw_treat, newdata = new_data, re.form = NA)  # Marginal predictions
+
+# Add predictions to the new_data
+new_data$predicted_tct <- predictions
+
+ggplot() +
+  geom_point(data = mdf, aes(x = seq.fp, y = tct, color = treatment), alpha = 0.3) +
+  geom_line(data = new_data, aes(x = seq.fp, y = predicted_tct, color = treatment), size = 1) +
+  geom_vline(xintercept = c(0.3, 0.7), linetype = "dashed", color = "red", alpha = 0.5) +
+  labs(x = "Standardized Task Sequence (SC)",
+       y = "Task Completion Time (seconds)",
+       title = "Predicted Learning Curves by Treatment Group") +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")  # Use a color-blind friendly palette
+
+```

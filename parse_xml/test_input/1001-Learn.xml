@@ -1,0 +1,112 @@
+<descriptive-metadata-export>
+  <descriptive-metadata format-version="0.4.0">
+    <version>83</version>
+    <context-info>
+      <url>file:/Volumes/ThunderBay%20mini/Research%20Master/data/1001-PWI-2023-02-10-1200/videos/1001-Learn.mp4</url>
+      <size>165371392</size>
+      <last-modified iso="2023-06-08T14:25:09Z">2023-06-08 09:25:09.0</last-modified>
+    </context-info>
+    <title>1001-Learn</title>
+    <description>from trimmed content:
+P struggles with paper instructions during training, is allowed to take them down and look at them with some coaching between practice and learning
+P improvises from start of L, pulling multiple parts, laying them on work surface, and asseembling in preferred order
+HL UI elements visible during session
+HL video missing from start of session until 7min mark</description>
+    <in-point time-base="1/90000">50047175</in-point>
+    <out-point time-base="1/90000">54349175</out-point>
+    <rating>0</rating>
+    <marker>
+      <id>acf203b0-ef2b-4cd4-97f5-ecc89401d711</id>
+      <timestamp time-base="1/90000">565175</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">8814000</duration>
+      <title>Car 1</title>
+      <description />
+    </marker>
+    <marker>
+      <id>a7571fac-63bd-4b6a-98c2-d69307dd19c7</id>
+      <timestamp time-base="1/30">3251</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">6003000</duration>
+      <title>Car 2</title>
+      <description />
+    </marker>
+    <marker>
+      <id>ac6d8e34-d289-4277-bee9-3c5c94f42496</id>
+      <timestamp time-base="1/30">5351</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">6843000</duration>
+      <title>Breakage 3</title>
+      <description>failed attempt to repair</description>
+    </marker>
+    <marker>
+      <id>28798610-381b-4e19-aac3-f6d9a7f04ece</id>
+      <timestamp time-base="1/30">6749</timestamp>
+      <type>default</type>
+      <title>Breakage</title>
+      <description>front crossbar popped</description>
+    </marker>
+    <marker>
+      <id>fe5b28f7-a8d1-4ca6-b123-569683bf89a3</id>
+      <timestamp time-base="1/30">7828</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">6201000</duration>
+      <title>Car 4</title>
+      <description />
+    </marker>
+    <marker>
+      <id>097ea088-e92b-49be-a660-9ef4732491d1</id>
+      <timestamp time-base="1/30">10004</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">5481000</duration>
+      <title>Car 5</title>
+      <description />
+    </marker>
+    <marker>
+      <id>821493ad-bac6-4244-8b93-e59de6e02d78</id>
+      <timestamp time-base="1/30">11920</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">6024000</duration>
+      <title>Car 6</title>
+      <description />
+    </marker>
+    <marker>
+      <id>882a8742-c833-4d04-8c42-66544425577f</id>
+      <timestamp time-base="1/30">14036</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">2460000</duration>
+      <title>Defect 7</title>
+      <description>prebuilt missing piece</description>
+    </marker>
+    <marker>
+      <id>b7307cd5-7766-4bd6-b2d6-6d4093c7b37b</id>
+      <timestamp time-base="1/30">14698</timestamp>
+      <type>default</type>
+      <title>Defect</title>
+      <description>notices prebuilt car is missing a piece</description>
+    </marker>
+    <marker>
+      <id>5cc713b9-9f33-49b2-8666-52d0a50b5bae</id>
+      <timestamp time-base="1/30">14952</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">4833000</duration>
+      <title>Car 8</title>
+      <description>corrected</description>
+    </marker>
+    <marker>
+      <id>15ddceaf-7e50-45db-a7fd-19ec0fe6f372</id>
+      <timestamp time-base="1/30">16394</timestamp>
+      <type>default</type>
+      <title>Correction</title>
+      <description>notices missing piece as they are placing it in the green tray</description>
+    </marker>
+    <marker>
+      <id>a4662898-3ca2-420d-adc5-c0ad23c8f1a2</id>
+      <timestamp time-base="1/30">16682</timestamp>
+      <type>subclip</type>
+      <duration time-base="1/90000">4305000</duration>
+      <title>Car 9</title>
+      <description>finishes at the buzzer</description>
+    </marker>
+  </descriptive-metadata>
+</descriptive-metadata-export>

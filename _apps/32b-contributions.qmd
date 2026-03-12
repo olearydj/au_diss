@@ -1,33 +1,60 @@
 # Team Contribution Matrix {#app-contribs}
 
-- IRB
-  - Admin
-  - Strategy
-  - Writing
-  - Review / Edit
-- Experiments
-  - Design
-  - Administration
-  - Conduct
-  - Recruitment
-- Data
-  - Collection
-  - Analysis
-- SW
-  - Direction
-  - Development
-
-Sesek
-Harris
-Evans
-Mykoniatis
-Victoria Ballard
-Md Monir Hossain
-Diego Roberto Caputo Rodriguez
-Alex Barras
-David “Brown” Teague
-Carson Tillery
-Kralyn Thomas
+@tbl-contribs is meant to properly account for the various contributions made to this work. Single check-marks indicate assistance and double-checks indicate primary contributors for each category / sub-category. I1 and I2 refer to the two investigations that were included in the IRB, as described in @sec-irb.
 
 
-This dissertation was developed with assistance from generative AI systems and tools, including the GPT-3.5 and GPT-4 models of OpenAI's ChatGPT. These resources provided valuable support during various stages of the research and development process. However, the final composition of this work, including its content, structure, and findings, is principally and fundamentally the result of the author's own effort and expertise, except for other contributions as specifically noted herein. The author thus assumes full responsibility for the originality and academic contributions of this work.
+::: content-hidden
+
+| Category     | Subcategory     | DJO | RS  | GH  | JE  | KM  | DO  | VB  | MH  | AB  | DT  | CT  | DC  | KT  |
+| ------------ | --------------- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| IRB          | Admin           | ✓✓  |  ✓  |     |     |     |     |     |     |     |     |     |     |     |
+|              | Strategy        | ✓✓  | ✓   |  ✓  |  ✓  |     |     | ✓✓  |  ✓  |     |     |     |     |     |
+|              | Write I1        | ✓✓  |     |     |     |     |     |  ✓  |     |     |     |     |     |     |
+|              | Write I2        |     |     |     |     |     |     | ✓✓  | ✓✓  |     |     |     |     |     |
+|              | Review          |     |  ✓  |  ✓  |     |     |     | ✓✓  |  ✓  |     |     |     |     |     |
+|              | Edit            | ✓✓  |     |     |     |     |     |  ✓  |     |     |     |     |     |     |
+| Experiments  | Design          | ✓✓  |  ✓  |     |     |     |     |  ✓  |     |  ✓  |  ✓  |  ✓  |     |     |
+|              | Administration  | ✓✓  |     |     |     |     |     | ✓✓  |     |     |     |     |     |     |
+|              | Conduct         | ✓✓  |     |     |     |     |     |  ✓  |  ✓  |  ✓  |  ✓  |  ✓  |  ✓  |  ✓  |
+|              | Recruitment     | ✓✓  |     |     |     |     |     | ✓✓  |     |     |     |     |     |     |
+| Data         | Collection      | ✓✓  |     |     |     |     |     |  ✓  |  ✓  |  ✓  |  ✓  |  ✓  |     |  ✓  |
+|              | Analysis        | ✓✓  |     |     |     |     |     |  ✓  |     |     |     |     |     |     |
+| Software     | Direct / Manage | ✓✓  |     |     |     |     |     |     |     |  ✓  |     |     |     |     |
+|              | Development     |  ✓  |     |     |     |     |     |     |     | ✓✓  | ✓✓  | ✓✓  |     |     |
+| Dissertation | Plan            | ✓✓  |  ✓  |  ✓  |  ✓  |     |     |     |     |     |     |     |     |     |
+|              | Write           | ✓✓  |     |     |     |     |     |     |     |     |     |     |     |     |
+|              | Review          |     |  ✓  |  ✓  |  ✓  |  ✓  |  ✓  |  ✓  |     |     |     |     |     |     |
+|              | Edit            | ✓✓  |     |     |     |     |     |     |     |     |     |     |     |     |
+
+: Contributions to this work. {#tbl-contribs .striped}
+
+:::
+
+::: {#tbl-contribs tbl-pos="H"}
+![](/images/a2-contributions.png)
+
+Contributions to this work.
+:::
+
+Legend:
+
+- Author
+	- DJO: Danny J. O'Leary
+- Dissertation Committee
+	- RS: Dr. Richard Sesek
+	- GH: Dr. Gregory Harris
+	- JE: Dr. John Evans
+	- KM: Dr. Konstantinos Mykoniatis
+	- DO: Darren Olsen, JD
+- Research Collaborators
+	- VB: Victoria Ballard
+	- MH: Md Monir Hossain
+- Research Assistants
+	- AB: Alex Barras
+	- DT: David "Brown" Teague
+	- CT: Carson Tillery
+- Protocol Associates
+	- DC: Diego Roberto Caputo Rodriguez
+	- KT: Kralyn Thomas
+
+A portion of this research was funded by the Industrial Base Analysis & Sustainment Program, Dual-Purpose Robotic 3d Scanning System for Dimensional & Welding Inspection of Large Ground Vehicles, agreement number CS-20-1601.

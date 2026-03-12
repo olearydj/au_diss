@@ -5,4 +5,9 @@
 
 # Institutional Review Board Approval {#app-irb}
 
-Import the final approved IRB packet PDF here.
+The final approved version of the IRB begins on the following page.
+
+```{=latex}
+% Reset ToC depth after end of final appendix
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+```

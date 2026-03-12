@@ -86,7 +86,7 @@ The second and third factors both relate to the instructional treatment, though 
 
 [^25-TLX-1]: Care must be taken in evaluating "improvement" for these measures. Where an increase in usability (SUS) is seen as an improvement, the opposite is true for measures of workload (TLX), where decreases are desirable.
 
-### NASA Task Load Index Results
+### NASA Task Load Index Analysis
 
 ```{r tlx-data-versions}
 tlx_learn <- TLX |> 
@@ -177,7 +177,7 @@ tlx_q1_ph <- pairwise.wilcox.test(
 To understand which of the TLX's six sources are most important to all participants' perception of workload, a Friedman test of repeated measures was conducted. This non-parametric test is well suited for the job. It does not assume normality and accounts for the within-participant variability inherent in the repeated measures of survey data. Using `friedman_test` from the `coin` package confirmed significant (`r  round(tlx_q1_ft_st, 1)`, `r fmt_p_val(tlx_q1_ft_pv)`) differences source rankings by participants. The subsequent post-hoc test calculated pairwise differences using a Wilcoxon signed-rank test and Bonferroni correction for multiple comparisons.
 
 ```{r tbl-tlx-q1-ph}
-#| tbl-cap: Pairwise comparisons of TLX source of workload rankings
+#| tbl-cap: Pairwise comparisons for TLX Source of Workload Rankings
 
 fmt_p_val_tab <- function(p_value, alpha = 0.05) {
   if (is.na(p_value)) return(NA_character_)
@@ -316,7 +316,7 @@ There are other subtle but noteworthy differences between treatments. AR has the
 TODO: address too much / unintended time pressure
 :::
 
-To better quantify these differences, significance tests were conducted for the difference in rating, by treatment, for all sources. The Kruskal-Wallis rank sum test, which is appropriate for these discrete ordinal values, failed to identify any significant effects, indicating that the ratings for each source are consistent across treatment groups. There appears to be no meaningful relationship between the task-treatment a participant completes and their perception of which factors are most important to the overall workload.
+To better quantify these differences, significance tests were conducted for the difference in rating, by treatment, for all sources. The Kruskal-Wallis rank sum test, which is appropriate for these discrete ordinal values, failed to identify any significant effects, further evidence that the ratings for each source are consistent across treatment groups. There appears to be no meaningful relationship between the task-treatment a participant completes and their perception of the factors most important to their overall workload.
 
 ```{r tlx-q2-test, eval=FALSE}
 
@@ -346,7 +346,7 @@ PMCMRplus::kwAllPairsDunnTest(td_data$value, td_data$treatment, p.adjust.method 
 
 #### TLX Q3: Treatment Effect on Weighted Source Workloads
 
-Where the previous section explored changes across the treatment axis of fig-tlx-q2-heat for unweighted source ratings, this section tests the differences across sources for weighted source workloads. @fig-tlx-q3-bar illustrates the relative contributions of each source to the total workload in each treatment. From this it is easy to observe a fairly consistent progression from the highest contributor, Time Demand, to the lowest, Physical Demand. While there is some variation in between, those sources act ast the endpoints for all treatments.
+Where the previous section explored changes across the treatment axis of fig-tlx-q2-heat for unweighted source ratings, this section tests the differences across sources for weighted source workloads. @fig-tlx-q3-bar illustrates the relative contributions of each source to the total workload in each treatment. A fairly consistent progression from the highest contributor, Time Demand, to the lowest, Physical Demand is obvious. While there is some variation in between, those sources act as the high / low points for all treatments.
 
 ```{r tlx-q3-unweighted, eval=FALSE}
 # not using
@@ -394,7 +394,8 @@ ggplot(
   )
 
 ```
-Friedman tests show significant workload differences for all treatments (p < 0.001 in each). These results indicate that participants perceived different levels of workload from the various sources (Mental Demand, Physical Demand, Temporal Demand, Performance, Effort, and Frustration) within each treatment group. To explore the nature of those differences, Dunn's test for pairwise multiple comparisons of ranked data is applied with Bonferroni correction. Of the 60 pairs tested[^25-TLX-2], seventeen significant differences were identified (AR: 6, PWI: 4, PAR: 4, and MR: 3), all involving Time Demand, Physical Demand, or both. The four central sources (FF, PF, MD, and EF) are each involved in 3-4 significant pairs. 
+
+Friedman tests show these workload differences are significant for all treatments (p < 0.001 in each), confirming that the sources perceived most influential to overall workload vary by treatment. To explore the nature of those differences, Dunn's test for pairwise multiple comparisons of ranked data is applied with Bonferroni correction. Of the 60 pairs tested[^25-TLX-2], seventeen significant differences were identified (AR: 6, PWI: 4, PAR: 4, and MR: 3), all involving Time Demand, Physical Demand, or both. The four central sources (FF, PF, MD, and EF) are each involved in 3-4 significant pairs. 
 
 [^25-TLX-2]: Four treatments with six sources each = 4 * (6 * (6 - 1)) / 2 = 4 * 15 = 60
 
@@ -431,7 +432,7 @@ for(t in unique(tlx_learn$treatment)) {
 why use friedman test from stats in one place, from coin another, and from rstatix in a third?
 :::
 
-In summary, while all treatments show significant differences in how source workloads are perceived, only Temporal and Physical Demands emerge as reliably different in all cases. Between those endpoints the relative importance of other workload sources varies in magnitude and significance, as @fig-tlx-q3-bar implies.
+In summary, while all treatments show significant differences in how source workloads are perceived, only Temporal and Physical Demands emerge as reliably different in all cases. The relative importance of other workload sources varies in magnitude and significance, as @fig-tlx-q3-bar implies.
 
 #### TLX Q4: Task Workload by Treatment
 
@@ -492,7 +493,7 @@ kruskal.test(unweighted_score ~ treatment, data = unweighted_data)
 
 ```
 
-No significant differences are identified. Visual inspection shows that median TWL values are quite similar for all treatments and all IQRs overlap. This result is somewhat surprising, given the added complexity and occasional issues associated with the AR and MR interfaces. It may suggest that technical complexity has limited effect on perceived workload, especially in the recruited demographic.
+No significant differences are identified (p = 0.53). Visual inspection shows that median TWL values are quite similar for all treatments and all IQRs overlap. This result is somewhat surprising, given the added complexity and occasional issues associated with the AR and MR interfaces. It may suggest that technical complexity has limited effect on perceived workload, especially in the recruited demographic.
 
 #### TLX Results
 
@@ -708,7 +709,7 @@ Investigate if certain treatments lead to better adaptation to the task, as indi
 
 :::
 
-### System Usability Scale Results
+### System Usability Scale Analysis
 
 ```{r}
 ### REDOING METHOD IN `forms_data.Rmd` DUE TO INVERSION OF SCALE ON MY INSTRUMENT
@@ -782,7 +783,7 @@ MUST DO: add note to methods section discussing mislabled instrument
 
 :::
 
-The System Usability Score (SUS) provides a complementary view of the participant experience. Where TLX is focused on perceived workload, SUS is designed to provide a simple, one number assessment of overall usability. Despite its simplicity, the SUS is well respected and often used. @tbl-sus-ds summarizes the raw SUS scores collected during the learning phase of this study, representing the usability of the instructional technology. Five-number summaries are provided for each treatment group for both phases.
+The System Usability Score (SUS) provides a complementary view of the participant experience. Where TLX is focused on perceived workload, SUS is designed to provide a simple, one number assessment of overall usability. Despite its simplicity, the SUS is well-respected and often used. @tbl-sus-ds summarizes the raw SUS scores collected during the learning phase of this study, representing the usability of the instructional technology. Five-number summaries are provided for each treatment group for both phases.
 
 ```{r tbl-sus-ds}
 #| tbl-cap: "Summary Statistics for Raw System Usability Scores"
@@ -796,23 +797,24 @@ datasummary(
 )
 ```
 
-The benchmark distribution for these scores is $\text{SUS} \sim \mathcal{N}(\mu = 68, \sigma = 12.5)$. As such, despite being on a 100-point scale, raw SUS scores should not be interpreted as percentages. For example, a score of 68 is indeed 68% of the maximum, but only represents the 50th percentile. To improve the interpretability of the raw scores, it is considered best practice to convert to percentile rank by normalizing:
+The benchmark distribution for these scores is $\text{SUS} \sim \mathcal{N}(\mu = 68, \sigma = 12.5)$. Despite being on a 100-point scale, raw SUS scores should not be interpreted as percentages. For example, a score of 68 is indeed 68% of the maximum, but only represents the 50th percentile. To improve the interpretability of the raw scores, it is considered best practice to convert to percentile rank by normalizing:
 
 $$
 \text{SUS}_{rank} = \Phi\left(\frac{\text{SUS} - \mu}{\sigma}\right) \times 100
-$$ {#eg-sus-rank}
+$$ {#eq-sus-rank}
 
 where $\Phi$ is the cumulative distribution function (CDF) of the standard normal distribution. Values transformed in this manner can be interpreted in terms of letter grades on the traditional 10-point scale. The benchmark parameters $\mu$ and $\sigma$ were primarily developed during 500 studies of commercial, publicly available products. In research and product development, where SUS percentile ranks and letter grades may seem harsh or unrealistic, they are more commonly used to track improvement over time rather than for absolute comparison.
 
-With that in mind, percentile ranks are also included in @tbl-sus-ds. The overall median rank of `r round(median(sus_ds_data$sus_pct), 1)`% gives these systems a failing grade overall, *relative to commercially available products*. Performance by treatment ranges from 77.2% for PWI to 29.6% for MR, with PAR scoring 63.8% and AR 44.5%, all of which roughly aligns with observed interactions. Following best practices, subsequent SUS analysis will utilize the transformed SUS percentile ranks. In addition to improved interpretability, this also accounts for the non-linear nature of the raw scores, enabling more meaningful comparisons. The monotonic nature of this transformation, which preserves the data's original order, will have no affect on the statistical conclusions for the methods employed.
+With that in mind, percentile ranks are also included in @tbl-sus-ds. The overall median rank of `r round(median(sus_l$sus_pct), 1)`% gives these systems a failing grade overall, *relative to commercially available products*. Performance by treatment ranges from 77.2% for PWI to 29.6% for MR, with PAR scoring 63.8% and AR 44.5%. While all of these roughly align with observed interactions, the D letter grade for PAR, a mature commercial product, is noteworthy.
 
+Following best practices, subsequent SUS analysis will utilize the transformed SUS percentile ranks. In addition to improved interpretability, this also accounts for the non-linear nature of the raw scores, enabling more meaningful comparisons. The monotonic nature of this transformation, which preserves the data's original order, will have no affect on the statistical conclusions for the methods employed. @fig-sus-plot compares the distribution of SUS across treatments.
 
-Do participant rankings of the instructional technologies (treatments) suggest that any are significantly more or less usable than the others?
-
-```{r}
+```{r fig-sus-plot}
 #| fig-cap: "System Usability Score for Each Instructional Method"
 #| fig-height: 5
 #| warning: false
+
+# here we test `sus_pct ~ treatment`
 
 # since ggstatsplot computes confidence intervals for the effect sizes
 # using bootstrapping, it is important to set a seed for reproducibility
@@ -848,25 +850,34 @@ ggstatsplot::ggbetweenstats(
 )
 ```
 
-interpretation:
+No statistically significant overall difference is identified (p = 0.40), likely due to the very large range of scores found in every treatment. While the effect size is quite small ($\hat{\varepsilon}_{rank}^{2}$ = 0.056), the progression of median values aligns with expectations based on the complexity associated with each treatment: PWI < PAR < PAR < MR. This suggests that, while the technologies differ in complexity, their perceived usability during learning is not drastically different--an unexpected result.
 
-no statistically significant difference but the progression of observed values aligns with expectations based on complexity of instructional tech: PWI < PAR < AR < MR
+Those learning scores were compared with SUS during recall to test for significance using the Wilcoxon signed rank test for paired samples. As seen in @fig-sus-change, the difference is statistically significant (p < 0.001) and practically meaningful. The median value for $SUS_{R}$ (87.70) is a 31.34 point improvement in usability from the learning phase ($SUS_{L}$ = 56.36). The large negative effect size ($\hat{r}^{2}_{biserial}$ = -0.644) with relatively narrow 95% confidence interval [-0.792, -0.424] suggests this finding is robust.
 
-suggests that while the technologies differ in complexity, their perceived usability during learning is not drastically different
+::: content-hidden
+TODO: clarify other wilcoxons:
+Mann-Whitney U test and Wilcoxon rank-sum test are the same.
+Wilcoxon signed-rank test is a different test for paired data.
+:::
 
-does SUS differ significantly between phases
-
-```{r}
+```{r fig-sus-change}
 #| fig-cap: "System Usability Score for Learning and Recall Phases"
 #| fig-height: 5
 #| warning: false
+
+# here we test `sus_pct ~ phase | participant`
 
 # since ggstatsplot computes confidence intervals for the effect sizes
 # using bootstrapping, it is important to set a seed for reproducibility
 set.seed(42)
 
-  ggstatsplot::ggbetweenstats(
-    data = sus_scores,
+# here using ordered factor because ordering is real
+sus_scores %>%
+  select(participant, phase, sus_pct) %>%
+  mutate(phase = ordered(phase, 
+                         levels = c(1, 2), 
+                         labels = c("Learning", "Recall"))) |> 
+  ggstatsplot::ggwithinstats(
     x = phase,
     y = sus_pct,
     type = "nonparametric",
@@ -876,7 +887,6 @@ set.seed(42)
     # results.subtitle = FALSE,
     subtitle = "Learning (1) exhibits a significantly lower SUS than the Recall (2) phase, p < 0.001",
     digits = 3,
-    # centrality.label.args = list(point.padding = 30),
     ggtheme = theme_minimal(base_size = 10) +
       theme(
         plot.title.position = "plot",
@@ -895,9 +905,7 @@ set.seed(42)
   )
 ```
 
-SUS in L and R are significantly different and practically meaningful
-
-supporting your interpretation that removing the instructional technology generally improves perceived usability
+This result implies that usability is increased in recall due to some combination of (1) eliminating the instructional technologies as a source of complexity, and (2) learning effects preparing participants for independent work. To evaluate the relationships between that difference and the treatments, two more tests were conducted. First, the Wilcoxon test is again employed to confirm that the change in SUS is significant (i.e., reliably non-zero) within each treatment. The results of these paired tests are summarized in @tbl-sus-within-treat.
 
 ::: content-hidden
 TODO: convert all figure labs to this format:
@@ -906,10 +914,16 @@ title = research question
 subtitle = finding / interpretation that addresses title
 :::
 
-does the significant difference in SUS between phases vary with instructional method?
+```{r sus-within-trt}
 
-```{r}
+# this tests `sus_pct ~ phase | treatment`
+# This formula indicates that we're comparing `sus_pct` between phases, separately for each treatment.
+
 wilcoxon_results <- sus_scores |>
+  # ordered factor for phase causes problems for some reason
+  # mutate(phase = ordered(phase, 
+  #                        levels = c(1, 2), 
+  #                        labels = c("Learning", "Recall"))) |> 
   group_by(treatment) |>
   summarise(
     n = sum(!is.na(sus_pct[phase == 1]) & !is.na(sus_pct[phase == 2])),  # number of complete pairs
@@ -920,10 +934,13 @@ wilcoxon_results <- sus_scores |>
     p_value = test_result[[1]]$p.value
   ) |>
   mutate(
-    significance = case_when(
-      p_value < 0.001 ~ "***",
-      p_value < 0.01 ~ "**",
-      p_value < 0.05 ~ "*",
+    pv_adj = p.adjust(p_value, method = "holm")
+  ) |>
+  mutate(
+    sig = case_when(
+      pv_adj < 0.001 ~ "***",
+      pv_adj < 0.01 ~ "**",
+      pv_adj < 0.05 ~ "*",
       TRUE ~ "ns"
     )
   ) |>
@@ -939,18 +956,77 @@ effect_sizes <- sus_scores |>
 wilcoxon_results <- wilcoxon_results |>
   left_join(effect_sizes, by = "treatment") |>
   arrange(p_value)
+```
 
+```{r tbl-sus-within-trt}
+#| tbl-cap: Paired Wilcoxon Comparison for SUS Percentiles between Learning and Recall
 
 print(wilcoxon_results)
 
-
 ```
 
-for PWI, AR, and MR the change in SUS between L and R was statistically significant with practically meaningful magnitudes and large effect sizes
+These calculations utilize a normal approximation to address ties (AR) and zero values (PWI and MR), and p-values are adjusted for multiple comparisons using the Holm method. The results indicate that, despite large effect sizes ($r$ > 0.50 for all treatments), none of the observed differences can be conclusively attributed to the treatments (adjusted p-values < 0.08 in all cases) given the sample size and variability. A final test was conducted to determine if the changes differ by treatment, as shown in @fig-sus-within-trt. Once again, no significant differences were identified (p = 0.479).
+
+```{r fig-sus-within-trt}
+#| fig-cap: "System Usability Score for Learning and Recall Phases"
+#| fig-height: 5
+#| warning: false
+
+# this tests `diff ~ treatment`
+
+# `diff` is the difference in sus_pct between Recall and Learning phases
+# This formula shows we're comparing these differences across treatment groups.
+
+# since ggstatsplot computes confidence intervals for the effect sizes
+# using bootstrapping, it is important to set a seed for reproducibility
+set.seed(42)
+
+# here using ordered factor because ordering is real
+sus_scores |>
+  mutate(phase = ordered(phase,
+                         levels = c(1, 2),
+                         labels = c("Learning", "Recall"))) |>
+  group_by(treatment) |>
+  summarise(
+    diff = sus_pct[phase == "Recall"] - sus_pct[phase == "Learning"],
+    .groups = "drop"
+  ) |>
+  ggstatsplot::ggbetweenstats(
+    x = treatment,
+    y = diff,
+    type = "nonparametric",
+    xlab = "",
+    ylab = "",
+    title = "Is there a Treatment Effect on the Change in SUS between Phases?",
+    # results.subtitle = FALSE,
+    subtitle = "There is no statistically significant relationship between SUS change and treatment, p = 0.479",
+    digits = 3,
+    ggtheme = theme_minimal(base_size = 10) +
+      theme(
+        plot.title.position = "plot",
+        plot.title = element_text(face = "bold"),
+        axis.text.y.right = element_blank(),
+        axis.ticks.y.right = element_blank(),
+        axis.text.x = element_text(color = "black")
+        # legend.position = "none",
+        # axis.text.y = element_blank(),
+        # axis.ticks.y = element_blank(),
+      ),
+    # remove side label
+    ggplot.component = list(
+        ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = NULL))
+      )
+  )
+```
+
+
+
+::: content-hidden
 
 how did average SUS change from L to R for each treatment, relative to the PWI condition?
 
-```{r}
+```{r eval=FALSE}
+
 # calculate the mean difference in SUS for PWI (baseline)
 pwi_diff <- sus_scores |>
   filter(treatment == "PWI") |>
@@ -1000,6 +1076,115 @@ also calculated normalized (percent) changes, which flipped the ordering of MR a
 
 interpretation: SUS increases in recall primarily thanks to reduced complexity due to removal of instructional technology. change can be interpreted as a measure of "complexity overhead" for those devices vs traditional methods
 
+:::
+
+#### SUS Results
+
+The SUS analysis revealed several key findings. During the learning phase, the overall usability reported for all instructional technologies was substantially below commercial benchmarks. This includes both the PAR, a commercial system, and PWI, the experimental control and standard instructions for the lab. While poor by SUS benchmarks, the relative scores for each treatment generally aligned with observed interactions and participant feedback. No statistically significant differences in usability were reported for the treatments used during learning. This unexpected result suggests that, while the technologies differ in complexity, their perceived usability during learning is not drastically different. Individually, participants experienced a significant increase in SUS with phase, but there isn't sufficient evidence to attribute that change to the assigned treatment, despite large observed differences and effect sizes. Furthermore, the magnitude of usability improvement did not differ significantly between treatments.
+
+Based on the design of this study, it is likely that the improvement in SUS primarily originates from some combination of reduced complexity during retention and participant preparation during learning. However, these results provide no evidence regarding the balance of those effects. Overall, these results challenge some common assumptions about the usability of different instructional technologies and highlight the need for a more nuanced understanding of how usability impacts learning and performance in manufacturing assembly tasks.
+
+::: content-hidden
+
+keeping these notes around to help (re)interpret the findings in this section
+
+- *fig-sus-plot*: `sus_pct ~ treatment` (Kruskal-Wallis on learning phase data)
+  - Despite varying levels of complexity, there were no statistically significant differences in usability across treatments during the learning phase.
+  - progression of median values aligns with expectations based on the complexity associated with each treatment: PWI < PAR < PAR < MR
+  - suggests that, while the technologies differ in complexity, their perceived usability during learning is not drastically different (unexpected)
+- *fig-sus-change*: `sus_pct ~ phase | participant` (Wilcoxon signed rank test on all data by participant)
+  - participants in all treatments experienced a significant change in SUS between phases
+  - usability is increased in recall due to some combination of (1) eliminating the instructional technologies as a source of complexity, and (2) learning effects preparing participants for independent work
+  - There was a significant and substantial improvement in perceived usability from the learning to the recall phase across all treatments. (independent of treatments)
+- *sus-within-trt*: `sus_pct ~ phase | treatment` (Wilcoxon signed rank test on all by treatment)
+  - the effect of phase does not vary by treatment
+  - despite large observerd differences and effect sizes
+- *fig-sus-within-trt*: `diff ~ treatment` (Kruskal-Wallis on all data)
+  - no significant treatment effect on the difference in SUS
+  - The magnitude of usability improvement did not differ significantly between treatments.
+
+essentially:
+
+- sus is consistent across treatments
+- individually, participants experienced a change in SUS with phase
+- collectively, the effect of phase on SUS does not vary with treatment
+- overall, the change in SUS does not differ by treatment
+
+:::
 
 ### Qualitative Feedback Analysis
 
+As the final lens through which to view the overall participant experience, all provided feedback was analyzed using thematic, sentiment, and comparative analysis techniques. Several recurring themes emerged, including device usability, learning experience, physical comfort, instruction clarity, participant strategy, cognitive aspects, and overall experience. This analysis was greatly aided by the use of a large language model (Claude 3.5 Sonnet) to find patterns and synthesize hundreds of lines of feedback. The resulting insights were grouped into by- and cross-treatment observations, as summarized in the following sections.
+
+#### PWI Treatment Group
+
+Generally mixed to slightly negative sentiment.
+
+Key Findings:
+
+- Commonly cited difficulties in distinguishing parts, especially black ones.
+- Considered simpler and more flexible than technological alternatives
+- Hampered by poor overall quality of the instructions.
+- Quick memorization of the process, typically by the 3rd or 4th car.
+- Development of personal strategies for part retrieval and assembly order.
+- Reliance on spatial memory and mental imagery of the finished car.
+- Dissatisfied by the fixture requirement, wanted to be able to rotate the car.
+
+The PWI method, while familiar and flexible, presents challenges in instruction clarity, particularly for complex or visually similar parts. Its effectiveness appears to be significantly influenced by individual characteristics like color perception and prior LEGO experience. The method promotes the development of personal memory strategies but may benefit from incorporating more detailed visual cues or 3D representations.
+
+#### PAR Treatment Group
+
+Initially positive sentiment, shifting towards negative as users became familiar with the task.
+
+Key Findings:
+
+- Considered helpful for initial learning but often too constraining after task familiarity.
+- Inconsistent auto-advance feature was a major source of frustration, affecting agency and motivation.
+- Tendency to work ahead of instructions once familiar with the process.
+- Use of bin arrangement as an unexpected memory aid.
+- Compared favorably to PWI for learning but considered less suitable for continued use.
+
+PAR shows promise for initial training but faces challenges in adapting to user progress. The system's pace and control mechanisms significantly impact user experience, sometimes negatively affecting motivation and sense of agency. Future iterations might benefit from more adaptive pacing and reliable user control features.
+
+#### AR Treatment Group
+
+Overall positive sentiment, with enthusiasm for the technology tempered by usability issues.
+
+Key Findings:
+
+- Generally seen as better for training and confidence-building compared to other methods.
+- Frequently described as "fun" or "cool," indicating high user engagement.
+- Common issues with unreliable button interaction, limited field of view, and neck strain.
+- Holograms sometimes obscured real-world view or lacked precision for small parts.
+- Unforeseen ergonomic challenges and perceptual impacts (e.g., dimming effect).
+
+AR demonstrates strong potential for engaging and effective training, particularly for complex tasks or diverse learning styles. However, current hardware limitations and ergonomic issues present significant challenges. Future developments should focus on improving user interaction, expanding field of view, and addressing physical comfort concerns.
+
+#### MR Treatment Group
+
+Positive overall sentiment, with appreciation for learning benefits despite technical limitations.
+
+Key Findings:
+
+- Valued for combining digital instructions with real-world overlay, particularly for complex steps.
+- Consistent issues with tracking, limited field of view, and occasional misalignment of virtual objects.
+- Development of strategies to work around system limitations.
+- Seen as having a steeper learning curve than simpler methods.
+- Unanticipated use of digital PWI within the MR system for better part differentiation.
+
+Most feedback echoed that from the AR treatment group, which is expected given the similarities. MR users more commonly cited technical issues related to misalignment and tracking issues. Very few took advantage of, and none specifically cited, the added flexibility offered by MR, allowing users to freely manipulate the workpiece.
+
+#### Cross-treatment Observations
+
+Many participants noted a change in their preference and performance as they became more familiar with the task. While users of augmented methods (AR, MR, PAR) often reported these methods as helpful for initial learning, several mentioned they became limiting once the task had been mastered. Some participants shared how this and related issues affected their motivation and sense of control. Collectively, those comments suggested that good training methods don't simply direct the learner's passive actions. Instead, they promote active engagement in the learning process.
+
+Participants also noted how their individual characteristics affected the experience. Feedback about their height, vision, or learning style influencing method effectiveness was provided for all treatments. To address these issues, several participants reported developing their own strategies to work with or around the systems. For example, many used the correspondence between assembly order and left to right bin arrangement to help learn the task, regardless of the instructional method provided.
+
+Environmental factors were more common than expected in participant feedback. Comments about background noise, workspace setup, and lighting conditions were scattered across different treatment groups. While uncommon, this feedback emphasizes the importance of considering the suitability of these systems for the environents they are intended for deployment in.
+
+
+## Summary of Results
+
+## Limitations
+
+- Unexpected impact of user height on system performance

@@ -533,7 +533,7 @@ summary(m)
 
 Singularity problems persist. Marginal to low significance in PWI, PAR differences. Lack of participant variance is frustrating as it implies that all 50+ participants experienced the same learning progression, regardless of treatment, personal idiosyncracies, etc. Doesn't make sense.
 
-Potential sources of this discrepancy are issues with data transformation or model specification, or  insufficient participant variability relative to within-participant variability (intraclass correlation, ICC). *The later seems unlikely?*
+Potential sources of this discrepancy are issues with data transformation or model specification, or  insufficient participant variability relative to within-participant variability (intraclass correlation, ICC). *The latter seems unlikely?*
 
 To attempt to address these issues, further changes were made to:
 

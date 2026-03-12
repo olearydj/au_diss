@@ -3,13 +3,15 @@
 
 \hypertarget{abstract}{\chapter*{Abstract}\label{abstract}}
 \addcontentsline{toc}{chapter}{Abstract}
+
+\enlargethispage{\baselineskip}
 ```
 
 This research rigorously assesses the effectiveness of augmented and mixed reality (AR/MR) instructional techniques in manufacturing training. By investigating how augmented methods designed to leverage specific affordances impact operator learning, recall, and retention in an authentic assembly context, it addresses critical gaps in understanding the relative efficacy of these technologies.
 
 A cohort of 54 participants without prior exposure to similar tasks or AR/MR technology underwent simulated assembly training at the Tiger Motors Lean Education Lab. This between-groups study introduced participants to one of four instructional methods: Paper Work Instructions (PWI), Projected AR (PAR), head-mounted AR, and head-mounted MR. The same task was used across treatments, with minimal changes to instructional design. MR was differentiated from AR by allowing participants to freely manipulate the workpiece while maintaining aligned augmentations.
 
-Performance metrics including task duration and error rates / types were carefully analyzed to assess learning progression and task proficiency. Measures of instructional reliance were also captured during recall, better informing the learning efficacy of each method. Several weeks later, retention was assessed on a volunteer subset to compare the durability of learning by treatment. The NASA Task Load Index and System Usability Scale were also administered to assess perceived workload and user experience. This data, coupled with demographics and qualitative feedback from open-ended exit interviews, contributes to a comprehensive expression of each participant's experience.
+Performance metrics including task duration and error rates / types were carefully analyzed to assess learning progression and task proficiency. Measures of instructional reliance were also captured during recall, better informing the learning efficacy of each method. Several weeks later, retention was assessed on a volunteer subset to compare the durability of learning by treatment. The NASA Task Load Index and System Usability Scale were also administered to assess perceived workload and user experience. These data, coupled with demographics and qualitative feedback from open-ended exit interviews, contributes to a comprehensive expression of each participant's experience.
 
 Key findings revealed a nuanced trade-off between speed and accuracy across methods. Augmented technologies generally led to fewer errors but slower initial performance, while traditional methods allowed for faster execution but higher error rates. Recall and retention results were mixed, suggesting complex relationships between instruction method and long-term learning outcomes. Surprisingly, no significant differences in perceived workload were found across treatments, despite varying technological complexities.
 

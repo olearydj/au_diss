@@ -109,9 +109,3 @@ Related ChronoSync Jobs
 -   **analysis** mirrors all the analysis to BOX
 
     -   `...\dissertation\data` → `BOX Sync\...\analysis`
-
-
-```{=latex}
-% Reset ToC depth after end of final appendix
-\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
-```

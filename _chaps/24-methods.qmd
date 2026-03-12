@@ -103,10 +103,6 @@ Note that the Lean Lab's LightGuide system predates this study. Its specificatio
 
 ![LG System Architecture. Source: LightGuide website](/images/24-LightGuideSystem.jpg){#fig-lgs width="5in"}
 
-::: content-hidden
-LATER: replace bold terms in LG system description
-:::
-
 The system at ST-8 uses a video projector and depth-sensing camera mounted above the paper work instructions. The output of a PC running Windows 10 and LightGuide software is displayed on a monitor conveniently situated to the right of the bin trays. All equipment, except the PC itself, is mounted on a robust structure of extruded aluminum components from 80/20[^24-methods-4] to ensure operator safety, consistent alignment, and stability. A foot-operated switch provides an alternative to gesture-based control of the system, but it was not used in our study. The complete installation is shown in @fig-st8lgs, with each component labeled.
 
 [^24-methods-4]: 80/20: <https://8020.net/>
@@ -796,7 +792,7 @@ This section will outline all participant recruitment, selection, benefits, and 
 
 ### Recruitment and Selection
 
-A convenience sample of participants were recruited from the Auburn University community using digital and printed promotions around campus, the graduate school mailing list, and outreach in various undergraduate engineering classrooms. The latter focused on freshman and sophomore engineering students in Industrial & Systems Engineering, as they are accessible and most likely to meet all requirements. @fig-recruit exemplifies the recruiting materials, approved copies of which are included in [Appendix A, IRB Documentation](#app-irb).
+A convenience sample of participants were recruited from the Auburn University community using digital and printed promotions around campus, the graduate school mailing list, and outreach in various undergraduate engineering classrooms. The latter focused on freshman and sophomore engineering students in Industrial & Systems Engineering, as they are accessible and most likely to meet all requirements. @fig-recruit exemplifies the recruiting materials, approved copies of which are included in [Appendix E, IRB Documentation](#app-irb).
 
 ![Digital recruitment flyer distributed on campus monitors.](/images/24-RecruitSlideV3.png){#fig-recruit width="5in"}
 
@@ -840,7 +836,7 @@ No member of the research team was eligible for any of the financial compensatio
 
 The initial participant onboarding process was conducted manually by the PI. In a phone call with interested participants the PI would (1) briefly explain the investigation, recapping and elaborating on the recruiting materials; (2) discuss the exclusion criteria and identify relevant issues for the candidate; (3) set expectations for participant involvement, including time commitment and tasks; and (4) answer any questions the candidate had regarding participation in the investigation.
 
-If the candidate indicated a willingness to proceed, their information was collected using the Subject Recruitment Data Sheet included in [Appendix A](#app-irb). A unique participant ID was logged on the code list and a date and time for data collection were then assigned. As [detailed below](#sec-privacy), the code list and consent form provided the only link between personally identifiable information and experimental data. Afterwards, a confirmation email was sent. A copy of the Informed Consent form was included for their review prior to the appointment.
+If the candidate indicated a willingness to proceed, their information was collected using the Subject Recruitment Data Sheet included in [Appendix E](#app-irb). A unique participant ID was logged on the code list and a date and time for data collection were then assigned. As [detailed below](#sec-privacy), the code list and consent form provided the only link between personally identifiable information and experimental data. Afterwards, a confirmation email was sent. A copy of the Informed Consent form was included for their review prior to the appointment.
 
 This process quickly proved impractical, and a self-service web-based alternative was offered. By eliminating the reliance on manual, call-based screening, SignUpGenius[^24-methods-29] streamlined the entire onboarding and scheduling process. This increased the rate for converting interested into scheduled participants and allowed the team to focus on running the experiments.
 
@@ -888,7 +884,7 @@ Python 3.x Code for Treatment Randomization
 
 As with any protocol that involves human participants, this study required Institutional Review Board (IRB) approval. This section will describe that process, and detail considerations related to consent, privacy, security, and risks / discomforts identified.
 
-### Institutional Review Board
+### Institutional Review Board {#sec-irb}
 
 An initial review of the protocol found that it created minimal risk to participants, did not involve vulnerable populations, invasive methods, or sensitive data, and required informed consent. Furthermore, it involved the "collection of data from voice, video, digital, or image recordings," which is identified by the University as a category of research eligible for expedited review.[^24-methods-31]
 
@@ -961,9 +957,9 @@ This process was somewhat complicated by the decision to incorporate two separat
 TODO: cite Monir's dissertation as I2
 :::
 
-The development of the IRB was a collaborative effort which I spearheaded as the Principle Investigator (PI), authoring the majority of the application, and ensuring alignment with the study's goals and ethical standards. Contributions from other members of the research teams, as specified in [Appendix B: Team Contribution Matrix](#app-contribs), were essential to its thorough design and timely approval.
+The development of the IRB was a collaborative effort which I spearheaded as the Principle Investigator (PI), authoring the majority of the application, and ensuring alignment with the study's goals and ethical standards. Contributions from other members of the research teams, as specified in [Appendix A: Team Contribution Matrix](#app-contribs), were essential to its thorough design and timely approval.
 
-The final approved version, including all supporting materials, is incorporated as [Appendix A: Institutional Review Board Approval](#app-irb). All processes described herein are all based on the approved protocols.
+The final approved version, including all supporting materials, is incorporated as [Appendix E: Institutional Review Board Approval](#app-irb). All processes described herein are all based on the approved protocols.
 
 ### Consent
 
@@ -991,9 +987,11 @@ During the post-experiment debriefing all participants were asked about injury a
 
 ## Conduct of First Session {#sec-conduct1}
 
-This section will describe key operational details for conducting the first session protocol, including the learning and recall experiments. For more information, see [Appendix C - Session 1 Conduct](#app-s1conduct).
+This section will describe key operational details for conducting the first session protocol, including the learning and recall experiments. The conduct of this study was designed to ensure participants felt comfortable and understood the tasks, while also aiming for valid results and thorough data collection. The approach balanced a need for clear procedures and ethical integrity with the flexibility required to adapt to individual participant needs.
 
-The conduct of this study was designed to ensure participants felt comfortable and understood the tasks, while also aiming for valid results and thorough data collection. The approach balanced a need for clear procedures and ethical integrity with the flexibility required to adapt to individual participant needs.
+::: content-hidden
+For more information, see [Appendix C - Session 1 Conduct](#app-s1conduct).
+:::
 
 ### Division of Labor {#sec-dol}
 
@@ -1136,7 +1134,10 @@ During the debrief, the research team records the recall results, resets the wor
 
 This section will describe key operational details for the retention assessment, which was conducted during the end of study event. As described in @sec-retention, the scope and complexity of these trials was limited by expected traffic at the event. This also necessitated different signup procedures, lab arrangement, workflow, and staffing, all of which are described below.
 
+::: content-hidden
 For additional details on the conduct of these trials, refer to [Appendix D](#app-s2conduct), where the step-by-step script used to conduct them is included.
+:::
+
 
 ### Signup
 
@@ -1201,7 +1202,7 @@ SignUpGenius was configured to only show available slots in a rolling two-week w
 
 ### Safety Measures
 
-All team members were aware of the study's COVID-related precautions and emergency action plan, and committed to the self-screening and reporting as required by the former. Both documents were readily available to team members, who were trained to reach out to members of the included contact list or escalate to emergency or non-emergency assistance as deemed necessary. Current phone numbers were provided for all cases. This documentation is included with the approved IRB forms in [Appendix A](#app-irb).
+All team members were aware of the study's COVID-related precautions and emergency action plan, and committed to the self-screening and reporting as required by the former. Both documents were readily available to team members, who were trained to reach out to members of the included contact list or escalate to emergency or non-emergency assistance as deemed necessary. Current phone numbers were provided for all cases. This documentation is included with the approved IRB forms in [Appendix E](#app-irb).
 
 Additionally, team members were trained to observe all participant activities for dizziness, related vestibular issues, or any other significant but unexpected side-effect. In that event, the experiment would be suspended, HL2 removed, and the participant seated for assessment. In the event assistance was required, the emergency plan would be consulted.
 
@@ -1219,7 +1220,7 @@ Feedback and notes collected during these tests were reviewed by the team and ch
 
 Throughout the design and conduct of this study, every effort was made to ensure its findings were valid and verifiable. Primarily, this was achieved through the deliberate and meticulous design of the protocol, as documented throughout this chapter.
 
-Quality assurance was operationalized through a carefully documented procedure that integrated a script and checklists (see [Appendix C](#app-s1conduct)). The script was used by the PI to ensure consistent interactions with each participant. Checklists were used by the entire team to verify that workstations, assemblies, and equipment were always properly configured.
+Quality assurance was operationalized through a carefully documented procedure that integrated a script and checklists. The script was used by the PI to ensure consistent interactions with each participant. Checklists were used by the entire team to verify that workstations, assemblies, and equipment were always properly configured.
 
 Standard roles, consistent staffing, and clearly defined responsibilities were all established to help ensure routine trials by reducing variability in their conduct. Test runs performed before the first participant were used to train the team and collectively identify ways to refine the plan. Once trials began, feedback from team members and participants was routinely used to make adjustments that improved the process without impacting the results.
 
@@ -1237,9 +1238,11 @@ Any data issues encountered were noted and marked for correction during the subs
 
 The contents of all digitized results were manually transcribed from their PDF into spreadsheet format. Excel was used at this stage for its human-friendly interface, which facilitated data entry and consolidated all results into a single file. As detailed in the subsequent section, the `XLSX` file format is an open standard easily parsed by most programming languages. Together, these considerations made `XLSX` an ideal interim format for raw data.
 
-Each instrument was given a separate tab, with each row representing a participant record. The results from both Data Collection Sheets were combined into a single tab, where each row recorded the outcome of a single assembly task.
+Each instrument was given a separate tab, with each row representing a participant record. The results from both Data Collection Sheets were combined into a single tab, where each row recorded the outcome of a single assembly task. This process was straightforward except as described below.
 
-This process was straightforward except as described below. Complete details, including all categorical labels, can be found in [Appendix G - Data Dictionary](#app-datadict). The final output of this process was saved as `i1_raw_data.xlsx`.
+::: content-hidden
+Complete details, including all categorical labels, can be found in [Appendix G - Data Dictionary](#app-datadict). The final output of this process was saved as `i1_raw_data.xlsx`.
+:::
 
 #### Personal Information Form
 
@@ -1249,9 +1252,7 @@ Fields in the PIF were a mix of numeric (e.g., age, height), nominal and ordinal
 
 For each of the TLX's Sources of Workload comparisons, the response was labeled `1` or `2` for top and bottom choice, respectively. Columns were labeled `S1` through `S15`, corresponding to each of the 15 pairs shown in @fig-tlxsow, numbered left to right and top to bottom. For example, a value of `2` (bottom choice) for `S2` (Temporal Demand vs Frustration), corresponds to a user response of Frustration.
 
-Workload Ratings were similarly tabulated in columns `R1` through `R6`, as designated in Appendix G. They were scored as marked on the 100-point scale, with 5-point graduations. Any mark between graduations was rounded up, per the TLX instructions.
-
-The first five participants were incorrectly given a Likert-style scale with values from 1 to 7 and bipolar descriptors "Very Low" and "Very High." These were scored as indicated with a note to correct the values during analysis. The form was corrected for subsequent participants.
+Workload Ratings were similarly tabulated in columns `R1` through `R6`. They were scored as marked on the 100-point scale, with 5-point graduations. Any mark between graduations was rounded up, per the TLX instructions. The first five participants were incorrectly given a Likert-style scale with values from 1 to 7 and bipolar descriptors "Very Low" and "Very High." These were scored as indicated with a note to correct the values during analysis. The form was corrected for subsequent participants.
 
 Finally, some participants may have mistakenly scored their Performance Rating. While other factors employ a scale progressing from left to right, with descriptors ranging from Very Low to Very High, the Performance scale is labeled with Perfect and Failure at its endpoints, reflecting the inverse correlation between performance and perceived workload. Despite the consistency of a rightward increase in perceived workload for all factors, participants might erroneously associate higher ratings with enhanced performance. This issue is noted in the TLX instructions and explicitly pointed out to participants, but suspicious values appeared during the transcription process. We will investigate potential issues during the data cleaning stage.
 
@@ -1265,7 +1266,7 @@ Each row of the "Outcomes" tab contained the manually-recorded results for each 
 
 Results recorded by the research team during the experiments were naturally error-prone. During transcription, all were verified against the corresponding photographs and, if necessary, video recordings. Corrections were made as required. This approach differs from the handling of self-reported data, where the integrity of participants' personal perceptions must be preserved as provided.
 
-A final step transcribes the recorded results into a concise format that encodes a detailed, contextualized description of each error. For example, `F59LRP (2)` indicates that, at the front of the car (`F`), part `59` attached to the left and right (`LR`), were incorrectly positioned (`P`), accounting for `(2)` errors. This encoding scheme, detailed in [Appendix G](#app-datadict), was developed for the study to describe error types in a contextually rich manner that may better relate to the corresponding human error than the discrete elements it comprises. This approach is designed to facilitate pattern discovery and analysis, support predictive modeling and simulations, and inform more targeted interventions.
+A final step transcribes the recorded results into a concise format that encodes a detailed, contextualized description of each error. For example, `F59LRP (2)` indicates that, at the front of the car (`F`), part `59` attached to the left and right (`LR`), were incorrectly positioned (`P`), accounting for `(2)` errors. This encoding scheme was developed for the study to describe error types in a contextually rich manner that may better relate to the corresponding human error than the discrete elements it comprises. This approach is designed to facilitate pattern discovery and analysis, support predictive modeling and simulations, and inform more targeted interventions.
 
 ### Qualitative Feedback
 
@@ -1306,7 +1307,7 @@ The bulk of collected performance data was extracted from the video recordings, 
 
 When considering tools for the video annotation workflow, priority was given to robust and reliable software with modest hardware requirements, user-friendly interfaces, and affordability. Specifically, the annotation workflow must be capable of exporting machine-readable outputs. Finally, it was essential to avoid altering the original videos. A non-destructive editing approach would dismiss any concerns regarding the veracity of the recordings, by ensuring a reliable and traceable data source.
 
-A search was conducted, and a variety of tools were tested. Some notes from that process are included in [Appendix E](#app-videotool). In the end, three complementary tools were selected that best fit the requirements identified:
+A search was conducted, and a variety of tools were tested. Some notes from that process are included in [Appendix B](#app-videotool). In the end, three complementary tools were selected that best fit the requirements identified:
 
 1.  Filmora[^24-methods-37] v12.x was selected to combine the raw video into a split screen presentation with synced action. This facilitated annotation by providing two angles of the action and a zoomed view. Filmora is an affordable, non-destructive editor that offers a good balance of capabilities and ease of use.
 
@@ -1322,7 +1323,7 @@ A search was conducted, and a variety of tools were tested. Some notes from that
 
 #### Processing {#sec-videoproc}
 
-A general description of video processing follows. For a step-by-step treatment, see [Appendix F](#app-videoproc) for the original instructions.
+A general description of video processing follows. For a step-by-step treatment, see [Appendix C](#app-videoproc) for the original instructions.
 
 For each participant, two composite videos are created, one from footage of their learning experiment and another for recall. Raw video files are first renamed in a standardized format based on participant number, phase, and camera angle, then organized into specific project folders.
 
@@ -1332,7 +1333,7 @@ For each participant experiment, a single three-pane video was created in Filmor
 
 The output was rendered by Filmora in the MP4 video format with full HD resolution (1920x1080) at 30 frames per second, using H.264 compression. This was then resized to 720p (1280x720) by Handbrake. The final file size is reduced to about 20mb / minute from multiple gigabytes of source material. This greatly increases the responsiveness the annotation experience without significantly degrading visual quality.
 
-The compressed 720p video is loaded in Kyno where two types of events were annotated. Instantaneous events (e.g., car breaks during assembly) are identified by placing a marker at the moment of occurrence. Events with a duration (e.g., the start and end of each assembly task) are assigned to sub-clips. Both markers and sub-clips are given standard names that denote the event type, and descriptions where additional detail is called for. The standard list of names is included in [Appendix F](#app-videoproc), along with other important details about this process.
+The compressed 720p video is loaded in Kyno where two types of events were annotated. Instantaneous events (e.g., car breaks during assembly) are identified by placing a marker at the moment of occurrence. Events with a duration (e.g., the start and end of each assembly task) are assigned to sub-clips. Both markers and sub-clips are given standard names that denote the event type, and descriptions where additional detail is called for. The standard list of names is included in [Appendix C](#app-videoproc), along with other important details about this process.
 
 Finally, the Kyno project file is saved and annotation data is exported in XML format. A sample of that output is provided in @fig-learnxmp, based on participant #1051's learning experiment. This is confirmed by line (2), which shows the data is associated with the file `1051-Learn.mp4`. Lines (10) and (12) denote the start and end times of the "Car 1" sub-clip, each given in 1/90,000ths of a second.
 
@@ -1443,7 +1444,7 @@ The formatting seen in this image was rendered by Obsidian[^24-methods-40], a po
 
 Like all academic work, the success of this study hinged on the credibility, transparency, and reproducibility of the research, data, and results. As such, data management was a critical consideration in the development of the data extraction and processing workflow. The plan carefully accounted for data storage, version management, and the file formats used. Those details aligned with an access plan balancing accessibility and portability with privacy and security.
 
-Anonymous data was stored locally in three separate locations, all on secure hardware accessible only to the PI: an internal laptop hard drive, an external RAID5 storage array, and an external NVMe backup drive. Additionally, GitHub[^24-methods-41] and BOX[^24-methods-42] cloud services were employed to provide more redundancy and secure access to select team members. A detailed account of this plan, including the hardware, software, folder structures, and naming conventions used, are provided in [Appendix H](#app-dataorg).
+Anonymous data was stored locally in three separate locations, all on secure hardware accessible only to the PI: an internal laptop hard drive, an external RAID5 storage array, and an external NVMe backup drive. Additionally, GitHub[^24-methods-41] and BOX[^24-methods-42] cloud services were employed to provide more redundancy and secure access to select team members. A detailed account of this plan, including the hardware, software, folder structures, and naming conventions used, are provided in [Appendix D](#app-dataorg).
 
 [^24-methods-41]: GitHub: <https://github.com/>
 
