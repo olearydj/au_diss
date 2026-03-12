@@ -55,7 +55,17 @@ These files are not part of the active Quarto build and should not be treated as
   - prompt/summary scaffold used to begin ChatGPT 3.5 conversations during the H1b modeling work
 - Relationship to manuscript:
   - not source content
-  - retained for archival/historical context
+- retained for archival/historical context
+
+### `00-issues.md`
+
+- Original location: repo root as `00-issues.qmd`
+- Status: historical working note
+- Role:
+  - punch list of manuscript, template, and Quarto/RStudio issues from the writing/finalization period
+- Relationship to manuscript:
+  - not part of the active build
+  - retained as historical context for unresolved or once-unresolved dissertation production issues
 
 ## Deleted Instead Of Archived
 
@@ -65,9 +75,11 @@ The following files were treated as scratch/debug residue rather than archival w
 - `_temp.qmd`
 - `temp.Rmd`
 - `tables.md`
+- `clean_packages.R`
 
 Reason:
 
 - `m7rc1_verbose_output.txt` appears to be optimizer/debug output from chasing a convergence issue.
 - `_temp.qmd` and `temp.Rmd` are temporary analysis scraps with no clear role in the final manuscript or stable exploratory record.
 - `tables.md` appears to be drafting scaffolding whose substantive contents were either incorporated elsewhere in the dissertation or superseded by later manuscript source.
+- `clean_packages.R` was a destructive `renv` pruning utility whose logic relied on incomplete dependency discovery and likely contributed to lockfile/library drift; it was deleted to avoid future accidental use.

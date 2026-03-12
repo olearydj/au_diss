@@ -91,7 +91,7 @@ Deliverable: a keep/archive/ignore decision list and updated `.gitignore`.
 
 6. Clean the source tree without altering the defended content.
 The goal here is not to rewrite the dissertation. It is to remove repository noise and move working notes out of the canonical source.
-Targets include draft issue files like [00-issues.qmd](/Volumes/Casa/dev/dissertation/00-issues.qmd), machine-specific notes in [_apps/38h-dataorg.qmd](/Volumes/Casa/dev/dissertation/_apps/38h-dataorg.qmd), unneeded generated HTML/figure folders, `.DS_Store`, workspace files, and inline draft markers that should live in docs instead of manuscript source.
+Targets include draft issue files like [00-issues.md](/Volumes/Casa/dev/dissertation/archive/00-issues.md), machine-specific notes in [_apps/38h-dataorg.qmd](/Volumes/Casa/dev/dissertation/_apps/38h-dataorg.qmd), unneeded generated HTML/figure folders, `.DS_Store`, workspace files, and inline draft markers that should live in docs instead of manuscript source.
 Deliverable: a cleaner source tree that still reproduces the defended work.
 
 7. Add proper repository documentation.

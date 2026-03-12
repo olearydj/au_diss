@@ -14,7 +14,7 @@ This manifest is a forensic aid for baseline reconstruction. It is not proof of 
 
 ## Why The Lockfile Is Incomplete
 
-The repo contains [`clean_packages.R`](/Volumes/Casa/dev/dissertation/clean_packages.R#L4), which used `renv::dependencies()` to identify packages and then removed anything not detected. That approach misses packages referenced indirectly, namespaced inside code chunks, or otherwise not discovered cleanly. As a result, important packages used by the authoritative results chapter were installed in the old environment but never reliably captured in `renv.lock`.
+The repo previously contained a `clean_packages.R` utility that used `renv::dependencies()` to identify packages and then removed anything not detected. That approach misses packages referenced indirectly, namespaced inside code chunks, or otherwise not discovered cleanly. As a result, important packages used by the authoritative results chapter were installed in the old environment but never reliably captured in `renv.lock`.
 
 ## Summary
 
