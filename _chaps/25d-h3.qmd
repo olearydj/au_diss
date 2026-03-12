@@ -315,6 +315,7 @@ A comparison of model performance statistics are summarized in @tbl_tct_modperf.
 
 display(cp_tct)
 ```
+
 In this comparison, both AIC and BIC strongly prefer the additive model. While the R2 of the model with interactions is higher, the additive model scores a higher R2 adj., where complexity is penalized. Despite a slightly higher RMSE, the additive model outperforms based on the principle of parsimony, which favors the least complex model that effectively explains the data. Details for the additive model are summarized in @tbl_tct_modsum. The intercept represents the mean iTCT for the reference treatment (AR), with a gap of zero. The treatment coefficients (MR, PAR, PWI) indicate the difference in mean iTCT between each treatment and AR, assuming the same gap value. Since there are no interaction terms in the model, the effect of gap on iTCT is constant across all treatments.
 
 ```{r tbl_tct_modsum}
@@ -533,8 +534,8 @@ m3_uce_zinb_add_mp <- parameters::model_parameters(m3_uce_zinb_add, exponentiate
 mp_c <- m3_uce_zinb_add_mp  |> 
   filter(Component == "conditional")
 
-# Define function to custom format p-values
-format_p_values <- function(p_value) {
+# Define function to add custom formated p-values
+add_p_values <- function(p_value) {
   if (p_value < 0.001) {
     "< 0.001"
   } else {
@@ -549,7 +550,7 @@ mp_c  |>
     # reverse 2 x iUCE transformation
     `Adj Coef` = Coefficient / 2,
     Parameter = sub("count_", "", Parameter),
-    p = sapply(p, format_p_values)
+    p = sapply(p, add_p_values)
   ) |> 
   rename(`Est Coef` = Coefficient) |> 
   display(digits = 3, ci_digits = 2)
@@ -563,6 +564,7 @@ To ease interpretation, the values for estimated coefficients and standard error
 Here, the intercept (`r fmt_p_val(mp_c$p[1])`), gap (`r fmt_p_val(mp_c$p[2])`), and PWI treatment effect (`r fmt_p_val(mp_c$p[5])`) are all statistically significant. The adjusted intercept value indicates that baseline performance for the reference treatment level (AR) and a gap of zero is 3.354 errors. The adjusted gap coefficient indicates that the expected error count increases by 0.516 per day for the AR treatment. The effect of other treatments is multiplicative. This implies that the gap coefficient for PWI is changed by a *factor* of 0.197. These relationships can be interpreted as follows:
 
 \begin{align}
+\small
 \text{iUCE}_{\text{AR}} &= 3.354 + (0.516 \times \text{gap}) \label{eq:m3-uce-ar} \\
 \text{iUCE}_{\text{PWI}} &= 3.354 + (0.516 \times \text{gap}) \times 0.197 \label{eq:m3-uce-pwi} \\
 &= 3.354 + (0.102 \times \text{gap}) \notag
