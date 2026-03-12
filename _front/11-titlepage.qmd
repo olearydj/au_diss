@@ -40,8 +40,8 @@ Copyright 2024 by Danny J. O'Leary
 Approved by
 \vspace{12pt}
 
-Dr. Gregory Harris, Co-chair, Professor \& Chair, Industrial \& Systems Engineering \\
 Dr. John Evans, Co-chair, Professor, Industrial \& Systems Engineering \\
+Dr. Gregory Harris, Co-chair, Professor \& Chair, Industrial \& Systems Engineering \\
 Dr. Richard Sesek, Professor, Industrial \& Systems Engineering \\
 Dr. Konstantinos Mykoniatis, Assistant Professor, Industrial \& Systems Engineering
 
