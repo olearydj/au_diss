@@ -12,6 +12,7 @@
 # Other document types
 *.doc
 *.docx
+!data/DataDictionary.docx
 
 # Markdown render scratch
 *.knit.md
@@ -44,6 +45,10 @@ _book/
 test_input/
 test_output/
 /test/
+!parse_xml/test_input/
+!parse_xml/test_input/*.xml
+!parse_xml/test_output/
+!parse_xml/test_output/*.md
 
 # OS / editor / local cache noise
 .DS_Store

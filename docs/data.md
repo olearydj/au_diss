@@ -20,6 +20,7 @@ These layers should not be treated as duplicates. They represent different stage
 
 ### Preserved In Repo
 
+- `data/DataDictionary.docx`
 - `data/source/i1_raw_data.xlsx`
 - `data/source/adjusted_drop_events.xlsx`
 - `data/source/i1_h3.xlsx`
@@ -30,6 +31,16 @@ These layers should not be treated as duplicates. They represent different stage
 - `data/combined_results.xlsx`
 - `rdata/`
 - `parse_xml/test_input/` and `parse_xml/test_output/`
+
+One additional documentation artifact also survives in the data tree:
+
+- `data/DataDictionary.docx`
+
+Current interpretation:
+
+- this is an auxiliary documentation artifact associated with the unfinished appendix stub in [_apps/37g-datadict.qmd](/Volumes/Casa/dev/dissertation/_apps/37g-datadict.qmd)
+- it is not part of the active manuscript build
+- it is worth preserving in its historical location until a later markdown conversion/cleanup pass
 
 ### External / Machine-Specific Roots
 
@@ -159,13 +170,10 @@ These directories are a small parser test harness:
 
 They are useful for understanding and testing `parse_xml.py`, but they are not part of the dissertation manuscript build.
 
-One cleanup loose end remains here:
+Current recommendation:
 
-- the repo has a mixed tracked/ignored state in `parse_xml/test_input/`
-- several XML fixtures are tracked
-- `parse_xml/test_input/1001-Learn.xml` is currently ignored but present locally
-
-That should eventually be normalized one way or the other.
+- keep this fixture harness fully tracked and internally consistent
+- include the local `1001-Learn.xml` sample that had previously been ignored only because of a broad `test_input/` ignore rule
 
 ## Retention / H3 Data Path
 
@@ -225,5 +233,6 @@ The biggest remaining documentation gaps are:
 
 1. the exact original sequence used to produce `data/csv/i1_times_v2.csv` from the external XML tree
 2. whether `data/reports/` should be treated as primary generated outputs or as an intermediate reporting/debug layer
-3. whether the mixed tracked/ignored state in `parse_xml/test_input/` should be normalized
+3. whether `data/reports/` should be treated as primary generated outputs or as an intermediate reporting/debug layer
 4. whether the `test/` QA CSVs should remain purely ignored local residue or be archived elsewhere as pipeline evidence
+5. whether `data/DataDictionary.docx` should later be converted into a markdown/native repo document and folded into the appendix/docs structure
