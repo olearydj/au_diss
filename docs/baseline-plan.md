@@ -1,7 +1,7 @@
 **Initial Findings**
 This repo already contains a defensible final artifact set, but it is not yet a clean archival baseline.
 
-- The dissertation source is centered on Quarto book config in [_quarto.yml](/Volumes/Casa/dev/dissertation/_quarto.yml), with a rendered 304-page PDF in [manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf](/Volumes/Casa/dev/dissertation/manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf) and an archived submission snapshot in [_versions/submitted-2024-08-02](/Volumes/Casa/dev/dissertation/_versions/submitted-2024-08-02).
+- The dissertation source is centered on Quarto book config in [_quarto.yml](/Volumes/Casa/dev/dissertation/_quarto.yml), with a rendered 304-page PDF in [manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf](/Volumes/Casa/dev/dissertation/manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf) and an archived defended snapshot in [defended-2024-08-02](/Volumes/Casa/dev/dissertation/defended-2024-08-02).
 - The worktree is currently mixed: defended manuscript source, later revision edits, untracked analysis artifacts, generated HTML/figure outputs, and exploratory modeling notebooks all live together.
 - The repo has no top-level project documentation, so the build path, data provenance, and intended file layout are implicit rather than stated.
 - The analysis pipeline is only partly automated. Quarto/R is the main path, but some data generation depends on manual video processing/annotation plus Python utilities with hard-coded local paths.
@@ -16,11 +16,11 @@ This repo already contains a defensible final artifact set, but it is not yet a 
 
 **Current Baseline Interpretation**
 - Canonical manuscript artifact:
-  [_versions/submitted-2024-08-02/main.pdf](/Volumes/Casa/dev/dissertation/_versions/submitted-2024-08-02/main.pdf)
+  [defended-2024-08-02/main.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf)
 - Canonical deposited package artifact:
-  [_versions/submitted-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/dev/dissertation/_versions/submitted-2024-08-02/oleary-2024-08-02.pdf)
+  [defended-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/oleary-2024-08-02.pdf)
 - Canonical IRB appendix packet:
-  [_versions/submitted-2024-08-02/irb.pdf](/Volumes/Casa/dev/dissertation/_versions/submitted-2024-08-02/irb.pdf)
+  [defended-2024-08-02/irb.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/irb.pdf)
 - Current source is treated as the effective archival source, with three documented deltas from the canonical manuscript artifact:
   - Acknowledgements wording in [_front/13-acknowledgements.qmd](/Volumes/Casa/dev/dissertation/_front/13-acknowledgements.qmd)
   - rebuilt-only `compare_performance(...)` warning injected into Results during current rendering
@@ -100,7 +100,7 @@ At minimum I recommend:
 `docs/build.md`: exact reproduction workflow and environment requirements.
 `docs/reproducibility.md`: what is fully reproducible, what is manual, what is private.
 `docs/data.md`: data inventory, provenance, privacy boundaries, and how `combined_results.xlsx` was produced.
-`docs/repo-map.md`: quick explanation of `_chaps`, `_apps`, `data`, `rdata`, `parse_xml`, `tex`, `manuscript`, `_versions`.
+`docs/repo-map.md`: quick explanation of `_chaps`, `_apps`, `data`, `rdata`, `parse_xml`, `tex`, `manuscript`, `defended-2024-08-02`.
 `docs/publications.md`: map dissertation chapters/results to planned follow-on papers.
 Deliverable: a repo that a future you can understand in minutes instead of re-discovering over days.
 

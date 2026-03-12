@@ -1,0 +1,20 @@
+/* make codeblock font size a bit smaller */
+pre > code {
+    font-size: 13px !important; /* code blocks only */
+}
+
+/* make inline latex font a bit smaller */
+span.math.inline {
+  font-size: 85%;
+}
+
+/* Restore the older light inline-code pill used by the archived HTML build. */
+p code:not(.sourceCode),
+li code:not(.sourceCode),
+td code:not(.sourceCode) {
+  background-color: #f8f9fa;
+}
+
+.hide {
+  display: none;
+}

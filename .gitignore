@@ -33,6 +33,13 @@ _book/
 /_build-compare/
 /manuscript-prebuild-*/
 
+# Tracked defended snapshot exceptions
+!defended-2024-08-02/
+!defended-2024-08-02/README.md
+!defended-2024-08-02/*.pdf
+!defended-2024-08-02/html/
+!defended-2024-08-02/html/**
+
 # Test directories
 test_input/
 test_output/

@@ -20,8 +20,8 @@ These are the reference points the rebuild should be checked against:
 
 - Defended manuscript PDF:
   [manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf](/Volumes/Casa/dev/dissertation/manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf)
-- Archived submission snapshot:
-  [_versions/submitted-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/dev/dissertation/_versions/submitted-2024-08-02/oleary-2024-08-02.pdf)
+- Archived defended/deposit snapshot:
+  [defended-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/oleary-2024-08-02.pdf)
 - Main Quarto configuration under review:
   [_quarto.yml](/Volumes/Casa/dev/dissertation/_quarto.yml)
 
@@ -31,8 +31,8 @@ Important distinction:
 - The archived submission/deposit artifact is a `427`-page package that includes appended IRB materials beginning after the dissertation body.
 - A downloaded Auburn repository copy was checked and matches the `427`-page submission/deposit artifact class, not the `304`-page manuscript artifact.
 - The repo contains the likely exact source components of that deposited package:
-  [main.pdf](/Volumes/Casa/dev/dissertation/_versions/submitted-2024-08-02/main.pdf) (`304` pages) and
-  [irb.pdf](/Volumes/Casa/dev/dissertation/_versions/submitted-2024-08-02/irb.pdf) (`123` pages), which sum to `427` pages.
+  [main.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf) (`304` pages) and
+  [irb.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/irb.pdf) (`123` pages), which sum to `427` pages.
 
 **Immediate Environment Findings**
 Current shell findings:
@@ -122,7 +122,7 @@ As of this checkpoint:
   and
   [r-session-info-2026-03-12.txt](/Volumes/Casa/dev/dissertation/docs/r-session-info-2026-03-12.txt)
 - That alternate lock snapshot should currently be treated as a verified current-build environment capture, not as a proven historical replacement for the top-level `renv.lock`.
-- The successful TeX render footprint was extracted from the generated `.tex`, `.fls`, and `.log` artifacts kept during the rebuild process.
+- The successful TeX render footprint was extracted from generated `.tex`, `.fls`, and `.log` artifacts during the rebuild process; those artifacts were later dropped after the findings were documented.
 - The data workflow is also now better understood:
   - `data/combined_results.xlsx` is the curated main-study workbook from the original aggregation path
   - retention/H3 data was not folded back into that export path
@@ -141,11 +141,11 @@ Interpretation:
 For current baselining work, interpret the repository and artifacts as follows:
 
 - The canonical manuscript artifact is:
-  [_versions/submitted-2024-08-02/main.pdf](/Volumes/Casa/dev/dissertation/_versions/submitted-2024-08-02/main.pdf)
+  [defended-2024-08-02/main.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf)
 - The canonical deposited package artifact is:
-  [_versions/submitted-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/dev/dissertation/_versions/submitted-2024-08-02/oleary-2024-08-02.pdf)
+  [defended-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/oleary-2024-08-02.pdf)
 - The IRB packet used for deposit assembly is:
-  [_versions/submitted-2024-08-02/irb.pdf](/Volumes/Casa/dev/dissertation/_versions/submitted-2024-08-02/irb.pdf)
+  [defended-2024-08-02/irb.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/irb.pdf)
 - The current source tree is treated as the effective archival source, with only three documented text-level deltas from the canonical manuscript artifact:
   - Acknowledgements wording
   - rebuilt-only `compare_performance(...)` warning emitted into Results

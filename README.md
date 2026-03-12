@@ -8,9 +8,9 @@ The dissertation is complete and defended. This repository is being baseline-cle
 
 ## Canonical Artifacts
 
-- Canonical manuscript artifact: `_versions/submitted-2024-08-02/main.pdf`
-- Canonical deposited package artifact: `_versions/submitted-2024-08-02/oleary-2024-08-02.pdf`
-- Canonical IRB appendix packet: `_versions/submitted-2024-08-02/irb.pdf`
+- Canonical manuscript artifact: `defended-2024-08-02/main.pdf`
+- Canonical deposited package artifact: `defended-2024-08-02/oleary-2024-08-02.pdf`
+- Canonical IRB appendix packet: `defended-2024-08-02/irb.pdf`
 
 These artifact roles are documented in `docs/artifacts.md`.
 
@@ -45,7 +45,7 @@ This is documented in `docs/build.md`.
 - `parse_xml/`: Python utilities for processing annotation exports and derived reports.
 - `tex/`: custom LaTeX template work and Quarto template experiments.
 - `manuscript/`: current render output directory.
-- `_versions/`: archived submission-era artifacts.
+- `defended-2024-08-02/`: defended-era artifact snapshot, including manuscript PDF, deposited package PDF, IRB packet, and preserved HTML snapshot.
 - `docs/`: baseline, rebuild, artifact, and provenance notes for repository cleanup.
 
 Retention/H3 data note:
@@ -80,7 +80,8 @@ Current HTML verification notes:
 - the generated site output is coherent and includes the active chapter and appendix set from `_quarto.yml`
 - `downlit` is now installed in the project library, so HTML code-linking no longer emits the prior missing-package warning
 - `css/custom.css` now restores the older light inline-code background used by the archived HTML output
-- the top-level `html/` tree has been regenerated from the current active source set and no longer includes the previously stale extra pages
+- the top-level `html/` tree is treated as generated-on-demand and ignored in git
+- a preserved HTML snapshot now lives under `defended-2024-08-02/html/`
 
 Build notes, historical caveats, and current reproducibility status are in `docs/build.md` and `docs/rebuild-checklist.md`.
 

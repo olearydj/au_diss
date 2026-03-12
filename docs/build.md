@@ -6,9 +6,9 @@ This note records the dissertation build path that should be treated as canonica
 
 ## Canonical Outputs
 
-- Manuscript artifact: `_versions/submitted-2024-08-02/main.pdf`
-- Deposited package artifact: `_versions/submitted-2024-08-02/oleary-2024-08-02.pdf`
-- IRB packet used in deposit assembly: `_versions/submitted-2024-08-02/irb.pdf`
+- Manuscript artifact: `defended-2024-08-02/main.pdf`
+- Deposited package artifact: `defended-2024-08-02/oleary-2024-08-02.pdf`
+- IRB packet used in deposit assembly: `defended-2024-08-02/irb.pdf`
 
 These roles are defined in `docs/artifacts.md`.
 
@@ -57,7 +57,8 @@ Observed result:
 - the generated site is coherent and includes the active chapter and appendix set from `_quarto.yml`
 - `downlit` is now installed in the project library, so the previous code-link warning is resolved
 - `css/custom.css` now overrides the newer Bootstrap inline-code background so the rebuilt HTML matches the older light inline-code pill appearance
-- the top-level `html/` directory has been regenerated from the current active source set and no longer includes the previously stale extra pages
+- the top-level `html/` directory is treated as generated-on-demand and ignored in git
+- a preserved HTML snapshot is kept at `defended-2024-08-02/html/`
 
 ## Data Workflow Note
 

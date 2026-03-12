@@ -6,7 +6,7 @@ These files are the authoritative dissertation-era artifacts for baselining.
 
 ### Manuscript Artifact
 
-- Path: `_versions/submitted-2024-08-02/main.pdf`
+- Path: `defended-2024-08-02/main.pdf`
 - Role: canonical dissertation manuscript artifact
 - Page count class: `304`
 - Notes:
@@ -15,7 +15,7 @@ These files are the authoritative dissertation-era artifacts for baselining.
 
 ### Deposited Package Artifact
 
-- Path: `_versions/submitted-2024-08-02/oleary-2024-08-02.pdf`
+- Path: `defended-2024-08-02/oleary-2024-08-02.pdf`
 - Role: canonical deposited package artifact
 - Page count class: `427`
 - Notes:
@@ -24,7 +24,7 @@ These files are the authoritative dissertation-era artifacts for baselining.
 
 ### IRB Packet
 
-- Path: `_versions/submitted-2024-08-02/irb.pdf`
+- Path: `defended-2024-08-02/irb.pdf`
 - Role: separately produced IRB appendix packet used in deposit assembly
 - Page count class: `123`
 - Notes:
@@ -49,16 +49,22 @@ These are useful for reconstruction but should not be treated as the canonical b
 - Role: temporary local copies such as `manuscript-prebuild-*` created while protecting existing render outputs during rebuild testing
 - Status: not canonical and safe to remove after successful verification
 
-### Current HTML Output
+### Preserved HTML Snapshot
+
+- Path: `defended-2024-08-02/html/`
+- Role: preserved HTML/book snapshot associated with the defended-era artifact set
+- Status: non-canonical generated output kept as an archival convenience snapshot
+
+### Regenerated HTML Output
 
 - Path: `html/`
-- Role: regenerated HTML/book output from the current active source set
-- Status: non-canonical generated output; reproducible and safe to regenerate
+- Role: disposable local HTML/book output regenerated from the current active source set
+- Status: ignored in git and safe to regenerate or remove
 
 ### Generated TeX Evidence
 
-- Role: generated `.tex`, `.log`, `.fls`, and related auxiliary files retained during the successful PDF rebuild and used to derive the TeX footprint note
-- Status: supporting evidence only; retain only as long as they are useful for baseline verification
+- Role: generated `.tex`, `.log`, `.fls`, and related auxiliary files used during rebuild investigation to derive the TeX footprint note
+- Status: no longer retained in the baseline worktree; findings were extracted into the TeX docs
 
 ## Data Artifact Provenance
 
