@@ -47,6 +47,12 @@ This is documented in `docs/build.md`.
 - `_versions/`: archived submission-era artifacts.
 - `docs/`: baseline, rebuild, artifact, and provenance notes for repository cleanup.
 
+Retention/H3 data note:
+
+- `data/combined_results.xlsx` is the curated main-study workbook produced by the original data pipeline for phases 1 and 2.
+- `data/source/i1_h3.xlsx` is a separate retention-phase support workbook used by the later H3 analysis.
+- Current evidence indicates H3 was analyzed later and more ad hoc, rather than being folded back into the original Excel/Python aggregation workflow.
+
 ## Build
 
 The main manuscript build is driven by `_quarto.yml`.

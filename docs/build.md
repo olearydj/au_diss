@@ -59,6 +59,17 @@ Observed result:
 - `css/custom.css` now overrides the newer Bootstrap inline-code background so the rebuilt HTML matches the older light inline-code pill appearance
 - the top-level `html/` directory has been regenerated from the current active source set and no longer includes the previously stale extra pages
 
+## Data Workflow Note
+
+The dissertation data pipeline is not completely uniform across all three phases of the study.
+
+- The main curated workbook, `data/combined_results.xlsx`, was produced by the original Excel/R/Python aggregation path and covers the phase 1 / phase 2 study data exported in `forms_data.Rmd`.
+- That export path explicitly stopped short of incorporating phase 3 retention data; `forms_data.Rmd` still carries a TODO to "add phase 3".
+- The retention/H3 analysis instead reads `data/source/i1_h3.xlsx` directly and joins it to `demographics` from `combined_results.xlsx` and recall-derived objects from `rdata/`.
+- Current evidence and author confirmation indicate this happened because the H3 analysis was deferred and then completed later in a more ad hoc way, rather than being folded back into the original workbook-generation pipeline.
+
+This means the current baseline should treat `data/source/i1_h3.xlsx` as a legitimate source artifact for the retention analysis, not as an anomalous duplicate of `combined_results.xlsx`.
+
 ## Current Rebuild State
 
 The current machine has already been shown to render the dissertation successfully through the full Quarto/R/LaTeX/Biber path.

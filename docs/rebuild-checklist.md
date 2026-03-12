@@ -123,6 +123,11 @@ As of this checkpoint:
   [r-session-info-2026-03-12.txt](/Volumes/Casa/dev/dissertation/docs/r-session-info-2026-03-12.txt)
 - That alternate lock snapshot should currently be treated as a verified current-build environment capture, not as a proven historical replacement for the top-level `renv.lock`.
 - The successful TeX render footprint was extracted from the generated `.tex`, `.fls`, and `.log` artifacts kept during the rebuild process.
+- The data workflow is also now better understood:
+  - `data/combined_results.xlsx` is the curated main-study workbook from the original aggregation path
+  - retention/H3 data was not folded back into that export path
+  - `data/source/i1_h3.xlsx` is a separate support workbook used directly by the H3 analysis
+  - this split is consistent with the surviving `forms_data.Rmd` TODO to "add phase 3" and with author confirmation that H3 was analyzed later in a more ad hoc workflow
 
 Interpretation:
 
