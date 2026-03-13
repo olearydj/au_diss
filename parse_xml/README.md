@@ -2,6 +2,8 @@
 
 This directory holds the active upstream XML extraction layer for the dissertation data pipeline.
 
+For the full end-to-end workflow, including the downstream R curation and manuscript build boundary, see [docs/pipeline.md](/Volumes/Casa/dev/dissertation/docs/pipeline.md).
+
 ## Recommended Entry Point
 
 Use [`process_data.py`](/Volumes/Casa/dev/dissertation/parse_xml/process_data.py) as the active script.

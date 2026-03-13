@@ -2,6 +2,8 @@
 
 This directory holds the active R-side data-curation notebook for the dissertation and its local QA outputs.
 
+For the full end-to-end workflow, including the upstream extraction step and manuscript build boundary, see [docs/pipeline.md](/Volumes/Casa/dev/dissertation/docs/pipeline.md).
+
 ## Role
 
 - `forms_data.Rmd` reads preserved source/curation inputs from `data/source/` plus the timing handoff artifact `data/csv/i1_times_v2.csv`

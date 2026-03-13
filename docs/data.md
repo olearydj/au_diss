@@ -2,6 +2,8 @@
 
 This note records the current understanding of the dissertation data tree, the source-to-curated workflow, and the boundary between what is preserved in the repository and what lived on external storage.
 
+For the canonical end-to-end workflow note, see [pipeline.md](/Volumes/Casa/dev/dissertation/docs/pipeline.md).
+
 ## Overview
 
 The repository preserves multiple layers of research data:

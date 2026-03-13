@@ -92,6 +92,7 @@ Build notes, historical caveats, and current reproducibility status are in `docs
 - `docs/artifacts.md`: canonical artifacts and source-state rules.
 - `docs/build.md`: build path, provenance, and current known caveats.
 - `docs/baseline-plan.md`: overall cleanup/baseline plan.
+- `docs/pipeline.md`: canonical end-to-end workflow note for the external archive, Python extraction, R curation, and manuscript build boundary.
 - `docs/data.md`: data-tree provenance and relationships between raw, curated, generated, and archival analysis inputs.
 - `docs/thunderbay-inventory.md`: read-only inventory of the surviving external ThunderBay archive and its relationship to the Python/video workflow.
 - `docs/worktree-audit.md`: current ignored/generated residue and remaining cleanup decisions.
