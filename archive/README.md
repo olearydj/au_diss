@@ -77,6 +77,17 @@ These files are not part of the active Quarto build and should not be treated as
   - not part of the active dissertation build or curation pipeline
   - retained only because that migration now forms part of the provenance context for the surviving external archive
 
+### `parse_xml-legacy/`
+
+- Original location: `parse_xml/` plus root `requirements.txt`
+- Status: archived inactive pipeline generations
+- Role:
+  - preserves the earlier Python XML/report-processing false starts that preceded the active `process_data.py` entry point
+  - keeps the small XML fixture harness and legacy Python dependency record with those older scripts
+- Relationship to manuscript:
+  - not part of the active dissertation build or the active extraction switch-over
+  - retained because it documents how the XML/report workflow evolved before settling on the surviving generation that produced `data/reports/` and `data/csv/i1_times_v2.csv`
+
 ## Deleted Instead Of Archived
 
 The following files were treated as scratch/debug residue rather than archival work products and were deleted:
