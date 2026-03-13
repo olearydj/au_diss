@@ -1,6 +1,6 @@
 # parse_xml
 
-This directory holds the upstream XML extraction layer for the dissertation data pipeline.
+This directory holds the active upstream XML extraction layer for the dissertation data pipeline.
 
 ## Recommended Entry Point
 
@@ -42,12 +42,15 @@ uv run python parse_xml/process_data.py \
 ```
 
 The root [`pyproject.toml`](/Volumes/Casa/dev/dissertation/pyproject.toml) is now the active Python environment entry point for this workflow.
-The legacy [`requirements.txt`](/Volumes/Casa/dev/dissertation/requirements.txt) is retained as historical reference.
 
-## Legacy Scripts
+## Archived Legacy Materials
 
-- `generate_combined_reports.py`: older wrapper retained as historical reference
-- `process_video_tree.py`: earliest wrapper attempt retained as historical reference
-- `parse_xml.py`: lower-level XML parser/report helper still used by the legacy wrapper path
+Earlier inactive generations of this pipeline now live under [`archive/parse_xml-legacy/`](/Volumes/Casa/dev/dissertation/archive/parse_xml-legacy):
 
-These are intentionally preserved, but `process_data.py` is the script that should be treated as the clean switch-over target.
+- `process_video_tree.py`: earliest wrapper attempt
+- `generate_combined_reports.py`: second-generation wrapper
+- `parse_xml.py`: low-level parser/report helper used by those legacy wrappers
+- `test_input/` and `test_output/`: parser fixture harness for the archived low-level parser
+- `requirements.txt`: legacy Python environment specification retained as historical reference
+
+Those materials are preserved for provenance and archaeology, but [`process_data.py`](/Volumes/Casa/dev/dissertation/parse_xml/process_data.py) is the script that should be treated as the clean switch-over target.

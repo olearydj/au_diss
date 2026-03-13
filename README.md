@@ -43,7 +43,7 @@ This is documented in `docs/build.md`.
 - `analysis/`: active data-curation notebooks and their local QA outputs.
 - `archive/`: non-baseline exploratory, drafting, and historical materials retained for provenance.
 - `rdata/`: saved R objects used by the analysis and manuscript build.
-- `parse_xml/`: Python utilities for processing annotation exports and derived reports; see `parse_xml/README.md`.
+- `parse_xml/`: active Python extraction utilities for annotation exports and derived reports; see `parse_xml/README.md`.
 - `tex/`: custom LaTeX template work and Quarto template experiments.
 - `manuscript/`: current render output directory.
 - `defended-2024-08-02/`: defended-era artifact snapshot, including manuscript PDF, deposited package PDF, IRB packet, and preserved HTML snapshot.

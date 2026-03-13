@@ -83,22 +83,14 @@ Current recommendation:
 - optionally archive elsewhere later if you decide these are worth preserving as pipeline evidence
 - keep the notebook and its QA/debug outputs together under `analysis/forms_data/` so the curation step is structurally separate from manuscript source and curated data artifacts
 
-## Python Parser Test Harness
+## Archived Parser Fixtures
 
-- `parse_xml/test_input/`
-- `parse_xml/test_output/`
+The old parser fixture harness is no longer worktree residue under `parse_xml/`.
 
 Interpretation:
 
-- these are parser/report-generation fixtures, not manuscript inputs
-- `parse_xml/test_input/` contains sample XML files
-- `parse_xml/test_output/` contains generated markdown reports from those samples
-
-Current recommendation:
-
-- normalize this into a fully tracked small fixture harness
-- keep both the XML inputs and generated markdown outputs with [`parse_xml/`](/Volumes/Casa/dev/dissertation/parse_xml), since they are useful if the Python processing path is revived or refactored
-- track the previously ignored local `1001-Learn.xml` as part of that normalization
+- those sample XML files and generated markdown reports were promoted into tracked archival support material under [`archive/parse_xml-legacy/`](/Volumes/Casa/dev/dissertation/archive/parse_xml-legacy)
+- they remain useful for understanding the older parser generations, but they are not part of the active extraction entry point or manuscript build
 
 ## Data Dictionary Artifact
 
@@ -136,7 +128,6 @@ The remaining ignored worktree is now mostly understandable:
 - direct render residue
 - current working manuscript render output
 - QA CSV dumps from `analysis/forms_data/forms_data.Rmd`
-- parser test fixtures and outputs
 - external machine-specific dependencies not preserved in the repo
 
 What remains to decide is not what these things *are*, but whether any of the QA/test artifacts should be promoted from ignored local residue into documented archival support material.

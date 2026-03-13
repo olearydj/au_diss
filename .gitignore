@@ -9,6 +9,7 @@
 
 # python stuff
 /.venv/
+/uv.lock
 
 # Other document types
 *.doc
@@ -46,10 +47,10 @@ _book/
 test_input/
 test_output/
 /analysis/forms_data/output/
-!parse_xml/test_input/
-!parse_xml/test_input/*.xml
-!parse_xml/test_output/
-!parse_xml/test_output/*.md
+!archive/parse_xml-legacy/test_input/
+!archive/parse_xml-legacy/test_input/*.xml
+!archive/parse_xml-legacy/test_output/
+!archive/parse_xml-legacy/test_output/*.md
 
 # OS / editor / local cache noise
 .DS_Store

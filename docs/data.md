@@ -30,7 +30,7 @@ These layers should not be treated as duplicates. They represent different stage
 - `data/csv/i1_times_v2.csv`
 - `data/combined_results.xlsx`
 - `rdata/`
-- `parse_xml/test_input/` and `parse_xml/test_output/`
+- `archive/parse_xml-legacy/`
 
 Current interpretation:
 
@@ -97,28 +97,7 @@ The 2026-03-12 ThunderBay inventory supports this interpretation more concretely
 
 ## Python Processing Layer
 
-The Python files in [`parse_xml/`](/Volumes/Casa/dev/dissertation/parse_xml) represent successive generations of the annotation/report workflow.
-
-### `parse_xml/parse_xml.py`
-
-- low-level XML parser and markdown report generator
-- reads a Kyno XML export
-- extracts metadata, subclip markers, and other markers
-- builds markdown-ready report sections
-- includes a simple local test harness using `parse_xml/test_input/` and `parse_xml/test_output/`
-
-### `parse_xml/process_video_tree.py`
-
-- earliest wrapper attempt
-- walks an XML tree and writes markdown reports
-- uses hard-coded dev/prod/output roots
-
-### `parse_xml/generate_combined_reports.py`
-
-- second-generation wrapper
-- combines hand-transcribed markdown notes with XML-derived report content
-- writes combined reports and an earlier timing CSV
-- still uses hard-coded dissertation/dev and ThunderBay roots
+The active extraction entry point now lives in [`parse_xml/`](/Volumes/Casa/dev/dissertation/parse_xml), while earlier false starts are preserved under [`archive/parse_xml-legacy/`](/Volumes/Casa/dev/dissertation/archive/parse_xml-legacy).
 
 ### `parse_xml/process_data.py`
 
@@ -138,6 +117,33 @@ The Python files in [`parse_xml/`](/Volumes/Casa/dev/dissertation/parse_xml) rep
   - repo `data/` root resolves to the current repository `data/` tree
   - XML root prefers `/Volumes/tbm_archive/research_master/data/` and falls back to the legacy ThunderBay path if needed
   - markdown report links preserve the historical Box Sync root unless explicitly overridden
+
+### `parse_xml/path_config.py`
+
+- path/config helper used by the active extraction entry point
+- centralizes the repo `data/` root, external XML root, and optional Box link root resolution
+- prefers the verified UNAS archive as the default working external root while retaining the legacy ThunderBay path as fallback/provenance context
+
+### `archive/parse_xml-legacy/process_video_tree.py`
+
+- earliest wrapper attempt
+- walks an XML tree and writes markdown reports
+- uses hard-coded dev/prod/output roots
+
+### `archive/parse_xml-legacy/generate_combined_reports.py`
+
+- second-generation wrapper
+- combines hand-transcribed markdown notes with XML-derived report content
+- writes combined reports and an earlier timing CSV
+- still uses hard-coded dissertation/dev and ThunderBay roots
+
+### `archive/parse_xml-legacy/parse_xml.py`
+
+- low-level XML parser and markdown report generator used by the archived wrappers
+- reads a Kyno XML export
+- extracts metadata, subclip markers, and other markers
+- builds markdown-ready report sections
+- uses the archived sample fixture harness under `archive/parse_xml-legacy/test_input/` and `archive/parse_xml-legacy/test_output/`
 
 Current interpretation:
 
@@ -184,19 +190,19 @@ The ignored `analysis/forms_data/output/` directory is not unit tests. It is a s
 
 These are intermediate inspection dumps used to validate the curation pipeline. They are useful for forensic understanding, but they are not manuscript inputs.
 
-## Meaning Of `parse_xml/test_input/` And `parse_xml/test_output/`
+## Meaning Of `archive/parse_xml-legacy/test_input/` And `archive/parse_xml-legacy/test_output/`
 
 These directories are a small parser test harness:
 
-- `parse_xml/test_input/`: sample XML files
-- `parse_xml/test_output/`: expected/generated markdown reports from those samples
+- `archive/parse_xml-legacy/test_input/`: sample XML files
+- `archive/parse_xml-legacy/test_output/`: expected/generated markdown reports from those samples
 
-They are useful for understanding and testing `parse_xml.py`, but they are not part of the dissertation manuscript build.
+They are useful for understanding and testing the archived low-level parser, but they are not part of the dissertation manuscript build.
 
 Current recommendation:
 
-- keep this fixture harness fully tracked and internally consistent
-- include the local `1001-Learn.xml` sample that had previously been ignored only because of a broad `test_input/` ignore rule
+- keep this fixture harness fully tracked as archival support material
+- keep it adjacent to the archived legacy parser generations rather than the active extraction entry point
 
 ## Retention / H3 Data Path
 
@@ -256,6 +262,7 @@ The current repository now distinguishes two different executable layers that sh
 
 - `parse_xml/` is the upstream extraction layer:
   it depends on the external participant/XML archive and produces `data/reports/` plus `data/csv/i1_times_v2.csv`
+- `archive/parse_xml-legacy/` preserves the earlier false starts and parser fixtures that preceded the active entry point
 - `analysis/forms_data/` is the R-side curation layer:
   it consumes the preserved workbook and timing artifacts and produces local QA outputs plus `data/combined_results.xlsx`
 
