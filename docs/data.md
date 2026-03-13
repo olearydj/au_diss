@@ -50,7 +50,9 @@ The original raw video and XML workflow depended on external paths that are not 
 - Box Sync mirror used for local/cloud access to participant trial-data:
   - `/Users/djo/Box Sync/Tiger Motors Research Team Collaboration Files/Investigation 1 Data Files/trial-data/`
 
-These locations are described in [_apps/38h-dataorg.qmd](/Volumes/Casa/dev/dissertation/_apps/38h-dataorg.qmd) and hard-coded in the Python utilities under [`parse_xml/`](/Volumes/Casa/dev/dissertation/parse_xml).
+These locations are described in [_apps/38h-dataorg.qmd](/Volumes/Casa/dev/dissertation/_apps/38h-dataorg.qmd).
+
+Historically, the Python extraction utilities under [`parse_xml/`](/Volumes/Casa/dev/dissertation/parse_xml) hard-coded these paths. The active extraction entry point now supports path overrides via CLI options or environment variables, while preserving the historical path assumptions as documented context.
 
 A read-only inventory of the surviving ThunderBay archive was completed on 2026-03-12 and is recorded in [thunderbay-inventory.md](/Volumes/Casa/dev/dissertation/docs/thunderbay-inventory.md).
 
@@ -128,16 +130,21 @@ The Python files in [`parse_xml/`](/Volumes/Casa/dev/dissertation/parse_xml) rep
 - writes:
   - `data/reports/*-combined.md`
   - `data/csv/i1_times_v2.csv`
-- still contains hard-coded local paths:
-  - `DATA_ROOT = "/Users/djo/dev/au/dissertation/data/"`
-  - `XML_ROOT = "/Volumes/ThunderBay mini/Research Master/data/"`
-  - `BOX_ROOT = "/Users/djo/Box%20Sync/.../trial-data/"`
+- now supports additive path configuration for:
+  - repo `data/` root
+  - external participant/XML archive root
+  - optional Box/video-link root used in generated markdown reports
+- current defaults:
+  - repo `data/` root resolves to the current repository `data/` tree
+  - XML root prefers `/Volumes/tbm_archive/research_master/data/` and falls back to the legacy ThunderBay path if needed
+  - markdown report links preserve the historical Box Sync root unless explicitly overridden
 
 Current interpretation:
 
 - `process_data.py` is the clearest surviving source for how `data/reports/` and `data/csv/i1_times_v2.csv` were generated
-- it is not currently portable without path refactoring
+- it is now the clean switch-over target for a configurable extraction path
 - its assumptions about the ThunderBay path and participant directory naming were confirmed by the 2026-03-12 inventory
+- the recommended current working external archive root is the verified UNAS copy, not the physical ThunderBay
 
 ## R Curation Layer
 
@@ -258,6 +265,17 @@ Current recommendation:
 2. keep `parse_xml/` separate for now, because it is an external-archive extraction layer rather than manuscript analysis
 3. if a broader cleanup is worth doing later, consider a higher-level `pipeline/` grouping rather than folding the Python extractor directly into `analysis/`
 4. if that later refactor happens, the first Python cleanup should be path/config normalization so the UNAS-backed archive becomes the documented primary working external root
+
+## Validation Rule For Extraction Refactors
+
+For the Python extraction layer, structural cleanup is not enough by itself.
+
+Any path/config refactor should be treated as incomplete until the refactored entry point can generate hash-matching outputs for:
+
+- `data/csv/i1_times_v2.csv`
+- `data/reports/*-combined.md`
+
+using a disposable output location and the preserved dissertation inputs.
 
 ## Remaining Documentation Gaps
 

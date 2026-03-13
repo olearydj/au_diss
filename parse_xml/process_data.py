@@ -44,14 +44,35 @@ from rich.markdown import Markdown
 from rich.progress import Progress
 from rich.traceback import install
 
+try:
+    from .path_config import (
+        DEFAULT_BOX_ROOT,
+        ENV_BOX_ROOT,
+        ENV_DATA_ROOT,
+        ENV_XML_ROOT,
+        resolve_box_root,
+        resolve_data_root,
+        resolve_xml_root,
+    )
+except ImportError:
+    from path_config import (
+        DEFAULT_BOX_ROOT,
+        ENV_BOX_ROOT,
+        ENV_DATA_ROOT,
+        ENV_XML_ROOT,
+        resolve_box_root,
+        resolve_data_root,
+        resolve_xml_root,
+    )
+
 install()  # rich tracebacks; show_locals=False doesn't seem to work
 console = Console()  # rich console
 progress = Progress(console=console)  # rich progress bar
 
 
-DATA_ROOT = "/Users/djo/dev/au/dissertation/data/"
-XML_ROOT = "/Volumes/ThunderBay mini/Research Master/data/"
-BOX_ROOT = "/Users/djo/Box%20Sync/Tiger%20Motors%20Research%20Team%20Collaboration%20Files/Investigation%201%20Data%20Files/trial-data/"
+DATA_ROOT = str(resolve_data_root())
+XML_ROOT = str(resolve_xml_root())
+BOX_ROOT = DEFAULT_BOX_ROOT
 
 CONSOLE_OUT = False
 MARKDOWN = False
@@ -166,7 +187,7 @@ def extract_data_from_xml(xml_files):
     return xml_data
 
 
-def generate_markdown_report(p_data: dict, participant: str):
+def generate_markdown_report(p_data: dict, participant: str, box_root: str = BOX_ROOT):
     report_header = f"# Trial {participant}\n\n" "## Participant Information\n\n"
 
     for key, value in p_data["demos"].items():
@@ -197,7 +218,7 @@ def generate_markdown_report(p_data: dict, participant: str):
             f"> - **Last Modified**: {metadata['last_modified']}\n"
             f"> - **Title**: {metadata['title']}\n"
             f"> - **Rating**: {metadata['rating']}\n\n"
-            f"**Open Video**: [{video_file}](file://{BOX_ROOT + video_path})\n\n"
+            f"**Open Video**: [{video_file}](file://{box_root + video_path})\n\n"
             f"### {metadata['title']} Observations\n"
         )
 
@@ -319,7 +340,18 @@ def compile_csv_data(p_data, participant):
 
 
 def main(
-    data_root: str = typer.Option(DATA_ROOT, help="Data root directory"),
+    data_root: str = typer.Option(
+        DATA_ROOT,
+        help=f"Data root directory containing source/, csv/, and reports/ (env: {ENV_DATA_ROOT})",
+    ),
+    xml_root: str = typer.Option(
+        XML_ROOT,
+        help=f"External participant/XML archive root (env: {ENV_XML_ROOT})",
+    ),
+    box_root: str = typer.Option(
+        BOX_ROOT,
+        help=f"Optional file-link root used in generated markdown reports (env: {ENV_BOX_ROOT})",
+    ),
     console_out: bool = typer.Option(CONSOLE_OUT, help="Print reports to the console"),
     markdown: bool = typer.Option(MARKDOWN, help="Console output rendered in markdown"),
     write_md: bool = typer.Option(WRITE_MD, help="Enable writing MD reports"),
@@ -329,15 +361,19 @@ def main(
     logger.info("-- Entering main...")
 
     # define paths
-    data_root = Path(data_root)  # root directory for most data IO
+    data_root = resolve_data_root(data_root)
     source_path = data_root / "source"  # ingest data from here, e.g. XLS file
     notes_path = source_path / "notes"  # ingest trial notes here, e.g. 1001.md
     csv_out_path = data_root / "csv"  # output CSV data here
     md_out_path = data_root / "reports"  # output all MD reports here
-    xml_path = Path(XML_ROOT)  # root directory for video annotation XML files
+    xml_path = resolve_xml_root(xml_root)  # root directory for video annotation XML files
+    box_root = resolve_box_root(box_root)
 
     xls_in_file = source_path / "i1_raw_data.xlsx"
     csv_out_file = csv_out_path / "i1_times_v2.csv"
+
+    csv_out_path.mkdir(parents=True, exist_ok=True)
+    md_out_path.mkdir(parents=True, exist_ok=True)
 
     ### compile feedback from hand-transcribed notes - loop through all ????.md files
     reports = sorted(notes_path.glob("????.md"))
@@ -377,7 +413,9 @@ def main(
     # generate md reports, incorporating data from various sources
     md_reports = {}
     for participant, data in sorted(comb_data.items()):
-        md_reports[participant] = generate_markdown_report(data, participant)
+        md_reports[participant] = generate_markdown_report(
+            data, participant, box_root=box_root
+        )
 
     # output reports to console and/or files
     for participant, report in sorted(md_reports.items()):
