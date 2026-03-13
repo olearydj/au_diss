@@ -32,10 +32,6 @@ These layers should not be treated as duplicates. They represent different stage
 - `rdata/`
 - `parse_xml/test_input/` and `parse_xml/test_output/`
 
-One additional documentation artifact also survives in the data tree:
-
-- `data/DataDictionary.docx`
-
 Current interpretation:
 
 - this is an auxiliary documentation artifact associated with the unfinished appendix stub in [_apps/37g-datadict.qmd](/Volumes/Casa/dev/dissertation/_apps/37g-datadict.qmd)
@@ -46,18 +42,31 @@ Current interpretation:
 
 The original raw video and XML workflow depended on external paths that are not preserved in the repo itself:
 
-- ThunderBay RAID / external storage:
+- Original ThunderBay source/archive:
   - `/Volumes/ThunderBay mini/Research Master/data/`
   - `/Volumes/ThunderBay mini/Research Master/raw_videos/`
+- Current UNAS replica/archive:
+  - `/Volumes/tbm_archive/research_master/`
 - Box Sync mirror used for local/cloud access to participant trial-data:
   - `/Users/djo/Box Sync/Tiger Motors Research Team Collaboration Files/Investigation 1 Data Files/trial-data/`
 
 These locations are described in [_apps/38h-dataorg.qmd](/Volumes/Casa/dev/dissertation/_apps/38h-dataorg.qmd) and hard-coded in the Python utilities under [`parse_xml/`](/Volumes/Casa/dev/dissertation/parse_xml).
 
+A read-only inventory of the surviving ThunderBay archive was completed on 2026-03-12 and is recorded in [thunderbay-inventory.md](/Volumes/Casa/dev/dissertation/docs/thunderbay-inventory.md).
+
+That note now also records the subsequent migration of the archive onto the UNAS Pro and the verification steps used to confirm the copy.
+
 Practical implication:
 
 - the current manuscript rebuild does **not** require those external roots
 - a full raw-to-curated regeneration of the timing/report layer **does** depend on them
+
+Important clarification from the ThunderBay inventory:
+
+- the external `data/` tree is the normalized participant-level archive
+- the external `raw_videos/` tree is the original capture/archive layer
+- the Python processing path appears to have traversed the normalized participant-level `data/` tree rather than the raw capture archive
+- the UNAS copy is now a verified replica of the ThunderBay archive and should be treated as the primary working external archive path
 
 ## Main Phase 1 / Phase 2 Data Path
 
@@ -77,6 +86,12 @@ The main study workflow appears to have been:
    - QA/debug CSVs in `test/`
    - curated workbook `data/combined_results.xlsx`
 7. The manuscript Results workflow read `data/combined_results.xlsx` plus supporting `rdata/*.RData`
+
+The 2026-03-12 ThunderBay inventory supports this interpretation more concretely:
+
+- `data/` on ThunderBay contains `64` participant directories, of which `62` are real participant records and `2` are skip placeholders
+- the `62` real participant directories each contain `images/`, `videos/`, and exactly two XML files
+- `raw_videos/` separately preserves the raw camera/HoloLens capture layer, including split recordings such as `-1`, `-2`, `-p1`, and `-p2`
 
 ## Python Processing Layer
 
@@ -122,6 +137,7 @@ Current interpretation:
 
 - `process_data.py` is the clearest surviving source for how `data/reports/` and `data/csv/i1_times_v2.csv` were generated
 - it is not currently portable without path refactoring
+- its assumptions about the ThunderBay path and participant directory naming were confirmed by the 2026-03-12 inventory
 
 ## R Curation Layer
 
@@ -233,6 +249,20 @@ The biggest remaining documentation gaps are:
 
 1. the exact original sequence used to produce `data/csv/i1_times_v2.csv` from the external XML tree
 2. whether `data/reports/` should be treated as primary generated outputs or as an intermediate reporting/debug layer
-3. whether `data/reports/` should be treated as primary generated outputs or as an intermediate reporting/debug layer
-4. whether the `test/` QA CSVs should remain purely ignored local residue or be archived elsewhere as pipeline evidence
-5. whether `data/DataDictionary.docx` should later be converted into a markdown/native repo document and folded into the appendix/docs structure
+3. whether the `test/` QA CSVs should remain purely ignored local residue or be archived elsewhere as pipeline evidence
+4. whether `data/DataDictionary.docx` should later be converted into a markdown/native repo document and folded into the appendix/docs structure
+
+The ThunderBay inventory closed some uncertainty about the external archive structure, but it did not yet reconstruct the exact transformation sequence from:
+
+- `raw_videos/`
+- ThunderBay participant `data/.../videos/*.xml`
+- `data/source/notes/`
+
+to:
+
+- `data/reports/`
+- `data/csv/i1_times_v2.csv`
+
+The archive-migration work also leaves one practical documentation task:
+
+- update any remaining external-path notes and future workflow docs so they refer to the UNAS-backed archive as the primary working location rather than the physical ThunderBay

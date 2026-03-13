@@ -55,6 +55,7 @@ Retention/H3 data note:
 - Current evidence indicates H3 was analyzed later and more ad hoc, rather than being folded back into the original Excel/Python aggregation workflow.
 - `data/source/notes/` holds participant-level source notes and feedback markdown.
 - `data/reports/` holds generated participant reports derived from the source notes, workbook data, and local video metadata.
+- The original ThunderBay archive has now been inventoried and copied to the UNAS Pro; details and verification notes are in `docs/thunderbay-inventory.md`.
 
 ## Build
 
@@ -91,6 +92,7 @@ Build notes, historical caveats, and current reproducibility status are in `docs
 - `docs/build.md`: build path, provenance, and current known caveats.
 - `docs/baseline-plan.md`: overall cleanup/baseline plan.
 - `docs/data.md`: data-tree provenance and relationships between raw, curated, generated, and archival analysis inputs.
+- `docs/thunderbay-inventory.md`: read-only inventory of the surviving external ThunderBay archive and its relationship to the Python/video workflow.
 - `docs/worktree-audit.md`: current ignored/generated residue and remaining cleanup decisions.
 - `docs/rebuild-checklist.md`: rebuild verification notes and environment findings.
 - `docs/text-content-diff.md`: content-only comparison between `main.pdf` and the rebuilt manuscript.
@@ -101,7 +103,14 @@ Build notes, historical caveats, and current reproducibility status are in `docs
 
 ## Status
 
-The repository is not yet at its final archival baseline. The current branch is being used to:
+The archival baseline has been established on:
+
+- branch: `master`
+- tag: `baseline/dissertation-defended-2024-08-02`
+
+Current follow-on work is happening on task branches such as the present ThunderBay inventory branch.
+
+The major baseline work that has already been completed includes:
 
 1. define canonical artifacts and rules
 2. document the build and deposit path
