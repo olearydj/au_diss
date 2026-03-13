@@ -5,6 +5,7 @@
 .Ruserdata
 /.quarto/
 /*.nb.html
+/analysis/forms_data/*.nb.html
 
 # python stuff
 /.venv/
@@ -44,7 +45,7 @@ _book/
 # Test directories
 test_input/
 test_output/
-/test/
+/analysis/forms_data/output/
 !parse_xml/test_input/
 !parse_xml/test_input/*.xml
 !parse_xml/test_output/

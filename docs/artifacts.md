@@ -76,7 +76,7 @@ The repository contains two different classes of curated analysis input that sho
 - Role: canonical curated workbook for the main study data used throughout the dissertation analyses
 - Notes:
   - produced by the original Excel/R/Python aggregation workflow
-  - contains the exported tabs described in the methods chapter and `forms_data.Rmd`
+  - contains the exported tabs described in the methods chapter and `analysis/forms_data/forms_data.Rmd`
   - covers the main phase 1 / phase 2 data path
 
 ### Retention / H3 Source Workbook

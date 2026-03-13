@@ -64,8 +64,8 @@ Observed result:
 
 The dissertation data pipeline is not completely uniform across all three phases of the study.
 
-- The main curated workbook, `data/combined_results.xlsx`, was produced by the original Excel/R/Python aggregation path and covers the phase 1 / phase 2 study data exported in `forms_data.Rmd`.
-- That export path explicitly stopped short of incorporating phase 3 retention data; `forms_data.Rmd` still carries a TODO to "add phase 3".
+- The main curated workbook, `data/combined_results.xlsx`, was produced by the original Excel/R/Python aggregation path and covers the phase 1 / phase 2 study data exported in `analysis/forms_data/forms_data.Rmd`.
+- That export path explicitly stopped short of incorporating phase 3 retention data; `analysis/forms_data/forms_data.Rmd` still carries a TODO to "add phase 3".
 - The retention/H3 analysis instead reads `data/source/i1_h3.xlsx` directly and joins it to `demographics` from `combined_results.xlsx` and recall-derived objects from `rdata/`.
 - Current evidence and author confirmation indicate this happened because the H3 analysis was deferred and then completed later in a more ad hoc way, rather than being folded back into the original workbook-generation pipeline.
 
