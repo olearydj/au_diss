@@ -105,7 +105,7 @@ The inventory confirms the main assumptions in:
 
 Specifically:
 
-- the ThunderBay root path in `process_data.py` is correct:
+- the historical ThunderBay root path used by `process_data.py` is correct:
   - `XML_ROOT = "/Volumes/ThunderBay mini/Research Master/data/"`
 - participant directory naming follows the expected pattern:
   - `{participant}-{treatment}-{date}-{time}`
@@ -113,6 +113,11 @@ Specifically:
 - the archive really does distinguish:
   - a normalized participant-level `data/` tree
   - a separate `raw_videos/` capture archive
+
+Current follow-on implication:
+
+- the refactored active extraction path should prefer the UNAS-backed replica as its working external root
+- the old ThunderBay path remains important as historical provenance evidence, not as the default working target
 
 ### Clarified
 
