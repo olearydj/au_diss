@@ -67,6 +67,16 @@ These files are not part of the active Quarto build and should not be treated as
   - not part of the active build
   - retained as historical context for unresolved or once-unresolved dissertation production issues
 
+### `tbm-migration/`
+
+- Original location: local untracked `scripts/` workspace files plus migration notes
+- Status: archival operational reference
+- Role:
+  - helper scripts and notes from the completed ThunderBay -> UNAS copy/verification work
+- Relationship to manuscript:
+  - not part of the active dissertation build or curation pipeline
+  - retained only because that migration now forms part of the provenance context for the surviving external archive
+
 ## Deleted Instead Of Archived
 
 The following files were treated as scratch/debug residue rather than archival work products and were deleted:
