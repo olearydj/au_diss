@@ -15,13 +15,29 @@ Load the XLSX file
 ### load libraries
 library(tidyverse)
 library(readxl)
+
+if (file.exists("data/combined_results.xlsx")) {
+  repo_root <- normalizePath(".", winslash = "/", mustWork = TRUE)
+} else if (file.exists("../../data/combined_results.xlsx")) {
+  repo_root <- normalizePath("../..", winslash = "/", mustWork = TRUE)
+} else {
+  stop("Could not locate repository root from forms_data.Rmd")
+}
+
+source_xlsx <- file.path(repo_root, "data", "source", "i1_raw_data.xlsx")
+times_csv_path <- file.path(repo_root, "data", "csv", "i1_times_v2.csv")
+adjusted_drops_path <- file.path(repo_root, "data", "source", "adjusted_drop_events.xlsx")
+output_dir <- file.path(repo_root, "analysis", "forms_data", "output")
+combined_results_path <- file.path(repo_root, "data", "combined_results.xlsx")
+
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 ```
 
 ```{r}
 ### read and clean the demographic data
 
 raw_demog_xls <- read_xlsx(
-  "./data/source/i1_raw_data.xlsx",
+  source_xlsx,
   na = c("", "N/A"),
   sheet = "DEMO")
 
@@ -42,7 +58,7 @@ demog_xls <- raw_demog_xls |>
 ### read and clean the car error data
 
 raw_exp_xls <- read_xlsx(
-  "./data/source/i1_raw_data.xlsx",
+  source_xlsx,
   sheet = "OUTCOMES")
 
 outcomes <- raw_exp_xls |>
@@ -102,7 +118,7 @@ col_names = c(
   "note"
 )
 
-raw_times_csv <- read_csv("./data/csv/i1_times_v2.csv", col_names=col_names)
+raw_times_csv <- read_csv(times_csv_path, col_names=col_names)
 
 times <- raw_times_csv |>
   janitor::clean_names() |>
@@ -397,7 +413,7 @@ outcomes <- outcomes |>
     outcome_comment = comments
   )
 
-write.csv(outcomes, "test/outcomes.csv", row.names = FALSE)
+write.csv(outcomes, file.path(output_dir, "outcomes.csv"), row.names = FALSE)
 ```
 
 Second cleaning pass, after improved join and review of child events. Three classes of event:
@@ -489,7 +505,7 @@ Went through all drop events to assess the percentage of its duration that impac
 Now add adj_drop time to times table.
 
 ```{r}
-raw_adj_drops <- read_xlsx("./data/source/adjusted_drop_events.xlsx") |>
+raw_adj_drops <- read_xlsx(adjusted_drops_path) |>
   janitor::clean_names()
 
 times <- times |>
@@ -516,7 +532,7 @@ times <- times |>
     event_comment = note
   )
 
-write.csv(times, "test/times.csv", row.names = FALSE)
+write.csv(times, file.path(output_dir, "times.csv"), row.names = FALSE)
 
 ```
 
@@ -527,7 +543,7 @@ joined <- times |>
   mutate(UIDT_sub = str_replace(UIDT, "-T\\d{1,2}$", "")) |>
   full_join(outcomes, by = c("UIDT_sub" = "UIDO"))
 
-write.csv(joined, "test/joined.csv", row.names = FALSE)
+write.csv(joined, file.path(output_dir, "joined.csv"), row.names = FALSE)
 ```
 
 Generate two new columns for each type of child event (repair, system, pwi, drop):
@@ -591,7 +607,7 @@ for (summary in summaries) {
   joined_augmented <- left_join(joined_augmented, summary, by = "UIDT_sub")
 }
 
-write.csv(joined_augmented, "test/joined_aug.csv", row.names = FALSE)
+write.csv(joined_augmented, file.path(output_dir, "joined_aug.csv"), row.names = FALSE)
 
 ```
 
@@ -702,7 +718,7 @@ combined <- joined_augmented |>
     error_codes
   )
 
-write.csv(combined, "test/combined.csv", row.names = FALSE)
+write.csv(combined, file.path(output_dir, "combined.csv"), row.names = FALSE)
 ```
 
 Get TLX data in a tidy format.
@@ -714,7 +730,7 @@ target_sheets <- paste0("TLX-", 0:2)
 tlx_data_tidy <- map_dfr(
   target_sheets,
   ~ read_excel(
-    "./data/source/i1_raw_data.xlsx",
+    source_xlsx,
     na = c("", "N/A"),
     sheet = .x
   ) |>
@@ -878,7 +894,7 @@ tlx_scores <- tlx_scores |>
   ) |>
   arrange(participant, treatment, phase, match(type, type_order), match(source, workload_factors))
 
-write.csv(tlx_scores, "test/tlx_scores.csv", row.names = FALSE)
+write.csv(tlx_scores, file.path(output_dir, "tlx_scores.csv"), row.names = FALSE)
 ```
 
 Process the System Usability Scale Data
@@ -896,7 +912,7 @@ target_sheets <- paste0("SUS-", 1:2)
 sus_data <- map_dfr(
   target_sheets,
   ~ read_excel(
-    "./data/source/i1_raw_data.xlsx",
+    source_xlsx,
     na = c("", "N/A"),
     sheet = .x
   ) |>
@@ -948,7 +964,7 @@ Just loading as VB has already performed the analysis and I'm not using this dat
 
 
 bcs_data <- read_excel(
-    "./data/source/i1_raw_data.xlsx",
+    source_xlsx,
     na = c("", "N/A"),
     sheet = "BCS"
   )
@@ -977,7 +993,7 @@ write_xlsx(
     "system usability scores" = sus_scores,
     "tlx scores" = tlx_scores
   ),
-  "./data/combined_results.xlsx"
+  combined_results_path
 )
 ```
 

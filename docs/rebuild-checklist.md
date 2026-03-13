@@ -127,7 +127,7 @@ As of this checkpoint:
   - `data/combined_results.xlsx` is the curated main-study workbook from the original aggregation path
   - retention/H3 data was not folded back into that export path
   - `data/source/i1_h3.xlsx` is a separate support workbook used directly by the H3 analysis
-  - this split is consistent with the surviving `forms_data.Rmd` TODO to "add phase 3" and with author confirmation that H3 was analyzed later in a more ad hoc workflow
+  - this split is consistent with the surviving `analysis/forms_data/forms_data.Rmd` TODO to "add phase 3" and with author confirmation that H3 was analyzed later in a more ad hoc workflow
 
 Interpretation:
 

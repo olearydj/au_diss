@@ -78,12 +78,12 @@ The main study workflow appears to have been:
 4. Python processing used those notes, XML files, and workbook data to generate:
    - participant reports in `data/reports/`
    - timing CSV output in `data/csv/i1_times_v2.csv`
-5. `forms_data.Rmd` read:
+5. `analysis/forms_data/forms_data.Rmd` read:
    - workbook tabs from `data/source/i1_raw_data.xlsx`
    - timing data from `data/csv/i1_times_v2.csv`
    - manual event corrections from `data/source/adjusted_drop_events.xlsx`
-6. `forms_data.Rmd` produced:
-   - QA/debug CSVs in `test/`
+6. `analysis/forms_data/forms_data.Rmd` produced:
+   - QA/debug CSVs in `analysis/forms_data/output/`
    - curated workbook `data/combined_results.xlsx`
 7. The manuscript Results workflow read `data/combined_results.xlsx` plus supporting `rdata/*.RData`
 
@@ -141,7 +141,7 @@ Current interpretation:
 
 ## R Curation Layer
 
-[`forms_data.Rmd`](/Volumes/Casa/dev/dissertation/forms_data.Rmd) is the key R-side data curation notebook.
+[`analysis/forms_data/forms_data.Rmd`](/Volumes/Casa/dev/dissertation/analysis/forms_data/forms_data.Rmd) is the key R-side data curation notebook.
 
 It reads:
 
@@ -156,24 +156,24 @@ It then:
 - joins timing and outcome information
 - computes aggregated event summaries
 - produces TLX and SUS score tables
-- exports QA/debug CSVs into `test/`
+- exports QA/debug CSVs into `analysis/forms_data/output/`
 - exports the curated workbook `data/combined_results.xlsx`
 
 Important historical note:
 
-- `forms_data.Rmd` still contains a TODO to `add phase 3`
+- `analysis/forms_data/forms_data.Rmd` still contains a TODO to `add phase 3`
 - this confirms that the main curated workbook path stopped at phases 1 and 2
 
-## Meaning Of `test/`
+## Meaning Of `analysis/forms_data/output/`
 
-The ignored top-level `test/` directory is not unit tests. It is a set of QA/debug outputs written by `forms_data.Rmd`, including:
+The ignored `analysis/forms_data/output/` directory is not unit tests. It is a set of QA/debug outputs written by `analysis/forms_data/forms_data.Rmd`, including:
 
-- `test/outcomes.csv`
-- `test/times.csv`
-- `test/joined.csv`
-- `test/joined_aug.csv`
-- `test/combined.csv`
-- `test/tlx_scores.csv`
+- `analysis/forms_data/output/outcomes.csv`
+- `analysis/forms_data/output/times.csv`
+- `analysis/forms_data/output/joined.csv`
+- `analysis/forms_data/output/joined_aug.csv`
+- `analysis/forms_data/output/combined.csv`
+- `analysis/forms_data/output/tlx_scores.csv`
 
 These are intermediate inspection dumps used to validate the curation pipeline. They are useful for forensic understanding, but they are not manuscript inputs.
 
@@ -195,7 +195,7 @@ Current recommendation:
 
 Retention/H3 was handled differently from the main phase 1 / phase 2 workflow.
 
-- `forms_data.Rmd` exports `data/combined_results.xlsx` but still carries a TODO to "add phase 3"
+- `analysis/forms_data/forms_data.Rmd` exports `data/combined_results.xlsx` but still carries a TODO to "add phase 3"
 - the retention analysis instead reads `data/source/i1_h3.xlsx` directly
 - H3 then joins that sheet with:
   - `demographics` from `data/combined_results.xlsx`
@@ -243,13 +243,29 @@ For current baselining purposes:
 - treat `data/combined_results.xlsx` as the canonical curated workbook for the main study
 - treat `data/source/i1_h3.xlsx` as the separate but legitimate H3 retention source workbook
 
+## Refactor Direction
+
+The current repository now distinguishes two different executable layers that should not be conflated.
+
+- `parse_xml/` is the upstream extraction layer:
+  it depends on the external participant/XML archive and produces `data/reports/` plus `data/csv/i1_times_v2.csv`
+- `analysis/forms_data/` is the R-side curation layer:
+  it consumes the preserved workbook and timing artifacts and produces local QA outputs plus `data/combined_results.xlsx`
+
+Current recommendation:
+
+1. keep `analysis/forms_data/` as the home of the active R curation notebook and its local QA output folder
+2. keep `parse_xml/` separate for now, because it is an external-archive extraction layer rather than manuscript analysis
+3. if a broader cleanup is worth doing later, consider a higher-level `pipeline/` grouping rather than folding the Python extractor directly into `analysis/`
+4. if that later refactor happens, the first Python cleanup should be path/config normalization so the UNAS-backed archive becomes the documented primary working external root
+
 ## Remaining Documentation Gaps
 
 The biggest remaining documentation gaps are:
 
 1. the exact original sequence used to produce `data/csv/i1_times_v2.csv` from the external XML tree
 2. whether `data/reports/` should be treated as primary generated outputs or as an intermediate reporting/debug layer
-3. whether the `test/` QA CSVs should remain purely ignored local residue or be archived elsewhere as pipeline evidence
+3. whether the `analysis/forms_data/output/` QA CSVs should remain purely ignored local residue or be archived elsewhere as pipeline evidence
 4. whether `data/DataDictionary.docx` should later be converted into a markdown/native repo document and folded into the appendix/docs structure
 
 The ThunderBay inventory closed some uncertainty about the external archive structure, but it did not yet reconstruct the exact transformation sequence from:
