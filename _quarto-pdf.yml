@@ -1,0 +1,18 @@
+## PDF profile chapter order.
+
+book:
+  chapters:
+    - index.qmd
+    - _chaps/21-intro.qmd
+    - _chaps/22-lit_review.qmd
+    - _chaps/23-prob_statement.qmd
+    - _chaps/24-methods.qmd
+    - _chaps/25-results.qmd
+    - _chaps/26-conclusions.qmd
+    - _chaps/28-references.qmd
+  appendices:
+    - _apps/32b-contributions.qmd
+    - _apps/35e-videotools.qmd
+    - _apps/36f-videoproc.qmd
+    - _apps/38h-dataorg.qmd
+    - _apps/31a-irb.qmd

@@ -14,20 +14,28 @@ These roles are defined in `docs/artifacts.md`.
 
 ## Historical Workflow
 
-Current evidence supports this publication path:
+Earlier baseline notes inferred a manual post-processing step because the direct
+Quarto rebuild was emitting a duplicate/phantom front-matter chapter before the
+title page.
 
-1. Render the Quarto book to produce the manuscript PDF.
-2. Post-process that PDF to correct the front-matter / empty-chapter artifact produced by the direct render.
-3. Use the corrected manuscript PDF as `main.pdf`.
-4. Combine `main.pdf` with the separately produced IRB packet to create the deposited package PDF.
+The current source tree now fixes that issue at the source level:
 
-The exact historical post-processing step has not been fully reconstructed. On the current machine, simply deleting page 1 from the rebuilt PDF improves the front matter but does not fully recreate `main.pdf`, so the old environment or post-processing path was likely slightly different.
+1. the title page is injected before the body via `include-before-body`
+2. the custom template now starts in `\frontmatter`
+3. the book front matter is split cleanly between the PDF and HTML profiles
+
+That means the current direct PDF render no longer needs a follow-up page-delete
+workaround just to produce sane front matter. The defended [`main.pdf`](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf)
+remains the canonical manuscript artifact, and the rebuild is still a near-match
+rather than a byte-identical replica.
 
 ## Current Source Build
 
 Main Quarto config:
 
 - `_quarto.yml`
+- `_quarto-pdf.yml`
+- `_quarto-html.yml`
 
 Historical manual full/partial-build config variants have been archived under
 `archive/quarto-config-variants/`. They document drafting-era workflow
@@ -36,7 +44,7 @@ experiments but are not part of the active source build.
 Primary render command:
 
 ```sh
-quarto render --to pdf --profile book
+quarto render --to pdf --profile pdf
 ```
 
 Current PDF config characteristics:
@@ -56,13 +64,14 @@ Current PDF config characteristics:
 The same Quarto config also defines an HTML output path for website/book-style rendering. That path was revalidated on the current machine using a disposable output directory:
 
 ```sh
-quarto render --to html --output-dir html
+quarto render --to html --profile html
 ```
 
 Observed result:
 
 - the HTML/book render succeeds
-- the generated site is coherent and includes the active chapter and appendix set from `_quarto.yml`
+- the generated site is coherent and includes the active chapter and appendix set from `_quarto-html.yml`
+- the HTML profile inserts a separate unnumbered `Acknowledgements` chapter between `Abstract` and `Introduction`
 - `downlit` is now installed in the project library, so the previous code-link warning is resolved
 - `css/custom.css` now overrides the newer Bootstrap inline-code background so the rebuilt HTML matches the older light inline-code pill appearance
 - the top-level `html/` directory is treated as generated-on-demand and ignored in git
@@ -96,7 +105,7 @@ Current build interpretation:
 
 - The rebuilt manuscript is practically equivalent to `main.pdf`.
 - The remaining known differences are documented, not ignored.
-- The main unresolved render artifact is the phantom front-matter / empty-chapter effect.
+- The earlier front-matter / empty-chapter artifact has been fixed in the current source tree.
 
 Release-prep validation on March 13, 2026 also confirmed the modern rebuild lock end to end:
 
@@ -108,11 +117,10 @@ Release-prep validation on March 13, 2026 also confirmed the modern rebuild lock
 
 ## Known Rebuild Caveats
 
-1. Direct current render still emits an extra front-matter page / empty chapter effect.
-2. Current rebuild does not fully reproduce the exact historical post-processing step that yielded `main.pdf`.
-3. The current package stack can inject runtime output into the Results chapter if a chunk does not suppress emitted output.
-4. The deposited package is a separate artifact class from the manuscript PDF and should not be treated as a plain re-render of the book.
-5. The HTML build now succeeds cleanly with `downlit` installed and the regenerated `html/` output matches the active chapter and appendix set.
+1. Current rebuild is still not a perfect rendered replica of `main.pdf`; newer Quarto / Pandoc / LaTeX versions still introduce line-break, hyphenation, and pagination drift beyond the documented text-level deltas.
+2. The current package stack can inject runtime output into the Results chapter if a chunk does not suppress emitted output.
+3. The deposited package is a separate artifact class from the manuscript PDF and should not be treated as a plain re-render of the book.
+4. The HTML build now succeeds cleanly with `downlit` installed and the regenerated `html/` output matches the active chapter and appendix set, including a separate acknowledgements page in the book nav.
 
 ## Remaining Ignored Residue
 

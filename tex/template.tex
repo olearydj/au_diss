@@ -456,16 +456,15 @@ $title.tex()$
 %\usepackage{titlesec}
 
 \begin{document}
-  \mainmatter
+  \frontmatter
 
   %%% maketitle replaced with included tex file
-  %%% no longer uses before-body partial
-  
-  %%% Eliminated include-before, now adding prelim in index.qmd
+
   %%% additional before-body includes, as specified in YAML
-  % for(include-before)
-  %   include-before
-  % endfor
+  $for(include-before)$
+    $include-before$
+
+  $endfor$
   
   %%% make ToC, LoF, LoT
   % toc.tex()

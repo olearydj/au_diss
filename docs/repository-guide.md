@@ -52,16 +52,16 @@ Details are recorded in
 
 ## Historical Build And Deposit Path
 
-The current understanding of the historical publication workflow is:
+Earlier rebuild investigation inferred a manual post-processing step because the
+direct Quarto PDF rebuild was emitting a duplicate front-matter chapter before
+the title page.
 
-1. Render the Quarto book to produce the manuscript PDF.
-2. Post-process the manuscript PDF to correct the front-matter / empty-chapter
-   artifact.
-3. Combine the corrected manuscript PDF with the separately produced IRB packet
-   to create the deposited package.
+The current source tree now fixes that issue directly, so the active build path
+no longer depends on that workaround. The defended manuscript artifact remains
+canonical, and the deposited package is still understood as a separate assembly
+step combining the manuscript PDF with the IRB packet.
 
-This is documented in
-[`build.md`](build.md).
+This is documented in [`build.md`](build.md).
 
 ## Rebuild Snapshot
 
@@ -130,7 +130,9 @@ restore and full Quarto rebuild.
 ## Build
 
 The main manuscript build is driven by
-[`_quarto.yml`](../_quarto.yml).
+[`_quarto.yml`](../_quarto.yml), with profile-specific chapter
+lists in [`_quarto-pdf.yml`](../_quarto-pdf.yml) and
+[`_quarto-html.yml`](../_quarto-html.yml).
 
 Historical manual full/partial-build config variants have been archived under
 [`archive/quarto-config-variants/`](../archive/quarto-config-variants).
@@ -138,7 +140,7 @@ Historical manual full/partial-build config variants have been archived under
 Primary render command:
 
 ```sh
-quarto render --to pdf --profile book
+quarto render --to pdf --profile pdf
 ```
 
 The current repository includes `keep-tex: true` in the PDF format config, and a
@@ -149,14 +151,16 @@ clean.
 The same Quarto project also includes an HTML render path:
 
 ```sh
-quarto render --to html --output-dir html
+quarto render --to html --profile html
 ```
 
 Current HTML verification notes:
 
 - the book/site render succeeds
 - the generated site output is coherent and includes the active chapter and
-  appendix set from [`_quarto.yml`](../_quarto.yml)
+  appendix set from [`_quarto-html.yml`](../_quarto-html.yml)
+- the HTML profile now inserts a separate unnumbered acknowledgements chapter
+  between `Abstract` and `Introduction`
 - `downlit` is installed in the project library, so HTML code-linking no longer
   emits the prior missing-package warning
 - [`css/custom.css`](../css/custom.css) restores the

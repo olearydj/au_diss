@@ -67,8 +67,8 @@ After promoting the lock and adding those two package records from the working a
 - `analysis/forms_data/forms_data.Rmd` reran successfully
 - the regenerated QA CSVs under `analysis/forms_data/output/` hash-matched the preserved local reference outputs exactly
 - the regenerated `data/combined_results.xlsx` workbook read back identically through `readxl`, while the raw XLSX hash still drifted because spreadsheet container serialization is not byte-stable
-- `quarto render --to pdf --profile book` succeeded
-- `quarto render --to html --output-dir html` succeeded
+- `quarto render --to pdf --profile pdf` succeeded
+- `quarto render --to html --profile html` succeeded
 
 ## Current Interpretation
 
