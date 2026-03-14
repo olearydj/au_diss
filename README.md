@@ -1,133 +1,78 @@
 # Dissertation Repository
 
-This repository is the working archive for the dissertation:
+This repository preserves the source workspace for the dissertation:
 
 *Augmented vs. Traditional Instruction in Manufacturing Assembly: An Affordance-Based, Multi-Modal Assessment of Learning, Recall, and Retention*
 
-The dissertation is complete and defended. This repository now preserves both the defended archival baseline and a modern rebuildable research snapshot for follow-on publication work.
+It now serves three related purposes:
 
-## Canonical Artifacts
+- archival source-state reference for the defended dissertation
+- verified modern rebuild snapshot for reproducibility work
+- continuing workspace for cleanup and publication-oriented follow-on research
 
-- Canonical manuscript artifact: `defended-2024-08-02/main.pdf`
-- Canonical deposited package artifact: `defended-2024-08-02/oleary-2024-08-02.pdf`
-- Canonical IRB appendix packet: `defended-2024-08-02/irb.pdf`
+## Which Version To Use
 
-These artifact roles are documented in `docs/artifacts.md`.
+- `baseline/dissertation-defended-2024-08-02`
+  - the defended archival baseline
+- `rebuild/dissertation-arm64-verified-2026-03-13`
+  - the verified modern rebuild snapshot for current arm64/macOS work
+- `master`
+  - the current working line for ongoing repository improvements
 
-## Current Baseline Rule
+## Artifacts
 
-For baselining purposes, the current source tree is treated as the effective archival source, with three documented text-level deltas from the canonical manuscript artifact:
+The defended dissertation artifacts are not all stored as normal git blobs on
+GitHub because the PDFs exceed GitHub's 100 MB file limit.
 
-1. A post-submission wording correction in Acknowledgements.
-2. A rebuilt-only `compare_performance(...)` warning injected into the Results chapter by the current package stack.
-3. A missing `January` in one bibliography entry under the current bibliography rendering stack.
+- Baseline release:
+  [baseline/dissertation-defended-2024-08-02](https://github.com/olearydj/au_diss/releases/tag/baseline/dissertation-defended-2024-08-02)
+- In-repo defended snapshot companion material:
+  [`defended-2024-08-02/`](defended-2024-08-02/)
 
-Details are recorded in `docs/text-content-diff.md`.
+Canonical artifact roles are documented in
+[`docs/artifacts.md`](docs/artifacts.md).
 
-## Historical Build/Deposit Path
+## Quick Start
 
-The current understanding of the historical publication workflow is:
+Read the end-to-end workflow note first:
 
-1. Render the Quarto book to produce the manuscript PDF.
-2. Post-process the manuscript PDF to correct the front-matter / empty-chapter artifact.
-3. Combine the corrected manuscript PDF with the separately produced IRB packet to create the deposited package.
+- [`docs/pipeline.md`](docs/pipeline.md)
 
-This is documented in `docs/build.md`.
-
-## Rebuild Snapshot
-
-- Historical defended state: `baseline/dissertation-defended-2024-08-02`
-- Modern rebuild state: the current top-level `renv.lock` is the operational arm64 rebuild lock for the verified modern source tree
-- Archived pre-promotion root lock: `docs/renv-historical-root.lock`
-
-The modern rebuild lock was promoted from the March 12, 2026 environment capture and then completed with the build-only package records required for a clean restore and full Quarto rebuild.
-
-## Repository Layout
-
-- `_front/`: written frontmatter source.
-- `_chaps/`: main active dissertation chapters; the integrated Results chapter lives here as `_chaps/25-results.qmd`.
-- `_apps/`: appendices and appendix-source material.
-- `data/`: curated spreadsheets, reports, and supporting data artifacts.
-- `analysis/`: active data-curation notebooks and their local QA outputs.
-- `archive/`: non-baseline exploratory, drafting, and historical materials retained for provenance, including archived Results-development drafts and historical Quarto config variants.
-- `rdata/`: saved R objects used by the analysis and manuscript build.
-- `parse_xml/`: active Python extraction utilities for annotation exports and derived reports; see `parse_xml/README.md`.
-- `scripts/`: small active project automation helpers, including the Quarto post-render cleanup hook.
-- `tex/`: custom LaTeX template work and Quarto template experiments.
-- `manuscript/`: current render output directory.
-- `defended-2024-08-02/`: defended-era artifact snapshot, including manuscript PDF, deposited package PDF, IRB packet, and preserved HTML snapshot.
-- `docs/`: baseline, rebuild, artifact, and provenance notes for repository cleanup.
-
-Retention/H3 data note:
-
-- `data/combined_results.xlsx` is the curated main-study workbook produced by the original data pipeline for phases 1 and 2.
-- `data/source/i1_h3.xlsx` is a separate retention-phase support workbook used by the later H3 analysis.
-- Current evidence indicates H3 was analyzed later and more ad hoc, rather than being folded back into the original Excel/Python aggregation workflow.
-- `data/source/notes/` holds participant-level source notes and feedback markdown.
-- `data/reports/` holds generated participant reports derived from the source notes, workbook data, and local video metadata.
-- The original ThunderBay archive has now been inventoried and copied to the UNAS Pro; details and verification notes are in `docs/thunderbay-inventory.md`.
-
-## Build
-
-The main manuscript build is driven by `_quarto.yml`.
-
-Historical manual full/partial-build config variants have been archived under
-`archive/quarto-config-variants/`; they are not part of the active build path.
-
-Primary render command:
+Build the current manuscript PDF:
 
 ```sh
 quarto render --to pdf --profile book
 ```
 
-The current repository already includes `keep-tex: true` in the PDF format config so generated TeX is preserved during PDF builds.
-
-The same Quarto project also includes an HTML render path. That website/book output has now been re-verified on the current machine using:
+Build the current HTML version:
 
 ```sh
 quarto render --to html --output-dir html
 ```
 
-Current HTML verification notes:
+The current PDF output lands at `manuscript/dissertation.pdf`. The kept TeX
+file is moved to `manuscript/dissertation.tex`.
 
-- the book/site render succeeds
-- the generated site output is coherent and includes the active chapter and appendix set from `_quarto.yml`
-- `downlit` is now installed in the project library, so HTML code-linking no longer emits the prior missing-package warning
-- `css/custom.css` now restores the older light inline-code background used by the archived HTML output
-- the top-level `html/` tree is treated as generated-on-demand and ignored in git
-- a preserved HTML snapshot now lives under `defended-2024-08-02/html/`
+## Key Docs
 
-Build notes, historical caveats, and current reproducibility status are in `docs/build.md` and `docs/rebuild-checklist.md`.
+- [`docs/repository-guide.md`](docs/repository-guide.md): fuller repository overview, build story, layout, and status notes
+- [`docs/pipeline.md`](docs/pipeline.md): canonical end-to-end workflow note
+- [`docs/build.md`](docs/build.md): build path and current caveats
+- [`docs/data.md`](docs/data.md): data provenance and artifact relationships
+- [`docs/text-content-diff.md`](docs/text-content-diff.md): documented differences between the canonical manuscript artifact and the current direct rebuild
+- [`docs/rebuild-checklist.md`](docs/rebuild-checklist.md): rebuild verification notes
 
-## Documentation
+## Repository Layout
 
-- `docs/artifacts.md`: canonical artifacts and source-state rules.
-- `docs/build.md`: build path, provenance, and current known caveats.
-- `docs/baseline-plan.md`: overall cleanup/baseline plan.
-- `docs/pipeline.md`: canonical end-to-end workflow note for the external archive, Python extraction, R curation, and manuscript build boundary.
-- `docs/data.md`: data-tree provenance and relationships between raw, curated, generated, and archival analysis inputs.
-- `docs/thunderbay-inventory.md`: read-only inventory of the surviving external ThunderBay archive and its relationship to the Python/video workflow.
-- `docs/worktree-audit.md`: current ignored/generated residue and remaining cleanup decisions.
-- `docs/rebuild-checklist.md`: rebuild verification notes and environment findings.
-- `docs/text-content-diff.md`: content-only comparison between `main.pdf` and the rebuilt manuscript.
-- `docs/intel-renv-manifest.md`: recovered package evidence from the preserved Intel `renv` library.
-- `docs/r-environment-2026-03-12.md`: arm64 R environment capture, lock-promotion notes, and release-prep verification summary.
-- `docs/renv-historical-root.lock`: archived pre-promotion root `renv.lock` retained as historical evidence.
-- `docs/tex-package-footprint-2026-03-12.md`: actual LaTeX package footprint extracted from the successful build artifacts.
-- `docs/tex-dependencies.md`: TeX-side dependency notes discovered during rebuild.
+- [`_chaps/`](_chaps/): active chapter source
+- [`_apps/`](_apps/): appendices and appendix-source material
+- [`analysis/`](analysis/): active curation notebooks and local QA outputs
+- [`data/`](data/): curated spreadsheets, reports, and supporting data artifacts
+- [`parse_xml/`](parse_xml/): active Python extraction step
+- [`archive/`](archive/): preserved inactive drafts, legacy pipeline generations, and historical workflow material
 
-## Status
+## Notes
 
-The archival defended baseline has been established on:
-
-- branch: `master`
-- tag: `baseline/dissertation-defended-2024-08-02`
-
-Current follow-on work happens on focused task branches created from `master` as needed. The active root `renv.lock` is now intended to support the modern rebuildable line rather than preserve the older historical root lock in place.
-
-The major baseline work that has already been completed includes:
-
-1. define canonical artifacts and rules
-2. document the build and deposit path
-3. capture and validate the current reproducible R and TeX environment
-4. clean generated noise and commit the archival baseline
+- The current direct PDF rebuild is a near-match to the canonical defended manuscript, not a perfect rendered replica.
+- The empty front-matter / chapter artifact is still the main remaining PDF rebuild caveat.
+- The active root [`renv.lock`](renv.lock) is intended to support the modern rebuildable line, not preserve the older historical root lock in place.
