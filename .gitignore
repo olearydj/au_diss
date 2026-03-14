@@ -34,6 +34,7 @@ _book/
 /html
 /_html-check/
 /_build-compare/
+/manuscript/
 /manuscript-prebuild-*/
 
 # Tracked defended snapshot exceptions
