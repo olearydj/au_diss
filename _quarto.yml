@@ -1,7 +1,6 @@
-## base for full PDF builds
-## copy to _quarto.yml,
-## will render all chapters and appendicies per _quarto-book.yml,
-## and run: quarto render --to pdf --profile book
+## Active dissertation Quarto project config.
+## Historical full/partial-build config variants are archived under
+## archive/quarto-config-variants/.
 
 # credit: uses titlepages v1 academic-static templates
 
@@ -152,4 +151,3 @@ format:
     template: tex/template.tex
     # template-partials: 
     keep-tex: true
-

@@ -49,7 +49,7 @@ The modern rebuild lock was promoted from the March 12, 2026 environment capture
 - `_apps/`: appendices and appendix-source material.
 - `data/`: curated spreadsheets, reports, and supporting data artifacts.
 - `analysis/`: active data-curation notebooks and their local QA outputs.
-- `archive/`: non-baseline exploratory, drafting, and historical materials retained for provenance, including archived Results-development drafts.
+- `archive/`: non-baseline exploratory, drafting, and historical materials retained for provenance, including archived Results-development drafts and historical Quarto config variants.
 - `rdata/`: saved R objects used by the analysis and manuscript build.
 - `parse_xml/`: active Python extraction utilities for annotation exports and derived reports; see `parse_xml/README.md`.
 - `tex/`: custom LaTeX template work and Quarto template experiments.
@@ -69,6 +69,9 @@ Retention/H3 data note:
 ## Build
 
 The main manuscript build is driven by `_quarto.yml`.
+
+Historical manual full/partial-build config variants have been archived under
+`archive/quarto-config-variants/`; they are not part of the active build path.
 
 Primary render command:
 

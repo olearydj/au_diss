@@ -96,9 +96,21 @@ These files are not part of the active Quarto build and should not be treated as
   - preserves the exploratory notebook and split hypothesis/topic drafts that were used while the Results chapter was being developed in smaller pieces
   - captures the older `.RData` handoff pattern used by the split H1/H2/H3/TLX drafts
 - Relationship to manuscript:
+- not part of the active build
+- most of the substantive work was later folded into `_chaps/25-results.qmd`
+- retained because it documents how the integrated Results chapter was assembled and which analytic paths were superseded rather than merged directly
+
+### `quarto-config-variants/`
+
+- Original location: repo root as alternate `_quarto-*.yml` files
+- Status: archived inactive build-helper configs
+- Role:
+  - preserves the manual full-build and partial-build Quarto configuration variants used while the dissertation was being written and long renders were being managed in smaller pieces
+  - includes the older original config snapshot as historical reference
+- Relationship to manuscript:
   - not part of the active build
-  - most of the substantive work was later folded into `_chaps/25-results.qmd`
-  - retained because it documents how the integrated Results chapter was assembled and which analytic paths were superseded rather than merged directly
+  - the active manuscript build now uses only the root `_quarto.yml`
+  - retained because it documents the drafting-era workaround for long builds
 
 ## Deleted Instead Of Archived
 

@@ -29,6 +29,10 @@ Main Quarto config:
 
 - `_quarto.yml`
 
+Historical manual full/partial-build config variants have been archived under
+`archive/quarto-config-variants/`. They document drafting-era workflow
+experiments but are not part of the active source build.
+
 Primary render command:
 
 ```sh

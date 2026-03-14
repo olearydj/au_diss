@@ -51,6 +51,17 @@ Interpretation:
 - they document a period when the Results chapter was developed in smaller standalone drafts with `.RData` handoffs
 - the active manuscript build now uses the integrated `_chaps/25-results.qmd` chapter instead
 
+## Archived Quarto Config Variants
+
+The old alternate `_quarto-*.yml` files are no longer active root-level project
+configs.
+
+Interpretation:
+
+- those files were promoted into tracked archival support material under `archive/quarto-config-variants/`
+- they document the drafting-period workflow where full and partial PDF builds were managed by manually swapping config files
+- the active manuscript build now uses only the root `_quarto.yml`
+
 ## Current Rebuild Output
 
 - `manuscript/`
