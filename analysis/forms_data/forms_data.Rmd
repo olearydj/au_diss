@@ -617,6 +617,12 @@ Check that the aggregated data for each parent matches the sum of its child rows
 ```{r}
 # Create a function to perform tests for each event type
 perform_tests <- function(event_type) {
+  # Duration totals can differ at floating-point precision even when the
+  # aggregated results are semantically identical.
+  assert_near <- function(x, y, tolerance = sqrt(.Machine$double.eps)) {
+    stopifnot(isTRUE(all.equal(x, y, tolerance = tolerance)))
+  }
+
   # Corresponding column names for aggregated counts and durations
   event_ct_col <- paste0(event_type, "_event_ct")
   event_time_col <- paste0(event_type, "_event_time")
@@ -651,7 +657,7 @@ perform_tests <- function(event_type) {
       summarise(total_duration = sum(!!sym(event_time_col), na.rm = TRUE)) |>
       pull(total_duration)
     
-    stopifnot(total_duration_original == total_duration_aggregated)
+    assert_near(total_duration_original, total_duration_aggregated)
     
     # Compare adjusted drop time with adj_drop_time
     total_duration_original_adj <- joined |>
@@ -664,7 +670,7 @@ perform_tests <- function(event_type) {
       summarise(total_duration = sum(adj_drop_time, na.rm = TRUE)) |>
       pull(total_duration)
     
-    stopifnot(total_duration_original_adj == total_duration_aggregated_adj)
+    assert_near(total_duration_original_adj, total_duration_aggregated_adj)
     
   } else {
     # Original logic for other event types
@@ -678,7 +684,7 @@ perform_tests <- function(event_type) {
       summarise(total_duration = sum(!!sym(event_time_col), na.rm = TRUE)) |>
       pull(total_duration)
     
-    stopifnot(total_duration_original == total_duration_aggregated)
+    assert_near(total_duration_original, total_duration_aggregated)
   }
 }
 
