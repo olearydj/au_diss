@@ -1,10 +1,10 @@
 # Intel `renv` Manifest
 
-This document records what can still be recovered from the preserved Intel project library at [`renv/library/macos/R-4.4/x86_64-apple-darwin20`](/Volumes/Casa/dev/dissertation/renv/library/macos/R-4.4/x86_64-apple-darwin20).
+This document records what can still be recovered from the preserved Intel project library at [`renv/library/macos/R-4.4/x86_64-apple-darwin20`](/Volumes/Casa/pub/dissertation/renv/library/macos/R-4.4/x86_64-apple-darwin20).
 
 ## Purpose
 
-The checked-in [`renv.lock`](/Volumes/Casa/dev/dissertation/renv.lock) is not a complete record of the package set used to build the dissertation. The strongest local evidence for the old working package set is now:
+The checked-in [`renv.lock`](/Volumes/Casa/pub/dissertation/renv.lock) is not a complete record of the package set used to build the dissertation. The strongest local evidence for the old working package set is now:
 
 1. the preserved Intel `renv` library
 2. the versions recorded in `renv.lock`
@@ -18,7 +18,7 @@ The repo previously contained a `clean_packages.R` utility that used `renv::depe
 
 ## Summary
 
-- Intel library root examined: [`renv/library/macos/R-4.4/x86_64-apple-darwin20`](/Volumes/Casa/dev/dissertation/renv/library/macos/R-4.4/x86_64-apple-darwin20)
+- Intel library root examined: [`renv/library/macos/R-4.4/x86_64-apple-darwin20`](/Volumes/Casa/pub/dissertation/renv/library/macos/R-4.4/x86_64-apple-darwin20)
 - Entries present in that library root: `411`
 - Package-like entries excluding `.renv`: `410`
 - Entries still locally readable as full package directories: `40`
@@ -77,7 +77,7 @@ These are the packages most immediately relevant to the current Quarto build and
 
 ## Most Important Differences From `renv.lock`
 
-The following build-relevant packages appear in the preserved Intel library but are missing from [`renv.lock`](/Volumes/Casa/dev/dissertation/renv.lock):
+The following build-relevant packages appear in the preserved Intel library but are missing from [`renv.lock`](/Volumes/Casa/pub/dissertation/renv.lock):
 
 - `here`
 - `modelsummary`

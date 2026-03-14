@@ -2,11 +2,11 @@
 
 This directory holds the active upstream XML extraction layer for the dissertation data pipeline.
 
-For the full end-to-end workflow, including the downstream R curation and manuscript build boundary, see [docs/pipeline.md](/Volumes/Casa/dev/dissertation/docs/pipeline.md).
+For the full end-to-end workflow, including the downstream R curation and manuscript build boundary, see [docs/pipeline.md](/Volumes/Casa/pub/dissertation/docs/pipeline.md).
 
 ## Recommended Entry Point
 
-Use [`process_data.py`](/Volumes/Casa/dev/dissertation/parse_xml/process_data.py) as the active script.
+Use [`process_data.py`](/Volumes/Casa/pub/dissertation/parse_xml/process_data.py) as the active script.
 
 It reads:
 
@@ -43,11 +43,11 @@ uv run python parse_xml/process_data.py \
   --xml-root /Volumes/tbm_archive/research_master/data
 ```
 
-The root [`pyproject.toml`](/Volumes/Casa/dev/dissertation/pyproject.toml) is now the active Python environment entry point for this workflow.
+The root [`pyproject.toml`](/Volumes/Casa/pub/dissertation/pyproject.toml) is now the active Python environment entry point for this workflow.
 
 ## Archived Legacy Materials
 
-Earlier inactive generations of this pipeline now live under [`archive/parse_xml-legacy/`](/Volumes/Casa/dev/dissertation/archive/parse_xml-legacy):
+Earlier inactive generations of this pipeline now live under [`archive/parse_xml-legacy/`](/Volumes/Casa/pub/dissertation/archive/parse_xml-legacy):
 
 - `process_video_tree.py`: earliest wrapper attempt
 - `generate_combined_reports.py`: second-generation wrapper
@@ -55,4 +55,4 @@ Earlier inactive generations of this pipeline now live under [`archive/parse_xml
 - `test_input/` and `test_output/`: parser fixture harness for the archived low-level parser
 - `requirements.txt`: legacy Python environment specification retained as historical reference
 
-Those materials are preserved for provenance and archaeology, but [`process_data.py`](/Volumes/Casa/dev/dissertation/parse_xml/process_data.py) is the script that should be treated as the clean switch-over target.
+Those materials are preserved for provenance and archaeology, but [`process_data.py`](/Volumes/Casa/pub/dissertation/parse_xml/process_data.py) is the script that should be treated as the clean switch-over target.

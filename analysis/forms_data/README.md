@@ -2,7 +2,7 @@
 
 This directory holds the active R-side data-curation notebook for the dissertation and its local QA outputs.
 
-For the full end-to-end workflow, including the upstream extraction step and manuscript build boundary, see [docs/pipeline.md](/Volumes/Casa/dev/dissertation/docs/pipeline.md).
+For the full end-to-end workflow, including the upstream extraction step and manuscript build boundary, see [docs/pipeline.md](/Volumes/Casa/pub/dissertation/docs/pipeline.md).
 
 ## Role
 

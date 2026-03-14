@@ -18,7 +18,7 @@ Observed top-level directories:
 - `data/`
 - `raw_videos/`
 
-This matches the broad structure described in [_apps/38h-dataorg.qmd](/Volumes/Casa/dev/dissertation/_apps/38h-dataorg.qmd).
+This matches the broad structure described in [_apps/38h-dataorg.qmd](/Volumes/Casa/pub/dissertation/_apps/38h-dataorg.qmd).
 
 ## `data/` Tree
 
@@ -99,9 +99,9 @@ Interpretation:
 
 The inventory confirms the main assumptions in:
 
-- [parse_xml/process_data.py](/Volumes/Casa/dev/dissertation/parse_xml/process_data.py)
-- [archive/parse_xml-legacy/generate_combined_reports.py](/Volumes/Casa/dev/dissertation/archive/parse_xml-legacy/generate_combined_reports.py)
-- [_apps/38h-dataorg.qmd](/Volumes/Casa/dev/dissertation/_apps/38h-dataorg.qmd)
+- [parse_xml/process_data.py](/Volumes/Casa/pub/dissertation/parse_xml/process_data.py)
+- [archive/parse_xml-legacy/generate_combined_reports.py](/Volumes/Casa/pub/dissertation/archive/parse_xml-legacy/generate_combined_reports.py)
+- [_apps/38h-dataorg.qmd](/Volumes/Casa/pub/dissertation/_apps/38h-dataorg.qmd)
 
 Specifically:
 

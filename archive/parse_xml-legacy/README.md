@@ -23,7 +23,7 @@ These files are not the active extraction path. They are retained because they d
 
 ## Active Replacement
 
-The active extraction entry point is now [`parse_xml/process_data.py`](/Volumes/Casa/dev/dissertation/parse_xml/process_data.py), supported by [`parse_xml/path_config.py`](/Volumes/Casa/dev/dissertation/parse_xml/path_config.py) and the root [`pyproject.toml`](/Volumes/Casa/dev/dissertation/pyproject.toml).
+The active extraction entry point is now [`parse_xml/process_data.py`](/Volumes/Casa/pub/dissertation/parse_xml/process_data.py), supported by [`parse_xml/path_config.py`](/Volumes/Casa/pub/dissertation/parse_xml/path_config.py) and the root [`pyproject.toml`](/Volumes/Casa/pub/dissertation/pyproject.toml).
 
 Recommended current invocation:
 

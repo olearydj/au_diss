@@ -2,7 +2,7 @@
 
 This note records the current understanding of the dissertation data tree, the source-to-curated workflow, and the boundary between what is preserved in the repository and what lived on external storage.
 
-For the canonical end-to-end workflow note, see [pipeline.md](/Volumes/Casa/dev/dissertation/docs/pipeline.md).
+For the canonical end-to-end workflow note, see [pipeline.md](/Volumes/Casa/pub/dissertation/docs/pipeline.md).
 
 ## Overview
 
@@ -36,7 +36,7 @@ These layers should not be treated as duplicates. They represent different stage
 
 Current interpretation:
 
-- this is an auxiliary documentation artifact associated with the unfinished appendix stub in [_apps/37g-datadict.qmd](/Volumes/Casa/dev/dissertation/_apps/37g-datadict.qmd)
+- this is an auxiliary documentation artifact associated with the unfinished appendix stub in [_apps/37g-datadict.qmd](/Volumes/Casa/pub/dissertation/_apps/37g-datadict.qmd)
 - it is not part of the active manuscript build
 - it is worth preserving in its historical location until a later markdown conversion/cleanup pass
 
@@ -52,11 +52,11 @@ The original raw video and XML workflow depended on external paths that are not 
 - Box Sync mirror used for local/cloud access to participant trial-data:
   - `/Users/djo/Box Sync/Tiger Motors Research Team Collaboration Files/Investigation 1 Data Files/trial-data/`
 
-These locations are described in [_apps/38h-dataorg.qmd](/Volumes/Casa/dev/dissertation/_apps/38h-dataorg.qmd).
+These locations are described in [_apps/38h-dataorg.qmd](/Volumes/Casa/pub/dissertation/_apps/38h-dataorg.qmd).
 
-Historically, the Python extraction utilities under [`parse_xml/`](/Volumes/Casa/dev/dissertation/parse_xml) hard-coded these paths. The active extraction entry point now supports path overrides via CLI options or environment variables, while preserving the historical path assumptions as documented context.
+Historically, the Python extraction utilities under [`parse_xml/`](/Volumes/Casa/pub/dissertation/parse_xml) hard-coded these paths. The active extraction entry point now supports path overrides via CLI options or environment variables, while preserving the historical path assumptions as documented context.
 
-A read-only inventory of the surviving ThunderBay archive was completed on 2026-03-12 and is recorded in [thunderbay-inventory.md](/Volumes/Casa/dev/dissertation/docs/thunderbay-inventory.md).
+A read-only inventory of the surviving ThunderBay archive was completed on 2026-03-12 and is recorded in [thunderbay-inventory.md](/Volumes/Casa/pub/dissertation/docs/thunderbay-inventory.md).
 
 That note now also records the subsequent migration of the archive onto the UNAS Pro and the verification steps used to confirm the copy.
 
@@ -99,7 +99,7 @@ The 2026-03-12 ThunderBay inventory supports this interpretation more concretely
 
 ## Python Processing Layer
 
-The active extraction entry point now lives in [`parse_xml/`](/Volumes/Casa/dev/dissertation/parse_xml), while earlier false starts are preserved under [`archive/parse_xml-legacy/`](/Volumes/Casa/dev/dissertation/archive/parse_xml-legacy).
+The active extraction entry point now lives in [`parse_xml/`](/Volumes/Casa/pub/dissertation/parse_xml), while earlier false starts are preserved under [`archive/parse_xml-legacy/`](/Volumes/Casa/pub/dissertation/archive/parse_xml-legacy).
 
 ### `parse_xml/process_data.py`
 
@@ -156,7 +156,7 @@ Current interpretation:
 
 ## R Curation Layer
 
-[`analysis/forms_data/forms_data.Rmd`](/Volumes/Casa/dev/dissertation/analysis/forms_data/forms_data.Rmd) is the key R-side data curation notebook.
+[`analysis/forms_data/forms_data.Rmd`](/Volumes/Casa/pub/dissertation/analysis/forms_data/forms_data.Rmd) is the key R-side data curation notebook.
 
 It reads:
 

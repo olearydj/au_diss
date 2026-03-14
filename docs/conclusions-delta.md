@@ -5,7 +5,7 @@
 This note compares the Conclusions chapter in:
 
 - the rebuilt manuscript with the phantom first page removed during comparison
-- [main.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf)
+- [main.pdf](/Volumes/Casa/pub/dissertation/defended-2024-08-02/main.pdf)
 
 The goal is to identify real wording differences while excluding line-wrap, hyphenation, and page-layout noise.
 
@@ -38,13 +38,13 @@ current build state.
 
 ## Source Audit
 
-The current source for the chapter is [_chaps/26-conclusions.qmd](/Volumes/Casa/dev/dissertation/_chaps/26-conclusions.qmd).
+The current source for the chapter is [_chaps/26-conclusions.qmd](/Volumes/Casa/pub/dissertation/_chaps/26-conclusions.qmd).
 
-The paragraph cited during comparison at [_chaps/26-conclusions.qmd:25](/Volumes/Casa/dev/dissertation/_chaps/26-conclusions.qmd#L25) matches `main.pdf` in wording. The observed differences there are line-breaking and hyphenation only.
+The paragraph cited during comparison at [_chaps/26-conclusions.qmd:25](/Volumes/Casa/pub/dissertation/_chaps/26-conclusions.qmd#L25) matches `main.pdf` in wording. The observed differences there are line-breaking and hyphenation only.
 
 Two small source-level text differences were found in git history / working tree:
 
-1. At [_chaps/26-conclusions.qmd:73](/Volumes/Casa/dev/dissertation/_chaps/26-conclusions.qmd#L73)
+1. At [_chaps/26-conclusions.qmd:73](/Volumes/Casa/pub/dissertation/_chaps/26-conclusions.qmd#L73)
 Current text:
 `particularly between similar parts`
 
@@ -53,7 +53,7 @@ Earlier text:
 
 `main.pdf` matches the current text.
 
-2. At [_chaps/26-conclusions.qmd:160](/Volumes/Casa/dev/dissertation/_chaps/26-conclusions.qmd#L160)
+2. At [_chaps/26-conclusions.qmd:160](/Volumes/Casa/pub/dissertation/_chaps/26-conclusions.qmd#L160)
 Current text:
 `(e.g., time pressures)`
 

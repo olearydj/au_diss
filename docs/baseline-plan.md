@@ -1,7 +1,7 @@
 **Initial Findings**
 This repo already contains a defensible final artifact set, but it is not yet a clean archival baseline.
 
-- The dissertation source is centered on Quarto book config in [_quarto.yml](/Volumes/Casa/dev/dissertation/_quarto.yml), with a rendered 304-page PDF in [manuscript/dissertation.pdf](/Volumes/Casa/dev/dissertation/manuscript/dissertation.pdf) and an archived defended snapshot in [defended-2024-08-02](/Volumes/Casa/dev/dissertation/defended-2024-08-02).
+- The dissertation source is centered on Quarto book config in [_quarto.yml](/Volumes/Casa/pub/dissertation/_quarto.yml), with a rendered 304-page PDF in [manuscript/dissertation.pdf](/Volumes/Casa/pub/dissertation/manuscript/dissertation.pdf) and an archived defended snapshot in [defended-2024-08-02](/Volumes/Casa/pub/dissertation/defended-2024-08-02).
 - The worktree is currently mixed: defended manuscript source, later revision edits, untracked analysis artifacts, generated HTML/figure outputs, and exploratory modeling notebooks all live together.
 - The repo has no top-level project documentation, so the build path, data provenance, and intended file layout are implicit rather than stated.
 - The analysis pipeline is only partly automated. Quarto/R is the main path, but some data generation depends on manual video processing/annotation plus Python utilities with hard-coded local paths.
@@ -16,13 +16,13 @@ This repo already contains a defensible final artifact set, but it is not yet a 
 
 **Current Baseline Interpretation**
 - Canonical manuscript artifact:
-  [defended-2024-08-02/main.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf)
+  [defended-2024-08-02/main.pdf](/Volumes/Casa/pub/dissertation/defended-2024-08-02/main.pdf)
 - Canonical deposited package artifact:
-  [defended-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/oleary-2024-08-02.pdf)
+  [defended-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/pub/dissertation/defended-2024-08-02/oleary-2024-08-02.pdf)
 - Canonical IRB appendix packet:
-  [defended-2024-08-02/irb.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/irb.pdf)
+  [defended-2024-08-02/irb.pdf](/Volumes/Casa/pub/dissertation/defended-2024-08-02/irb.pdf)
 - Current source is treated as the effective archival source, with three documented deltas from the canonical manuscript artifact:
-  - Acknowledgements wording in [_front/13-acknowledgements.qmd](/Volumes/Casa/dev/dissertation/_front/13-acknowledgements.qmd)
+  - Acknowledgements wording in [_front/13-acknowledgements.qmd](/Volumes/Casa/pub/dissertation/_front/13-acknowledgements.qmd)
   - rebuilt-only `compare_performance(...)` warning injected into Results during current rendering
   - missing `January` in one reference entry during current bibliography rendering
 - Current build/provenance understanding is:
@@ -79,19 +79,19 @@ We should compare the fresh output against the defended PDF and the August 2, 20
 Deliverable: a documented build procedure and a verified rebuild result.
 
 4. Resolve sources of non-determinism until the build is stable enough to baseline.
-Likely candidates are `date: today` in [_quarto.yml](/Volumes/Casa/dev/dissertation/_quarto.yml), package drift, random seeds in analysis code, font/LaTeX differences, and generated metadata in PDFs.
+Likely candidates are `date: today` in [_quarto.yml](/Volumes/Casa/pub/dissertation/_quarto.yml), package drift, random seeds in analysis code, font/LaTeX differences, and generated metadata in PDFs.
 Deliverable: a stable build process with known constraints and any necessary pinning documented.
 
 5. Classify the repository contents into canonical, archival, generated, exploratory, and ignored.
 Right now those categories are blended together.
 Canonical should likely include manuscript source, templates, curated data needed to rebuild results, core scripts, and final defended outputs.
 Generated and local-noise content should likely be removed from version control or ignored.
-Exploratory notebooks like [25-h1b-nonlinear.qmd](/Volumes/Casa/dev/dissertation/25-h1b-nonlinear.qmd), [25-linear-pw.qmd](/Volumes/Casa/dev/dissertation/25-linear-pw.qmd), [h1b_mod_select.qmd](/Volumes/Casa/dev/dissertation/h1b_mod_select.qmd), and [_chaps/25-m7r.qmd](/Volumes/Casa/dev/dissertation/_chaps/25-m7r.qmd) should either move to an archive/exploratory area or be removed from the canonical baseline.
+Exploratory notebooks like [25-h1b-nonlinear.qmd](/Volumes/Casa/pub/dissertation/25-h1b-nonlinear.qmd), [25-linear-pw.qmd](/Volumes/Casa/pub/dissertation/25-linear-pw.qmd), [h1b_mod_select.qmd](/Volumes/Casa/pub/dissertation/h1b_mod_select.qmd), and [_chaps/25-m7r.qmd](/Volumes/Casa/pub/dissertation/_chaps/25-m7r.qmd) should either move to an archive/exploratory area or be removed from the canonical baseline.
 Deliverable: a keep/archive/ignore decision list and updated `.gitignore`.
 
 6. Clean the source tree without altering the defended content.
 The goal here is not to rewrite the dissertation. It is to remove repository noise and move working notes out of the canonical source.
-Targets include draft issue files like [00-issues.md](/Volumes/Casa/dev/dissertation/archive/00-issues.md), machine-specific notes in [_apps/38h-dataorg.qmd](/Volumes/Casa/dev/dissertation/_apps/38h-dataorg.qmd), unneeded generated HTML/figure folders, `.DS_Store`, workspace files, and inline draft markers that should live in docs instead of manuscript source.
+Targets include draft issue files like [00-issues.md](/Volumes/Casa/pub/dissertation/archive/00-issues.md), machine-specific notes in [_apps/38h-dataorg.qmd](/Volumes/Casa/pub/dissertation/_apps/38h-dataorg.qmd), unneeded generated HTML/figure folders, `.DS_Store`, workspace files, and inline draft markers that should live in docs instead of manuscript source.
 Deliverable: a cleaner source tree that still reproduces the defended work.
 
 7. Add proper repository documentation.

@@ -27,7 +27,7 @@ That log records the actual install order from the rebuild session and is more a
 | Dependency | Status | Notes |
 | --- | --- | --- |
 | `rsvg-convert` | installed | Required by Quarto to convert SVG figures to PDF for LaTeX output |
-| `Source Code Pro` | missing, then required | Required as the configured PDF `monofont` in [_quarto.yml](/Volumes/Casa/dev/dissertation/_quarto.yml#L108); Quarto's fallback package search was misleading because this is a system font, not a TeX package |
+| `Source Code Pro` | missing, then required | Required as the configured PDF `monofont` in [_quarto.yml](/Volumes/Casa/pub/dissertation/_quarto.yml#L108); Quarto's fallback package search was misleading because this is a system font, not a TeX package |
 
 Verification:
 
@@ -86,7 +86,7 @@ The `tlmgr.log` record also shows:
 These collection installs helped complete the render, but they are not a good proxy for the actual package footprint of the dissertation. The actual used-package set should be extracted from the successful build artifacts and documented separately.
 
 That actual successful-build footprint is now documented in:
-[tex-package-footprint-2026-03-12.md](/Volumes/Casa/dev/dissertation/docs/tex-package-footprint-2026-03-12.md)
+[tex-package-footprint-2026-03-12.md](/Volumes/Casa/pub/dissertation/docs/tex-package-footprint-2026-03-12.md)
 
 ## TeX Maintenance Notes
 

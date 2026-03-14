@@ -4,7 +4,7 @@ This directory is a local convenience view of preserved dissertation output bund
 
 It is intentionally separate from the tracked archival/release structure:
 
-- [`../defended-2024-08-02/`](/Volumes/Casa/dev/dissertation/defended-2024-08-02) remains the public, tracked defended snapshot
+- [`../defended-2024-08-02/`](/Volumes/Casa/pub/dissertation/defended-2024-08-02) remains the public, tracked defended snapshot
 - `verified-2026-03-14/` is a local preserved copy of the modern verified rebuild outputs
 
 Expected local layout:

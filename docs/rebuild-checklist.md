@@ -1,9 +1,9 @@
 **Rebuild Checklist**
-This document turns Steps 2 and 3 of [baseline-plan.md](/Volumes/Casa/dev/dissertation/docs/baseline-plan.md) into a concrete verification workflow.
+This document turns Steps 2 and 3 of [baseline-plan.md](/Volumes/Casa/pub/dissertation/docs/baseline-plan.md) into a concrete verification workflow.
 
 **Release-Prep Addendum (2026-03-13)**
-- The root [renv.lock](/Volumes/Casa/dev/dissertation/renv.lock) has now been promoted to the operational modern rebuild lock.
-- The pre-promotion root lock is archived at [renv-historical-root.lock](/Volumes/Casa/dev/dissertation/docs/renv-historical-root.lock).
+- The root [renv.lock](/Volumes/Casa/pub/dissertation/renv.lock) has now been promoted to the operational modern rebuild lock.
+- The pre-promotion root lock is archived at [renv-historical-root.lock](/Volumes/Casa/pub/dissertation/docs/renv-historical-root.lock).
 - Clean restore validation showed that the March 12 capture had missed two build-time packages present in the working arm64 library: `modelbased 0.8.7` and `see 0.8.4`.
 - After adding those records to the promoted root lock, a clean temporary arm64 restore reran `analysis/forms_data/forms_data.Rmd` successfully and rendered both PDF and HTML successfully.
 - Under that validation run, the `forms_data` QA CSVs matched exactly and `data/combined_results.xlsx` remained logically identical by sheet content, while the raw XLSX hash still drifted at the container level.
@@ -27,11 +27,11 @@ A rebuild is considered acceptable for baseline purposes if all of the following
 These are the reference points the rebuild should be checked against:
 
 - Defended manuscript PDF:
-  [defended-2024-08-02/main.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf)
+  [defended-2024-08-02/main.pdf](/Volumes/Casa/pub/dissertation/defended-2024-08-02/main.pdf)
 - Archived defended/deposit snapshot:
-  [defended-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/oleary-2024-08-02.pdf)
+  [defended-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/pub/dissertation/defended-2024-08-02/oleary-2024-08-02.pdf)
 - Main Quarto configuration under review:
-  [_quarto.yml](/Volumes/Casa/dev/dissertation/_quarto.yml)
+  [_quarto.yml](/Volumes/Casa/pub/dissertation/_quarto.yml)
 
 Important distinction:
 
@@ -39,8 +39,8 @@ Important distinction:
 - The archived submission/deposit artifact is a `427`-page package that includes appended IRB materials beginning after the dissertation body.
 - A downloaded Auburn repository copy was checked and matches the `427`-page submission/deposit artifact class, not the `304`-page manuscript artifact.
 - The repo contains the likely exact source components of that deposited package:
-  [main.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf) (`304` pages) and
-  [irb.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/irb.pdf) (`123` pages), which sum to `427` pages.
+  [main.pdf](/Volumes/Casa/pub/dissertation/defended-2024-08-02/main.pdf) (`304` pages) and
+  [irb.pdf](/Volumes/Casa/pub/dissertation/defended-2024-08-02/irb.pdf) (`123` pages), which sum to `427` pages.
 
 **Immediate Environment Findings**
 Current shell findings:
@@ -62,7 +62,7 @@ Update on current machine:
 
 Interpretation:
 
-- The current machine now matches the R major/minor version pinned in [renv.lock](/Volumes/Casa/dev/dissertation/renv.lock).
+- The current machine now matches the R major/minor version pinned in [renv.lock](/Volumes/Casa/pub/dissertation/renv.lock).
 - This materially reduces one major source of environment drift before the first rebuild attempt.
 - Quarto and TeX were already available on the current machine before R was installed.
 
@@ -90,23 +90,23 @@ As of this checkpoint:
 - The current-platform `renv` library at `renv/library/macos/R-4.4/aarch64-apple-darwin20` was deleted and rebuilt from scratch.
 - `renv::restore(prompt = FALSE)` completed successfully for the lockfile-defined environment.
 - The most useful historical package evidence is now documented in:
-  [intel-renv-manifest.md](/Volumes/Casa/dev/dissertation/docs/intel-renv-manifest.md)
+  [intel-renv-manifest.md](/Volumes/Casa/pub/dissertation/docs/intel-renv-manifest.md)
 - TeX-side and PDF-engine dependencies discovered during rebuild are tracked in:
-  [tex-dependencies.md](/Volumes/Casa/dev/dissertation/docs/tex-dependencies.md)
+  [tex-dependencies.md](/Volumes/Casa/pub/dissertation/docs/tex-dependencies.md)
 - The current successful-build R snapshot is documented in:
-  [r-environment-2026-03-12.md](/Volumes/Casa/dev/dissertation/docs/r-environment-2026-03-12.md)
+  [r-environment-2026-03-12.md](/Volumes/Casa/pub/dissertation/docs/r-environment-2026-03-12.md)
 - The actual LaTeX package footprint extracted from the successful build artifacts is documented in:
-  [tex-package-footprint-2026-03-12.md](/Volumes/Casa/dev/dissertation/docs/tex-package-footprint-2026-03-12.md)
+  [tex-package-footprint-2026-03-12.md](/Volumes/Casa/pub/dissertation/docs/tex-package-footprint-2026-03-12.md)
 - Content-only PDF comparison findings are documented in:
-  [text-content-diff.md](/Volumes/Casa/dev/dissertation/docs/text-content-diff.md)
+  [text-content-diff.md](/Volumes/Casa/pub/dissertation/docs/text-content-diff.md)
 - The preserved Intel library is only partly readable locally because most entries are broken symlinks into the old `renv` cache, but those symlink targets still preserve many exact package versions.
 - A frozen Posit Package Manager snapshot dated `2024-08-02` was used to rebuild the arm64 project library for the first serious render attempt.
 - `renv::status()` remains noisy and is not currently a clean gating signal, because it scans the whole repo and the lockfile does not fully cover the present source tree.
 - Temporary local comparison copies and pre-render backups were created during rebuild investigation to protect existing outputs and compare the direct render against `main.pdf`.
 - A fresh empty render target was created at:
-  [manuscript](/Volumes/Casa/dev/dissertation/manuscript)
+  [manuscript](/Volumes/Casa/pub/dissertation/manuscript)
 - The dissertation now renders successfully to PDF on the current machine at:
-  [manuscript/dissertation.pdf](/Volumes/Casa/dev/dissertation/manuscript/dissertation.pdf)
+  [manuscript/dissertation.pdf](/Volumes/Casa/pub/dissertation/manuscript/dissertation.pdf)
 - Earlier rebuild investigation found a front-matter artifact in the direct Quarto PDF output: an extra first `Abstract` page appeared before the title page.
 - The current source tree has since fixed that front-matter issue directly, so this note should be read as historical investigation context rather than the present render state.
 - Content-only comparison found one rebuilt-only Results artifact caused by runtime output from `compare_performance(...)` being emitted into the document stream. In the generated TeX this appears as:
@@ -124,11 +124,11 @@ As of this checkpoint:
 - `downlit` was subsequently installed into the project library, and a follow-up HTML render completed without the prior code-link warning.
 - `css/custom.css` was also updated to override the newer Bootstrap inline-code background so the rebuilt HTML matches the older light inline-code pill appearance in the archived `html/` output.
 - A separate current-build R lock snapshot was captured at:
-  [renv-baseline-2026-03-12.lock](/Volumes/Casa/dev/dissertation/docs/renv-baseline-2026-03-12.lock)
+  [renv-baseline-2026-03-12.lock](/Volumes/Casa/pub/dissertation/docs/renv-baseline-2026-03-12.lock)
   with supporting artifacts:
-  [r-package-manifest-2026-03-12.csv](/Volumes/Casa/dev/dissertation/docs/r-package-manifest-2026-03-12.csv)
+  [r-package-manifest-2026-03-12.csv](/Volumes/Casa/pub/dissertation/docs/r-package-manifest-2026-03-12.csv)
   and
-  [r-session-info-2026-03-12.txt](/Volumes/Casa/dev/dissertation/docs/r-session-info-2026-03-12.txt)
+  [r-session-info-2026-03-12.txt](/Volumes/Casa/pub/dissertation/docs/r-session-info-2026-03-12.txt)
 - That alternate lock snapshot should currently be treated as the original March 12 current-build environment capture.
 - Release-prep update: the top-level `renv.lock` has since been promoted from that capture, with the missing `modelbased` and `see` records added from the validated working arm64 library.
 - The successful TeX render footprint was extracted from generated `.tex`, `.fls`, and `.log` artifacts during the rebuild process; those artifacts were later dropped after the findings were documented.
@@ -150,11 +150,11 @@ Interpretation:
 For current baselining work, interpret the repository and artifacts as follows:
 
 - The canonical manuscript artifact is:
-  [defended-2024-08-02/main.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf)
+  [defended-2024-08-02/main.pdf](/Volumes/Casa/pub/dissertation/defended-2024-08-02/main.pdf)
 - The canonical deposited package artifact is:
-  [defended-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/oleary-2024-08-02.pdf)
+  [defended-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/pub/dissertation/defended-2024-08-02/oleary-2024-08-02.pdf)
 - The IRB packet used for deposit assembly is:
-  [defended-2024-08-02/irb.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/irb.pdf)
+  [defended-2024-08-02/irb.pdf](/Volumes/Casa/pub/dissertation/defended-2024-08-02/irb.pdf)
 - The current source tree is treated as the effective archival source, with only three documented text-level deltas from the canonical manuscript artifact:
   - Acknowledgements wording
   - rebuilt-only `compare_performance(...)` warning emitted into Results

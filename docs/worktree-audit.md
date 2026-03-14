@@ -69,7 +69,7 @@ Interpretation:
 
 - this is the current direct render output directory
 - it is useful while baselining, but it is not the canonical defended artifact set
-- the canonical defended-era PDFs live under [`defended-2024-08-02/`](/Volumes/Casa/dev/dissertation/defended-2024-08-02)
+- the canonical defended-era PDFs live under [`defended-2024-08-02/`](/Volumes/Casa/pub/dissertation/defended-2024-08-02)
 
 Current recommendation:
 
@@ -81,7 +81,7 @@ Current recommendation:
 
 Interpretation:
 
-- this directory is written by [`analysis/forms_data/forms_data.Rmd`](/Volumes/Casa/dev/dissertation/analysis/forms_data/forms_data.Rmd)
+- this directory is written by [`analysis/forms_data/forms_data.Rmd`](/Volumes/Casa/pub/dissertation/analysis/forms_data/forms_data.Rmd)
 - it is not unit tests
 - it contains QA/debug CSV dumps used to inspect intermediate curation results:
   - `combined.csv`
@@ -103,7 +103,7 @@ The old parser fixture harness is no longer worktree residue under `parse_xml/`.
 
 Interpretation:
 
-- those sample XML files and generated markdown reports were promoted into tracked archival support material under [`archive/parse_xml-legacy/`](/Volumes/Casa/dev/dissertation/archive/parse_xml-legacy)
+- those sample XML files and generated markdown reports were promoted into tracked archival support material under [`archive/parse_xml-legacy/`](/Volumes/Casa/pub/dissertation/archive/parse_xml-legacy)
 - they remain useful for understanding the older parser generations, but they are not part of the active extraction entry point or manuscript build
 
 ## Data Dictionary Artifact

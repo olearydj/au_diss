@@ -37,7 +37,7 @@ The successful build loaded `120` unique TeX inputs with extensions in:
 
 ## Configured System Fonts Confirmed In The Build
 
-The PDF config in [_quarto.yml](/Volumes/Casa/dev/dissertation/_quarto.yml) specifies:
+The PDF config in [_quarto.yml](/Volumes/Casa/pub/dissertation/_quarto.yml) specifies:
 
 - `mainfont: Georgia`
 - `sansfont: Verdana`
@@ -177,5 +177,5 @@ Those collection installs were useful for finishing the build, but they are broa
 For baselining purposes:
 
 - treat this note as the actual LaTeX package-footprint record for the successful 2026-03-12 rebuild
-- treat [tex-dependencies.md](/Volumes/Casa/dev/dissertation/docs/tex-dependencies.md) as the record of packages and tools that had to be surfaced during recovery on this machine
+- treat [tex-dependencies.md](/Volumes/Casa/pub/dissertation/docs/tex-dependencies.md) as the record of packages and tools that had to be surfaced during recovery on this machine
 - do not infer that every package in `collection-latexextra` or `collection-bibtexextra` is required by this dissertation

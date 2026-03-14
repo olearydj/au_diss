@@ -25,7 +25,7 @@ The current source tree now fixes that issue at the source level:
 3. the book front matter is split cleanly between the PDF and HTML profiles
 
 That means the current direct PDF render no longer needs a follow-up page-delete
-workaround just to produce sane front matter. The defended [`main.pdf`](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf)
+workaround just to produce sane front matter. The defended [`main.pdf`](/Volumes/Casa/pub/dissertation/defended-2024-08-02/main.pdf)
 remains the canonical manuscript artifact, and the rebuild is still a near-match
 rather than a byte-identical replica.
 
@@ -134,14 +134,14 @@ For current baselining work, treat the current source tree as the effective arch
 
 The current successful-build environment was first captured separately and then promoted into the modern rebuild lock:
 
-- Operational modern rebuild lock: [renv.lock](/Volumes/Casa/dev/dissertation/renv.lock)
-- Archived pre-promotion root lock: [renv-historical-root.lock](/Volumes/Casa/dev/dissertation/docs/renv-historical-root.lock)
+- Operational modern rebuild lock: [renv.lock](/Volumes/Casa/pub/dissertation/renv.lock)
+- Archived pre-promotion root lock: [renv-historical-root.lock](/Volumes/Casa/pub/dissertation/docs/renv-historical-root.lock)
 
-- R snapshot note: [r-environment-2026-03-12.md](/Volumes/Casa/dev/dissertation/docs/r-environment-2026-03-12.md)
-- Original March 12 lock snapshot: [renv-baseline-2026-03-12.lock](/Volumes/Casa/dev/dissertation/docs/renv-baseline-2026-03-12.lock)
-- R package manifest: [r-package-manifest-2026-03-12.csv](/Volumes/Casa/dev/dissertation/docs/r-package-manifest-2026-03-12.csv)
-- R session metadata: [r-session-info-2026-03-12.txt](/Volumes/Casa/dev/dissertation/docs/r-session-info-2026-03-12.txt)
-- TeX footprint note: [tex-package-footprint-2026-03-12.md](/Volumes/Casa/dev/dissertation/docs/tex-package-footprint-2026-03-12.md)
+- R snapshot note: [r-environment-2026-03-12.md](/Volumes/Casa/pub/dissertation/docs/r-environment-2026-03-12.md)
+- Original March 12 lock snapshot: [renv-baseline-2026-03-12.lock](/Volumes/Casa/pub/dissertation/docs/renv-baseline-2026-03-12.lock)
+- R package manifest: [r-package-manifest-2026-03-12.csv](/Volumes/Casa/pub/dissertation/docs/r-package-manifest-2026-03-12.csv)
+- R session metadata: [r-session-info-2026-03-12.txt](/Volumes/Casa/pub/dissertation/docs/r-session-info-2026-03-12.txt)
+- TeX footprint note: [tex-package-footprint-2026-03-12.md](/Volumes/Casa/pub/dissertation/docs/tex-package-footprint-2026-03-12.md)
 
 The March 12 capture snapshot missed two build-time packages that were present in the working arm64 library but not recorded by the implicit snapshot. The promoted root `renv.lock` was therefore completed with `modelbased 0.8.7` and `see 0.8.4` before clean restore validation.
 
@@ -151,8 +151,8 @@ The build/release state is now:
 
 - defended archival baseline release: `baseline/dissertation-defended-2024-08-02`
 - verified modern rebuild release: `rebuild/dissertation-arm64-verified-2026-03-14`
-- operational modern rebuild lock: [`renv.lock`](/Volumes/Casa/dev/dissertation/renv.lock)
-- archived pre-promotion root lock: [`renv-historical-root.lock`](/Volumes/Casa/dev/dissertation/docs/renv-historical-root.lock)
+- operational modern rebuild lock: [`renv.lock`](/Volumes/Casa/pub/dissertation/renv.lock)
+- archived pre-promotion root lock: [`renv-historical-root.lock`](/Volumes/Casa/pub/dissertation/docs/renv-historical-root.lock)
 
 The remaining build questions are no longer about whether the repo can render
 cleanly. They are about how much further, if at all, the active working line
