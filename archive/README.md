@@ -88,6 +88,18 @@ These files are not part of the active Quarto build and should not be treated as
   - not part of the active dissertation build or the active extraction switch-over
   - retained because it documents how the XML/report workflow evolved before settling on the surviving generation that produced `data/reports/` and `data/csv/i1_times_v2.csv`
 
+### `results-drafts/`
+
+- Original location: `_chaps/`
+- Status: archived inactive Results-chapter development drafts
+- Role:
+  - preserves the exploratory notebook and split hypothesis/topic drafts that were used while the Results chapter was being developed in smaller pieces
+  - captures the older `.RData` handoff pattern used by the split H1/H2/H3/TLX drafts
+- Relationship to manuscript:
+  - not part of the active build
+  - most of the substantive work was later folded into `_chaps/25-results.qmd`
+  - retained because it documents how the integrated Results chapter was assembled and which analytic paths were superseded rather than merged directly
+
 ## Deleted Instead Of Archived
 
 The following files were treated as scratch/debug residue rather than archival work products and were deleted:

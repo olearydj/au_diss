@@ -45,11 +45,11 @@ The modern rebuild lock was promoted from the March 12, 2026 environment capture
 ## Repository Layout
 
 - `_front/`: written frontmatter source.
-- `_chaps/`: main dissertation chapters and some exploratory chapter-side work.
+- `_chaps/`: main active dissertation chapters; the integrated Results chapter lives here as `_chaps/25-results.qmd`.
 - `_apps/`: appendices and appendix-source material.
 - `data/`: curated spreadsheets, reports, and supporting data artifacts.
 - `analysis/`: active data-curation notebooks and their local QA outputs.
-- `archive/`: non-baseline exploratory, drafting, and historical materials retained for provenance.
+- `archive/`: non-baseline exploratory, drafting, and historical materials retained for provenance, including archived Results-development drafts.
 - `rdata/`: saved R objects used by the analysis and manuscript build.
 - `parse_xml/`: active Python extraction utilities for annotation exports and derived reports; see `parse_xml/README.md`.
 - `tex/`: custom LaTeX template work and Quarto template experiments.
