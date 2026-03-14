@@ -116,7 +116,7 @@ As of this checkpoint:
 - The deposited artifact appears to have been assembled after the manuscript render by appending at least the IRB packet PDF to the manuscript PDF.
 - The Quarto project also defines an HTML output path.
 - That HTML path has now been re-verified successfully on the current machine with:
-  `quarto render --to html --output-dir html`
+  `quarto render --to html --profile html`
 - The regenerated `html/` tree includes the active chapter and appendix set from `_quarto.yml` and produces the expected `_chaps/`, `_apps/`, `images/`, `css/`, `site_libs/`, and `search.json` artifacts.
 - The previously stale extra pages in the historical `html/` tree
   (`_chaps/27-colophon.html`, `_apps/33c-s1conduct.html`, `_apps/34d-s2conduct.html`, and `_apps/37g-datadict.html`)

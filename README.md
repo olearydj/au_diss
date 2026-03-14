@@ -41,17 +41,18 @@ Read the end-to-end workflow note first:
 Build the current manuscript PDF:
 
 ```sh
-quarto render --to pdf --profile book
+quarto render --to pdf --profile pdf
 ```
 
 Build the current HTML version:
 
 ```sh
-quarto render --to html --output-dir html
+quarto render --to html --profile html
 ```
 
 The current PDF output lands at `manuscript/dissertation.pdf`. The kept TeX
-file is moved to `manuscript/dissertation.tex`.
+file is moved to `manuscript/dissertation.tex`. The HTML build lands at
+`html/`.
 
 ## Key Docs
 
@@ -74,5 +75,5 @@ file is moved to `manuscript/dissertation.tex`.
 ## Notes
 
 - The current direct PDF rebuild is a near-match to the canonical defended manuscript, not a perfect rendered replica.
-- The empty front-matter / chapter artifact is still the main remaining PDF rebuild caveat.
+- The current source tree now renders corrected PDF front matter directly; the remaining rebuild differences are documented in `docs/text-content-diff.md` and `docs/build.md`.
 - The active root [`renv.lock`](renv.lock) is intended to support the modern rebuildable line, not preserve the older historical root lock in place.

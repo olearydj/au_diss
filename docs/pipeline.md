@@ -176,13 +176,13 @@ How to run it today:
 PDF:
 
 ```bash
-quarto render --to pdf --profile book
+quarto render --to pdf --profile pdf
 ```
 
 HTML:
 
 ```bash
-quarto render --to html --output-dir html
+quarto render --to html --profile html
 ```
 
 Canonical artifact rule:
@@ -194,8 +194,9 @@ Canonical artifact rule:
 Current reproducibility status:
 
 - the Quarto PDF and HTML paths both rebuild successfully
+- the current source tree now renders the PDF front matter directly without the earlier empty/duplicate chapter artifact
 - the current direct PDF rebuild is a near-match to `main.pdf`, not a perfect rendered replica; apart from the already documented text-level deltas, newer Quarto / Pandoc / LaTeX versions introduce line-break, hyphenation, and pagination drift
-- the main remaining caveat is the historically documented front-matter / empty-chapter artifact and related pagination drift in the direct rebuild path
+- the HTML profile includes a separate unnumbered `Acknowledgements` chapter between `Abstract` and `Introduction`
 
 ## What Another Researcher Can Reasonably Reproduce Today
 

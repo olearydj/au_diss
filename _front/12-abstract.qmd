@@ -1,12 +1,3 @@
-```{=latex}
-\newpage
-
-\hypertarget{abstract}{\chapter*{Abstract}\label{abstract}}
-\addcontentsline{toc}{chapter}{Abstract}
-
-\enlargethispage{\baselineskip}
-```
-
 This research rigorously assesses the effectiveness of augmented and mixed reality (AR/MR) instructional techniques in manufacturing training. By investigating how augmented methods designed to leverage specific affordances impact operator learning, recall, and retention in an authentic assembly context, it addresses critical gaps in understanding the relative efficacy of these technologies.
 
 A cohort of 54 participants without prior exposure to similar tasks or AR/MR technology underwent simulated assembly training at the Tiger Motors Lean Education Lab. This between-groups study introduced participants to one of four instructional methods: Paper Work Instructions (PWI), Projected AR (PAR), head-mounted AR, and head-mounted MR. The same task was used across treatments, with minimal changes to instructional design. MR was differentiated from AR by allowing participants to freely manipulate the workpiece while maintaining aligned augmentations.

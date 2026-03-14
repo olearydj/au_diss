@@ -132,8 +132,10 @@ Those deltas are documented in `docs/text-content-diff.md`.
 Current evidence supports this lineage:
 
 1. Quarto render produced the manuscript PDF.
-2. The manuscript PDF was post-processed to correct the front-matter / empty-chapter artifact.
-3. The corrected manuscript became `main.pdf`.
+2. The current source tree now renders corrected front matter directly; earlier
+   rebuild notes that inferred a manual front-matter cleanup step should be
+   treated as historical investigation rather than the active build path.
+3. The resulting manuscript artifact is represented canonically by `main.pdf`.
 4. `main.pdf` was combined with `irb.pdf` to create `oleary-2024-08-02.pdf`.
 
 ## Baselining Rule

@@ -31,7 +31,10 @@ Examples seen in the rebuilt PDF versus `main.pdf`:
 - `Section 6.6.3` vs `Section 5.6.3`
 - `Section 6.7` vs `Section 5.7`
 
-These differences are consistent with the known phantom front-matter chapter/page issue in the rebuild.
+These differences were consistent with the front-matter chapter/page issue seen
+in the earlier rebuild. The current source tree has since fixed that issue, so
+this note should be read as historical comparison context rather than the
+current build state.
 
 ## Source Audit
 
