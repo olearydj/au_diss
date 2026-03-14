@@ -1,6 +1,14 @@
 **Rebuild Checklist**
 This document turns Steps 2 and 3 of [baseline-plan.md](/Volumes/Casa/dev/dissertation/docs/baseline-plan.md) into a concrete verification workflow.
 
+**Release-Prep Addendum (2026-03-13)**
+- The root [renv.lock](/Volumes/Casa/dev/dissertation/renv.lock) has now been promoted to the operational modern rebuild lock.
+- The pre-promotion root lock is archived at [renv-historical-root.lock](/Volumes/Casa/dev/dissertation/docs/renv-historical-root.lock).
+- Clean restore validation showed that the March 12 capture had missed two build-time packages present in the working arm64 library: `modelbased 0.8.7` and `see 0.8.4`.
+- After adding those records to the promoted root lock, a clean temporary arm64 restore reran `analysis/forms_data/forms_data.Rmd` successfully and rendered both PDF and HTML successfully.
+- Under that validation run, the `forms_data` QA CSVs matched exactly and `data/combined_results.xlsx` remained logically identical by sheet content, while the raw XLSX hash still drifted at the container level.
+- The historical checklist content below is retained as the baseline-era record of how those decisions were reached.
+
 **Current Decision**
 - Baseline target: `Level 1` content-identical build.
 - Stretch target: `Level 2` byte-identical PDF only if it is low-friction after `Level 1` is achieved.
@@ -121,7 +129,8 @@ As of this checkpoint:
   [r-package-manifest-2026-03-12.csv](/Volumes/Casa/dev/dissertation/docs/r-package-manifest-2026-03-12.csv)
   and
   [r-session-info-2026-03-12.txt](/Volumes/Casa/dev/dissertation/docs/r-session-info-2026-03-12.txt)
-- That alternate lock snapshot should currently be treated as a verified current-build environment capture, not as a proven historical replacement for the top-level `renv.lock`.
+- That alternate lock snapshot should currently be treated as the original March 12 current-build environment capture.
+- Release-prep update: the top-level `renv.lock` has since been promoted from that capture, with the missing `modelbased` and `see` records added from the validated working arm64 library.
 - The successful TeX render footprint was extracted from generated `.tex`, `.fls`, and `.log` artifacts during the rebuild process; those artifacts were later dropped after the findings were documented.
 - The data workflow is also now better understood:
   - `data/combined_results.xlsx` is the curated main-study workbook from the original aggregation path
@@ -151,7 +160,7 @@ For current baselining work, interpret the repository and artifacts as follows:
   - rebuilt-only `compare_performance(...)` warning emitted into Results
   - missing `January` in one reference during current bibliography rendering
 
-**Agreed Work Sequence**
+**Historical Baseline Work Sequence**
 This is the agreed execution order from this point forward:
 
 1. Documentation first.
@@ -162,7 +171,7 @@ Create and/or finalize:
 - minimal `.gitignore` cleanup
 
 2. Capture environment evidence before aggressive cleanup.
-Do not rewrite `renv.lock` in place yet.
+Historical note: this was the pre-promotion guidance before the modern rebuild lock was moved to the repo root.
 Do:
 - capture the current R environment as a new lockfile and/or manifest
 - enable `keep-tex: true`

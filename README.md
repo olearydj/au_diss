@@ -4,7 +4,7 @@ This repository is the working archive for the dissertation:
 
 *Augmented vs. Traditional Instruction in Manufacturing Assembly: An Affordance-Based, Multi-Modal Assessment of Learning, Recall, and Retention*
 
-The dissertation is complete and defended. This repository is being baseline-cleaned so it can serve as the archival source for future publication work.
+The dissertation is complete and defended. This repository now preserves both the defended archival baseline and a modern rebuildable research snapshot for follow-on publication work.
 
 ## Canonical Artifacts
 
@@ -33,6 +33,14 @@ The current understanding of the historical publication workflow is:
 3. Combine the corrected manuscript PDF with the separately produced IRB packet to create the deposited package.
 
 This is documented in `docs/build.md`.
+
+## Rebuild Snapshot
+
+- Historical defended state: `baseline/dissertation-defended-2024-08-02`
+- Modern rebuild state: the current top-level `renv.lock` is the operational arm64 rebuild lock for the verified modern source tree
+- Archived pre-promotion root lock: `docs/renv-historical-root.lock`
+
+The modern rebuild lock was promoted from the March 12, 2026 environment capture and then completed with the build-only package records required for a clean restore and full Quarto rebuild.
 
 ## Repository Layout
 
@@ -99,22 +107,23 @@ Build notes, historical caveats, and current reproducibility status are in `docs
 - `docs/rebuild-checklist.md`: rebuild verification notes and environment findings.
 - `docs/text-content-diff.md`: content-only comparison between `main.pdf` and the rebuilt manuscript.
 - `docs/intel-renv-manifest.md`: recovered package evidence from the preserved Intel `renv` library.
-- `docs/r-environment-2026-03-12.md`: current arm64 R environment snapshot and alternate lockfile notes.
+- `docs/r-environment-2026-03-12.md`: arm64 R environment capture, lock-promotion notes, and release-prep verification summary.
+- `docs/renv-historical-root.lock`: archived pre-promotion root `renv.lock` retained as historical evidence.
 - `docs/tex-package-footprint-2026-03-12.md`: actual LaTeX package footprint extracted from the successful build artifacts.
 - `docs/tex-dependencies.md`: TeX-side dependency notes discovered during rebuild.
 
 ## Status
 
-The archival baseline has been established on:
+The archival defended baseline has been established on:
 
 - branch: `master`
 - tag: `baseline/dissertation-defended-2024-08-02`
 
-Current follow-on work happens on focused task branches created from `master` as needed.
+Current follow-on work happens on focused task branches created from `master` as needed. The active root `renv.lock` is now intended to support the modern rebuildable line rather than preserve the older historical root lock in place.
 
 The major baseline work that has already been completed includes:
 
 1. define canonical artifacts and rules
 2. document the build and deposit path
-3. capture the current reproducible R and TeX environment
+3. capture and validate the current reproducible R and TeX environment
 4. clean generated noise and commit the archival baseline
