@@ -94,6 +94,16 @@
       ],
       "Hash": "3c3130705944f882654c991829c0b5bc"
     },
+    "MASS": {
+      "Package": "MASS",
+      "Version": "7.3-60.2",
+      "Source": "Repository"
+    },
+    "Matrix": {
+      "Package": "Matrix",
+      "Version": "1.7-0",
+      "Source": "Repository"
+    },
     "MatrixModels": {
       "Package": "MatrixModels",
       "Version": "0.5-4",
@@ -400,6 +410,11 @@
       "Repository": "RSPM",
       "Hash": "b7d8d8ee39869c18d8846a184dd8a1af"
     },
+    "boot": {
+      "Package": "boot",
+      "Version": "1.3-30",
+      "Source": "Repository"
+    },
     "blob": {
       "Package": "blob",
       "Version": "1.2.4",
@@ -563,6 +578,16 @@
       ],
       "Hash": "0e14e01ce07e7c88fd25de6d4260d26b"
     },
+    "class": {
+      "Package": "class",
+      "Version": "7.3-22",
+      "Source": "Repository"
+    },
+    "cluster": {
+      "Package": "cluster",
+      "Version": "2.1.6",
+      "Source": "Repository"
+    },
     "cli": {
       "Package": "cli",
       "Version": "3.6.2",
@@ -594,6 +619,11 @@
         "lattice"
       ],
       "Hash": "af436915c590afc6fffc3ce3a5be1569"
+    },
+    "codetools": {
+      "Package": "codetools",
+      "Version": "0.2-20",
+      "Source": "Repository"
     },
     "coin": {
       "Package": "coin",
@@ -1070,6 +1100,11 @@
         "utils"
       ],
       "Hash": "618609b42c9406731ead03adf5379850"
+    },
+    "foreign": {
+      "Package": "foreign",
+      "Version": "0.8-86",
+      "Source": "Repository"
     },
     "fs": {
       "Package": "fs",
@@ -1694,6 +1729,11 @@
       ],
       "Hash": "3bcd11943da509341838da9399e18bce"
     },
+    "KernSmooth": {
+      "Package": "KernSmooth",
+      "Version": "2.23-22",
+      "Source": "Repository"
+    },
     "kSamples": {
       "Package": "kSamples",
       "Version": "1.2-10",
@@ -1776,6 +1816,11 @@
         "vctrs"
       ],
       "Hash": "ad4b6d757624221aec6220b8c78defeb"
+    },
+    "lattice": {
+      "Package": "lattice",
+      "Version": "0.22-6",
+      "Source": "Repository"
     },
     "later": {
       "Package": "later",
@@ -1930,6 +1975,11 @@
         "R"
       ],
       "Hash": "4b3ea27a19d669c0405b38134d89a9d1"
+    },
+    "mgcv": {
+      "Package": "mgcv",
+      "Version": "1.9-1",
+      "Source": "Repository"
     },
     "memoise": {
       "Package": "memoise",
@@ -2104,6 +2154,16 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "dd6975473dd4c9b96e9be93b796b9c1a"
+    },
+    "nlme": {
+      "Package": "nlme",
+      "Version": "3.1-164",
+      "Source": "Repository"
+    },
+    "nnet": {
+      "Package": "nnet",
+      "Version": "7.3-19",
+      "Source": "Repository"
     },
     "numDeriv": {
       "Package": "numDeriv",
@@ -2714,6 +2774,11 @@
       ],
       "Hash": "b2fb5f500d68301fe44b5b2c550123f6"
     },
+    "rpart": {
+      "Package": "rpart",
+      "Version": "4.1.23",
+      "Source": "Repository"
+    },
     "rprojroot": {
       "Package": "rprojroot",
       "Version": "2.1.0",
@@ -2909,6 +2974,11 @@
         "R"
       ],
       "Hash": "5f5a7629f956619d519205ec475fe647"
+    },
+    "spatial": {
+      "Package": "spatial",
+      "Version": "7.3-17",
+      "Source": "Repository"
     },
     "statsExpressions": {
       "Package": "statsExpressions",

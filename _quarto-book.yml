@@ -10,12 +10,13 @@ book:
     - _chaps/23-prob_statement.qmd
   # - _chaps/24-methods.qmd
   # - _chaps/25-results.qmd
-  # - _chaps/25a-h1a.qmd
-  # - _chaps/25b-h1b.qmd
-  # - _chaps/25c-h1c.qmd
-  # - _chaps/25d-h2.qmd
-  # - _chaps/25d-h3.qmd
-  # - _chaps/25-tlx.qmd
+  # Historical split Results drafts are archived under `archive/results-drafts/`
+  # - archive/results-drafts/25a-h1a.qmd
+  # - archive/results-drafts/25b-h1b.qmd
+  # - archive/results-drafts/25c-h1c.qmd
+  # - archive/results-drafts/25d-h2.qmd
+  # - archive/results-drafts/25d-h3.qmd
+  # - archive/results-drafts/25-tlx.qmd
   # - _chaps/26-conclusions.qmd
   # - _chaps/27-colophon.qmd
     - _chaps/28-references.qmd
@@ -28,4 +29,3 @@ book:
  #  - _apps/37g-datadict.qmd
     - _apps/38h-dataorg.qmd
     - _apps/31a-irb.qmd
-

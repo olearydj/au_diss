@@ -1,0 +1,23 @@
+# Archived and non-build materials retained for provenance.
+/archive/
+
+# Generated Quarto and render output.
+/.quarto/
+/_book/
+/html/
+/_html-check/
+/_build-compare/
+/manuscript/
+/manuscript-prebuild-*/
+
+# Generated chapter/site residue.
+/_chaps/*.html
+/_chaps/*_files/
+/_chaps/tinytable_assets/
+/index_files/
+
+# Local notebook output and scratch artifacts.
+/analysis/forms_data/output/
+/analysis/forms_data/*.nb.html
+/*.nb.html
+/**/*.quarto_ipynb
