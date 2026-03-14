@@ -27,7 +27,7 @@ A rebuild is considered acceptable for baseline purposes if all of the following
 These are the reference points the rebuild should be checked against:
 
 - Defended manuscript PDF:
-  [manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf](/Volumes/Casa/dev/dissertation/manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf)
+  [defended-2024-08-02/main.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf)
 - Archived defended/deposit snapshot:
   [defended-2024-08-02/oleary-2024-08-02.pdf](/Volumes/Casa/dev/dissertation/defended-2024-08-02/oleary-2024-08-02.pdf)
 - Main Quarto configuration under review:
@@ -106,9 +106,9 @@ As of this checkpoint:
 - A fresh empty render target was created at:
   [manuscript](/Volumes/Casa/dev/dissertation/manuscript)
 - The dissertation now renders successfully to PDF on the current machine at:
-  [manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf](/Volumes/Casa/dev/dissertation/manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf)
-- The render still reproduces a known historical front-matter artifact: an extra first `Abstract` page appears before the title page in the direct Quarto PDF output.
-- Based on source inspection and author confirmation, the defended dissertation was produced by rendering with that extra first page and then deleting that page from the PDF afterward.
+  [manuscript/dissertation.pdf](/Volumes/Casa/dev/dissertation/manuscript/dissertation.pdf)
+- Earlier rebuild investigation found a front-matter artifact in the direct Quarto PDF output: an extra first `Abstract` page appeared before the title page.
+- The current source tree has since fixed that front-matter issue directly, so this note should be read as historical investigation context rather than the present render state.
 - Content-only comparison found one rebuilt-only Results artifact caused by runtime output from `compare_performance(...)` being emitted into the document stream. In the generated TeX this appears as:
   `Random effect variances not available. Returned R2 does not account for random effects.`
   immediately before the model-performance table. This is a build artifact from the current package stack, not dissertation prose.

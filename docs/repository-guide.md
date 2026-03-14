@@ -68,7 +68,7 @@ This is documented in [`build.md`](build.md).
 - historical defended state:
   `baseline/dissertation-defended-2024-08-02`
 - modern rebuild state:
-  `rebuild/dissertation-arm64-verified-2026-03-13`
+  `rebuild/dissertation-arm64-verified-2026-03-14`
 - current working line:
   `master`
 - archived pre-promotion root lock:

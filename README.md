@@ -14,7 +14,7 @@ It now serves three related purposes:
 
 - `baseline/dissertation-defended-2024-08-02`
   - the defended archival baseline
-- `rebuild/dissertation-arm64-verified-2026-03-13`
+- `rebuild/dissertation-arm64-verified-2026-03-14`
   - the verified modern rebuild snapshot for current arm64/macOS work
 - `master`
   - the current working line for ongoing repository improvements

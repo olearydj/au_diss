@@ -1,7 +1,7 @@
 **Initial Findings**
 This repo already contains a defensible final artifact set, but it is not yet a clean archival baseline.
 
-- The dissertation source is centered on Quarto book config in [_quarto.yml](/Volumes/Casa/dev/dissertation/_quarto.yml), with a rendered 304-page PDF in [manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf](/Volumes/Casa/dev/dissertation/manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf) and an archived defended snapshot in [defended-2024-08-02](/Volumes/Casa/dev/dissertation/defended-2024-08-02).
+- The dissertation source is centered on Quarto book config in [_quarto.yml](/Volumes/Casa/dev/dissertation/_quarto.yml), with a rendered 304-page PDF in [manuscript/dissertation.pdf](/Volumes/Casa/dev/dissertation/manuscript/dissertation.pdf) and an archived defended snapshot in [defended-2024-08-02](/Volumes/Casa/dev/dissertation/defended-2024-08-02).
 - The worktree is currently mixed: defended manuscript source, later revision edits, untracked analysis artifacts, generated HTML/figure outputs, and exploratory modeling notebooks all live together.
 - The repo has no top-level project documentation, so the build path, data provenance, and intended file layout are implicit rather than stated.
 - The analysis pipeline is only partly automated. Quarto/R is the main path, but some data generation depends on manual video processing/annotation plus Python utilities with hard-coded local paths.

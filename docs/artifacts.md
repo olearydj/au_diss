@@ -36,7 +36,7 @@ These are useful for reconstruction but should not be treated as the canonical b
 
 ### Current Render Output
 
-- Path: `manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf`
+- Path: `manuscript/dissertation.pdf`
 - Role: current successful rebuild output on the active cleanup branch
 
 ### Temporary Comparison Copies
