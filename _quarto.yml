@@ -1,7 +1,6 @@
-## base for full PDF builds
-## copy to _quarto.yml,
-## will render all chapters and appendicies per _quarto-book.yml,
-## and run: quarto render --to pdf --profile book
+## Active dissertation Quarto project config.
+## Historical full/partial-build config variants are archived under
+## archive/quarto-config-variants/.
 
 # credit: uses titlepages v1 academic-static templates
 
@@ -12,6 +11,7 @@ project:
   title: "Project Title"
   type: book
   output-dir: manuscript
+  post-render: scripts/move-kept-tex.sh
 # Other: Preview, Serve
 
 book:
@@ -21,6 +21,7 @@ book:
   subtitle: "An Affordance-Based, Multi-Modal Assessment of Learning, Recall, and Retention"
   author: "Danny J. O'Leary"
   date: today
+  output-file: dissertation
   chapters:
     - index.qmd
     - _chaps/21-intro.qmd
@@ -85,10 +86,7 @@ format:
   ### PDF reference: https://quarto.org/docs/reference/formats/pdf.html
   # Title & Author - see book options
   # Format Options
-    ## results in build error, missing packages:
-    # pdf-engine-opt: -output-directory=work
-    output-file: "dissertation"
-    output-ext: "pdf"
+    latex-output-dir: manuscript
   # Table of Contents
     toc: true
     toc-depth: 3
@@ -152,4 +150,3 @@ format:
     template: tex/template.tex
     # template-partials: 
     keep-tex: true
-

@@ -29,6 +29,10 @@ Main Quarto config:
 
 - `_quarto.yml`
 
+Historical manual full/partial-build config variants have been archived under
+`archive/quarto-config-variants/`. They document drafting-era workflow
+experiments but are not part of the active source build.
+
 Primary render command:
 
 ```sh
@@ -39,11 +43,15 @@ Current PDF config characteristics:
 
 - output directory: `manuscript/`
 - observed rebuild output path:
-  `manuscript/Augmented-vs.-Traditional-Instruction-in-Manufacturing-Assembly.pdf`
+  `manuscript/dissertation.pdf`
 - PDF engine: LuaLaTeX via Quarto
 - bibliography path: `references.bib`
 - custom template: `tex/template.tex`
 - generated TeX retained: `keep-tex: true`
+- retained TeX filename:
+  `manuscript/dissertation.tex`
+- post-render helper:
+  `scripts/move-kept-tex.sh` moves the kept `.tex` file into `manuscript/`
 
 The same Quarto config also defines an HTML output path for website/book-style rendering. That path was revalidated on the current machine using a disposable output directory:
 
