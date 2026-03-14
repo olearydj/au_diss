@@ -149,9 +149,11 @@ Current reproducibility status:
 
 - the notebook remains the best documented record of the workbook-generation logic
 - the preserved workbook and QA outputs remain authoritative artifacts
-- the current rerun issue is narrow rather than catastrophic: the notebook still hits a strict `stopifnot()` on a `pwi` duration aggregation equality check, but the observed difference is only floating-point noise rather than a substantive data mismatch.
+- the notebook now reruns successfully under the current arm64 R environment after replacing one strict floating-point equality assertion with a tolerance-based check
+- the generated QA/debug CSVs hash-match the preserved repo outputs exactly
+- the regenerated workbook reads back identically through `readxl`, but the exact XLSX file hash can still drift because the spreadsheet container/writer layer is not byte-stable across rebuilds
 
-So this stage is well documented and highly informative, but the repo should not yet claim a fully clean, push-button regeneration of [`data/combined_results.xlsx`](/Volumes/Casa/dev/dissertation/data/combined_results.xlsx) from scratch.
+So this stage is now practically reproducible for logical contents, even though exact byte-for-byte reproduction of [`data/combined_results.xlsx`](/Volumes/Casa/dev/dissertation/data/combined_results.xlsx) remains sensitive to XLSX serialization details.
 
 ## Build The Manuscript From Curated Artifacts
 
@@ -207,7 +209,7 @@ A technically capable researcher can reasonably:
 
 What remains caveated:
 
-- a fully clean end-to-end regeneration of [`data/combined_results.xlsx`](/Volumes/Casa/dev/dissertation/data/combined_results.xlsx) without the current `forms_data` assertion issue
+- exact byte-for-byte reproduction of [`data/combined_results.xlsx`](/Volumes/Casa/dev/dissertation/data/combined_results.xlsx), because XLSX writer/container serialization can drift even when the workbook contents read back identically
 - exact defended-era reproduction of canonical [`main.pdf`](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf) without the historical post-processing/render caveat
 - a fully self-contained workflow with no external archive dependency
 
