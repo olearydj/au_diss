@@ -90,6 +90,14 @@ Current build interpretation:
 - The remaining known differences are documented, not ignored.
 - The main unresolved render artifact is the phantom front-matter / empty-chapter effect.
 
+Release-prep validation on March 13, 2026 also confirmed the modern rebuild lock end to end:
+
+- a clean temporary arm64 `renv::restore()` succeeded from the promoted root `renv.lock`
+- `analysis/forms_data/forms_data.Rmd` reran successfully from that restored library
+- the regenerated QA CSVs matched the preserved local reference hashes exactly
+- the regenerated `data/combined_results.xlsx` workbook remained logically identical by `readxl`, while the raw XLSX hash still drifted at the container level
+- both the PDF and HTML Quarto render paths succeeded from that restored library
+
 ## Known Rebuild Caveats
 
 1. Direct current render still emits an extra front-matter page / empty chapter effect.
@@ -108,20 +116,23 @@ For current baselining work, treat the current source tree as the effective arch
 
 ## Environment Capture Artifacts
 
-The current successful-build environment is now documented separately from the historical source lockfile:
+The current successful-build environment was first captured separately and then promoted into the modern rebuild lock:
+
+- Operational modern rebuild lock: [renv.lock](/Volumes/Casa/dev/dissertation/renv.lock)
+- Archived pre-promotion root lock: [renv-historical-root.lock](/Volumes/Casa/dev/dissertation/docs/renv-historical-root.lock)
 
 - R snapshot note: [r-environment-2026-03-12.md](/Volumes/Casa/dev/dissertation/docs/r-environment-2026-03-12.md)
-- Alternate R lock snapshot: [renv-baseline-2026-03-12.lock](/Volumes/Casa/dev/dissertation/docs/renv-baseline-2026-03-12.lock)
+- Original March 12 lock snapshot: [renv-baseline-2026-03-12.lock](/Volumes/Casa/dev/dissertation/docs/renv-baseline-2026-03-12.lock)
 - R package manifest: [r-package-manifest-2026-03-12.csv](/Volumes/Casa/dev/dissertation/docs/r-package-manifest-2026-03-12.csv)
 - R session metadata: [r-session-info-2026-03-12.txt](/Volumes/Casa/dev/dissertation/docs/r-session-info-2026-03-12.txt)
 - TeX footprint note: [tex-package-footprint-2026-03-12.md](/Volumes/Casa/dev/dissertation/docs/tex-package-footprint-2026-03-12.md)
 
-These artifacts capture the current verified rebuild environment without overwriting the repository's historical `renv.lock`.
+The March 12 capture snapshot missed two build-time packages that were present in the working arm64 library but not recorded by the implicit snapshot. The promoted root `renv.lock` was therefore completed with `modelbased 0.8.7` and `see 0.8.4` before clean restore validation.
 
 ## Next Build-Related Work
 
 The next build-focused tasks are:
 
-1. decide whether the captured R environment should become canonical baseline support material
-2. decide whether the updated alternate R snapshot should remain documentary support material or be promoted later
-3. complete generated-noise triage and archival cleanup before the baseline commit
+1. decide the eventual modern rebuild tag name and release description
+2. decide which rebuilt HTML/PDF artifacts should ship alongside that tag
+3. decide whether the March 12 capture lock should remain documentary support material once the promoted root lock is published

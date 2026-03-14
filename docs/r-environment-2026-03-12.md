@@ -2,13 +2,15 @@
 
 ## Purpose
 
-This note captures the current arm64 R environment that successfully rebuilt the dissertation on March 12, 2026.
+This note captures the arm64 R environment that successfully rebuilt the dissertation on March 12, 2026 and records how that capture was later promoted into the modern rebuild lock on March 13, 2026.
 
-It is intentionally separate from the repository's historical `renv.lock`. The goal is to preserve the currently working build environment without claiming that it is the exact defended-era package state.
+The resulting root `renv.lock` should be interpreted as the operational lock for the modern rebuildable line, not as a claim about the exact defended-era package state.
 
 ## Captured Artifacts
 
-- Alternate lock snapshot: `docs/renv-baseline-2026-03-12.lock`
+- Original capture lock snapshot: `docs/renv-baseline-2026-03-12.lock`
+- Promoted modern rebuild lock: `renv.lock`
+- Archived pre-promotion root lock: `docs/renv-historical-root.lock`
 - Package manifest: `docs/r-package-manifest-2026-03-12.csv`
 - Session metadata: `docs/r-session-info-2026-03-12.txt`
 
@@ -22,19 +24,19 @@ It is intentionally separate from the repository's historical `renv.lock`. The g
 
 ## Capture Method
 
-The project library was captured without overwriting the existing `renv.lock`.
+The March 12 capture was produced without overwriting the then-existing root `renv.lock`.
 
 Because non-interactive `source("renv/activate.R")` was not reliable in this shell, the capture used `Rscript --vanilla` with `.libPaths()` pointed directly at the current project library, then ran `renv::snapshot(...)` against that library.
 
-Operationally, this produced:
+Operationally, the March 12 capture produced:
 
 - a machine-readable package manifest from the current library
 - a plain `sessionInfo()` record
-- an alternate `renv` lock snapshot for the current successful-build environment
+- a machine-readable lock snapshot for that current successful-build environment
 
 ## Interpretation
 
-This snapshot should be treated as a **current reproducibility snapshot**, not as a proven historical bill of materials.
+The March 12 capture should be treated as a **current reproducibility snapshot**, not as a proven historical bill of materials.
 
 Reasons:
 
@@ -49,14 +51,32 @@ Reasons:
   - `20` packages recorded explicitly from `https://packagemanager.posit.co/cran/2025-07-31`
 - `renv::snapshot(...)` completed successfully, but it also warned that the broader repo still references packages not installed in the current project library. That is expected here because the lockfile/buildable manuscript path and the full exploratory repo contents are not the same thing.
 
-## Baseline Implication
+## Promotion Addendum (2026-03-13)
 
-For current baselining work:
+The March 12 snapshot was later promoted into the root `renv.lock` for the modern rebuildable line.
 
-- keep the existing top-level `renv.lock` unchanged
-- treat `docs/renv-baseline-2026-03-12.lock` as support material for the verified current rebuild
-- use `docs/r-package-manifest-2026-03-12.csv` and `docs/r-session-info-2026-03-12.txt` as the plain-language audit trail for that snapshot
+That promotion required two clarifications:
 
-The later baseline decision is whether this alternate lock snapshot should become canonical support material, remain documentary only, or be normalized further before promotion.
+- the previous root `renv.lock` was archived as `docs/renv-historical-root.lock`
+- the implicit March 12 snapshot had missed two build-time packages that were present in the working arm64 library but not recorded in the lock:
+  `modelbased 0.8.7` and `see 0.8.4`
 
-This alternate lock snapshot now also includes the `downlit`, `brio`, and `desc` additions required for the verified HTML-capable environment.
+After promoting the lock and adding those two package records from the working arm64 library, the modern rebuild lock was revalidated in a clean temporary arm64 library:
+
+- `renv::restore()` completed successfully from the promoted root `renv.lock`
+- `analysis/forms_data/forms_data.Rmd` reran successfully
+- the regenerated QA CSVs under `analysis/forms_data/output/` hash-matched the preserved local reference outputs exactly
+- the regenerated `data/combined_results.xlsx` workbook read back identically through `readxl`, while the raw XLSX hash still drifted because spreadsheet container serialization is not byte-stable
+- `quarto render --to pdf --profile book` succeeded
+- `quarto render --to html --output-dir html` succeeded
+
+## Current Interpretation
+
+For the modern rebuildable line:
+
+- root `renv.lock` is the operational lockfile future users should restore from
+- `docs/renv-historical-root.lock` preserves the old pre-promotion root lock as historical evidence
+- `docs/renv-baseline-2026-03-12.lock` remains the original March 12 capture artifact that informed the later promoted root lock
+- `docs/r-package-manifest-2026-03-12.csv` and `docs/r-session-info-2026-03-12.txt` remain the plain-language audit trail for the captured arm64 library
+
+The March 12 capture already incorporated the `downlit`, `brio`, and `desc` additions required for the verified HTML-capable environment. The March 13 promotion completed that capture for full rebuild use by adding the missing `modelbased` and `see` records.
