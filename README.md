@@ -52,6 +52,7 @@ The modern rebuild lock was promoted from the March 12, 2026 environment capture
 - `archive/`: non-baseline exploratory, drafting, and historical materials retained for provenance, including archived Results-development drafts and historical Quarto config variants.
 - `rdata/`: saved R objects used by the analysis and manuscript build.
 - `parse_xml/`: active Python extraction utilities for annotation exports and derived reports; see `parse_xml/README.md`.
+- `scripts/`: small active project automation helpers, including the Quarto post-render cleanup hook.
 - `tex/`: custom LaTeX template work and Quarto template experiments.
 - `manuscript/`: current render output directory.
 - `defended-2024-08-02/`: defended-era artifact snapshot, including manuscript PDF, deposited package PDF, IRB packet, and preserved HTML snapshot.

@@ -11,6 +11,7 @@ project:
   title: "Project Title"
   type: book
   output-dir: manuscript
+  post-render: scripts/move-kept-tex.sh
 # Other: Preview, Serve
 
 book:
@@ -20,6 +21,7 @@ book:
   subtitle: "An Affordance-Based, Multi-Modal Assessment of Learning, Recall, and Retention"
   author: "Danny J. O'Leary"
   date: today
+  output-file: dissertation
   chapters:
     - index.qmd
     - _chaps/21-intro.qmd
@@ -84,10 +86,7 @@ format:
   ### PDF reference: https://quarto.org/docs/reference/formats/pdf.html
   # Title & Author - see book options
   # Format Options
-    ## results in build error, missing packages:
-    # pdf-engine-opt: -output-directory=work
-    output-file: "dissertation"
-    output-ext: "pdf"
+    latex-output-dir: manuscript
   # Table of Contents
     toc: true
     toc-depth: 3
