@@ -145,10 +145,15 @@ The current successful-build environment was first captured separately and then 
 
 The March 12 capture snapshot missed two build-time packages that were present in the working arm64 library but not recorded by the implicit snapshot. The promoted root `renv.lock` was therefore completed with `modelbased 0.8.7` and `see 0.8.4` before clean restore validation.
 
-## Next Build-Related Work
+## Current Build Snapshot
 
-The next build-focused tasks are:
+The build/release state is now:
 
-1. decide the eventual modern rebuild tag name and release description
-2. decide which rebuilt HTML/PDF artifacts should ship alongside that tag
-3. decide whether the March 12 capture lock should remain documentary support material once the promoted root lock is published
+- defended archival baseline release: `baseline/dissertation-defended-2024-08-02`
+- verified modern rebuild release: `rebuild/dissertation-arm64-verified-2026-03-14`
+- operational modern rebuild lock: [`renv.lock`](/Volumes/Casa/dev/dissertation/renv.lock)
+- archived pre-promotion root lock: [`renv-historical-root.lock`](/Volumes/Casa/dev/dissertation/docs/renv-historical-root.lock)
+
+The remaining build questions are no longer about whether the repo can render
+cleanly. They are about how much further, if at all, the active working line
+should diverge from the frozen rebuild snapshot.

@@ -211,7 +211,7 @@ A technically capable researcher can reasonably:
 What remains caveated:
 
 - exact byte-for-byte reproduction of [`data/combined_results.xlsx`](/Volumes/Casa/dev/dissertation/data/combined_results.xlsx), because XLSX writer/container serialization can drift even when the workbook contents read back identically
-- exact defended-era reproduction of canonical [`main.pdf`](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf) without the historical post-processing/render caveat
+- exact rendered reproduction of canonical [`main.pdf`](/Volumes/Casa/dev/dissertation/defended-2024-08-02/main.pdf), because the current rebuild remains a near-match rather than a byte- or layout-identical replica even after fixing the earlier front-matter issue
 - a fully self-contained workflow with no external archive dependency
 
 ## Related Notes
