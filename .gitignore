@@ -43,6 +43,8 @@ _book/
 !defended-2024-08-02/*.pdf
 !defended-2024-08-02/html/
 !defended-2024-08-02/html/**
+/defended-2024-08-02/main.pdf
+/defended-2024-08-02/oleary-2024-08-02.pdf
 
 # Test directories
 test_input/
