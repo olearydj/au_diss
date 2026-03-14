@@ -16,13 +16,25 @@ Load the XLSX file
 library(tidyverse)
 library(readxl)
 
-if (file.exists("data/combined_results.xlsx")) {
-  repo_root <- normalizePath(".", winslash = "/", mustWork = TRUE)
-} else if (file.exists("../../data/combined_results.xlsx")) {
-  repo_root <- normalizePath("../..", winslash = "/", mustWork = TRUE)
-} else {
+find_repo_root <- function() {
+  candidates <- c(".", "../..")
+  required_paths <- c(
+    "_quarto.yml",
+    file.path("data", "source", "i1_raw_data.xlsx"),
+    file.path("data", "csv", "i1_times_v2.csv"),
+    file.path("data", "source", "adjusted_drop_events.xlsx")
+  )
+
+  for (candidate in candidates) {
+    if (all(file.exists(file.path(candidate, required_paths)))) {
+      return(normalizePath(candidate, winslash = "/", mustWork = TRUE))
+    }
+  }
+
   stop("Could not locate repository root from forms_data.Rmd")
 }
+
+repo_root <- find_repo_root()
 
 source_xlsx <- file.path(repo_root, "data", "source", "i1_raw_data.xlsx")
 times_csv_path <- file.path(repo_root, "data", "csv", "i1_times_v2.csv")
