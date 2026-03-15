@@ -1,7 +1,5 @@
 # Data Organization {#app-dataorg}
 
-TODO: clean this up and eliminate any sensitive folder names / directory structures, etc.
-
 ## File Locations
 
 Data and analysis kept in:
@@ -74,8 +72,6 @@ On `/Users/djo/dev/au/dissertation...`:
         └── ...
 ```
 
-TODO: consolidate diss folders and rename root above (careful with chronosync jobs)
-
 ### Box Sync Folder
 
 On `/Users/djo/Box Sync/Tiger Motors Research Team Collaboration Files...`:
@@ -89,8 +85,6 @@ On `/Users/djo/Box Sync/Tiger Motors Research Team Collaboration Files...`:
 ```
 
 -   The `BOX Sync\...\trial-data` tree holds local copies of the data that get synced from each participant's `videos` folder and then mirrored to the cloud, where other members of the research team can access it.
-
-TODO: GitHub?
 
 ### Local Data Backup
 

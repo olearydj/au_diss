@@ -336,15 +336,13 @@ Phase three of the study is designed to assess the residual impact of each treat
 
 > **H3: Retention**
 >
-> *How does each IMT affect performance during the retention phase?*
+> *How does each IMT affect retention, as measured by the change in performance between recall and retention?*
 >
-> $$H_{3a}\textrm{: Change in OEE varies with treatment}$$
+> $$H_{3a}\textrm{: Change in TCT varies with treatment}$$
+>
+> $$H_{3b}\textrm{: Change in UCE varies with treatment}$$
 
-::: contents-hidden
-TODO: update this hypothesis
-:::
-
-Here we look at the change in operator performance since the recall experiment. We expect performance to degrade for all treatments, but are interested to find if there are significant differences in the magnitude of change based on the instructional method. Both absolute and percentage change will be tested, and the primary driver of OEE identified as before.
+Here the analysis focuses on the change in operator performance since the recall experiment. Performance is expected to degrade for all treatments, but the primary question is whether the magnitude of that change varies by instructional method. This retention analysis was originally framed in terms of OEE, but the single-trial retention design made binary pass/fail quality measures too unstable for reliable interpretation. Consequently, the final analysis evaluates changes in task completion time and uncorrected error count instead.
 
 Given the limited data available from the retention phase (only one replication per volunteer participant), and the variable delay between experiments, these results will be treated as exploratory. While they may not be conclusive, these findings can help illuminate underlying patterns in treatment effects.
 

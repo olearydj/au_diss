@@ -479,7 +479,7 @@ VR provides a form of interactive sensorimotor simulation that, when immersive e
 
 As an active learning method[^22-lit_review-11], VR is best suited for the development of higher-order cognitive skills. The potential for emotional impact also makes VR a useful tool for affective learning. Because the experiences are simulated, VR enables training that is otherwise impractical or impossible. Finally, the digital nature of VR experiences makes them easy to repeat, instrument, scale, and distribute. These practical benefits are accurately summarized as offering "experience on demand" in Jeremy Bailenson's[^22-lit_review-12] popular book of the same name [@bailenson2018exper].
 
-[^22-lit_review-11]: Active learning and other educational theories mentioned in this section will be detailed in the *THEORY SECTION*
+[^22-lit_review-11]: See @sec-theory for a fuller discussion of active learning and related theories of learning and cognition.
 
 [^22-lit_review-12]: Jeremy Bailenson is a prominent figure in the field of VR and its applications, particularly in education and behavioral change. As the founding director of Stanford University's Virtual Human Interaction Lab, his work focuses on how VR can affect users' cognition, behavior, and social interactions.
 
@@ -894,4 +894,3 @@ This proposed affordances framework serves as a foundation for the current study
 ### Closing
 
 This literature review has provided a comprehensive examination of the current state of research in the domain, critically analyzing empirical studies that assessed the efficacy of AR/MR interventions while also identifying persistent gaps, limitations, and adoption challenges. Moreover, the review introduces a novel affordance-based framework as a theoretically-grounded approach to guide the design and evaluation of AR/MR training solutions. The following chapter will articulate the specific problem statement, research questions, and hypotheses that guide this endeavor.
-

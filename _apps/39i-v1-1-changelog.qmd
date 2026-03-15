@@ -1,0 +1,29 @@
+# v1.1 Change Log {#sec-v1-1-changelog}
+
+This appendix records the exact changes applied in the `v1.1` release relative to the as-submitted defended dissertation. These corrections are reflected in the current HTML and PDF renders generated from the same source. The list below is intended to be complete for the changes made in this pass. No new data were collected and no new analyses were introduced.
+
+## Change Register
+
+| Location | Issue in defended release | v1.1 correction | Reason |
+| --- | --- | --- | --- |
+| Literature Review footnote | Unresolved `*THEORY SECTION*` placeholder | Replaced with a direct cross-reference to the later theory section (`@sec-theory`) | Remove draft residue and point readers to the actual theory discussion |
+| Methods, retention hypotheses | Leaked TODO rendered in public output because the hiding wrapper was misspelled as `contents-hidden` | Removed the leaked note and rewrote the subsection as regular prose | Remove visible draft residue and make the subsection publication-safe |
+| Methods, retention hypotheses | Retention was stated in Methods as `H3a: Change in OEE varies with treatment`, while defended Results evaluated retention using changes in task completion time and uncorrected error count | Updated the Methods block so retention is stated and tested in terms of `TCT` and `UCE`, matching the defended Results chapter | Reconcile Methods with the already-defended analysis without introducing a new retention analysis |
+| Results, H2b Q-Q plot | Placeholder subtitle `subtitle...` | Replaced with `PWI and PAR show the clearest departures from normality` | Remove placeholder text and summarize the displayed pattern |
+| Results, H2b bootstrap interpretation | Hidden `TODO: FIX THIS` remained in source and the visible typo `more than than` remained in prose | Removed the hidden note, corrected the typo to `more than`, and softened the sentence to report what the estimates suggest rather than overstate certainty | Editorial cleanup and more proportionate interpretation |
+| Results, H1b model-comparison table | `compare_performance()` emitted stdout into the rendered body text before the table | Captured the emitted stdout so it no longer renders; the comparison table itself is unchanged | Remove render artifact without changing the analysis |
+| Results, H1b model-comparison table | Candidate model 4 showed blank conditional $R^2$ and ICC values without explanation | Added an explicit note that candidate model 4 produced a singular fit, so conditional $R^2$ and ICC were unavailable | Make the omitted values transparent to readers |
+| Landing page, HTML edition | Public HTML opened directly to the abstract, without a visible dissertation identity block or committee listing | Added an HTML-only dissertation identification block before the abstract, including title, author, degree context, date, and approved committee list | Make the HTML edition legible as a dissertation when opened directly |
+| Landing page, HTML edition | Public HTML did not visibly distinguish the corrected `v1.1` release from the as-defended dissertation | Added an HTML-only `v1.1` callout on the landing page with a direct link to Appendix @sec-v1-1-changelog and to the as-defended dissertation PDF on GitHub | Make release status and provenance clear at the point of entry |
+| Appendix D, Data Organization | Visible TODO lines in public appendix text | Removed the TODO lines | Remove visible draft residue |
+| Appendix E, Institutional Review Board Approval | Appendix lead-in did not point readers to the defended public artifact | Replaced the lead-in with a direct link to the standalone as-submitted IRB packet on GitHub | Improve traceability to the defended IRB materials |
+
+## Interpretation Boundaries
+
+- No new participants, data, or analyses were added for `v1.1`.
+- The most substantive correction in this pass is the Methods/Results reconciliation for the retention hypothesis block.
+- Other changes in this pass are editorial, render-related, or transparency-related.
+
+## Repository Diff
+
+A repository compare view between the defended baseline tag and the final `v1.1` tag will be added here once the `v1.1` tag is published to GitHub.

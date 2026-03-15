@@ -5,7 +5,7 @@
 
 # Institutional Review Board Approval {#app-irb}
 
-The final approved version of the IRB begins on the following page.
+The as-submitted IRB packet is available [on GitHub (pdf download)](https://github.com/olearydj/au_diss/releases/download/baseline%2Fdissertation-defended-2024-08-02/irb.pdf).
 
 ```{=latex}
 % Reset ToC depth after end of final appendix

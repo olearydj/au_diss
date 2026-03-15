@@ -1,3 +1,26 @@
+::: {.content-visible when-format="html"}
+<div class="quarto-title-block">
+<p>A dissertation submitted to the Graduate Faculty of Auburn University in partial fulfillment of the requirements for the degree of Doctor of Philosophy<br>
+Auburn, Alabama</p>
+
+<p><strong>Approved Aug 3, 2024 by</strong></p>
+
+<ul>
+<li>Dr. John Evans, Co-chair, Professor, Industrial &amp; Systems Engineering</li>
+<li>Dr. Gregory Harris, Co-chair, Professor &amp; Chair, Industrial &amp; Systems Engineering</li>
+<li>Dr. Richard Sesek, Professor, Industrial &amp; Systems Engineering</li>
+<li>Dr. Konstantinos Mykoniatis, Assistant Professor, Industrial &amp; Systems Engineering</li>
+</ul>
+</div>
+:::
+
+::: {.content-visible when-format="html"}
+::: {.callout-note title="v1.1 Note"}
+
+This site presents the `v1.1` release of the dissertation. `v1.1` corrects identified errata and render issues without adding new data or introducing new analyses. The exact changes are recorded in Appendix @sec-v1-1-changelog. The as-defended dissertation is available [on GitHub (pdf download)](https://github.com/olearydj/au_diss/releases/download/baseline%2Fdissertation-defended-2024-08-02/oleary-2024-08-02.pdf).
+:::
+:::
+
 # Abstract {.unnumbered}
 
 ::: {.content-visible when-format="pdf"}
