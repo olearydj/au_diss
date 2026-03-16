@@ -120,7 +120,7 @@ These items were reviewed and intentionally left outside the scope of `v1.1`, wh
 - [X] Add a visible link from the `v1.1` site to the as-submitted dissertation.
 - [X] Keep the as-submitted dissertation unchanged.
 - [X] Add a visible `v1.1` note to the corrected PDF title page.
-- [ ] Add the GitHub compare/diff link to Appendix F once the final `v1.1` tag is published.
+- [X] Add the GitHub compare/diff link to Appendix F once the final `v1.1` tag is published.
 - [X] Verify that repo docs only expose publication-safe material in the public-facing web path.
 
 ## Chapter Checklist

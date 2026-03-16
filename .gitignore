@@ -37,7 +37,6 @@ _book/
 /manuscript/
 /manuscript-prebuild-*/
 /snapshots/*
-!/snapshots/README.md
 
 # Tracked defended snapshot exceptions
 !defended-2024-08-02/

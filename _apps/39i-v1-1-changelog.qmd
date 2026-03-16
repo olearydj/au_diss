@@ -50,4 +50,6 @@ This does not eliminate the $H_{3b}$ signal, but it narrows its interpretation. 
 
 ## Repository Diff
 
-A repository compare view between the defended baseline tag and the final `v1.1` tag will be added here once the `v1.1` tag is published to GitHub.
+A repository compare view between the defended baseline tag and the `v1.1` release tag is available on GitHub:
+
+- [baseline/dissertation-defended-2024-08-02...v1.1](https://github.com/olearydj/au_diss/compare/baseline%2Fdissertation-defended-2024-08-02...v1.1)
