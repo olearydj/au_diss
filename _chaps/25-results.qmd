@@ -1297,7 +1297,7 @@ mv_tbl |>
 
 ```
 
-The high p-values for Age, `r inline_text(mv_tbl, variable = age, column = "p.value")`; Gender, `r inline_text(mv_tbl, variable = gender, column = "p.value")`; Lego, `r inline_text(mv_tbl, variable = lego, column = "p.value")`; and Education, `r inline_text(mv_tbl, variable = lego, column = "p.value")` indicate that these observed characteristics are not strongly associated with treatment groupings. This result validates the group randomization effort, mitigating the influence of confounding variables, and reducing bias in the data. It is essential to the validity of most of the statistical tests employed by this study, which assume sample independence.
+The high p-values for Age, `r inline_text(mv_tbl, variable = age, column = "p.value")`; Gender, `r inline_text(mv_tbl, variable = gender, column = "p.value")`; Lego, `r inline_text(mv_tbl, variable = lego, column = "p.value")`; and Education, `r inline_text(mv_tbl, variable = education, column = "p.value")` indicate that these observed characteristics are not strongly associated with treatment groupings. This result validates the group randomization effort, mitigating the influence of confounding variables, and reducing bias in the data. It is essential to the validity of most of the statistical tests employed by this study, which assume sample independence.
 
 ## $H_1$: Learning Phase Analysis
 
@@ -1722,7 +1722,9 @@ outlier_summary |>
 
 ```
 
-Further investigation of these four participants showed that only \#1063 experienced systematic problems that might warrant excluding their performance. The others were just poor performers, with unusually high overall TCT and/or UCE. Given the limited amount of data collected per treatment, it was decided to retain all but 1063's data for hypothesis testing, where additional outlier detection steps may be taken.
+Further investigation of these four participants showed that only \#1063 experienced systematic problems that might warrant excluding their performance.[^25-results-1063] The others were just poor performers, with unusually high overall TCT and/or UCE. Given the limited amount of data collected per treatment, it was decided to retain all but 1063's data for hypothesis testing, where additional outlier detection steps may be taken.
+
+[^25-results-1063]: Participant 1063 was assigned to the AR treatment and contributed two completed learning-task observations. That session was marked by unusually severe system interruptions, rendering it unrepresentative of typical performance. For that reason, the participant's first-session data were excluded from subsequent hypothesis testing.
 
 ```{r drop-learn-outliers}
 # drop 1063
@@ -3028,7 +3030,9 @@ recall_agg <- recall |>
   )
 ```
 
-As with the learning phase results, only completed tasks are considered for recall analysis. Paper work instructions were available for reference, and participants wore the HL2 only for recording purposes. This almost entirely eliminated system-related interruptions, though participant 1057 inadvertently triggered the HL2 menu twice during their trial. The time lost to those events was deducted from measured task times as before. `r total_tasks_completed` observations were recorded during this phase, as expected for `r length(unique(recall$participant))` participants, each with four iterations.
+As with the learning phase results, only completed tasks are considered for recall analysis. Paper work instructions were available for reference, and participants wore the HL2 only for recording purposes. This almost entirely eliminated system-related interruptions, though participant 1057 inadvertently triggered the HL2 menu twice during their trial. The time lost to those events was deducted from measured task times as before. `r total_tasks_completed` observations were recorded during this phase, as expected for `r length(unique(recall$participant))` participants, each with four iterations.[^25-results-recall-sample]
+
+[^25-results-recall-sample]: This recall sample reflects the post-pilot first-session dataset excluding participant 1063, as described above.
 
 ### $H_{2a}$: Overall Equipment Effectiveness
 
@@ -3394,7 +3398,9 @@ recall_h2b_agg_out <- recall_h2b_agg |>
   anti_join(outliers, by = "participant")
 ```
 
-Outliers were identified within each treatment group for all measures of task uncertainty. Data for `r as.character(english(nrow(outliers)))` participants with Z-scores of 2.5 or higher are summarized in @tbl-h2b-outliers. These participants were removed from the primary analysis to ensure the data represents typical participant behavior and to maintain the integrity of the comparative analysis.
+Outliers were identified within each treatment group for all measures of task uncertainty. Data for `r as.character(english(nrow(outliers)))` participants with Z-scores of 2.5 or higher are summarized in @tbl-h2b-outliers. These participants were removed from the primary analysis to ensure the data represents typical participant behavior and to maintain the integrity of the comparative analysis.[^25-results-h2b-sample]
+
+[^25-results-h2b-sample]: This change affected the $H_{2b}$ analysis only, reducing the aggregated sample for reliance tests from 53 to 48: PWI 12, PAR 10, AR 12, and MR 14. The broader recall dataset used for other recall analyses in this chapter was unchanged.
 
 ```{r tbl-h2b-outliers}
 #| tbl-cap: Outliers in Measures of Reliance
@@ -3911,7 +3917,7 @@ As a final step prior to analysis, both iTCT and iUCE are tested for outliers us
 
 #### $H_{3a}$: Increase in TCT vs Gap and Treatment
 
-To begin assessing the effect of instructional method on retention, the relationship between iUCE and gap, visualized in @fig-h3-tct, is considered. A pair of linear regression models (LMs) were fit, both using iTCT as the response, with gap and treatment as predictors. One specified additive terms and the other included interactions between gap and treatment.
+To begin assessing the effect of instructional method on retention, the relationship between iTCT and gap, visualized in @fig-h3-tct, is considered. A pair of linear regression models (LMs) were fit, both using iTCT as the response, with gap and treatment as predictors. One specified additive terms and the other included interactions between gap and treatment.
 
 ```{r fig-h3-tct}
 #| fig-cap: "Increase in Task Completion Time vs Gap by Treatment"
@@ -4035,7 +4041,7 @@ ps$QQ / ps$NCV
 Continuing the analysis of $H_{3}$, the second measure of learning retention, iUCE, is tested. A pair of generalized linear models were fit using a Poisson distribution. As before, gap and treatment were the predictors, and iUCE the response. One model includes only the main effects of the predictors, while the other also include their interactions. The relationship between iUCE and gap is visualized in @fig-h3-uce, which includes a linear regression with confidence intervals for the full dataset.
 
 ```{r fig-h3-uce}
-#| fig-cap: "Increase in Uncounted Errors vs Gap by Treatment"
+#| fig-cap: "Increase in Uncorrected Errors vs Gap by Treatment"
 #| fig-height: 3.5
 #| message: false
 
@@ -4153,9 +4159,11 @@ mp_c  |>
 
 Details for the main effects of the ZINB model are summarized in @tbl-uce-modsum. The parameters for this model must be interpreted differently than in the previous linear model. In a GLM, the response is log-transformed, resulting in exponentiated coefficients for predictors. As a consequence, the effects are *multiplicative* rather than additive. The intercept represents the expected log count of the response variable when all predictors are at their reference levels. The predictor coefficients then represent the multiplicative effects on the expected count compared to the baseline.
 
-To ease interpretation, the values for estimated coefficients and standard errors are exponentiated in this table, revering the log transform applied by the NB model fit. This adjustment puts the coefficients in the original 2x scale that was used to ensure integer values for the response. Additionally, the "Adj Coef" column reverses the 2 x iUCE transform, allowing interpretation in the observed scale. Importantly, these transformations do not alter the multiplicative nature of GLM results.
+To ease interpretation, the values for estimated coefficients and standard errors are exponentiated in this table, reversing the log transform applied by the NB model fit. This adjustment puts the coefficients in the original 2x scale that was used to ensure integer values for the response. Additionally, the "Adj Coef" column reverses the 2 x iUCE transform, allowing interpretation in the observed scale. Importantly, these transformations do not alter the multiplicative nature of GLM results.
 
-Here, the intercept (`r fmt_p_val(mp_c$p[1])`), gap (`r fmt_p_val(mp_c$p[2])`), and PWI treatment effect (`r fmt_p_val(mp_c$p[5])`) are all statistically significant. The adjusted intercept value indicates that baseline performance for the reference treatment level (AR) and a gap of zero is 3.354 errors. The adjusted gap coefficient indicates that the expected error count increases by 0.516 per day for the AR treatment. The effect of other treatments is multiplicative. This implies that the gap coefficient for PWI is changed by a *factor* of 0.197. These relationships can be interpreted as follows:
+Here, the intercept (`r fmt_p_val(mp_c$p[1])`), gap (`r fmt_p_val(mp_c$p[2])`), and PWI treatment effect (`r fmt_p_val(mp_c$p[5])`) are all statistically significant. The adjusted intercept value indicates that baseline performance for the reference treatment level (AR) and a gap of zero is 3.354 errors. The adjusted gap coefficient indicates that the expected error count increases by 0.516 per day for the AR treatment. The effect of other treatments is multiplicative. This implies that the gap coefficient for PWI is changed by a *factor* of 0.197. These relationships can be interpreted as follows:[^25-results-h3b-note-1]
+
+[^25-results-h3b-note-1]: Appendix @sec-v1-1-h3b-note records a correction to the interpretation of this model and discusses the implications for the retention findings.
 
 \begin{align}
 \small
@@ -4225,7 +4233,9 @@ ggplot(residuals_df, aes(x = Index, y = Residuals)) +
 
 No statistically significant evidence was found for the effect of instructional method on the increase in TCT over the retention interval. Treatment coefficients for the linear model suggested meaningful differences exist, but that could not be substantiated with the limited data available. The overall model fit was marginal and was not improved by including interaction effects for the gap and treatment predictors. Therefore, $H_{3a}$ is rejected for a lack of evidence in support of the claim that learning retention varies with treatment.
 
-A significant treatment effect on the increase in UCE over time was identified using a zero-inflated negative binomial GLM. Specifically, the PWI method showed a significantly lower rate of error increase compared to the reference AR method. As with the TCT analysis, other treatment coefficients suggest that a meaningful effect may exist, but did not reach the traditional threshold of 95% confidence. Despite these limited findings, the model was statistically significant overall. Sufficient evidence does exist to validate $H_{3b}$'s broad claim that the change in error rate over time varies by treatment.
+A significant treatment effect on the increase in UCE over time was identified using a zero-inflated negative binomial GLM. Specifically, the PWI method showed a significantly lower rate of error increase compared to the reference AR method. As with the TCT analysis, other treatment coefficients suggest that a meaningful effect may exist, but did not reach the traditional threshold of 95% confidence. Despite these limited findings, the model was statistically significant overall. Sufficient evidence does exist to validate $H_{3b}$'s broad claim that the change in error rate over time varies by treatment.[^25-results-h3b-note-2]
+
+[^25-results-h3b-note-2]: Appendix @sec-v1-1-h3b-note records a correction to the interpretation of this model and discusses the implications for the retention findings.
 
 Overall, the implications for $H_{3}$ are mixed, with the UCE model providing stronger evidence for an effect of instructional method on retention than the TCT model. This difference suggests that time-based performance improvements may not be as sensitive to instructional methods as error rates. While it has little impact on this study, identifying gap is a significant predictor for both iTCT and iUCE is logical and expected, as retention naturally declines over time.
 

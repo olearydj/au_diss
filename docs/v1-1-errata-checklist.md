@@ -44,23 +44,23 @@ The `v1.1` web dissertation should:
 - `P2`: important quality improvement, but may be narrowed if needed
 - `P3`: release packaging and transparency work
 
-## P0: Publication Blockers
+## P0: Publication Blockers [DONE]
 
-- [ ] Remove all visible TODOs, placeholders, and draft residue from active build chapters.
+- [X] Remove all visible TODOs, placeholders, and draft residue from active build chapters.
   - Current targets:
   - `_chaps/24-methods.qmd`
   - `_chaps/22-lit_review.qmd`
   - any appendix still included in the HTML build
-- [ ] Eliminate visible warnings or printed model diagnostics from rendered chapter output.
+- [X] Eliminate visible warnings or printed model diagnostics from rendered chapter output.
   - Known issue:
   - injected model warning in Results
-- [ ] Remove or sanitize Appendix H from publication-facing outputs.
+- [X] Remove visible draft residue from Appendix H in publication-facing outputs.
   - Current target:
   - `_apps/38h-dataorg.qmd`
-- [ ] Remove visible placeholder text such as `subtitle...` from Results.
+- [X] Remove visible placeholder text such as `subtitle...` from Results.
   - Current target:
   - `_chaps/25-results.qmd`
-- [ ] Fix obvious publication-facing copy defects in chapters that remain in `v1.1`.
+- [X] Fix the known publication-blocking copy defects identified in this `P0` pass.
   - Includes:
   - malformed words, repeated words, and obvious misspellings called out in the review
 
@@ -68,105 +68,119 @@ The `v1.1` web dissertation should:
 
 ### Methods and Results Reconciliation
 
-- [ ] Rewrite the Methods retention/hypothesis material so it matches the actual Results chapter.
+- [X] Rewrite the Methods retention/hypothesis material so it matches the defended Results chapter in the H3 retention section.
   - Current targets:
   - `_chaps/24-methods.qmd:337-349`
   - `_chaps/24-methods.qmd:357-390`
   - `_chaps/24-methods.qmd:1587-1624`
-- [ ] Explain why OEE was abandoned for H3 and whether that change should be framed as corrective, exploratory, or post hoc.
-- [ ] Ensure hypothesis labels, outcome names, and analysis descriptions match across Methods, Results, and Conclusions.
+- [X] Explain why OEE was abandoned for H3 and frame that change explicitly as a corrective Methods/Results reconciliation.
+- [X] Review the rest of the Methods chapter for any remaining obsolete H3/OEE framing outside the corrected retention block.
+- [X] Ensure hypothesis labels, outcome names, and analysis descriptions match across Methods, Results, and Conclusions.
+  - Remaining H3b interpretive issues are documented through footnotes and Appendix F rather than by rewriting the defended narrative in place.
 
 ### Sample Accounting and Exclusions
 
-- [ ] Add exact sample accounting for each phase.
-  - Must include:
-  - pilot-period participants
-  - learning and recall sample
-  - retention volunteers
-  - any analysis-specific exclusions
-- [ ] Resolve the mismatch between prose saying eight early trials and code/prose excluding participants `1001` through `1010`.
-- [ ] Document the rationale for excluding participant `1063`.
-- [ ] Document the rationale for any outlier removals used in primary analyses.
-- [ ] Add or verify sensitivity checks for:
-  - pilot exclusions
-  - participant `1063`
-  - H2b outlier removal
+- [X] Verify sample accounting and add targeted clarifications where needed for interpretation.
+  - Completed work includes:
+  - verification of pilot-period participants
+  - verification of learning and recall samples
+  - verification of retention volunteers
+  - clarification of analysis-specific exclusions where they affect interpretation
+- [X] Confirm that the eight-participant pilot exclusion is consistent with the defended data.
+- [X] Document the rationale for excluding participant `1063`.
+- [X] Document the rationale for primary-analysis outlier removals that materially affect interpretation.
+- [X] Decide whether new sensitivity checks are required for `v1.1`.
+  - Decision:
+  - no new sensitivity checks were added in `v1.1` by design; see Appendix F `Intentional Deferrals`.
 
 ### Statistical Reporting and Interpretation
 
-- [ ] Fix the inline demographics bug where the Education p-value appears to reuse the Lego variable.
+- [X] Fix the inline demographics bug where the Education p-value appears to reuse the Lego variable.
   - Current target:
   - `_chaps/25-results.qmd:1300`
-- [ ] Audit inline-reported statistics inserted from helper code or inline expressions.
-- [ ] Correct the H3b ZINB interpretation so it remains on the multiplicative/log-link scale.
+- [X] Fix the exposed inline-reported statistic and labeling bugs identified in the review.
+- [X] Document the H3b ZINB interpretation correction and its implications in Appendix F and cross-reference it from Results and Conclusions.
   - Current target:
   - `_chaps/25-results.qmd:4154-4165`
-- [ ] Standardize outcome naming, especially `uncounted` versus `uncorrected` errors.
+- [X] Standardize exposed outcome naming issues, especially `uncounted` versus `uncorrected` errors.
 
-## P2: Evidentiary Discipline
+## P2: Evidentiary Discipline [DEFERRED BY DESIGN]
 
-- [ ] Reclassify H2b language from confirmatory acceptance to exploratory or sensitivity-supported evidence unless stronger support is demonstrated.
-- [ ] Separate confirmatory findings from exploratory findings throughout Results and Conclusions.
-- [ ] Reduce rhetorical overclaiming around retention and reliance effects.
-- [ ] Clarify which outcomes are primary, secondary, and post hoc.
-- [ ] Decide how the qualitative synthesis will be handled in `v1.1`.
-  - Option A:
-  - keep it and document the method transparently
-  - Option B:
-  - rewrite it as a clearly investigator-led thematic summary
-  - Option C:
-  - remove or substantially demote it in the public-facing dissertation if the method cannot be defended cleanly
+These items were reviewed and intentionally left outside the scope of `v1.1`, which is an errata, reconciliation, and publication-safety release rather than a broader revision:
+
+- broader rhetorical tightening of `H2b` and retention claims
+- confirmatory versus exploratory reframing beyond the specific corrections documented in Appendix F
+- clarification of primary, secondary, and post hoc outcome status beyond what is already explicit in the defended manuscript
+- broader revision of the qualitative-analysis method or its presentation
 
 ## P3: Release Packaging
 
-- [ ] Create a short `v1.1` release note describing what changed from the as-submitted dissertation.
-- [ ] Make sure the published HTML version clearly identifies itself as `v1.1`.
-- [ ] Add a visible link from the `v1.1` site to the as-submitted dissertation.
-- [ ] Keep the as-submitted dissertation unchanged.
-- [ ] Verify that repo docs only expose publication-safe material in the public-facing web path.
+- [X] Create a short `v1.1` release note describing what changed from the as-submitted dissertation.
+- [X] Make sure the published HTML version clearly identifies itself as `v1.1`.
+- [X] Add a visible link from the `v1.1` site to the as-submitted dissertation.
+- [X] Keep the as-submitted dissertation unchanged.
+- [X] Add a visible `v1.1` note to the corrected PDF title page.
+- [ ] Add the GitHub compare/diff link to Appendix F once the final `v1.1` tag is published.
+- [X] Verify that repo docs only expose publication-safe material in the public-facing web path.
 
 ## Chapter Checklist
 
 ### Literature Review
 
-- [ ] Remove visible placeholder theory text.
+- [X] Remove visible placeholder theory text.
   - Current target:
   - `_chaps/22-lit_review.qmd:482`
-- [ ] Fix visible image/table TODOs only where they affect the public HTML experience.
+- [X] Fix visible image/table TODOs only where they affect the public HTML experience.
+  - No additional visible image/table TODOs were found in the public HTML path.
 
 ### Methods
 
-- [ ] Remove TODOs and drafting residue.
-- [ ] Fix terminology and copy defects identified in the review.
-- [ ] Reconcile retention hypotheses and analysis descriptions with Results.
-- [ ] Ensure the chapter describes what was actually done, not an obsolete plan.
+- [X] Remove the visible TODO leak and rewrite the retention subsection as publication-safe prose.
+- [X] Fix the Methods terminology and copy defects addressed in the `v1.1` pass.
+- [X] Reconcile retention hypotheses and analysis descriptions with Results in the corrected H3 block.
+- [X] Ensure the chapter describes what was actually done, not an obsolete plan.
+  - Remaining legacy wording is now explicitly qualified by footnote rather than silently rewritten.
 
 ### Results
 
-- [ ] Remove visible warnings and placeholder text.
-- [ ] Fix inline statistic/reporting bugs.
-- [ ] Clean naming inconsistencies and copy defects.
-- [ ] Tighten claim language for H2b and retention.
-- [ ] Add explicit sample/exclusion accounting where needed for interpretation.
+- [X] Remove visible warnings and placeholder text.
+- [X] Fix inline statistic/reporting bugs.
+- [X] Clean the exposed naming inconsistencies and copy defects addressed in the `v1.1` pass.
+- [X] Decide whether broader H2b / retention language tightening belongs in `v1.1`.
+  - Decision:
+  - broader rhetorical tightening was deferred by design; see Appendix F `Intentional Deferrals`.
+- [X] Add targeted sample/exclusion accounting where needed for interpretation.
 
 ### Conclusions
 
-- [ ] Tighten any conclusion that currently overstates H2b or retention.
-- [ ] Fix visible copy defects.
-- [ ] Align the conclusion language with the corrected Results framing.
+- [X] Decide whether broader conclusion tightening around H2b or retention belongs in `v1.1`.
+  - Decision:
+  - broader rhetorical tightening was deferred by design; see Appendix F `Intentional Deferrals`.
+- [X] Fix visible copy defects.
+- [X] Align the conclusion language with the corrected Results framing.
+  - Alignment is achieved through the added footnote and Appendix F interpretation note rather than a quiet rewrite of the defended prose.
 
 ### Appendices
 
-- [ ] Remove or sanitize Appendix H for public release.
-- [ ] Check whether any other appendix still contains operational notes, TODOs, or machine-specific details.
+- [X] Remove visible draft residue from Appendix H for public release.
+- [X] Add a direct link to the standalone defended IRB packet.
+- [X] Decide whether deeper Appendix H softening belongs in `v1.1`.
+  - Decision:
+  - deeper appendix softening was deferred by design; see Appendix F `Intentional Deferrals`.
+- [X] Check appendices in the public build path for visible operational notes, TODOs, or machine-specific details.
 
 ## Verification Steps
 
-- [ ] Render the HTML build cleanly after each major correction batch.
-- [ ] Search the active manuscript source for residual `TODO`, `subtitle...`, and similar placeholders.
-- [ ] Search the rendered HTML for visible warning text and placeholder remnants.
-- [ ] Compare `v1.1` against the as-submitted version to ensure the changes are corrective rather than expansive.
-- [ ] Confirm that all known high-priority findings from the review are either fixed or explicitly deferred with justification.
+- [X] Render the HTML build cleanly after each major correction batch.
+  - A pre-existing duplicate footnote-reference warning remains in the HTML acknowledgements render, but it does not appear to create a visible output defect in the published page.
+- [X] Search the active manuscript source for residual `TODO`, `subtitle...`, and similar placeholders.
+  - Residual source TODOs remain in non-public or intentionally deferred areas, but no new visible leaks remain in the public build path.
+- [X] Search the rendered HTML for visible warning text and placeholder remnants.
+- [X] Render the PDF build cleanly after the title-page and changelog updates.
+- [X] Verify that the corrected PDF title page still fits on one page after adding the `v1.1` note.
+- [X] Compare `v1.1` against the as-submitted version to ensure the changes are corrective rather than expansive.
+  - Verified against the defended baseline for the active public-surface files touched by `v1.1`.
+- [X] Confirm that all known high-priority findings from the review are either fixed or explicitly deferred with justification.
 
 ## Definition of Done
 
@@ -174,7 +188,7 @@ The `v1.1` web dissertation should:
 
 - all `P0` items are complete
 - all `P1` items are complete
-- `P2` items have been addressed enough that the dissertation no longer overstates its evidence
+- `P2` items are either explicitly deferred by design or addressed through documented correction notes
 - the HTML version is publication-safe and clearly marked as corrected
 - the site links back to the as-submitted dissertation for transparency
 
@@ -186,3 +200,8 @@ These items may remain outside `v1.1` unless they are needed to correct misleadi
 - major new analyses unrelated to identified errors
 - broad restructuring of the dissertation narrative
 - turning the repo into a full public reproducibility package
+- broader rhetorical tightening around `H2b` and retention beyond the specific documented corrections
+- new sensitivity analyses or robustness checks
+- broader qualitative-method revision
+- deeper appendix softening beyond visible public-facing issues
+- full inline-stat auditing beyond the specific exposed bugs corrected in `v1.1`

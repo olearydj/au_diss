@@ -4,25 +4,49 @@ This appendix records the exact changes applied in the `v1.1` release relative t
 
 ## Change Register
 
+:::{style="font-size: 0.92em;"}
 | Location | Issue in defended release | v1.1 correction | Reason |
 | --- | --- | --- | --- |
 | Literature Review footnote | Unresolved `*THEORY SECTION*` placeholder | Replaced with a direct cross-reference to the later theory section (`@sec-theory`) | Remove draft residue and point readers to the actual theory discussion |
 | Methods, retention hypotheses | Leaked TODO rendered in public output because the hiding wrapper was misspelled as `contents-hidden` | Removed the leaked note and rewrote the subsection as regular prose | Remove visible draft residue and make the subsection publication-safe |
 | Methods, retention hypotheses | Retention was stated in Methods as `H3a: Change in OEE varies with treatment`, while defended Results evaluated retention using changes in task completion time and uncorrected error count | Updated the Methods block so retention is stated and tested in terms of `TCT` and `UCE`, matching the defended Results chapter | Reconcile Methods with the already-defended analysis without introducing a new retention analysis |
+| Methods, legacy analysis-plan wording | A few remaining Methods passages still reflected the original analysis plan, including references to OEE in retention context and hardware-specific treatment labels | Added footnotes clarifying the final defended analysis path and the equivalence of `HMDAR/HMDMR` with the simpler `AR/MR` labels used later in the manuscript | Improve transparency around residual legacy wording without rewriting the defended prose |
 | Results, H2b Q-Q plot | Placeholder subtitle `subtitle...` | Replaced with `PWI and PAR show the clearest departures from normality` | Remove placeholder text and summarize the displayed pattern |
 | Results, H2b bootstrap interpretation | Hidden `TODO: FIX THIS` remained in source and the visible typo `more than than` remained in prose | Removed the hidden note, corrected the typo to `more than`, and softened the sentence to report what the estimates suggest rather than overstate certainty | Editorial cleanup and more proportionate interpretation |
 | Results, H1b model-comparison table | `compare_performance()` emitted stdout into the rendered body text before the table | Captured the emitted stdout so it no longer renders; the comparison table itself is unchanged | Remove render artifact without changing the analysis |
 | Results, H1b model-comparison table | Candidate model 4 showed blank conditional $R^2$ and ICC values without explanation | Added an explicit note that candidate model 4 produced a singular fit, so conditional $R^2$ and ICC were unavailable | Make the omitted values transparent to readers |
+| Results, sample and exclusion notes | The scope of the participant 1063 exclusion, the recall analysis sample, and the `H2b`-specific outlier removal were implicit in the defended text | Added footnotes clarifying the 1063 exclusion, the recall sample composition, and the fact that the `H2b` outlier removal affected only that analysis; corrected a nearby typographical error in the `H2b` outlier paragraph | Improve transparency around analysis-specific sample definitions without revising the defended narrative |
+| Results, reporting corrections | A demographics sentence reused the Lego p-value for Education; one H3a sentence mismatched `iUCE` with an `iTCT` figure; one H3b figure caption used `Uncounted` instead of `Uncorrected`; and one typo read `revering` | Corrected the Education p-value reference, aligned the H3a sentence with the `iTCT` figure, standardized the H3b caption to `Uncorrected`, and fixed the typo to `reversing` | Correct concrete reporting and labeling errors without changing the underlying analyses |
+| Results and Conclusions, H3b interpretation | The defended text interprets the selected additive ZINB retention model as if gap effects were additive and treatment-specific in slope | Added footnotes in Results and Conclusions that point to Appendix @sec-v1-1-h3b-note, where the interpretive correction and its implications are discussed without rewriting the defended narrative in place | Make a substantive interpretive correction transparent while preserving the defended text |
 | Landing page, HTML edition | Public HTML opened directly to the abstract, without a visible dissertation identity block or committee listing | Added an HTML-only dissertation identification block before the abstract, including title, author, degree context, date, and approved committee list | Make the HTML edition legible as a dissertation when opened directly |
-| Landing page, HTML edition | Public HTML did not visibly distinguish the corrected `v1.1` release from the as-defended dissertation | Added an HTML-only `v1.1` callout on the landing page with a direct link to Appendix @sec-v1-1-changelog and to the as-defended dissertation PDF on GitHub | Make release status and provenance clear at the point of entry |
+| Landing page, HTML edition | Public HTML did not visibly distinguish the corrected `v1.1` release from the as-defended dissertation or provide a direct path to the project source | Added an HTML-only `v1.1` callout on the landing page with direct links to Appendix @sec-v1-1-changelog, the as-defended dissertation PDF on GitHub, and the project repository on GitHub | Make release status, provenance, and source access clear at the point of entry |
 | Appendix D, Data Organization | Visible TODO lines in public appendix text | Removed the TODO lines | Remove visible draft residue |
 | Appendix E, Institutional Review Board Approval | Appendix lead-in did not point readers to the defended public artifact | Replaced the lead-in with a direct link to the standalone as-submitted IRB packet on GitHub | Improve traceability to the defended IRB materials |
+:::
 
 ## Interpretation Boundaries
 
 - No new participants, data, or analyses were added for `v1.1`.
 - The most substantive correction in this pass is the Methods/Results reconciliation for the retention hypothesis block.
 - Other changes in this pass are editorial, render-related, or transparency-related.
+
+## Intentional Deferrals
+
+The `v1.1` release is a correction, reconciliation, and publication-safety pass, not a substantive revision of the defended dissertation. Several issues identified during review were therefore left unchanged by design. These include:
+
+- broader rhetorical tightening of `H2b` and retention claims beyond the specific corrections documented above
+- new sensitivity analyses or robustness checks for exclusions, outliers, or model choices
+- broader revision of the qualitative-analysis method or its presentation
+- deeper softening of appendix material beyond visible public-facing draft residue and link/provenance fixes
+- a full audit of all inline statistics beyond the specific exposed reporting errors corrected in `v1.1`
+
+These items were judged to fall outside the intended scope of an errata-style release. Where appropriate, they are better addressed in future paper manuscripts, follow-on analysis, or later revision work rather than in the corrected dissertation release itself.
+
+### H3b Interpretation Correction Note {#sec-v1-1-h3b-note}
+
+The defended $H_{3b}$ discussion interprets the selected additive zero-inflated negative binomial model as if the effect of gap were additive and treatment-specific in slope. That is not correct. In the selected model, count-model effects are multiplicative on the log-link scale, and no gap-by-treatment interaction term is included. Accordingly, the model supports the conclusion that expected increases in UCE differ by treatment level across the observed retention intervals, with PWI lower than the reference AR condition. It does not support a claim that PWI changes the per-day rate of increase relative to AR, nor that treatment-specific decay slopes were estimated by the selected model.
+
+This does not eliminate the $H_{3b}$ signal, but it narrows its interpretation. The defended phrasing about a lower rate of error increase should therefore be read as overstated. A more accurate reading is that the fitted model provides preliminary evidence of differences in expected retention-phase error increase by treatment, while leaving the mechanism of that difference, including whether treatments differ in slope over time, unresolved. To preserve the defended narrative, `v1.1` records that interpretive correction here and flags the affected passages in Results and Conclusions by footnote rather than rewriting them in place.
 
 ## Repository Diff
 

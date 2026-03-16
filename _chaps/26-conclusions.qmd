@@ -40,7 +40,9 @@ The observed differences in recall phase performance likely stem from the nature
 
 #### $H_{3}$: How does each treatment affect performance during the retention phase?
 
-@tbl-retention-results-summary summarizes the findings that relate iTCT and iUCE with treatment. Overall, the implications for retention are mixed, with the UCE model providing stronger evidence for an effect of instructional method on retention than the TCT model. This difference suggests that error-related performance improvements may be more sensitive to instructional methods than completion times.
+@tbl-retention-results-summary summarizes the findings that relate iTCT and iUCE with treatment. Overall, the implications for retention are mixed, with the UCE model providing stronger evidence for an effect of instructional method on retention than the TCT model. This difference suggests that error-related performance improvements may be more sensitive to instructional methods than completion times.[^26-conclusions-h3b-note]
+
+[^26-conclusions-h3b-note]: Appendix @sec-v1-1-h3b-note records a correction to the interpretation of the selected $H_{3b}$ model and discusses the implications for the retention conclusions summarized here.
 
 | Claim                                                              | Result                     | Key Findings                                                                                                                                                                                                                            |
 | ------------------------------------------------------------------ | :--------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

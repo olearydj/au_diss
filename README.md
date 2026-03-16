@@ -38,16 +38,22 @@ Read the end-to-end workflow note first:
 
 - [`docs/pipeline.md`](docs/pipeline.md)
 
-Build the current manuscript PDF:
+Build only the current manuscript PDF:
 
 ```sh
 quarto render --to pdf --profile pdf
 ```
 
-Build the current HTML version:
+Build only the current HTML version:
 
 ```sh
 quarto render --to html --profile html
+```
+
+Build the full project using the default Quarto configuration:
+
+```sh
+quarto render
 ```
 
 The current PDF output lands at `manuscript/dissertation.pdf`. The kept TeX

@@ -432,7 +432,9 @@ The first session of the study tested its primary research questions in two phas
 
 Phase one, Learning, compared the effects of the assigned treatment on the speed and accuracy with which participants performed each repetition of the task. Speed was measured as task completion time, while the number and type of uncorrected errors were used to represent accuracy. These measures, tracked for each assembly during the 10-minute session, were later used to assess both the learning rate and depth of skill acquisition. This approach offers insights into how efficiently and effectively each treatment imparts necessary skills and knowledge for the task.
 
-Participants were instructed to focus on three priorities during the first phase: (1) learn the steps of the assembly process, (2) complete each assembly correctly, and (3) finish as many assemblies as possible in the time allowed. This approach of prioritizing correct and efficient work is in line with measures observed and the principles of OEE, which is used in the second and third phases of this study.
+Participants were instructed to focus on three priorities during the first phase: (1) learn the steps of the assembly process, (2) complete each assembly correctly, and (3) finish as many assemblies as possible in the time allowed. This approach of prioritizing correct and efficient work is in line with measures observed and the principles of OEE, which is used in the second and third phases of this study.[^24-methods-oee-phases]
+
+[^24-methods-oee-phases]: In the final defended analysis, OEE remained the primary effectiveness measure for the recall phase. Retention was ultimately evaluated using changes in task completion time and uncorrected error count, as explained in the corrected H3 retention subsection and Results chapter.
 
 The fixed duration of 10-minutes was deliberately chosen to align with various aspects of the learning process and the operational context of the task. In addition to the OEE considerations outlined above, using a fixed duration ensured that all participants have the same opportunity to learn the procedure. A fixed car count approach (e.g., "make 6 cars") was rejected due to concerns that the absence of a time constraint could lead to uneven learning opportunities and extend session lengths beyond practical limits.
 
@@ -1582,7 +1584,9 @@ How do operator characteristics, such as prior experience with assembly tasks or
 What are the perceived workload, usability, and user satisfaction associated with each AR/MR technology, and how do these factors relate to learning, recall, and retention outcomes?
 :::
 
-Based on the primary and secondary research questions identified herein, several types of analysis will be required. Essential methods are summarized in the following list.
+Based on the primary and secondary research questions identified herein, several types of analysis will be required. Essential methods are summarized in the following list.[^24-methods-analysis-plan]
+
+[^24-methods-analysis-plan]: This list reflects the original planned analysis at the time of writing. The defended Results chapter reports the final analysis path actually used, including non-parametric tests, mixed models, and retention analyses based on changes in TCT and UCE rather than change in OEE.
 
 1.  Descriptive Statistics
 
@@ -1592,7 +1596,9 @@ Based on the primary and secondary research questions identified herein, several
 
 2.  Hypothesis Testing
 
-    -   One-way ANOVA: Use to compare means of dependent variables (e.g., average time per car, average error count per car, OEE) across the four instructional methods (PWI, PAR, HMDAR, HMDMR).
+    -   One-way ANOVA: Use to compare means of dependent variables (e.g., average time per car, average error count per car, OEE) across the four instructional methods (PWI, PAR, HMDAR, HMDMR).[^24-methods-hmd-labels]
+
+[^24-methods-hmd-labels]: The labels HMDAR and HMDMR refer to the same treatment conditions reported elsewhere in this dissertation more simply as AR and MR, respectively. The shorter forms are used in the Results and Conclusions chapters for readability.
 
     -   Repeated measures ANOVA: Calculate to analyze changes in performance over time (e.g., learning rates, change in OEE) within and between treatment groups.
 
