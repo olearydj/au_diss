@@ -1,0 +1,2 @@
+# Pin dissertation renders to the defended/rebuild baseline R version.
+QUARTO_R=/Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/bin/Rscript
