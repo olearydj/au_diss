@@ -4422,7 +4422,7 @@ kr <- irr::kendall(kw_mat)
 ```
 
 Kendall's coefficient of concordance, a measure of inter-rater agreement, was used to further
-assess the rankings across the six sources of workload. Results from the `kendall` function of the `irr` package (W = `r round(kr$value, 2)`, `r fmt_p_val(kr$p.value)`) indicated negligible agreement among participants, confirming that workload rankings are highly individualized. Low agreement in ranking has led other researchers to question the utility of the TLX's weighting scheme *(Bustamante and Spain 2008, Byers et al 1989)*. Regardless, it remains the officially recommended methodology *(Hart 2006)*.
+assess the rankings across the six sources of workload. Results from the `kendall` function of the `irr` package (W = `r round(kr$value, 2)`, `r fmt_p_val(kr$p.value)`) indicated negligible agreement among participants, confirming that workload rankings are highly individualized. Low agreement in ranking has led other researchers to question the utility of the TLX's weighting scheme *(Bustamante and Spain 2008, Byers et al 1989)*. Regardless, it remains the officially recommended methodology [@hart2006tlx].
 
 #### TLX Q2: Source Ratings by Treatment
 
