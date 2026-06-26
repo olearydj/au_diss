@@ -41,4 +41,4 @@ By addressing key gaps in the existing literature, this research will contribute
 
 3.  An examination of the factors influencing the long-term effectiveness of AR/MR training, including the relationships between initial learning outcomes, recall and retention, user experience, and individual differences.
 
-To address these research questions and deliver the outlined contributions, a comprehensive methodology is outlined in the following chapter. It details the the selection of AR/MR technologies, development of instructional treatments, and the methods for data collection and analysis.
+To address these research questions and deliver the outlined contributions, a comprehensive methodology is outlined in the following chapter. It details the selection of AR/MR technologies, development of instructional treatments, and the methods for data collection and analysis.

@@ -2,7 +2,7 @@
 <div class="quarto-title-block">
 ::: {.callout-note title="v1.1.1 Note"}
 
-This site presents the `v1.1.1` release of the dissertation. `v1.1` corrected identified errata and render issues without adding new data or introducing new analyses; the `v1.1.1` point release adds one further correction (a bootstrap replication seeding error). The exact changes are recorded in Appendix @sec-v1-1-changelog. A PDF of the as-defended dissertation can be downloaded from the [baseline release notes page](https://github.com/olearydj/au_diss/releases/tag/baseline%2Fdissertation-defended-2024-08-02). The project repository and source are public [on GitHub](https://github.com/olearydj/au_diss).
+This site presents the `v1.1.1` release of the dissertation. `v1.1` corrected identified errata and render issues without adding new data or introducing new analyses; the `v1.1.1` point release adds one further correction (a bootstrap replication seeding error). The exact changes are recorded in @sec-v1-1-changelog. A PDF of the as-defended dissertation can be downloaded from the [baseline release notes page](https://github.com/olearydj/au_diss/releases/tag/baseline%2Fdissertation-defended-2024-08-02). The project repository and source are public [on GitHub](https://github.com/olearydj/au_diss).
 :::
 
 <p>A dissertation submitted to the Graduate Faculty of Auburn University in partial fulfillment of the requirements for the degree of Doctor of Philosophy</p>

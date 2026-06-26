@@ -2894,7 +2894,7 @@ without_outliers <- learn_h1c[!learn_h1c$participant %in% co_res$participant, ]
 kt_h1b_no_outliers <- kruskal.test(avg_uce ~ treatment, data = without_outliers)
 ```
 
-KW is a robust test that does not assume normality or homogeneity of variances. It can be sensitive to the presence of outliers, three of which were detected in the UCE data based on a combination of IQR and Z-score. Participants `r col_to_string(co_res, participant)` were all assigned to the PWI treatment and averaged `r col_to_string(co_res, avg_uce, digits = 1)` errors per task, respectively. A second Kruskal-Wallis test of the data without those outliers showed the difference remained significant (`r fmt_p_val(kt_h1b_no_outliers$p.val)`). This confirms that the outliers did not impacting the outcome of the test.
+KW is a robust test that does not assume normality or homogeneity of variances. It can be sensitive to the presence of outliers, three of which were detected in the UCE data based on a combination of IQR and Z-score. Participants `r col_to_string(co_res, participant)` were all assigned to the PWI treatment and averaged `r col_to_string(co_res, avg_uce, digits = 1)` errors per task, respectively. A second Kruskal-Wallis test of the data without those outliers showed the difference remained significant (`r fmt_p_val(kt_h1b_no_outliers$p.val)`). This confirms that the outliers did not impact the outcome of the test.
 
 
 #### $H_{1c}$ Results
@@ -3143,7 +3143,7 @@ oee_power <- posthoc_power_analysis(
 )
 ```
 
-In @fig-h2a-plot, group-wise significant differences are found (p = 0.02), with with small to moderate effect size $\hat{\epsilon}^{2}_{rank}=0.19$ and a broad $CI_{95\%}\:[0.08,1.0]$. Pair-wise tests show only PWI and PAR are significantly different (also p = 0.02). A post-hoc simulation was performed to assess the power of the analysis. The result of `r round(oee_power * 100, 1)`% indicates the analysis had sufficient power to detect significant differences, which lends further support to the reliability of this outcome.
+In @fig-h2a-plot, group-wise significant differences are found (p = 0.02), with small to moderate effect size $\hat{\epsilon}^{2}_{rank}=0.19$ and a broad $CI_{95\%}\:[0.08,1.0]$. Pair-wise tests show only PWI and PAR are significantly different (also p = 0.02). A post-hoc simulation was performed to assess the power of the analysis. The result of `r round(oee_power * 100, 1)`% indicates the analysis had sufficient power to detect significant differences, which lends further support to the reliability of this outcome.
 
 ```{r fig-h2a-plot}
 #| fig-cap: $H_{2a}$ Test - OEE Differences by Treatment
@@ -3348,7 +3348,7 @@ recall_h2b_agg |>
   ) +
   labs(
     title = "Average Time per PWI Reference in Recall",
-    subtitle = "Reliance is strongly left-skewed with high variability and long tails",
+    subtitle = "Reliance is strongly right-skewed with high variability and long tails",
     x = element_blank(),
     y = element_blank()
   ) +
@@ -3566,7 +3566,7 @@ for (result in comparison_results) {
 # all p-values > 0.493 (PAR) n/c, not significantly difference within any treatment
 ```
 
-Several checks were then repeated to assess the impact of outlier removal. The Shapiro-Wilk test showed no change in significance for data overall or by treatment group. While Levene's test found significant difference in variance between groups (`r fmt_p_val(lt_pv_out)`) after the change, Kruskall-Wallis does not assume otherwise. A Wilcoxon signed-rank test was applied to compare overall and group means with and without outliers. No significant differences were found in average PWI time per reference in the the full data set or by treatment group (p > 0.40 for all cases). It is determined that, despite a reduction in the overall mean value from `r round(overall_mean_with_outliers, 2)` to `r round(overall_mean_without_outliers, 2)`, the character of the underlying data is not significantly changed by the outlier removal. Given that most treatments are not normally distributed, and variance differs between groups, a non-parametric approach is chosen for testing $H_{2b}$. The total number of observations (n = `r nrow(recall_h2b_agg_out)`) and group sizes (`r h2b_gs_txt`) remain sufficient for these methods, though statistical power is reduced.
+Several checks were then repeated to assess the impact of outlier removal. The Shapiro-Wilk test showed no change in significance for data overall or by treatment group. While Levene's test found significant difference in variance between groups (`r fmt_p_val(lt_pv_out)`) after the change, Kruskal-Wallis does not assume otherwise. A Wilcoxon signed-rank test was applied to compare overall and group means with and without outliers. No significant differences were found in average PWI time per reference in the full data set or by treatment group (p > 0.40 for all cases). It is determined that, despite a reduction in the overall mean value from `r round(overall_mean_with_outliers, 2)` to `r round(overall_mean_without_outliers, 2)`, the character of the underlying data is not significantly changed by the outlier removal. Given that most treatments are not normally distributed, and variance differs between groups, a non-parametric approach is chosen for testing $H_{2b}$. The total number of observations (n = `r nrow(recall_h2b_agg_out)`) and group sizes (`r h2b_gs_txt`) remain sufficient for these methods, though statistical power is reduced.
 
 #### Analysis
 
@@ -3629,7 +3629,7 @@ pwi_rely_plot
 #     "[" * "0.0730", "1.0000" * "]", italic("n")["obs"] == "48")
 ```
 
-Given the marginal p-value and high variance data, bootstrap analysis was again performed to provide complementary insights. As before, five replications of 10,000 resamples were conducted for all pairs using mean, median, and the Hodges-Lehmann estimator. Significant results are summarized in @tbl-boot-pwi. As with the Kurskal-Wallis test, no significant differences were identified using median, but the mean and Hodges-Lehmann estimator both identified 95% CI based differences in PWI-AR, PWI-MR, and PAR-AR pairs. A significant difference in mean was also indicated for PAR-MR.
+Given the marginal p-value and high variance data, bootstrap analysis was again performed to provide complementary insights. As before, five replications of 10,000 resamples were conducted for all pairs using mean, median, and the Hodges-Lehmann estimator. Significant results are summarized in @tbl-boot-pwi. As with the Kruskal-Wallis test, no significant differences were identified using median, but the mean and Hodges-Lehmann estimator both identified 95% CI based differences in PWI-AR, PWI-MR, and PAR-AR pairs. A significant difference in mean was also indicated for PAR-MR.
 
 ```{r bootstrap-pwi, eval=FALSE}
 stat_funcs <- list(
@@ -3663,7 +3663,7 @@ create_boot_summary_table(h2b_pwi_boot_res, title = title, subtitle = subtitle)
 
 #### $H_{2b}$ Result
 
-The marginal p-value returned by the Kruskall-Wallis comparison of median reliance, together with consistent and robust estimates of the differences provided by bootstrap analysis give sufficient evidence to accept $H_{2b}$: reliance does vary with instructional method. However, the conflicting results of pairwise comparisons must be interpreted with caution. Like other results in this study, they suggest that AR/MR are superior to PWI/PAR but the limited data and high variation make this somewhat inconclusive. Ultimately, it is determined that statistically significant differences in reliance exist between treatments, but specific pair-wise differences are not clear enough to declare.
+The marginal p-value returned by the Kruskal-Wallis comparison of median reliance, together with consistent and robust estimates of the differences provided by bootstrap analysis give sufficient evidence to accept $H_{2b}$: reliance does vary with instructional method. However, the conflicting results of pairwise comparisons must be interpreted with caution. Like other results in this study, they suggest that AR/MR are superior to PWI/PAR but the limited data and high variation make this somewhat inconclusive. Ultimately, it is determined that statistically significant differences in reliance exist between treatments, but specific pair-wise differences are not clear enough to declare.
 
 ## $H_3$: Retention Phase Analysis
 
@@ -4266,7 +4266,7 @@ SUS <- read_xlsx(
 
 This section explores the relationships between perceived workload, system usability ratings, overall user experience, and the instructional technology assigned. It is accomplished by a thorough analysis of data collected from the TLX and SUS instruments, along with a synthesis of qualitative feedback recorded during each session. Together they provide a rich expression of each participant's experience.
 
-This analysis focuses on two important aspects of the TLX and SUS data: the results from the learning phase, where instructional technologies were actively used, and how those measures differ from the those observed during recall. This approach provides insight into the perceived workload and usability of each treatment both during use and, by contrast, in its absence. Changes in workload and usability between phases will be evaluated in the context of the experimental design, which suggests any improvement[^25-TLX-1] must be attributable to some combination of the following factors:
+This analysis focuses on two important aspects of the TLX and SUS data: the results from the learning phase, where instructional technologies were actively used, and how those measures differ from those observed during recall. This approach provides insight into the perceived workload and usability of each treatment both during use and, by contrast, in its absence. Changes in workload and usability between phases will be evaluated in the context of the experimental design, which suggests any improvement[^25-TLX-1] must be attributable to some combination of the following factors:
 
 1. Shift in the priorities and objectives of the recall phase. Except for participant idiosyncrasies, this effect is assumed consistent for all treatments.
 2. The elimination of training support during recall, which requires participants to work from memory with limited access to instructions. This factor may vary if some treatments do more to engender reliance than support learning.
@@ -4422,11 +4422,11 @@ kr <- irr::kendall(kw_mat)
 ```
 
 Kendall's coefficient of concordance, a measure of inter-rater agreement, was used to further
-assess the rankings across the six sources of workload. Results from the `kendall` function of the `irr` package (W = `r round(kr$value, 2)`, `r fmt_p_val(kr$p.value)`) indicated negligible agreement among participants, confirming that workload rankings are highly individualized. Low agreement in ranking has lead other researchers to question the utility of the TLX's weighting scheme *(Bustamante and Spain 2008, Byers et al 1989)*. Regardless, it remains the officially recommended methodology *(Heart 2006)*.
+assess the rankings across the six sources of workload. Results from the `kendall` function of the `irr` package (W = `r round(kr$value, 2)`, `r fmt_p_val(kr$p.value)`) indicated negligible agreement among participants, confirming that workload rankings are highly individualized. Low agreement in ranking has led other researchers to question the utility of the TLX's weighting scheme *(Bustamante and Spain 2008, Byers et al 1989)*. Regardless, it remains the officially recommended methodology *(Hart 2006)*.
 
 #### TLX Q2: Source Ratings by Treatment
 
-@fig-tlx-q2-heat was created to understand how the sources of perceived workload vary by treatment group. All combinations of treatment and source of workload are arranged in a heatmap, where each cell is the mean rating for the corresponding source and treatment. Temporal Demand consistently rate as the most important workload source across all treatments, with mean ratings all above 66.1. This suggests that all participants experienced substantial time pressure. Physical Demand is consistently rated as the least important source, with all mean ratings below 25.8. This indicates that the assembly task is not perceived as physically demanding in any group.
+@fig-tlx-q2-heat was created to understand how the sources of perceived workload vary by treatment group. All combinations of treatment and source of workload are arranged in a heatmap, where each cell is the mean rating for the corresponding source and treatment. Temporal Demand consistently rates as the most important workload source across all treatments, with mean ratings all above 66.1. This suggests that all participants experienced substantial time pressure. Physical Demand is consistently rated as the least important source, with all mean ratings below 25.8. This indicates that the assembly task is not perceived as physically demanding in any group.
 
 ```{r tlx-q2-calcs}
 # Calculate the mean rating for each source and treatment
@@ -4525,7 +4525,7 @@ PMCMRplus::kwAllPairsDunnTest(td_data$value, td_data$treatment, p.adjust.method 
 
 #### TLX Q3: Treatment Effect on Weighted Source Workloads
 
-Where the previous section explored changes across the treatment axis of fig-tlx-q2-heat for unweighted source ratings, this section tests the differences across sources for weighted source workloads. @fig-tlx-q3-bar illustrates the relative contributions of each source to the total workload in each treatment. A fairly consistent progression from the highest contributor, Temporal Demand, to the lowest, Physical Demand is obvious. While there is some variation in between, those sources act as the high / low points for all treatments.
+Where the previous section explored changes across the treatment axis of @fig-tlx-q2-heat for unweighted source ratings, this section tests the differences across sources for weighted source workloads. @fig-tlx-q3-bar illustrates the relative contributions of each source to the total workload in each treatment. A fairly consistent progression from the highest contributor, Temporal Demand, to the lowest, Physical Demand is obvious. While there is some variation in between, those sources act as the high / low points for all treatments.
 
 ```{r tlx-q3-weighted}
 # weighted source workloads
@@ -4716,7 +4716,7 @@ sus_r <- sus_scores |>
 ```
 
 
-The System Usability Score (SUS) provides a complementary view of the participant experience. Where TLX is focused on perceived workload, SUS is designed to provide a simple, one number assessment of overall usability. Despite its simplicity, the SUS is well-respected and often used. @tbl-sus-ds summarizes the raw SUS scores collected during the learning phase of this study, representing the usability of the instructional technology. Five-number summaries are provided for each treatment group for both phases.
+The System Usability Scale (SUS) provides a complementary view of the participant experience. Where TLX is focused on perceived workload, SUS is designed to provide a simple, one number assessment of overall usability. Despite its simplicity, the SUS is well-respected and often used. @tbl-sus-ds summarizes the raw SUS scores collected during the learning phase of this study, representing the usability of the instructional technology. Five-number summaries are provided for each treatment group for both phases.
 
 ```{r tbl-sus-ds}
 #| tbl-cap: "Summary Statistics for Raw System Usability Scores"
@@ -4740,7 +4740,7 @@ where $\Phi$ is the cumulative distribution function (CDF) of the standard norma
 
 With that in mind, percentile ranks are also included in @tbl-sus-ds. The overall median rank of `r round(median(sus_l$sus_pct), 1)`% gives these systems a failing grade overall, *relative to commercially available products*. Performance by treatment ranges from 77.2% for PWI to 29.6% for MR, with PAR scoring 63.8% and AR 44.5%. While all of these roughly align with observed interactions, the D letter grade for PAR, a mature commercial product, is noteworthy.
 
-Following best practices, subsequent SUS analysis will utilize the transformed SUS percentile ranks. In addition to improved interpretability, this also accounts for the non-linear nature of the raw scores, enabling more meaningful comparisons. The monotonic nature of this transformation, which preserves the data's original order, will have no affect on the statistical conclusions for the methods employed. @fig-sus-plot compares the distribution of SUS across treatments.
+Following best practices, subsequent SUS analysis will utilize the transformed SUS percentile ranks. In addition to improved interpretability, this also accounts for the non-linear nature of the raw scores, enabling more meaningful comparisons. The monotonic nature of this transformation, which preserves the data's original order, will have no effect on the statistical conclusions for the methods employed. @fig-sus-plot compares the distribution of SUS across treatments.
 
 ```{r fig-sus-plot}
 #| fig-cap: "System Usability Score for Each Instructional Method"
@@ -4786,7 +4786,7 @@ ggstatsplot::ggbetweenstats(
 
 No statistically significant overall difference is identified (p = 0.40), likely due to the very large range of scores found in every treatment. While the effect size is quite small ($\hat{\varepsilon}_{rank}^{2}$ = 0.056), the progression of median values aligns with expectations based on the complexity associated with each treatment: PWI > PAR > AR > MR. This suggests that, while the technologies differ in complexity, their perceived usability during learning is not drastically different--an unexpected result.
 
-Those learning scores were compared with SUS during recall to test for significance using the Wilcoxon signed rank test for paired samples. As seen in @fig-sus-change, the difference is statistically significant (p < 0.001) and practically meaningful. The median value for $SUS_{R}$ (87.70) is a 31.34 point improvement in usability from the learning phase ($SUS_{L}$ = 56.36). The large negative effect size ($\hat{r}^{2}_{biserial}$ = -0.644) with relatively narrow 95% confidence interval [-0.792, -0.424] suggests this finding is robust.
+Those learning scores were compared with SUS during recall to test for significance using the Wilcoxon signed rank test for paired samples. As seen in @fig-sus-change, the difference is statistically significant (p < 0.001) and practically meaningful. The median value for $SUS_{R}$ (87.70) is a 31.34 point improvement in usability from the learning phase ($SUS_{L}$ = 56.36). The large negative effect size ($\hat{r}_{biserial}$ = -0.644) with relatively narrow 95% confidence interval [-0.792, -0.424] suggests this finding is robust.
 
 ```{r fig-sus-change}
 #| fig-cap: "System Usability Score for Learning and Recall Phases"
@@ -5037,6 +5037,6 @@ The tracking accuracy and display brightness of the HL2 sometimes made it diffic
 
 Surprisingly few participants assigned to the MR treatment took advantage of its primary affordance. Despite the absence of a fixture, many completed each task with the workpiece in its initial orientation. Some rotated it, but very few picked it up to take full advantage of the manipulation capabilities of this system. Worse yet, the lack of a fixture led to issues with workpiece stability, causing unwanted translation and/or rotation that sometimes resulted in breakages that might not have otherwise occurred.
  
-AR and MR users encountered a variety of other minor issues related to the system's tracking, battery life, performance, and brightness. Participants with long hair that draped into view, bulky long sleeves, or unusually long fingernails led to hand tracking issues that were mostly easily corrected for. The limited battery life of the HL2 required careful maintenance when several trials were conducted back-to-back. The limited capabilities of the the HL2's CPU/GPU sometimes led to framerate and/or latency issues that complicated the choreography of MR demonstrations, along with monitoring, recording, and editing videos, but rarely had any noticeable effect on participant performance.
+AR and MR users encountered a variety of other minor issues related to the system's tracking, battery life, performance, and brightness. Participants with long hair that draped into view, bulky long sleeves, or unusually long fingernails led to hand tracking issues that were mostly easily corrected for. The limited battery life of the HL2 required careful maintenance when several trials were conducted back-to-back. The limited capabilities of the HL2's CPU/GPU sometimes led to framerate and/or latency issues that complicated the choreography of MR demonstrations, along with monitoring, recording, and editing videos, but rarely had any noticeable effect on participant performance.
 
 Except as/if noted elsewhere, no modifications were made to the protocol to account for these issues. Most patterns emerged late enough that such changes would have invalidated previous results and compromised any findings. Given the practical constraints of this study, it was decided to carry on with an understanding of the potential limitations and how they might affect the results. Mixed-effect modeling methods were used to help isolate the random effect of some of these issues, but that was not always the most suitable analytical approach. Resulting implications to interpretation and generalization will be detailed in the Conclusions chapter to follow, along with recommendations to improve future work based on these findings.

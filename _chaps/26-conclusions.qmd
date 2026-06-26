@@ -1,6 +1,6 @@
 # Conclusions {#26-conclusions}
 
-This chapter synthesizes the key findings, insights, and implications of this study on augmented technologies in manufacturing assembly training. It begins with a comprehensive summary of results, addressing the initial research questions and hypotheses. That is followed by a discussion of the study's main conclusions, its contributions to the field, and the implications for both research methods and theory. An examination of the the limitations of the work and its generalizability to broader contexts follows. Finally, directions for future research are outlined, aiming to build upon this study's foundations and address its identified limitations.
+This chapter synthesizes the key findings, insights, and implications of this study on augmented technologies in manufacturing assembly training. It begins with a comprehensive summary of results, addressing the initial research questions and hypotheses. That is followed by a discussion of the study's main conclusions, its contributions to the field, and the implications for both research methods and theory. An examination of the limitations of the work and its generalizability to broader contexts follows. Finally, directions for future research are outlined, aiming to build upon this study's foundations and address its identified limitations.
 
 ## Summary of Results
 
@@ -12,7 +12,9 @@ This section will briefly summarize the quantitative results in the context of t
 
 #### $H_{1}$: How does each treatment affect performance during the learning phase?
 
-@tbl-learn-results-summary summarizes the outcomes related to $H_{1}$. These results suggest that while traditional paper instructions and projected AR allowed for faster initial performance, the more immersive AR and MR technologies led to higher quality outcomes, albeit with slower execution.
+@tbl-learn-results-summary summarizes the outcomes related to $H_{1}$.[^26-conclusions-itct-note] These results suggest that while traditional paper instructions and projected AR allowed for faster initial performance, the more immersive AR and MR technologies led to higher quality outcomes, albeit with slower execution.
+
+[^26-conclusions-itct-note]: The $H_{1b}$ row of @tbl-learn-results-summary labels the model covariate "iTCT"; this is the participant's initial task completion time ($TCT_0$), which the defended $H_{1b}$ model held constant. "iTCT" (the retention-phase increase in TCT) is a different quantity, so the label is a mislabel; the analysis and the $H_{1b}$ determination are unchanged.
 
 | Claim                                                              | Result                     | Key Findings                                                                                                                                                                                                                            |
 | ------------------------------------------------------------------ | :--------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
