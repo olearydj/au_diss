@@ -155,7 +155,9 @@ A comprehensive study that captures learning, recall, and retention outcomes was
 
 ### Empirical: Quantification of Speed-Accuracy Trade-offs
 
-By providing empirical evidence to quantify the speed-accuracy trade-offs between traditional and AR/MR-based instructional methods in manufacturing assembly tasks, this study addresses the question: "What are the relative effects of various AR/MR technologies on immediate learning outcomes?" It reveals that while AR/MR technologies often lead to slower initial performance, they result in higher quality outcomes with fewer errors. Specifically, PWI and PAR demonstrated faster initial performance but higher error rates, while AR and MR showed slower initial execution but significantly lower error rates during the learning phase. By quantifying this trade-off across different phases of learning and retention, this study provides valuable insight into important implementation considerations.
+By providing empirical evidence to quantify the speed-accuracy trade-offs between traditional and AR/MR-based instructional methods in manufacturing assembly tasks, this study addresses the question: "What are the relative effects of various AR/MR technologies on immediate learning outcomes?" It reveals that while AR/MR technologies often lead to slower initial performance, they result in higher quality outcomes with fewer errors. Specifically, PWI and PAR demonstrated faster initial performance but higher error rates, while AR and MR showed slower initial execution but significantly lower error rates during the learning phase.[^26-conclusions-h1c-note] By quantifying this trade-off across different phases of learning and retention, this study provides valuable insight into important implementation considerations.
+
+[^26-conclusions-h1c-note]: This places PAR with PWI on error rate, contradicting $H_{1c}$, where PAR was statistically low-error (indistinguishable from AR and MR, well below PWI). The $H_{1c}$ determination is unchanged. See @sec-v1-1-changelog for details.
 
 ### Practical: Insights on the Interplay of Environmental and User Characteristics
 

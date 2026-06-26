@@ -3259,7 +3259,9 @@ create_boot_summary_table(h2a_oee_boot_res, title = title, subtitle = subtitle)
 
 Compared to the initial findings, bootstrapping identifies a number of significant pairwise differences. Even when testing OEE median values, as done with Kruskal-Wallis, this method finds both PWI-PAR and PWI-AR significant. The mean tests, which are more sensitive to variance and outliers, also include PWI-MR. Hodges-Lehmann matches the mean findings, despite its reduced sensitivity. 
 
-This result supports the previous findings of significant overall differences in OEE, as well as between the PWI and PAR conditions for all measures of centrality. In addition, the bootstrap analysis, with its robust estimation methods, provided strong evidence of significant differences between PWI and both the AR (for all measures) and MR groups (except for median). These results show that the OEE of PWI is substantially lower than all other treatments, with average estimated differences of 0.687 (PAR), 0.585 (AR), and 0.307 (MR). The negligible bias values and low standard error reported across all replicates reinforce the reliability of these findings.
+This result supports the previous findings of significant overall differences in OEE, as well as between the PWI and PAR conditions for all measures of centrality. In addition, the bootstrap analysis, with its robust estimation methods, provided strong evidence of significant differences between PWI and both the AR (for all measures) and MR groups (except for median). These results show that the OEE of PWI is substantially lower than all other treatments, with average estimated differences of 0.687 (PAR), 0.585 (AR), and 0.307 (MR).[^25-results-oee-mr-note] The negligible bias values and low standard error reported across all replicates reinforce the reliability of these findings.
+
+[^25-results-oee-mr-note]: The PWI-MR figure (0.307) is a misprint; the correct value is 0.614. This does not affect the $H_{2a}$ determination. See @sec-v1-1-changelog for details.
 
 #### $H_{2a}$ Result
 

@@ -27,7 +27,7 @@
 #### [DONE] F-003 — H2b reliance summary states wrong magnitudes AND inverted direction vs its own bootstrap table
 - **Location:** `_chaps/25-results.qmd:3660` (rendered `manuscript/dissertation.tex:10678`); summarizes `tbl-boot-pwi` (`:3651–3658`). Propagates to `_chaps/26-conclusions.qmd` lines 34, 38, 89 (tex `:12400`).
 - **Issue:** Prose claims "AR and MR reduce reliance by 0.686 and 0.612 seconds per reference … relative to PWI" and "reduce reliance more than PAR and PWI." Both the magnitudes and the direction are wrong.
-- **Evidence:** Recomputed from `rdata/h2b_pwi_boot_res.RData` (matches rendered table): PWI−AR = −0.993 (HL −1.064), PWI−MR = −0.880 (HL −0.956); all PWI-minus-treatment differences are negative, so PWI has the *lowest* time-per-reference composite (group means PWI 0.36 < MR 1.24 < AR 1.35, z>2.5, n=48). AR/MR therefore *increase* time per reference relative to PWI. The figures 0.686/0.612 occur exactly once each in the whole rendered tex and appear nowhere in the reliance table — a carryover from the H2a OEE discussion. The v1.1 changelog (`_apps/39i-v1-1-changelog.qmd:15`) shows this sentence was edited in v1.1 (a "FIX THIS" marker removed) without fixing the figures.
+- **Evidence:** Recomputed from `rdata/h2b_pwi_boot_res.RData` (matches rendered table): PWI−AR = −0.993 (HL −1.064), PWI−MR = −0.880 (HL −0.956); all PWI-minus-treatment differences are negative, so PWI has the *lowest* time-per-reference composite (group means PWI 0.36 < MR 1.24 < AR 1.35, z>2.5, n=48). AR/MR therefore *increase* time per reference relative to PWI. The figures 0.686/0.612 occur exactly once each in the whole rendered tex and appear nowhere in the reliance table — a carryover from the H2a OEE discussion. The v1.1 changelog (`_apps/39i-changelog.qmd:15`) shows this sentence was edited in v1.1 (a "FIX THIS" marker removed) without fixing the figures.
 - **Errata class:** consistency (factual reporting error). **Severity:** High. **Accept-H2b is unchanged.**
 - **Disposition:** **Fold into v1.1.1 now (footnote + Appendix F).** This is the one finding that clearly meets the bootstrap-seed-bug bar.
 - **Suggested correction (footnote at `:3660` + Appendix F row):**
@@ -44,7 +44,7 @@
 - **Disposition:** **Fold into v1.1.1: inline source fix in the web build + Appendix F roll-up row.**
 - **Suggested correction:** change to `[@palmarini2017innov; @borsci2015empir; @danielsson2020augme]` so it renders "(Palmarini et al., 2017; Borsci et al., 2015; Danielsson et al., 2020)." Appendix F row: "Literature Review, Needs and Recommendations | A malformed inline citation omitted the '@' on the third key, so the raw BibTeX key printed as literal text in PDF and HTML | Restored the missing '@' so the citation resolves to Danielsson et al. (2020) | Corrects a reader-visible rendering defect without changing the cited sources or the argument."
 
-#### [PENDING] F-019 — Empirical-contribution claim misattributes high error rates to PAR, contradicting H1c
+#### [DONE] F-019 — Empirical-contribution claim misattributes high error rates to PAR, contradicting H1c
 - **Location:** `_chaps/26-conclusions.qmd:154` (rendered tex `:12875`).
 - **Issue:** "PWI and PAR demonstrated faster initial performance but higher error rates" contradicts the dissertation's own H1c result, which placed PAR on the accurate side.
 - **Evidence:** H1c (`25-results.qmd:2831`): PWI differs from all others; "PAR, AR, and MR treatments are statistically similar." Conclusions summary (`26-conclusions.qmd:21`): "All augmented instruction methods (PAR, AR, MR) result in significantly lower error rates compared to PWI." Observed mean UCE: PWI 6.14, PAR 0.76, AR 0.64, MR 0.52 — PAR is ~8× below PWI. PAR was fast (H1a) AND low-error (H1c), so it does not exhibit the asserted trade-off.
@@ -60,7 +60,7 @@
 - **Disposition:** **Fold into v1.1.1: inline fix + Appendix F row.**
 - **Suggested correction:** replace "when controlling for iTCT" with "when controlling for initial TCT ($TCT_0$)". Appendix F: "Conclusions, H1b summary table | the key-findings cell applied the retention-phase variable name iTCT to the learning-phase covariate | Corrected to 'controlling for initial TCT ($TCT_0$)' to match the Results description (holding $TCT_0$ constant) | Fixes an outcome-variable labeling inconsistency; the analysis and ranking are unchanged."
 
-#### [PENDING] F-004 — Reported PWI–MR OEE difference (0.307) is exactly half the correct value (~0.614)
+#### [DONE] F-004 — Reported PWI–MR OEE difference (0.307) is exactly half the correct value (~0.614)
 - **Location:** `_chaps/25-results.qmd:3262` (rendered tex `:10453`), prose after `tbl-boot-oee`.
 - **Issue:** "average estimated differences of 0.687 (PAR), 0.585 (AR), and 0.307 (MR)." The rule (mean of absolute Mean/Median/HL differences) reproduces PAR (0.687) and AR (0.585) *exactly*, confirming the method, but PWI–MR computes to 0.614 from `rdata/h2a_oee_boot_res.RData` (Mean −0.448, Median −0.729, HL −0.664). The printed 0.307 = 0.6138/2 — a halving/transcription slip. No alternative computation yields 0.307.
 - **Errata class:** consistency. **Severity:** Medium (prosecutor)/Low (defender) → reported as Medium because it is a wrong printed number. Accept-H2a unchanged (MR still smaller than PAR either way).
@@ -99,7 +99,7 @@
 - **Errata class:** consistency/editorial. **Severity:** Low. No analysis affected.
 - **Disposition:** **Fix inline in web build** (one word): "Egocentric Display" → "User-Centric Display" + Appendix F roll-up.
 
-#### [PENDING] F-013 — H3b "Adj Coef" halving misapplied to scale-invariant rate ratios (PWI factor stated as 0.197; rate ratio is 0.394)
+#### [DONE] F-013 — H3b "Adj Coef" halving misapplied to scale-invariant rate ratios (PWI factor stated as 0.197; rate ratio is 0.394)
 - **Location:** `_chaps/25-results.qmd` chunk `tbl-uce-modsum` (`:4149–4158`), body `:4166`, equation `eq:m3-uce-pwi` (`:4173–4174`).
 - **Issue:** The "Adj Coef" column divides every exponentiated coefficient by 2 to reverse the 2× iUCE rescaling. That division is valid only for the intercept (an expected count: 6.709/2 = 3.354). The treatment/gap exponentiated coefficients are multiplicative rate ratios; under the log link the 2× rescale shifts only the intercept, so the rate ratios are scale-invariant and must not be halved. The correct PWI-vs-AR factor is the unhalved 0.394 (`pscl::zeroinfl` reproduces 0.3941), not 0.197.
 - **Errata class:** interpretive. **Severity:** Low. Sign, significance, and the (already-softened) conclusion are unaffected. The body sentence/equation embody the additive treatment-specific-slope reading already retracted by `sec-v1-1-h3b-note`, which does not literally name the 0.197 table cell.
@@ -124,7 +124,7 @@
 - **Errata class:** editorial (orphan label). **Severity:** Low. Meaning recoverable from context.
 - **Disposition:** **Fix inline in web build / disclose:** "the RQ1 analyses" → "the learning-phase (H1) analyses."
 
-#### [PENDING] F-020 — Claim that bootstrap resampling "increases the sample size and statistical power" is a methodological misstatement
+#### [DONE] F-020 — Claim that bootstrap resampling "increases the sample size and statistical power" is a methodological misstatement
 - **Location:** `_chaps/25-results.qmd:3223` (H2a OEE Analysis).
 - **Issue:** Resampling with replacement does not add information, increase effective n, or increase power; the number of resamples affects only Monte-Carlo precision. The sentence sits in the paragraph already addressed by `sec-v1-1-boot-note`, but that note does not cover this overstatement.
 - **Errata class:** interpretive. **Severity:** Low. H2a inference rests on Kruskal–Wallis; the bootstrap is a complementary robustness check.
@@ -137,7 +137,7 @@
 - **Disposition:** **Fix inline in web build:** delete the literal "Appendix " so the source reads "…recorded in @sec-v1-1-changelog."
 
 #### [DONE] F-018 — Double-print "Appendix Appendix F" inside the change-log table
-- **Location:** `_apps/39i-v1-1-changelog.qmd:22` (rendered `html/_apps/39i-v1-1-changelog.html:384`, `manuscript/dissertation.tex:13981`).
+- **Location:** `_apps/39i-changelog.qmd:22` (rendered `html/_apps/39i-changelog.html:384`, `manuscript/dissertation.tex:13981`).
 - **Issue:** Same root cause as F-017; here it appears in both HTML and LaTeX/PDF.
 - **Errata class:** editorial. **Severity:** Low.
 - **Disposition:** **Fix inline in web build** (same pass as F-017): "direct links to Appendix @sec-v1-1-changelog" → "direct links to @sec-v1-1-changelog." Leave the subsection references (`@sec-v1-1-h3b-note`, `@sec-v1-1-boot-note`) unchanged — they target subsections and render correctly.

@@ -10,7 +10,7 @@ The Workload/Usability analyses are statistically sound and the abstract's workl
 
 Ranked by reader-visibility and severity. Suggested corrections are phrased as Appendix-F / v1.1 footnote entries continuing the F-0xx sequence after F-019 (numbers are placeholders).
 
-### [PENDING] 1. Abstract "generally … slower initial performance" mis-sites PAR on the speed axis — disclose_only
+### [DONE] 1. Abstract "generally … slower initial performance" mis-sites PAR on the speed axis — disclose_only
 - **ids:** G-002, G-003, G-006, G-007 (one finding, four independent confirmations)
 - **location:** `_front/12-abstract.qmd` line 7 (Key findings paragraph, para 4)
 - **class:** interpretive / consistency · **severity:** low–medium · **disposition:** `disclose_only` (defended record; no body revision)
@@ -18,6 +18,7 @@ Ranked by reader-visibility and severity. Suggested corrections are phrased as A
 - **adjudication:** The defender repeatedly and successfully defended the sentence: "generally" is a genuine hedge, 2 of 3 augmented methods (AR, MR — the head-mounted technologies named in the title) were in fact slow, the "fewer errors" half is correct for PAR, the abstract never *names* PAR as slow (unlike the F-019 target text at `26-conclusions.qmd:154`), and the v1.1 changelog explicitly defers "broader rhetorical tightening … beyond the specific corrections documented." Under the adjudication rule this is a defended record → not a text-changing erratum. But given the direct F-019 parallel and the established H1a/H1c facts, transparency warrants a disclosure note rather than silence.
 - **suggested correction (Appendix-F style, disclosure only):**
   > **F-020 (Errata — interpretive; disclosure only, abstract text unchanged).** The abstract's "augmented technologies generally led to … slower initial performance" is a hedged group-level generalization. Readers should note that projected AR (PAR), though an augmented method, was among the fast treatments (H1a; statistically equivalent to PWI and faster than AR/MR) while also low-error (H1c; statistically equivalent to AR/MR, mean UCE 0.76). PAR is the fast-and-accurate exception to the speed/accuracy trade-off. This parallels Conclusions erratum F-019, which corrected PAR's mis-grouping on the *error* axis; here the looseness is on the *speed* axis. Per errata-not-revision, the abstract body is not rewritten.
+- **resolution (v1.1.1):** Took Option D. Rather than a standalone abstract disclosure note, the echo is recorded as a clause in the F-019 change-register row (the abstract carries the same augmented-vs-traditional framing on the *speed* axis, reasonably hedged). The abstract is left unchanged and carries no footnote.
 
 ### [DONE] 2. SUS phase-change effect size printed as a squared quantity but negative — fold_v111
 - **ids:** G-001, G-012 (duplicate confirmations of one defect)
