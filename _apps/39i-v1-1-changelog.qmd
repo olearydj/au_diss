@@ -1,11 +1,15 @@
-# v1.1 Change Log {#sec-v1-1-changelog}
+# Change Log {#sec-v1-1-changelog}
 
-This appendix records the exact changes applied in the `v1.1` release relative to the as-submitted defended dissertation. These corrections are reflected in the current HTML and PDF renders generated from the same source. The list below is intended to be complete for the changes made in this pass. No new data were collected and no new analyses were introduced.
+This appendix records the exact changes applied in the `v1.1` release relative to the as-submitted defended dissertation, followed by the additional corrections made in the subsequent `v1.1.1` point release. These corrections are reflected in the current HTML and PDF renders generated from the same source. The list below is intended to be complete for the changes made in these passes. No new data were collected and no new analyses were introduced.
 
 ## Change Register
 
+Corrections are grouped by release below. The key interpretive and procedural changes are described more fully in the correction notes that follow this register.
+
+### v1.1
+
 :::{style="font-size: 0.92em;"}
-| Location | Issue in defended release | v1.1 correction | Reason |
+| Location | Issue in defended release | Correction | Reason |
 | --- | --- | --- | --- |
 | Literature Review footnote | Unresolved `*THEORY SECTION*` placeholder | Replaced with a direct cross-reference to the later theory section (`@sec-theory`) | Remove draft residue and point readers to the actual theory discussion |
 | Methods, retention hypotheses | Leaked TODO rendered in public output because the hiding wrapper was misspelled as `contents-hidden` | Removed the leaked note and rewrote the subsection as regular prose | Remove visible draft residue and make the subsection publication-safe |
@@ -24,32 +28,67 @@ This appendix records the exact changes applied in the `v1.1` release relative t
 | Appendix E, Institutional Review Board Approval | Appendix lead-in did not point readers to the defended public artifact | Replaced the lead-in with a direct link to the standalone as-submitted IRB packet on GitHub | Improve traceability to the defended IRB materials |
 :::
 
+### v1.1.1
+
+:::{style="font-size: 0.92em;"}
+| Location | Issue in defended release | Correction | Reason |
+| --- | --- | --- | --- |
+| Results $H_{2b}$ and Conclusions (recall) | The recall reliance comparison is stated with its direction reversed, describing the augmented conditions as reducing paper reliance relative to PWI, accompanied by two misprinted magnitudes (0.686, 0.612) | Added a correction note (Appendix @sec-v1-1-reliance-note) and footnotes establishing that PWI and PAR showed the lowest paper reliance at recall and the head-mounted AR and MR the highest; @tbl-boot-pwi is correct and unchanged | Corrects a directional reporting error that propagated into the recall interpretation and conclusions, without altering the defended table or the $H_{2b}$ determination |
+| Results $H_{2a}$ and $H_{2b}$ bootstrap | The complementary bootstrap was described as five replications averaged together, with the across-replication dispersion reported as evidence of stability | Added a correction note (Appendix @sec-v1-1-boot-note) and a footnote explaining that a seeding error made the five replications identical, so the reported dispersion is structurally zero and the estimates are those of a single bootstrap | Corrects a misleading procedural description; point estimates, intervals, and the $H_{2a}$ and $H_{2b}$ conclusions are unchanged |
+:::
+
+## Correction Notes
+
+These notes record the substantive interpretive and procedural corrections referenced in the change register, each flagged at the affected passages by footnote rather than by rewriting the defended text.
+
+### v1.1 H3b Interpretation Correction Note {#sec-v1-1-h3b-note}
+
+The defended $H_{3b}$ discussion interprets the selected additive zero-inflated negative binomial model as if the effect of gap were additive and treatment-specific in slope. That is not correct. In the selected model, count-model effects are multiplicative on the log-link scale, and no gap-by-treatment interaction term is included. Accordingly, the model supports the conclusion that expected increases in UCE differ by treatment level across the observed retention intervals, with PWI lower than the reference AR condition. It does not support a claim that PWI changes the per-day rate of increase relative to AR, nor that treatment-specific decay slopes were estimated by the selected model.
+
+This does not eliminate the $H_{3b}$ signal, but it narrows its interpretation. The defended phrasing about a lower rate of error increase should therefore be read as overstated. A more accurate reading is that the fitted model provides preliminary evidence of differences in expected retention-phase error increase by treatment, while leaving the mechanism of that difference, including whether treatments differ in slope over time, unresolved. To preserve the defended narrative, `v1.1` records that interpretive correction here and flags the affected passages in Results and Conclusions by footnote rather than rewriting them in place.
+
+### v1.1.1 H2b Reliance Direction Correction Note {#sec-v1-1-reliance-note}
+
+The recall-phase reliance discussion ($H_{2b}$) describes the augmented conditions as *reducing* reliance on the paper work instructions relative to PWI. That direction is reversed. As reported, the Results summary states that "AR and MR reduce reliance by 0.686 and 0.612 seconds per reference ... relative to the PWI instructional method" and that "AR and MR ... reduce reliance more than PAR and PWI," and the Conclusions restate this as "reduced reliance on instructions for AR and MR users" (recall results-summary table; recall interpretation; Collective Insights).
+
+The underlying bootstrap table (@tbl-boot-pwi) is correct; the prose reads it backward. The pairwise differences are signed as PWI minus treatment and are negative for the augmented conditions (the mean difference is about -0.99 s for PWI versus AR and -0.88 s for PWI versus MR; the median and Hodges-Lehmann contrasts agree), so PWI sits at the low end of paper reliance, not the high end. Recomputed group reliance during recall confirms this on every measure (average references per task, total reference time per task, and time per reference), with PWI and PAR lowest and the head-mounted AR and MR conditions highest. The simplest measure agrees: the share of participants who never consulted paper at recall was PWI 57%, PAR 50%, AR 31%, MR 29%, so the augmented (particularly head-mounted) learners were the more likely to reference the instructions. The printed values 0.686 and 0.612 do not appear in @tbl-boot-pwi and are not the reliance differences.
+
+This does not change the $H_{2b}$ determination (reliance does vary with instructional method), and the Results caution that the specific pairwise differences are "not clear enough to declare" continues to govern. Reliance was low and heavily zero-weighted (143 of 212 recall tasks, and 22 of 53 participants, recorded no paper reference at all), so the comparison rests on a small number of referencers at modest per-group sample sizes. But the *direction* of the comparison was stated backward, and the interpretation it supports is affected: the recall reliance evidence does not indicate greater independence for the augmented conditions and, to the extent it points anywhere, indicates *greater* paper reliance at recall for the head-mounted AR and MR conditions. The defended learning-quality ($H_{1c}$) and recall-performance ($H_{2a}$) results do not depend on this measure and are unchanged. Per the errata-not-revision policy, the defended text and the (correct) table are left in place; this note records the correction and the affected passages are flagged by footnote.
+
+Affected passages: Results $H_{2b}$ bootstrap summary and Result (`25-results.qmd`); Conclusions recall results-summary table ($H_{2b}$ row), recall interpretation, and Collective Insights (`26-conclusions.qmd`).
+
+### v1.1.1 Bootstrap Replication Seeding Correction Note {#sec-v1-1-boot-note}
+
+The `H2a` (OEE) and `H2b` (PWI reliance) complementary bootstrap analyses were described as five replications of 10,000 resamples each, averaged across replications, with the across-replication dispersion of bias and standard error reported as evidence of stability (the `sd_Bias` and `sd_SE` columns in @tbl-boot-oee and @tbl-boot-pwi). A seeding error made those five replications identical: the random seed was reset to the same fixed value immediately before each resampling call, so every replication drew the same resamples. Consequently, the averaging across replications was a no-op, and the reported across-replication dispersion is structurally zero rather than a measured quantity. The "five replications ... averaged" description and the appeal to low across-replicate dispersion as evidence of reliability are therefore not supported as written.
+
+This does not change the estimates or the conclusions. The tabulated differences, confidence intervals, biases, and standard errors are exactly those of a single valid 10,000-resample percentile bootstrap, which is itself a legitimate analysis; only the replication framing and the zero-valued dispersion columns are affected. The reported pairwise differences are deterministic functions of the full sample and do not depend on the seed. The primary inferences for both hypotheses rest on the Kruskal-Wallis tests, which are independent of this bootstrap, and the bootstrap is reported only as a complementary robustness check. The `H2a` and `H2b` results and their interpretations therefore stand as defended.
+
+A corrected implementation, using a single high-resolution bootstrap without the per-replication reseed, is carried in follow-on work derived from this dissertation; it reproduces the same pattern of pairwise differences and leaves the substantive findings unchanged.
+
 ## Interpretation Boundaries
 
-- No new participants, data, or analyses were added for `v1.1`.
-- The most substantive correction in this pass is the Methods/Results reconciliation for the retention hypothesis block.
-- Other changes in this pass are editorial, render-related, or transparency-related.
+- No new participants, data, or analyses were added for `v1.1` or `v1.1.1`.
+- The most substantive corrections are the Methods/Results retention reconciliation (`v1.1`) and the corrected direction of the recall reliance comparison (`v1.1.1`; see the H2b reliance note above).
+- Other changes in these passes are editorial, render-related, or transparency-related.
 
 ## Intentional Deferrals
 
-The `v1.1` release is a correction, reconciliation, and publication-safety pass, not a substantive revision of the defended dissertation. Several issues identified during review were therefore left unchanged by design. These include:
+The `v1.1` and `v1.1.1` releases are correction, reconciliation, and publication-safety passes, not a substantive revision of the defended dissertation. Several issues identified during review were therefore left unchanged by design. These include:
 
 - broader rhetorical tightening of `H2b` and retention claims beyond the specific corrections documented above
 - new sensitivity analyses or robustness checks for exclusions, outliers, or model choices
 - broader revision of the qualitative-analysis method or its presentation
 - deeper softening of appendix material beyond visible public-facing draft residue and link/provenance fixes
-- a full audit of all inline statistics beyond the specific exposed reporting errors corrected in `v1.1`
+- a full audit of all inline statistics beyond the specific exposed reporting errors corrected in these passes
 
 These items were judged to fall outside the intended scope of an errata-style release. Where appropriate, they are better addressed in future paper manuscripts, follow-on analysis, or later revision work rather than in the corrected dissertation release itself.
-
-### H3b Interpretation Correction Note {#sec-v1-1-h3b-note}
-
-The defended $H_{3b}$ discussion interprets the selected additive zero-inflated negative binomial model as if the effect of gap were additive and treatment-specific in slope. That is not correct. In the selected model, count-model effects are multiplicative on the log-link scale, and no gap-by-treatment interaction term is included. Accordingly, the model supports the conclusion that expected increases in UCE differ by treatment level across the observed retention intervals, with PWI lower than the reference AR condition. It does not support a claim that PWI changes the per-day rate of increase relative to AR, nor that treatment-specific decay slopes were estimated by the selected model.
-
-This does not eliminate the $H_{3b}$ signal, but it narrows its interpretation. The defended phrasing about a lower rate of error increase should therefore be read as overstated. A more accurate reading is that the fitted model provides preliminary evidence of differences in expected retention-phase error increase by treatment, while leaving the mechanism of that difference, including whether treatments differ in slope over time, unresolved. To preserve the defended narrative, `v1.1` records that interpretive correction here and flags the affected passages in Results and Conclusions by footnote rather than rewriting them in place.
 
 ## Repository Diff
 
 A repository compare view between the defended baseline tag and the `v1.1` release tag is available on GitHub:
 
 - [baseline/dissertation-defended-2024-08-02...v1.1](https://github.com/olearydj/au_diss/compare/baseline%2Fdissertation-defended-2024-08-02...v1.1)
+
+The additional `v1.1.1` corrections relative to `v1.1`:
+
+- [v1.1...v1.1.1](https://github.com/olearydj/au_diss/compare/v1.1...v1.1.1)
