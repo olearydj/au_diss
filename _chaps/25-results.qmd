@@ -2281,7 +2281,9 @@ ggplot(pred_data, aes(x = seq.fp, y = TCT)) +
 
 Even with the subset of data, we see that the log-based model begins to exhibit a slight upward trend after the fourth iteration, which defies learning theory, expectations, and the limited data from subsequent iterations. Model fits based on exponential and hyperbolic forms, which better align with theoretical learning curves, led to more promising predictions but were plagued by convergence issues, especially as additional terms were added to account for treatment and its interactions. This is a limitation of the study that originates primarily from the imbalanced experimental design employed by the learning phase.
 
-Inspecting the fixed effects parameters for m7, summarized in @tbl-m7-params, shows that all terms are significant. The intercept of 145.5 seconds establishes the baseline average performance for all participants on the first iteration. Estimated coefficients for the linear and log terms of sequence show that these terms compete for dominance, with the linear term increasing TCT at a rate of 246.5 seconds per unit of seq.fp, the continuous transformation of task iteration number. This is offset by the log term, which decreases TCT by 431.7 seconds per unit of $\log{(\text{seq.fp} + 1)}$. These coefficients represent the change in TCT for a one-unit change in their respective transformed sequence terms, resulting in a non-linear learning curve when combined. The strong negative correlation of -0.75 between the log term and intercept indicates that participants with higher initial TCT experience a stronger effect from the log term, which drives rapid initial improvement. In learning theory, this phenomenon is known as the *power law of practice*. It formalizes the idea that, all other things constant, the farther a learner starts from expected proficiency, the faster they will initially improve.
+Inspecting the fixed effects parameters for m7, summarized in @tbl-m7-params, shows that all terms are significant. The intercept of 145.5 seconds establishes the baseline average performance for all participants on the first iteration. Estimated coefficients for the linear and log terms of sequence show that these terms compete for dominance, with the linear term increasing TCT at a rate of 246.5 seconds per unit of seq.fp, the continuous transformation of task iteration number. This is offset by the log term, which decreases TCT by 431.7 seconds per unit of $\log{(\text{seq.fp} + 1)}$. These coefficients represent the change in TCT for a one-unit change in their respective transformed sequence terms, resulting in a non-linear learning curve when combined. The strong negative correlation of -0.75[^25-results-f001-note] between the log term and intercept indicates that participants with higher initial TCT experience a stronger effect from the log term, which drives rapid initial improvement. In learning theory, this phenomenon is known as the *power law of practice*. It formalizes the idea that, all other things constant, the farther a learner starts from expected proficiency, the faster they will initially improve.
+
+[^25-results-f001-note]: The -0.75 here is the fixed-effect (estimator) correlation; the participant-level reading rests on the random-effect correlation (-0.85), the same sign and magnitude. See @sec-v1-1-changelog.
 
 ```{r tbl-m7-params}
 # tbl-cap: Fixed Effects Parameters for the Unconditioned RLM (m7)
@@ -3224,7 +3226,7 @@ To further investigate the observed variability and validate these unexpected fi
 
 A bootstrap analysis was used to estimate pairwise differences in three measures of centrality for OEE--mean, median, and the Hodges-Lehmann estimator. The latter is a non-parametric approach to estimate population median shifts that is robust to outliers. It provides a consistent estimate of the true shift in medians, even when the underlying distributions are dissimilar, by considering the differences between all possible observation pairs. This process was replicated five times, each with 10,000 resamples, and the results were averaged to determine grand means and related statistics.[^25-results-boot-note] The significant results of this complementary analysis, where the 95% confidence interval does not include zero, are tabulated in @tbl-boot-oee.
 
-[^25-results-boot-note]: Appendix @sec-v1-1-boot-note records a correction to the bootstrap procedure used for the OEE ($H_{2a}$) and reliance ($H_{2b}$) analyses: a seeding error made the five replications identical, so the reported across-replicate dispersion is structurally zero. The point estimates, confidence intervals, and conclusions are unaffected.
+[^25-results-boot-note]: @sec-v1-1-boot-note records a correction to the bootstrap procedure used for the OEE ($H_{2a}$) and reliance ($H_{2b}$) analyses: a seeding error made the five replications identical, so the reported across-replicate dispersion is structurally zero. The point estimates, confidence intervals, and conclusions are unaffected.
 
 ```{r bootstrap-oee, eval=FALSE}
 # registerDoParallel(cores = parallel::detectCores())
@@ -3661,7 +3663,7 @@ create_boot_summary_table(h2b_pwi_boot_res, title = title, subtitle = subtitle)
 
 *On average, AR and MR reduce reliance by 0.686 and 0.612 seconds per reference*, respectively, relative to the PWI instructional method.[^25-results-reliance-note] This finding is statistically and practically meaningful, given that the overall average reference duration is `r round(mean(recall_h2b_agg_out$pwi_time_per_ref_agg), 2)` seconds. In summary, the bootstrap analysis suggests that AR and MR are equivalent to one another but reduce reliance more than PAR and PWI, which are themselves equivalent. The negligible bias values and low standard error reported across all replicates once again reinforce the stability of those estimates.
 
-[^25-results-reliance-note]: Appendix @sec-v1-1-reliance-note corrects the direction of the recall reliance comparison wherever it appears in the recall results and conclusions: the augmented conditions showed *higher*, not lower, paper reliance at recall. The $H_{2b}$ determination is unchanged and @tbl-boot-pwi is correct as displayed.
+[^25-results-reliance-note]: @sec-v1-1-reliance-note corrects the direction of the recall reliance comparison wherever it appears in the recall results and conclusions: the augmented conditions showed *higher*, not lower, paper reliance at recall. The $H_{2b}$ determination is unchanged and @tbl-boot-pwi is correct as displayed.
 
 #### $H_{2b}$ Result
 
@@ -3786,7 +3788,9 @@ datasummary(
 
 A variety of measures were considered to establish the baseline of performance during recall, including the mean, weighted average, 75th percentile, average of last two tasks, and last value for TCT and UCE. Ultimately, it was decided that an average of TCT / UCE over the last two task results was the most suitable measure of "typical" performance. Given the limited number of replications during recall, this approach balances recency with stability, reflecting the most recent performance trends while limiting the influence of a single result.
 
-As seen in @fig-h3-boxplot, the median increases in TCT appear similar across all treatments, with PWI and AR slightly higher than PAR and MR. Considerable variation exists within each treatment group, with MR exhibiting the most consistent values, while PWI and AR have greater variability and potential outliers. The increase in UCE is more clearly differentiated by treatment, with median steadily decreasing from AR to PAR, PWI, and MR. Variance is similar in the PWI-PAR and AR-MR pairs, with PWI and PAR both exhibiting significantly less than AR and MR. The overlapping IQR of increase in TCT suggests a lack of significant treatment effect. Overlap is less prominent in UCE increase, giving some evidence of treatment effect. Note that positive increases were consistent for both TCT and UCE. The lone exception is the increase in UCE for MR, with a median of zero.
+As seen in @fig-h3-boxplot, the median increases in TCT appear similar across all treatments, with PWI and AR slightly higher than PAR and MR.[^25-results-f009-note] Considerable variation exists within each treatment group, with MR exhibiting the most consistent values, while PWI and AR have greater variability and potential outliers. The increase in UCE is more clearly differentiated by treatment, with median steadily decreasing from AR to PAR, PWI, and MR. Variance is similar in the PWI-PAR and AR-MR pairs, with PWI and PAR both exhibiting significantly less than AR and MR. The overlapping IQR of increase in TCT suggests a lack of significant treatment effect. Overlap is less prominent in UCE increase, giving some evidence of treatment effect. Note that positive increases were consistent for both TCT and UCE. The lone exception is the increase in UCE for MR, with a median of zero.
+
+[^25-results-f009-note]: The order is misstated; the iTCT medians are PAR (47.5) > AR (40.9) > PWI (38.0) > MR (16.9), and the iTCT model finds no treatment effect. See @sec-v1-1-changelog.
 
 ```{r fig-h3-boxplot}
 #| fig-cap: "Variation of Response Variables by Treatment"
@@ -4087,7 +4091,9 @@ cp_uce_pm <- compare_performance(m1_uce_poisson, m2_uce_poisson, metrics = "comm
 display(cp_uce_pm)
 ```
 
-A comparison of model performance statistics are summarized in @tbl-uce-modperf-pm. The columns for AIC, BIC, and RMSE are as previously described. The standard and adjusted $R^2$ terms are replaced with Nagelkerke's $R^2$. This is the equivalent measure for GLMs with count data outcomes, and is interpreted in the same manner. The second model includes interactions of gap and treatment. It performs better on AIC, BIC, and RMSE metrics, and has the same $R^2$ value, indicating that the additional model complexity provides a substantially better fit.
+A comparison of model performance statistics are summarized in @tbl-uce-modperf-pm. The columns for AIC, BIC, and RMSE are as previously described. The standard and adjusted $R^2$ terms are replaced with Nagelkerke's $R^2$. This is the equivalent measure for GLMs with count data outcomes, and is interpreted in the same manner. The second model includes interactions of gap and treatment. It performs better on AIC, BIC, and RMSE metrics,[^25-results-f008-note] and has the same $R^2$ value, indicating that the additional model complexity provides a substantially better fit.
+
+[^25-results-f008-note]: The interaction model is better on AIC and RMSE but not BIC (the additive model has the lower BIC); model selection is unaffected, as both Poisson models are discarded for overdispersion. See @sec-v1-1-changelog.
 
 ```{r h3_mod_pm_val}
 # validate poisson model
@@ -4169,7 +4175,7 @@ To ease interpretation, the values for estimated coefficients and standard error
 
 Here, the intercept (`r fmt_p_val(mp_c$p[1])`), gap (`r fmt_p_val(mp_c$p[2])`), and PWI treatment effect (`r fmt_p_val(mp_c$p[5])`) are all statistically significant. The adjusted intercept value indicates that baseline performance for the reference treatment level (AR) and a gap of zero is 3.354 errors. The adjusted gap coefficient indicates that the expected error count increases by 0.516 per day for the AR treatment. The effect of other treatments is multiplicative. This implies that the gap coefficient for PWI is changed by a *factor* of 0.197. These relationships can be interpreted as follows:[^25-results-h3b-note-1]
 
-[^25-results-h3b-note-1]: Appendix @sec-v1-1-h3b-note records a correction to the interpretation of this model and discusses the implications for the retention findings.
+[^25-results-h3b-note-1]: @sec-v1-1-h3b-note records a correction to the interpretation of this model and discusses the implications for the retention findings.
 
 \begin{align}
 \small
@@ -4241,7 +4247,7 @@ No statistically significant evidence was found for the effect of instructional 
 
 A significant treatment effect on the increase in UCE over time was identified using a zero-inflated negative binomial GLM. Specifically, the PWI method showed a significantly lower rate of error increase compared to the reference AR method. As with the TCT analysis, other treatment coefficients suggest that a meaningful effect may exist, but did not reach the traditional threshold of 95% confidence. Despite these limited findings, the model was statistically significant overall. Sufficient evidence does exist to validate $H_{3b}$'s broad claim that the change in error rate over time varies by treatment.[^25-results-h3b-note-2]
 
-[^25-results-h3b-note-2]: Appendix @sec-v1-1-h3b-note records a correction to the interpretation of this model and discusses the implications for the retention findings.
+[^25-results-h3b-note-2]: @sec-v1-1-h3b-note records a correction to the interpretation of this model and discusses the implications for the retention findings.
 
 Overall, the implications for $H_{3}$ are mixed, with the UCE model providing stronger evidence for an effect of instructional method on retention than the TCT model. This difference suggests that time-based performance improvements may not be as sensitive to instructional methods as error rates. While it has little impact on this study, identifying gap is a significant predictor for both iTCT and iUCE is logical and expected, as retention naturally declines over time.
 

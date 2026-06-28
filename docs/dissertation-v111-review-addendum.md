@@ -45,7 +45,7 @@ Ranked by reader-visibility and severity. Suggested corrections are phrased as A
   > **F-023 (Errata — editorial).** `25-results.qmd:4423`: change "(Heart 2006)" to "(Hart 2006)"; ideally convert the two italic pseudo-citations in the sentence to proper Quarto keys (`@hart2006tlx`) to match the rest of the document.
 - **resolution (v1.1.1):** Fixed Heart → Hart and converted that pseudo-citation to `[@hart2006tlx]` (now renders "(Hart, 2006)"). The companion pseudo-citation in the same sentence, *(Bustamante and Spain 2008, Byers et al 1989)*, is **not** in `references.bib` (grep confirms), so it cannot be converted without adding two new bibliography entries. It is left as italic text and deferred to a future bibliography/Zotero pass, after which it can become a proper citation as well.
 
-### [DEFERRED] 5. Figure 5.41 caption is a copy of Figure 5.40's and does not describe its content — defer
+### [DONE] 5. Figure 5.41 caption is a copy of Figure 5.40's and does not describe its content — defer
 - **id:** G-009
 - **location:** `_chaps/25-results.qmd` fig-cap line 4891 (`fig-sus-within-trt`, Figure 5.41); duplicate of line 4790 (`fig-sus-change`, Figure 5.40)
 - **class:** consistency / editorial · **severity:** low · **disposition:** `defer_errata`
@@ -53,7 +53,7 @@ Ranked by reader-visibility and severity. Suggested corrections are phrased as A
 - **suggested correction:**
   > **F-024 (Errata — editorial).** `25-results.qmd:4891`: replace the `fig-cap` for `fig-sus-within-trt` with one describing its content, e.g. "Between-Treatment Comparison of the Change in SUS from Learning to Recall." Caption-only; no code, data, or statistic affected. Figure 5.40's caption is unchanged.
 
-### [DEFERRED] 6. TLX Q2 boundary statements marginally false at the extreme treatment — defer
+### [DONE] 6. TLX Q2 boundary statements marginally false at the extreme treatment — defer
 - **id:** G-004
 - **location:** `_chaps/25-results.qmd` line 4427 (TLX Q2 narrative)
 - **class:** editorial · **severity:** low · **disposition:** `defer_errata`

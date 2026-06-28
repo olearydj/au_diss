@@ -68,7 +68,7 @@
 - **Suggested correction (footnote at `:3262`):**
   > Erratum (v1.1.1): the PWI–MR average estimated difference was misprinted as 0.307; the value computed from the cached bootstrap artifact (mean of the absolute Mean, Median, and Hodges–Lehmann differences) is 0.614. The PWI–PAR (0.687) and PWI–AR (0.585) values are correct. The H2a conclusion is unchanged.
 
-#### [DEFERRED] F-008 — Poisson model-comparison prose claims the interaction model is better on BIC, but its own table shows the opposite
+#### [DONE] F-008 — Poisson model-comparison prose claims the interaction model is better on BIC, but its own table shows the opposite
 - **Location:** `_chaps/25-results.qmd:4086`, table `tbl-uce-modperf-pm` (tex `:11126–11127`).
 - **Issue:** Text says the interaction model "performs better on AIC, BIC, and RMSE." The table shows it is better on AIC (223.9 vs 226.6) and RMSE but *worse* on BIC (233.3 vs 232.5), with the BIC weight favoring the additive model (0.61 vs 0.39). AIC/RMSE/equal-R² claims are correct; only the BIC claim is false.
 - **Errata class:** consistency. **Severity:** Medium. No downstream impact — both Poisson models are discarded one paragraph later (`:4104`) for overdispersion in favor of NB/ZINB.
@@ -80,7 +80,7 @@
 
 ### LOW
 
-#### [DEFERRED] F-001 — "-0.75 correlation between log term and intercept" cited for a participant-level reading is the fixed-effect (sampling) correlation, not the random-effect correlation
+#### [DONE] F-001 — "-0.75 correlation between log term and intercept" cited for a participant-level reading is the fixed-effect (sampling) correlation, not the random-effect correlation
 - **Location:** `_chaps/25-results.qmd:2284` (H1b, model m7).
 - **Issue:** −0.75 is `cov2cor(vcov(m7))[Intercept, log] = −0.749` — lme4's "Correlation of Fixed Effects," a property of the estimator's sampling covariance / design collinearity. The stated participant-level reading ("participants with higher initial TCT experience a stronger log-term effect … power law of practice") corresponds to the *random-effect* correlation `VarCorr(m7)` cor(intercept, log slope) = −0.849 (rounds to −0.85). Same sign and comparable magnitude, so the qualitative conclusion is corroborated, not lucky.
 - **Errata class:** interpretive. **Severity:** Low. Nothing in model selection or estimates changes.
@@ -106,13 +106,13 @@
 - **Disposition:** **Disclose-only — extend the existing `sec-v1-1-h3b-note`** with one sentence:
   > Relatedly, the exponentiated non-intercept coefficients in @tbl-uce-modsum are scale-invariant rate ratios, so the 2× response rescale cancels for them; the "Adj Coef" halving is meaningful only for the intercept (an expected count). The multiplicative factor relating PWI to the reference AR condition is the exponentiated coefficient itself, 0.394, not the halved 0.197.
 
-#### [DEFERRED] F-009 — Descriptive text misorders the iTCT medians (PAR, not PWI/AR, has the highest)
+#### [DONE] F-009 — Descriptive text misorders the iTCT medians (PAR, not PWI/AR, has the highest)
 - **Location:** `_chaps/25-results.qmd:3785` (describing `fig-h3-boxplot`).
 - **Issue:** "PWI and AR slightly higher than PAR and MR" — recomputed `median(incr_tct)`: PWI 38.0, PAR 47.5, AR 40.9, MR 16.9. PAR is the maximum; PWI/AR exceed only MR. The parallel UCE-ordering clause in the same sentence is correct.
 - **Errata class:** consistency. **Severity:** Low. The iTCT model finds no significant treatment effect, so inference is unaffected.
 - **Disposition:** **Defer to a later errata pass / footnote.** Note the correct order PAR (47.5) > AR (40.9) > PWI (38.0) > MR (16.9).
 
-#### [DEFERRED] F-025 — H1c outlier prose claims "a combination of IQR and Z-score" but the code applies IQR only
+#### [DONE] F-025 — H1c outlier prose claims "a combination of IQR and Z-score" but the code applies IQR only
 - **Location:** `_chaps/25-results.qmd:2897`; chunk `h1c-outliers` (`:2877`: `check_outliers(..., method = "iqr", threshold = 1.5)`).
 - **Issue:** No Z-score is computed for H1c; the three reported PWI participants (1016, 1017, 1056) reproduce from the IQR fence alone. A literal Z>2.5 test would flag only two of them, so "combination" cannot reproduce the reported three. Z-score is used elsewhere (H2b, the group screen), not here.
 - **Errata class:** consistency. **Severity:** Low. The H1c outliers were a robustness check, not removed; no reported n or test result changes.
