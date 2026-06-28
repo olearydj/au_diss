@@ -164,6 +164,8 @@ The build/release state is now:
 - operational modern rebuild lock: [`renv.lock`](/Volumes/Casa/pub/dissertation/renv.lock)
 - archived pre-promotion root lock: [`renv-historical-root.lock`](/Volumes/Casa/pub/dissertation/docs/renv-historical-root.lock)
 
+The `baseline/...` and `rebuild/...` entries above are slash-named git tags, each backing a GitHub Release; they are not branches, so `git tag` lists them and `git branch` does not. Errata releases use plain `vX.Y.Z` tags (`v1.1`, `v1.1.1`). This note stays descriptive (what the build is and how it works); the step-by-step procedure for deploying a new release lives in `docs/release-guide.md`.
+
 The remaining build questions are no longer about whether the repo can render
 cleanly. They are about how much further, if at all, the active working line
 should diverge from the frozen rebuild snapshot.

@@ -14,6 +14,7 @@ Post-`v1.1` corrections are errata, not revisions. Never change an analytic deci
 - The rebuilt PDF is the single asset on a GitHub Release: asset filename `dissertation.pdf`, display label `oleary-dissertation-vX.Y.Z.pdf`.
 - The rebuilt HTML is published in the separate `olearydj/blog` repo under `dissertation/` (tracked via a `.gitignore` exception); pushing `main` deploys the site.
 - The as-defended PDF stays at its own Release (`baseline/dissertation-defended-2024-08-02`); each errata release links back to it.
+- Releases are keyed to git tags, not branches. Errata releases use `vX.Y.Z` tags; snapshot-class states (the defended baseline, the verified arm64 rebuilds) use slash-named tags (`baseline/...`, `rebuild/...`). All of these back GitHub Releases and show under `git tag`, not `git branch`.
 
 ## Prerequisites
 
