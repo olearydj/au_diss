@@ -77,6 +77,14 @@ Observed result:
 - the top-level `html/` directory is treated as generated-on-demand and ignored in git
 - a preserved HTML snapshot is kept at `defended-2024-08-02/html/`
 
+## Bibliography Source
+
+`references.bib` is generated, not hand-maintained. Better BibTeX exports it from the Zotero collection "dissertation" (collection id 26) including its subcollections (292 entries as of v1.1.1). Edit citations in Zotero, never in `references.bib` directly, since a regenerate overwrites the whole file.
+
+A Better BibTeX "idle" auto-export previously rewrote this file whenever any item in that collection changed. As of the v1.1.1 bibliography pass it is disabled, so the published bibliography does not drift between renders; regenerate deliberately when citations change.
+
+To regenerate: in Zotero, right-click the "dissertation" collection -> Export Collection -> "Better BibTeX" -> overwrite `references.bib`. The export uses the legacy Better BibTeX (BibTeX) translator, so web resources export as `@misc` (not `@online`) and their URL lands in `howpublished`.
+
 ## Data Workflow Note
 
 The dissertation data pipeline is not completely uniform across all three phases of the study.
