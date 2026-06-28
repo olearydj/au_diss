@@ -137,6 +137,18 @@ git commit -m "Publish dissertation vX.Y.Z"
 git push origin main
 ```
 
+### 10. Archive a local snapshot
+
+Keep a local copy of the release outputs under `snapshots/vX.Y.Z/`, matching the existing `snapshots/v1.1/` convention:
+
+```bash
+mkdir -p snapshots/vX.Y.Z
+cp manuscript/dissertation.pdf snapshots/vX.Y.Z/dissertation.pdf
+rsync -a --delete html/ snapshots/vX.Y.Z/html/
+```
+
+Add `snapshots/vX.Y.Z/README.md` recording the tag, the release name, and the GitHub Release URL (copy the `snapshots/v1.1/README.md` template). `snapshots/` is gitignored, a local convenience archive only, so there is nothing to commit or push; the as-defended baseline (`defended-2024-08-02/`) is the one tracked exception.
+
 ## Pitfalls (learned in v1.1.1)
 
 - rig's default R is 4.5.3; renders must use 4.4.0. The `_environment` file pins it via `QUARTO_R`; trust that over the shell default.
