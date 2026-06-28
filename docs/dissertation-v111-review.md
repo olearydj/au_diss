@@ -155,17 +155,17 @@
 - **Disposition:** **Fix inline in the web build in one batched copy pass, with a single Appendix F roll-up row** (matching the v1.1 P0 precedent that fixed repeated words inline rather than footnoting each). Per-typo footnotes are disproportionate and would clutter the corrected record.
 - **Suggested Appendix F roll-up row:** "Results, Conclusions, Problem Statement, and Literature Review prose | residual repeated-word, eponym-spelling, and verb-form typos missed by the v1.1 P0 copy sweep (e.g. 'the the', 'with with', 'to to', 'Kruskall-/Kurskal-Wallis', 'did not impacting', 'while constructed', 'is considering') | corrected inline | editorial cleanup only; no analysis, data, or narrative changed."
 
-#### [DEFERRED] F-034 — Four cited references are skeletal `@article` entries rendering as "(n.d.)"
+#### [DONE] F-034 — Four cited references are skeletal `@article` entries rendering as "(n.d.)"
 - **Location:** `references.bib` lines 166, 1117, 2474, 2623 (`army2022ivas`, `etsi2022arf`, `ms2022mrtk`, `opencv2022pnp`); cited at `_chaps/22-lit_review.qmd:366, 460, 707`.
 - **Issue:** Title-only entries with no author/year/source render as bare titles plus "(n.d.)." These are load-bearing citations (the $22b IVAS claim, the standards-bodies list, the pose-estimation figure source). Each in-text claim is independently dated in prose.
 - **Errata class:** editorial. **Severity:** Low.
-- **Disposition:** **Defer to a later errata pass.** Retype as `@online`/`@misc` with organization author, year (each key embeds 2022), URL, and `urldate`. No prose change needed.
+- **Disposition:** **Corrected (Zotero bibliography pass).** Retyped as `@misc` web resources with single-field organization authors (`{{PEO Soldier}}`, `{{ETSI}}`, `{{Microsoft}}`, `{{OpenCV}}`), the source URL, and `urldate = {2022-08}`. The publication year is intentionally left **n.d.**: the keys embed 2022, but these are undated, continuously-updated web resources, so 2022 is recorded as the access date (corroborated by the 2022-07/08 lit-review notes in the Obsidian vault) rather than asserted as a publication year. `@misc` rather than `@online` because the dissertation's export uses the legacy Better BibTeX (BibTeX) translator. No prose change needed; the four in-text claims remain independently dated in prose.
 
-#### [DEFERRED] F-035 — Malformed/impossible publication year `{0015/2018-01-17}` in a bib entry
+#### [DONE] F-035 — Malformed/impossible publication year `{0015/2018-01-17}` in a bib entry
 - **Location:** `references.bib:1946` (`konig2018embod`).
 - **Issue:** A garbled Zotero-export year (year 15 AD + an ISO date fragment); the true year is 2018 (booktitle/DOI/key confirm). The entry is **uncited** (`grep` finds it nowhere outside `references.bib`), so it never reaches the rendered bibliography.
 - **Errata class:** data (source-file only). **Severity:** Low. Not reader-facing.
-- **Disposition:** **Disclose-only / source hygiene** — trivial fix to `year = {2018}` on the next clean typesetting pass; not erratum-eligible because nothing renders.
+- **Disposition:** **Corrected (source hygiene).** Fixed to `year = {2018}` (the Zotero date field held the malformed `2018-01-15 15-17 Jan. 2018`; reset to the IEEE conference date, 15-17 Jan 2018). Still non-rendering — the entry is uncited — so nothing changes in the build.
 
 ---
 
