@@ -4,6 +4,8 @@
 
 This note records the dissertation build path that should be treated as canonical during repository baselining.
 
+For the end-to-end release procedure (render, verification gates, tag, GitHub Release, blog publish), see `docs/release-guide.md`.
+
 ## Canonical Outputs
 
 - Manuscript artifact: `defended-2024-08-02/main.pdf`
